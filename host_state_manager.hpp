@@ -37,9 +37,32 @@ class Host : public sdbusplus::server::object::object<
                 const char* objPath) :
                 sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Host>(
-                            bus, objPath) {};
+                            bus, objPath, true),
+                bus(bus)
+        {
+            // Will throw exception on fail
+            determineInitialState();
+
+            // We deferred this until we could get our property correct
+            this->emit_object_added();
+        }
+
+        /**
+         * @brief Determine initial host state and set internally
+         *
+         * @return Will throw exceptions on failure
+         **/
+        void determineInitialState();
+
+        /** @brief Set value of HostTransition */
+        Transition requestedHostTransition(Transition value) override;
+
+        /** @brief Set value of CurrentHostState */
+        HostState currentHostState(HostState value) override;
 
     private:
+        /** @brief Persistent sdbusplus DBus bus connection. */
+        sdbusplus::bus::bus& bus;
 };
 
 } // namespace manager
