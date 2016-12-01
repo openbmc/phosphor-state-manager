@@ -38,9 +38,29 @@ class Host : public sdbusplus::server::object::object<
                 sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Host>(
                             bus, objPath),
-                path(objPath) {};
+                bus(bus),
+                path(objPath)
+        {
+            // Will throw exception on fail
+            determineInitialState();
+        }
+
+        /**
+         * @brief Determine initial host state and set internally
+         *
+         * @return Will throw exceptions on failure
+         **/
+        void determineInitialState();
+
+        /** @brief Set value of HostTransition */
+        Transition requestedHostTransition(Transition value) override;
+
+        /** @brief Set value of CurrentHostState */
+        HostState currentHostState(HostState value) override;
 
     private:
+        /** @brief Persistent sdbusplus DBus bus connection. */
+        sdbusplus::bus::bus& bus;
 
         /** @brief Path of the host instance */
         std::string path;
