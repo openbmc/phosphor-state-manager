@@ -34,8 +34,17 @@ class Host : public sdbusplus::server::object::object<
              const char* busName,
              const char* objPath);
 
+        /** @brief Determine initial host state and set internally */
+        void determineInitialState();
+
         /** @brief Start processing DBus messages. */
         void run() noexcept;
+
+        /** @brief Set value of HostTransition */
+        Transition hostTransition(Transition value) override;
+
+        /** @brief Set value of CurrentHostState */
+        HostState currentHostState(HostState value) override;
 
     private:
         /** @brief Persistent sdbusplus DBus bus connection. */
