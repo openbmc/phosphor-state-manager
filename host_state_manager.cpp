@@ -9,6 +9,9 @@ namespace state
 namespace manager
 {
 
+// When you see server:: you know we're referencing our base class
+namespace server = sdbusplus::xyz::openbmc_project::State::server;
+
 // TODO - Will be rewritten once sdbusplus client bindings are in place
 //        and persistent storage design is in place
 void Host::determineInitialState()
@@ -27,20 +30,17 @@ void Host::determineInitialState()
     if(sysState == "HOST_BOOTED")
     {
         std::cout << "HOST is BOOTED " << sysState << std::endl;
-        sdbusplus::xyz::openbmc_project::State::server::Host::
-            currentHostState(HostState::Running);
+        server::Host::currentHostState(HostState::Running);
     }
     else
     {
         std::cout << "HOST is not BOOTED " << sysState << std::endl;
-        sdbusplus::xyz::openbmc_project::State::server::Host::
-            currentHostState(HostState::Off);
+        server::Host::currentHostState(HostState::Off);
     }
 
     // Set transition initially to Off
     // TODO - Eventually need to restore this from persistent storage
-    sdbusplus::xyz::openbmc_project::State::server::Host::
-                requestedHostTransition(Transition::Off);
+    server::Host::requestedHostTransition(Transition::Off);
 
     return;
 }
@@ -48,19 +48,16 @@ void Host::determineInitialState()
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     std::cout << "Someone is setting the RequestedHostTransition field" <<
-            std::endl;
-    return sdbusplus::xyz::openbmc_project::State::server::Host::
-            requestedHostTransition(value);
+        std::endl;
+    return server::Host::requestedHostTransition(value);
 }
-
 
 Host::HostState Host::currentHostState(HostState value)
 {
     std::cout << "Someone is being bad and trying to set the HostState field" <<
             std::endl;
 
-    return sdbusplus::xyz::openbmc_project::State::server::Host::
-            currentHostState();
+    return server::Host::currentHostState();
 }
 
 } // namespace manager
