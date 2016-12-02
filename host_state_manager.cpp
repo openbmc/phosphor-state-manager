@@ -7,14 +7,15 @@ namespace phosphor
 namespace statemanager
 {
 
-using namespace sdbusplus::xyz::openbmc_project::State::server;
+// When you see server:: you know we're referencing our base class
+using namespace sdbusplus::xyz::openbmc_project::State;
 
 Host::Host(
         sdbusplus::bus::bus& bus,
         const char* busName,
         const char* objPath) :
         sdbusplus::server::object::object<
-            sdbusplus::xyz::openbmc_project::State::server::Host>(
+            server::Host>(
                bus, objPath),
          _bus(bus),
          _path(objPath)
@@ -61,20 +62,17 @@ void Host::determineInitialState()
     if(pgood==1)
     {
         std::cout << "HOST is BOOTED " << pgood << std::endl;
-        sdbusplus::xyz::openbmc_project::State::server::Host::
-            currentHostState(HostState::Running);
+        server::Host::currentHostState(HostState::Running);
     }
     else
     {
         std::cout << "HOST is not BOOTED " << pgood << std::endl;
-        sdbusplus::xyz::openbmc_project::State::server::Host::
-            currentHostState(HostState::Off);
+        server::Host::currentHostState(HostState::Off);
     }
 
-    // Set transition initially to Off
+    // Set transition initially to None
     // TODO - Eventually need to restore this from persistent storage
-    sdbusplus::xyz::openbmc_project::State::server::Host::
-                requestedHostTransition(Transition::Off);
+    server::Host::requestedHostTransition(Transition::Off);
 
 finish:
     sd_bus_error_free(&busError);
@@ -87,9 +85,8 @@ finish:
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     std::cout << "Someone is setting the RequestedHostTransition field" <<
-            std::endl;
-    return sdbusplus::xyz::openbmc_project::State::server::Host::
-            requestedHostTransition(value);
+        std::endl;
+    return server::Host::requestedHostTransition(value);
 }
 
 
@@ -98,8 +95,7 @@ Host::HostState Host::currentHostState(HostState value)
     std::cout << "Someone is being bad and trying to set the HostState field" <<
             std::endl;
 
-    return sdbusplus::xyz::openbmc_project::State::server::Host::
-            currentHostState();
+    return server::Host::currentHostState();
 }
 
 } // namespace statemanager
