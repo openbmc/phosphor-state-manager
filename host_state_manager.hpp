@@ -38,7 +38,8 @@ class Host : public sdbusplus::server::object::object<
                 sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Host>(
                             bus, objPath, true),
-                bus(bus)
+                bus(bus),
+                tranActive(false)
         {
             // Will throw exception on fail
             determineInitialState();
@@ -60,9 +61,23 @@ class Host : public sdbusplus::server::object::object<
         /** @brief Set value of CurrentHostState */
         HostState currentHostState(HostState value) override;
 
+        /** @brief Verify the transition request is valid
+         *
+         * @param[in] tranReq    - Transition requested
+         * @param[in] curState   - Current state of the object
+         * @param[in] tranActive - Current transition activity of object
+         */
+        static bool verifyValidTransition(Transition tranReq,
+                                          HostState curState,
+                                          bool tranActive);
+
     private:
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
+
+        /** @brief Indicates whether transition is actively executing */
+        bool tranActive;
 };
 
 } // namespace manager
