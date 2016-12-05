@@ -20,7 +20,8 @@ Host::Host(
             server::Host>(
                bus, objPath),
          bus(bus),
-         path(objPath)
+         path(objPath),
+         tranActive(false)
 {
     determineInitialState();
 }
@@ -58,13 +59,77 @@ void Host::determineInitialState()
     return;
 }
 
+bool Host::verifyValidTransition(const Transition &tranReq,
+                                 const HostState &curState,
+                                 bool tranActive)
+{
+    bool valid = {false};
+
+    // Make sure we're not in process of a transition
+    if (tranActive)
+    {
+        std::cerr << "Busy, currently executing transition" << std::endl;
+        goto finish;
+    }
+
+    /* Valid Transitions
+     *
+     * CurrentHostState    RequestedHostTransition
+     * Off              -> On
+     * Running          -> Off
+     * Running          -> Reboot
+     */
+
+    switch (tranReq)
+    {
+        case Transition::Off:
+        {
+            if(curState == HostState::Off)
+            {
+                std::cout << "Already at requested Off state" << std::endl;
+            }
+            else if(curState == HostState::Running)
+            {
+                valid = true;
+            }
+            break;
+        }
+        case Transition::On:
+        {
+            if(curState == HostState::Running)
+            {
+                std::cout << "Already at requested On state" << std::endl;
+            }
+            else if(curState == HostState::Off)
+            {
+                valid = true;
+            }
+            break;
+        }
+        case Transition::Reboot:
+        {
+            if(curState == HostState::Off)
+            {
+                std::cout << "Can not request reboot in off state" << std::endl;
+            }
+            else if(curState == HostState::Running)
+            {
+                valid = true;
+            }
+            break;
+        }
+    }
+
+finish:
+    return valid;
+}
+
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     std::cout << "Someone is setting the RequestedHostTransition field" <<
         std::endl;
     return server::Host::requestedHostTransition(value);
 }
-
 
 Host::HostState Host::currentHostState(HostState value)
 {
