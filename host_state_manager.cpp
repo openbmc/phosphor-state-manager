@@ -18,7 +18,8 @@ Host::Host(
             server::Host>(
                bus, objPath),
          _bus(bus),
-         _path(objPath)
+         _path(objPath),
+         _tranActive(false)
 {
     determineInitialState();
 }
@@ -82,13 +83,54 @@ finish:
     return;
 }
 
+bool Host::verifyValidTransition(const Transition &tranReq)
+{
+    bool valid = false;
+    auto curState = server::Host::currentHostState();
+
+    // Make sure we're not in process of a transition
+    if (_tranActive)
+    {
+        std::cerr << "Busy, currently executing transition" << std::endl;
+        goto finish;
+    }
+
+    // Make sure we're not already in the request transition state
+    if(tranReq == Transition::Off && curState == HostState::Off)
+    {
+        std::cout << "Already at requested Off state" << std::endl;
+        goto finish;
+    }
+
+    if(tranReq == Transition::On && curState == HostState::Running)
+    {
+        std::cout << "Already at requested On state" << std::endl;
+        goto finish;
+    }
+
+    // TODO -
+
+    /* Valid Transitions
+     * - Transition is None
+     *
+     * CurrentHostState    Transition
+     * Off              -> On
+     * Running          -> Off
+     * Running          -> Reboot
+     */
+
+    valid = true;
+
+    finish:
+    return valid;
+}
+
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     std::cout << "Someone is setting the RequestedHostTransition field" <<
         std::endl;
     return server::Host::requestedHostTransition(value);
 }
-
 
 Host::HostState Host::currentHostState(HostState value)
 {
