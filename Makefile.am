@@ -9,3 +9,5 @@ op_host_state_manager_SOURCES = \
 	host_state_manager_main.cpp
 
 op_host_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
+
+SUBDIRS = test
