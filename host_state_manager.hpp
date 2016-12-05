@@ -44,11 +44,22 @@ class Host : public sdbusplus::server::object::object<
         HostState currentHostState(HostState value) override;
 
     private:
+
+
+        /** @brief Verify the transition request
+         *
+         * @param[in] tranReq   - Transition requested
+         */
+        bool verifyValidTransition(const Transition &tranReq);
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& _bus;
 
         /** @brief Path of the host instance */
         std::string _path;
+
+        /** @brief Indicates whether transition is actively executing */
+        bool _tranActive;
 };
 
 } // namespace statemanager
