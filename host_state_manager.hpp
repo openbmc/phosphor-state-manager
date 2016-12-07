@@ -58,6 +58,15 @@ class Host : public sdbusplus::server::object::object<
         HostState currentHostState(HostState value) override;
 
     private:
+        /** @brief Execute the transition request
+         *
+         * This function assumes the state has been validated and the host
+         * is in an appropriate state for the transition to be started.
+         *
+         * @param[in] tranReq    - Transition requested
+         */
+        void executeTransition(Transition tranReq);
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
 };
