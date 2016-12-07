@@ -1,5 +1,7 @@
 #include <iostream>
 #include <systemd/sd-bus.h>
+#include <map>
+#include <string>
 #include "host_state_manager.hpp"
 
 namespace phosphor
@@ -9,6 +11,12 @@ namespace statemanager
 
 // When you see server:: you know we're referencing our base class
 using namespace sdbusplus::xyz::openbmc_project::State;
+
+/* Map a transition to it's systemd target */
+const std::map<server::Host::Transition,std::string> SYSTEMD_TABLE = {
+        {server::Host::Transition::Off,"obmc-chassis-stop@0.target"},
+        {server::Host::Transition::On,"obmc-chassis-start@0.target"}
+};
 
 Host::Host(
         sdbusplus::bus::bus& bus,
@@ -148,11 +156,73 @@ bool Host::verifyValidTransition(const Transition &tranReq,
     return valid;
 }
 
+int Host::executeTransition(const Transition& tranReq)
+{
+    _tranActive = true;
+
+    int rc = 0;
+    sd_bus *bus = NULL;
+    sd_bus_message *response = NULL;
+    sd_bus_error busError = SD_BUS_ERROR_NULL;
+
+    const char* sysdUnit = SYSTEMD_TABLE.find(tranReq)->second.c_str();
+
+    rc = sd_bus_open_system(&bus);
+    if(rc < 0)
+    {
+        std::cerr << "Failed to open system bus" << std::endl;
+        goto finish;
+    }
+
+    rc = sd_bus_call_method(bus,
+                              "org.freedesktop.systemd1",
+                              "/org/freedesktop/systemd1",
+                              "org.freedesktop.systemd1.Manager",
+                              "StartUnit",
+                              &busError,
+                              &response,
+                              "ss",
+                              sysdUnit,
+                              "replace");
+    if(rc < 0)
+    {
+        std::cerr << "Failed to call systemd" << std::endl;
+        goto finish;
+    }
+    else
+    {
+        rc = 0;
+    }
+
+finish:
+    sd_bus_error_free(&busError);
+    response = sd_bus_message_unref(response);
+    sd_bus_unref(bus);
+
+    // TODO - This should happen once we get event that target state reached
+    _tranActive = false;
+    return rc;
+}
+
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     std::cout << "Someone is setting the RequestedHostTransition field" <<
         std::endl;
-    return server::Host::requestedHostTransition(value);
+
+    if(Host::verifyValidTransition(value,
+                                   server::Host::currentHostState(),
+                                   _tranActive))
+    {
+        std::cout << "Valid transition so start it" << std::endl;
+        int rc = Host::executeTransition(value);
+        if(!rc)
+        {
+            std::cout << "Transaction executed with success" << std::endl;
+            return server::Host::requestedHostTransition(value);
+        }
+    }
+    std::cout << "Not a valid transaction request" << std::endl;
+    return server::Host::requestedHostTransition();
 }
 
 Host::HostState Host::currentHostState(HostState value)
