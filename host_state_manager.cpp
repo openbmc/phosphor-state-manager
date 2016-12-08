@@ -17,8 +17,8 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
-        {server::Host::Transition::Off,"obmc-chassis-stop@0.target"},
-        {server::Host::Transition::On,"obmc-chassis-start@0.target"}
+        {server::Host::Transition::Off, "obmc-chassis-stop@0.target"},
+        {server::Host::Transition::On, "obmc-chassis-start@0.target"}
 };
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
@@ -28,6 +28,13 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEM_SERVICE   = "org.openbmc.managers.System";
 constexpr auto SYSTEM_OBJ_PATH  = "/org/openbmc/managers/System";
 constexpr auto SYSTEM_INTERFACE = SYSTEM_SERVICE;
+
+/* Map a system state to the HostState */
+/* TODO:Issue 774 - Use systemd target signals to control host states */
+const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
+        {"HOST_BOOTING", server::Host::HostState::Running},
+        {"HOST_POWERED_OFF", server::Host::HostState::Off}
+};
 
 // TODO - Will be rewritten once sdbusplus client bindings are in place
 //        and persistent storage design is in place
@@ -47,12 +54,12 @@ void Host::determineInitialState()
     if(sysState == "HOST_BOOTED")
     {
         std::cout << "HOST is BOOTED " << sysState << std::endl;
-        server::Host::currentHostState(HostState::Running);
+        currentHostState(HostState::Running);
     }
     else
     {
         std::cout << "HOST is not BOOTED " << sysState << std::endl;
-        server::Host::currentHostState(HostState::Off);
+        currentHostState(HostState::Off);
     }
 
     // Set transition initially to Off
@@ -79,6 +86,30 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
+int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
+                               sd_bus_error *retError)
+{
+    const char *newState = nullptr;
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    sdPlusMsg.read(newState);
+
+    std::cout << "The System State has changed to " << newState << std::endl;
+
+    auto it = SYS_HOST_STATE_TABLE.find(newState);
+    if(it != SYS_HOST_STATE_TABLE.end())
+    {
+        HostState gotoState = it->second;
+        auto hostInst = static_cast<Host*>(usrData);
+        hostInst->currentHostState(gotoState);
+    }
+    else
+    {
+        std::cout << "Not a relevant state change for host" << std::endl;
+    }
+
+    return 0;
+}
+
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     std::cout << "Someone is setting the RequestedHostTransition field"
@@ -91,10 +122,8 @@ Host::Transition Host::requestedHostTransition(Transition value)
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    std::cout << "Someone is being bad and trying to set the HostState field"
-              << std::endl;
-
-    return server::Host::currentHostState();
+    std::cout << "Changing HostState" << std::endl;
+    return server::Host::currentHostState(value);
 }
 
 } // namespace manager
