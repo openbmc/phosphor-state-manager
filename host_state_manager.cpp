@@ -15,14 +15,21 @@ namespace manager
 using namespace sdbusplus::xyz::openbmc_project::State;
 
 /* Map a transition to it's systemd target */
-const std::map<server::Host::Transition,std::string> SYSTEMD_TABLE = {
-        {server::Host::Transition::Off,"obmc-chassis-stop@0.target"},
-        {server::Host::Transition::On,"obmc-chassis-start@0.target"}
+const std::map<Host::Transition, std::string> SYSTEMD_TABLE = {
+        {Host::Transition::Off,"obmc-chassis-stop@0.target"},
+        {Host::Transition::On,"obmc-chassis-start@0.target"}
 };
+
 
 const constexpr char* SYSTEMD_SERVICE   = "org.openbmc.managers.System";
 const constexpr char* SYSTEMD_OBJ_PATH  = "/org/openbmc/managers/System";
 const constexpr char* SYSTEMD_INTERFACE = SYSTEMD_SERVICE;
+
+/* Map a system state to the HostState */
+const std::map<std::string, Host::HostState> SYS_HOST_STATE_TABLE = {
+        {"HOST_BOOTING",Host::HostState::Running},
+        {"HOST_POWERED_OFF",Host::HostState::Off}
+};
 
 // TODO - Will be rewritten once sdbusplus client bindings are in place
 //        and persistent storage design is in place
@@ -137,9 +144,32 @@ void Host::executeTransition(const Transition tranReq)
 
     auto reply = this->bus.call(method);
 
-    // TODO - This should happen once we get event that target state reached
-    tranActive = false;
     return;
+}
+
+int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
+                               sd_bus_error *retError)
+{
+    const char *newState = nullptr;
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    sdPlusMsg.read(newState);
+
+    std::cout << "The System State has changed to " << newState << std::endl;
+
+    auto it = SYS_HOST_STATE_TABLE.find(newState);
+    if(it != SYS_HOST_STATE_TABLE.end())
+    {
+        HostState gotoState = it->second;
+        auto hostInst = static_cast<Host*>(usrData);
+        hostInst->server::Host::currentHostState(gotoState);
+        hostInst->tranActive = false;
+    }
+    else
+    {
+        std::cout << "Not a relevant state change for host" << std::endl;
+    }
+
+    return 0;
 }
 
 Host::Transition Host::requestedHostTransition(Transition value)
@@ -162,10 +192,8 @@ Host::Transition Host::requestedHostTransition(Transition value)
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    std::cout << "Someone is being bad and trying to set the HostState field"
-            << std::endl;
-
-    return server::Host::currentHostState();
+    std::cout << "Changing HostState" << std::endl;
+    return server::Host::currentHostState(value);
 }
 
 } // namespace manager
