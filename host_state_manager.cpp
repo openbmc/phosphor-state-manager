@@ -20,6 +20,12 @@ const std::map<server::Host::Transition,std::string> SYSTEMD_TABLE = {
         {server::Host::Transition::On,"obmc-chassis-start@0.target"}
 };
 
+/* Map a system state to the HostState */
+const std::map<std::string,server::Host::HostState> SYS_HOST_STATE_TABLE = {
+        {"HOST_BOOTING",server::Host::HostState::Running},
+        {"HOST_POWERED_OFF",server::Host::HostState::Off}
+};
+
 Host::Host(
         sdbusplus::bus::bus& bus,
         const char* busName,
@@ -29,12 +35,18 @@ Host::Host(
                bus, objPath),
          bus(bus),
          path(objPath),
+         stateSignal(bus,
+                     "type='signal',member='GotoSystemState'",
+                     Host::handleSysStateChange,
+                     this),
          tranActive(false)
 {
     determineInitialState();
 }
 
-// TODO - Will be rewritten once sdbusplus client bindings are in place
+/* TODO - Will be rewritten once sdbusplus client bindings are in place
+ *        Use object manager and sdbusplus client
+ */
 void Host::determineInitialState()
 {
     int rc = 0;
@@ -160,7 +172,7 @@ bool Host::verifyValidTransition(const Transition &tranReq,
 
 int Host::executeTransition(const Transition& tranReq)
 {
-    _tranActive = true;
+    tranActive = true;
 
     int rc = 0;
     sd_bus *bus = NULL;
@@ -201,9 +213,37 @@ finish:
     response = sd_bus_message_unref(response);
     sd_bus_unref(bus);
 
-    // TODO - This should happen once we get event that target state reached
-    _tranActive = false;
     return rc;
+}
+
+int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
+                               sd_bus_error *retError)
+{
+
+    const char *newState = nullptr;
+    int rc = sd_bus_message_read(msg, "s", &newState);
+    if (rc < 0)
+    {
+        std::cerr << "Failed to parse signal message: " << strerror(-rc) <<
+                std::endl;
+        return -1;
+    }
+
+    std::cout << "The System State has changed to " << newState << std::endl;
+
+    auto it = SYS_HOST_STATE_TABLE.find(newState);
+    if(it != SYS_HOST_STATE_TABLE.end())
+    {
+        Host::HostState gotoState = it->second;
+        Host* hostInst = static_cast<Host*>(usrData);
+        hostInst->currentHostState(gotoState);
+    }
+    else
+    {
+        std::cout << "Not a relevant state change for host" << std::endl;
+    }
+
+    return 0;
 }
 
 Host::Transition Host::requestedHostTransition(Transition value)
@@ -213,7 +253,7 @@ Host::Transition Host::requestedHostTransition(Transition value)
 
     if(Host::verifyValidTransition(value,
                                    server::Host::currentHostState(),
-                                   _tranActive))
+                                   tranActive))
     {
         std::cout << "Valid transition so start it" << std::endl;
         int rc = Host::executeTransition(value);
@@ -229,10 +269,11 @@ Host::Transition Host::requestedHostTransition(Transition value)
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    std::cout << "Someone is being bad and trying to set the HostState field" <<
-            std::endl;
+    std::cout << "Changing HostState" << std::endl;
 
-    return server::Host::currentHostState();
+    // Transaction now complete
+    tranActive = false;
+    return server::Host::currentHostState(value);
 }
 
 } // namespace manager
