@@ -39,6 +39,10 @@ class Host : public sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Host>(
                             bus, objPath, true),
                 bus(bus),
+                stateSignal(bus,
+                            "type='signal',member='GotoSystemState'",
+                            handleSysStateChange,
+                            this),
                 tranActive(false)
         {
             // Will throw exception on fail
@@ -82,8 +86,25 @@ class Host : public sdbusplus::server::object::object<
          */
         void executeTransition(Transition tranReq);
 
+        /** @brief Callback function on system state changes
+         *
+         *  Check if the state is relevant to the Host and if so, update
+         *  corresponding host object's state
+         *
+         * @param[in] msg        - Data associated with subscribed signal
+         * @param[in] userData   - Pointer to this object instance
+         * @param[in] retError   - Return error data
+         *
+         */
+        static int handleSysStateChange(sd_bus_message* msg,
+                                        void* userData,
+                                        sd_bus_error* retError);
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
+
+        /** @brief Used to subscribe to dbus system state changes */
+        sdbusplus::server::match::match stateSignal;
 
         /** @brief Indicates whether transition is actively executing */
         bool tranActive;
