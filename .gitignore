@@ -42,6 +42,7 @@ Makefile.in
 /config.log
 /config.status
 /op-host-state-manager
+/op-chassis-state-manager
 Makefile
 .deps
-arm-openbmc-linux-gnueabi-libtool
+*-libtool
