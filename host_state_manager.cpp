@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <systemd/sd-bus.h>
+#include <log.hpp>
 #include "host_state_manager.hpp"
 
 namespace phosphor
@@ -13,6 +14,8 @@ namespace manager
 
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
+
+using namespace phosphor::logging;
 
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
@@ -53,13 +56,17 @@ void Host::determineInitialState()
 
     if(sysState == "HOST_BOOTED")
     {
-        std::cout << "HOST is BOOTED " << sysState << std::endl;
+        log<level::INFO>("Initial Host State will be Running",
+                         entry("CURRENT_HOST_STATE=%s",
+                               convertForMessage(HostState::Running).c_str()));
         currentHostState(HostState::Running);
         requestedHostTransition(Transition::On);
     }
     else
     {
-        std::cout << "HOST is not BOOTED " << sysState << std::endl;
+        log<level::INFO>("Initial Host State will be Off",
+                         entry("CURRENT_HOST_STATE=%s",
+                               convertForMessage(HostState::Off).c_str()));
         currentHostState(HostState::Off);
         requestedHostTransition(Transition::Off);
     }
@@ -95,8 +102,6 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
     auto sdPlusMsg = sdbusplus::message::message(msg);
     sdPlusMsg.read(newState);
 
-    std::cout << "The System State has changed to " << newState << std::endl;
-
     auto it = SYS_HOST_STATE_TABLE.find(newState);
     if(it != SYS_HOST_STATE_TABLE.end())
     {
@@ -111,18 +116,13 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
            (hostInst->server::Host::requestedHostTransition() ==
                Transition::Reboot))
         {
-            std::cout << "Reached intermediate state, going to next" <<
-                    std::endl;
+            log<level::DEBUG>("Reached intermediate state, going to next");
             hostInst->executeTransition(server::Host::Transition::On);
         }
         else
         {
-            std::cout << "Reached Final State " << newState << std::endl;
+            log<level::DEBUG>("Reached final state");
         }
-    }
-    else
-    {
-        std::cout << "Not a relevant state change for host" << std::endl;
     }
 
     return 0;
@@ -130,8 +130,10 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
 
 Host::Transition Host::requestedHostTransition(Transition value)
 {
-    std::cout << "Someone is setting the RequestedHostTransition field"
-              << std::endl;
+    log<level::INFO>(
+            "Host State transaction request",
+            entry("REQUESTED_HOST_TRANSITION=%s",
+                  convertForMessage(value).c_str()));
 
     Transition tranReq = value;
     if(value == server::Host::Transition::Reboot)
@@ -151,13 +153,14 @@ Host::Transition Host::requestedHostTransition(Transition value)
     }
 
     executeTransition(tranReq);
-    std::cout << "Transition executed with success" << std::endl;
     return server::Host::requestedHostTransition(value);
 }
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    std::cout << "Changing HostState" << std::endl;
+    log<level::INFO>("Change to Host State",
+                     entry("CURRENT_HOST_STATE=%s",
+                           convertForMessage(value).c_str()));
     return server::Host::currentHostState(value);
 }
 
