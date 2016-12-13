@@ -50,11 +50,13 @@ void Host::determineInitialState()
     {
         std::cout << "HOST is BOOTED " << sysState << std::endl;
         server::Host::currentHostState(HostState::Running);
+        server::Host::requestedHostTransition(Transition::On);
     }
     else
     {
         std::cout << "HOST is not BOOTED " << sysState << std::endl;
         server::Host::currentHostState(HostState::Off);
+        server::Host::requestedHostTransition(Transition::Off);
     }
 
     // Set transition initially to Off
