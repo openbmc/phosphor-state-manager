@@ -47,13 +47,23 @@ class Host : public sdbusplus::server::object::object<
 
         /** @brief Verify the transition request is valid
          *
+         * This function will look at the requested transition, the current
+         * transition and host state of the target and determine if it's a
+         * valid request.  If so, it will put the appropriate transition to
+         * execute into tranTarget.
+         *
+         * This will handle On, Off, and Reboot.  The Reboot logic will
+         * do a power off, and then on transition of the host.
+         *
          * @param[in] tranReq    - Transition requested
          * @param[in] curState   - Current state of the object
          * @param[in] tranActive - Current transition activity of object
+         * @param[in] tranTarget - Transition to execute bas
          */
         static bool verifyValidTransition(const Transition& tranReq,
                                           const HostState& curState,
-                                          bool tranActive);
+                                          bool tranActive,
+                                          Transition& tranTarget);
 
     private:
 
