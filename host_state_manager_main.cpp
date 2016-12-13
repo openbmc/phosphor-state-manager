@@ -9,9 +9,12 @@ int main(int argc, char *argv[])
 {
     auto bus = sdbusplus::bus::new_default();
 
+    // For now, we only have one instance of the host
+    auto objPathInst = std::string{OBJPATH} + '0';
+
     auto manager = phosphor::state::manager::Host(bus,
                                                   BUSNAME,
-                                                  OBJPATH);
+                                                  objPathInst.c_str());
     bus.request_name(BUSNAME);
 
     while(true)
