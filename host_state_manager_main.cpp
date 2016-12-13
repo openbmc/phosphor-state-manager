@@ -11,14 +11,14 @@ int main(int argc, char *argv[])
     auto bus = sdbusplus::bus::new_default();
 
     // For now, we only have one instance of the host
-    std::string objPathInst = {OBJPATH};
+    std::string objPathInst = {HOST_OBJPATH};
     objPathInst+="0";
 
     auto manager = phosphor::state::manager::Host(bus,
-                                                  BUSNAME,
+                                                  HOST_BUSNAME,
                                                   objPathInst.c_str());
 
-    bus.request_name(BUSNAME);
+    bus.request_name(HOST_BUSNAME);
 
     while(true)
     {
