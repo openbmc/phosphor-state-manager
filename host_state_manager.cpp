@@ -2,6 +2,7 @@
 #include <systemd/sd-bus.h>
 #include <map>
 #include <string>
+#include <log.hpp>
 #include "host_state_manager.hpp"
 
 namespace phosphor
@@ -13,6 +14,8 @@ namespace manager
 
 // When you see server:: you know we're referencing our base class
 using namespace sdbusplus::xyz::openbmc_project::State;
+
+using namespace phosphor::logging;
 
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TABLE = {
@@ -61,13 +64,15 @@ void Host::determineInitialState()
 
     if(sysState == "HOST_BOOTED")
     {
-        std::cout << "HOST is BOOTED " << sysState << std::endl;
+        log<level::INFO>("Initial Host State will be Running",
+                         entry("CURRENT_HOST_STATE=0x%.2X",HostState::Running));
         server::Host::currentHostState(HostState::Running);
         server::Host::requestedHostTransition(Transition::On);
     }
     else
     {
-        std::cout << "HOST is not BOOTED " << sysState << std::endl;
+        log<level::INFO>("Initial Host State will be Off",
+                         entry("CURRENT_HOST_STATE=0x%.2X",HostState::Off));
         server::Host::currentHostState(HostState::Off);
         server::Host::requestedHostTransition(Transition::Off);
     }
@@ -169,12 +174,9 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
     int rc = sd_bus_message_read(msg, "s", &newState);
     if (rc < 0)
     {
-        std::cerr << "Failed to parse signal message: " << strerror(-rc) <<
-                std::endl;
+        log<level::ERR>("Failed to parse handleSysStateChange signal data");
         return -1;
     }
-
-    std::cout << "The System State has changed to " << newState << std::endl;
 
     auto it = SYS_HOST_STATE_TABLE.find(newState);
     if(it != SYS_HOST_STATE_TABLE.end())
@@ -191,19 +193,14 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
                                   hostInst->tranActive,
                                   newTran))
         {
-            std::cout << "Reached intermediate state, going to next" <<
-                    std::endl;
+            log<level::DEBUG>("Reached intermediate state, going to next");
             hostInst->executeTransition(newTran);
         }
         else
         {
-            std::cout << "Reached Final State " << newState << std::endl;
+            log<level::DEBUG>("Reached final state");
             hostInst->tranActive = false;
         }
-    }
-    else
-    {
-        std::cout << "Not a relevant state change for host" << std::endl;
     }
 
     return 0;
@@ -211,9 +208,6 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
 
 Host::Transition Host::requestedHostTransition(Transition value)
 {
-    std::cout << "Someone is setting the RequestedHostTransition field" <<
-        std::endl;
-
     Host::Transition tranReq;
     if(Host::verifyValidTransition(value,
                                    server::Host::currentHostState(),
@@ -224,18 +218,25 @@ Host::Transition Host::requestedHostTransition(Transition value)
         // execute (tranReq) are not always the same.  An example is a Reboot
         // transition request.  In this case we transition to off, and then to
         // on.
-        std::cout << "Valid transition so start it" << std::endl;
+        log<phosphor::logging::level::INFO>(
+                "Valid Host State transaction request",
+                entry("REQUESTED_HOST_TRANSITION=0x%.2X",value));
+
         Host::executeTransition(tranReq);
 
         return server::Host::requestedHostTransition(value);
     }
-    std::cout << "Not a valid transaction request" << std::endl;
+
+    log<level::NOTICE>("Not a valid transaction request",
+                       entry("INVALID_REQUESTED_HOST_TRANSITION=0x%.2X",value));
+
     return server::Host::requestedHostTransition();
 }
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    std::cout << "Changing HostState" << std::endl;
+    log<level::INFO>("Change to Host State",
+                     entry("CURRENT_HOST_STATE=0x%.2X",value));
     return server::Host::currentHostState(value);
 }
 
