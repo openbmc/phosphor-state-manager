@@ -79,60 +79,58 @@ void Host::determineInitialState()
 
 bool Host::verifyValidTransition(const Transition &tranReq,
                                  const HostState &curState,
-                                 bool tranActive)
+                                 bool tranActive,
+                                 Transition& tranTarget)
 {
     bool valid = {false};
 
-    // Make sure we're not in process of a transition
-    if (tranActive)
+    // If we already have a transition active, it can only be valid if
+    // we're doing a reboot (which is a power off, then on transition)
+    if ((tranActive) && (tranReq != Transition::Reboot))
     {
-        std::cerr << "Busy, currently executing transition" << std::endl;
         goto finish;
     }
 
     /* Valid Transitions
      *
-     * CurrentHostState    RequestedHostTransition
-     * Off              -> On
-     * Running          -> Off
-     * Running          -> Reboot
+     * tranActive    CurrentHostState    RequestedHostTransition
+     * false         Off              -> On
+     * false         Running          -> Off
+     * false         Running          -> Reboot (Off)
+     * true          Off              -> Reboot (On)
      */
 
     switch (tranReq)
     {
         case Transition::Off:
         {
-            if(curState == HostState::Off)
-            {
-                std::cout << "Already at requested Off state" << std::endl;
-            }
-            else if(curState == HostState::Running)
+            if(curState == HostState::Running)
             {
                 valid = true;
+                tranTarget = tranReq;
             }
             break;
         }
         case Transition::On:
         {
-            if(curState == HostState::Running)
-            {
-                std::cout << "Already at requested On state" << std::endl;
-            }
-            else if(curState == HostState::Off)
+            if(curState == HostState::Off)
             {
                 valid = true;
+                tranTarget = tranReq;
             }
             break;
         }
         case Transition::Reboot:
         {
-            if(curState == HostState::Off)
-            {
-                std::cout << "Can not request reboot in off state" << std::endl;
-            }
-            else if(curState == HostState::Running)
+            if((curState == HostState::Off) && (tranActive))
             {
                 valid = true;
+                tranTarget = Transition::On;
+            }
+            else if((curState == HostState::Running) && (!tranActive))
+            {
+                valid = true;
+                tranTarget = Transition::Off;
             }
             break;
         }
@@ -182,7 +180,24 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
         Host::HostState gotoState = it->second;
         Host* hostInst = static_cast<Host*>(usrData);
         hostInst->currentHostState(gotoState);
-        hostInst->tranActive = false;
+
+        // Check if we need to start a new transition (i.e. a Reboot)
+        Host::Transition newTran;
+        if (verifyValidTransition(hostInst->server::Host::
+                                      requestedHostTransition(),
+                                  hostInst->server::Host::currentHostState(),
+                                  hostInst->tranActive,
+                                  newTran))
+        {
+            std::cout << "Reached intermediate state, going to next" <<
+                    std::endl;
+            hostInst->executeTransition(newTran);
+        }
+        else
+        {
+            std::cout << "Reached Final State " << newState << std::endl;
+            hostInst->tranActive = false;
+        }
     }
     else
     {
@@ -197,13 +212,19 @@ Host::Transition Host::requestedHostTransition(Transition value)
     std::cout << "Someone is setting the RequestedHostTransition field" <<
         std::endl;
 
+    Host::Transition tranReq;
     if(Host::verifyValidTransition(value,
                                    server::Host::currentHostState(),
-                                   tranActive))
+                                   tranActive,
+                                   tranReq))
     {
+        // Note that the requested transition (value) and the transition we
+        // execute (tranReq) are not always the same.  An example is a Reboot
+        // transition request.  In this case we transition to off, and then to
+        // on.
         std::cout << "Valid transition so start it" << std::endl;
-        Host::executeTransition(value);
-        std::cout << "Transaction executed with success" << std::endl;
+        Host::executeTransition(tranReq);
+
         return server::Host::requestedHostTransition(value);
     }
     std::cout << "Not a valid transaction request" << std::endl;
@@ -213,9 +234,6 @@ Host::Transition Host::requestedHostTransition(Transition value)
 Host::HostState Host::currentHostState(HostState value)
 {
     std::cout << "Changing HostState" << std::endl;
-
-    // Transaction now complete
-    tranActive = false;
     return server::Host::currentHostState(value);
 }
 
