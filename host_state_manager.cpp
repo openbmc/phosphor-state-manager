@@ -98,9 +98,25 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
     auto it = SYS_HOST_STATE_TABLE.find(newState);
     if(it != SYS_HOST_STATE_TABLE.end())
     {
-        HostState gotoState = it->second;
+        // This is a state change we're interested in so process it
+        Host::HostState gotoState = it->second;
+        // Grab the host object instance from the userData
         auto hostInst = static_cast<Host*>(usrData);
         hostInst->currentHostState(gotoState);
+
+        // Check if we need to start a new transition (i.e. a Reboot)
+        if((gotoState == server::Host::HostState::Off) &&
+           (hostInst->server::Host::requestedHostTransition() ==
+               Transition::Reboot))
+        {
+            std::cout << "Reached intermediate state, going to next" <<
+                    std::endl;
+            hostInst->executeTransition(server::Host::Transition::On);
+        }
+        else
+        {
+            std::cout << "Reached Final State " << newState << std::endl;
+        }
     }
     else
     {
@@ -114,9 +130,26 @@ Host::Transition Host::requestedHostTransition(Transition value)
 {
     std::cout << "Someone is setting the RequestedHostTransition field"
               << std::endl;
-    executeTransition(value);
-    std::cout << "Transition executed with success" << std::endl;
 
+    Transition tranReq = value;
+    if(value == server::Host::Transition::Reboot)
+    {
+        // On reboot requests we just need to do a off if we're on and
+        // vice versa.  The handleSysStateChange() code above handles the
+        // second part of the reboot
+        if(this->server::Host::currentHostState() ==
+            server::Host::HostState::Off)
+        {
+            tranReq = server::Host::Transition::On;
+        }
+        else
+        {
+            tranReq = server::Host::Transition::Off;
+        }
+    }
+
+    executeTransition(tranReq);
+    std::cout << "Transition executed with success" << std::endl;
     return server::Host::requestedHostTransition(value);
 }
 
