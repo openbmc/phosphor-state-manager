@@ -13,6 +13,31 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
+/* TODO:Issue 774 - Use systemd target signals to control chassis state */
+int Chassis::handlePgoodOn(sd_bus_message* /*msg*/, void* usrData,
+                           sd_bus_error* retError)
+{
+    log<level::INFO>("Pgood has turned on",
+                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
+                           convertForMessage(PowerState::On).c_str()));
+    auto chassisInst = static_cast<Chassis*>(usrData);
+    chassisInst->currentPowerState(PowerState::On);
+
+    return 0;
+}
+
+int Chassis::handlePgoodOff(sd_bus_message* /*msg*/, void* usrData,
+                           sd_bus_error* retError)
+{
+    log<level::INFO>("Pgood has turned off",
+                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
+                           convertForMessage(PowerState::Off).c_str()));
+    auto chassisInst = static_cast<Chassis*>(usrData);
+    chassisInst->currentPowerState(PowerState::Off);
+
+    return 0;
+}
+
 // TODO - Will be rewritten once sdbusplus client bindings are in place
 //        and persistent storage design is in place and sdbusplus
 //        has read property function
