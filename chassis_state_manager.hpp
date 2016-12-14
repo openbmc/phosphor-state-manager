@@ -47,11 +47,43 @@ class Chassis : public sdbusplus::server::object::object<
 
     private:
 
+        /** @brief Callback function for pgood going on
+         *
+         *  Update corresponding chassis object state
+         *
+         * @param[in] msg        - Data associated with subscribed signal
+         * @param[in] userData   - Pointer to this object instance
+         * @param[in] retError   - Return error data
+         *
+         */
+        static int handlePgoodOn(sd_bus_message* msg,
+                                 void* userData,
+                                 sd_bus_error* retError);
+
+        /** @brief Callback function for pgood going off
+         *
+         *  Update corresponding chassis object state
+         *
+         * @param[in] msg        - Data associated with subscribed signal
+         * @param[in] userData   - Pointer to this object instance
+         * @param[in] retError   - Return error data
+         *
+         */
+        static int handlePgoodOff(sd_bus_message* msg,
+                                 void* userData,
+                                 sd_bus_error* retError);
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
 
         /** @brief Instance number of this chassis */
         int instance;
+
+        /** @brief Used to subscribe to dbus pgood on state changes */
+        sdbusplus::server::match::match pgoodOn;
+
+        /** @brief Used to subscribe to dbus pgood off state changes */
+         sdbusplus::server::match::match pgoodOff;
 };
 
 } // namespace manager

@@ -26,9 +26,39 @@ Chassis::Chassis(
             server::Chassis>(
                bus, objPath),
          bus(bus),
-         instance(instance)
+         instance(instance),
+         pgoodOn(bus,
+                 "type='signal',member='PowerGood'",
+                 Chassis::handlePgoodOn,
+                 this),
+         pgoodOff(bus,
+                 "type='signal',member='PowerLost'",
+                 Chassis::handlePgoodOff,
+                 this)
 {
     determineInitialState();
+}
+
+int Chassis::handlePgoodOn(sd_bus_message *msg, void *usrData,
+                           sd_bus_error *retError)
+{
+    log<level::INFO>("Pgood has turned on",
+                     entry("CURRENT_POWER_STATE=%s","On"));
+    Chassis* chassisInst = static_cast<Chassis*>(usrData);
+    chassisInst->currentPowerState(PowerState::On);
+
+    return 0;
+}
+
+int Chassis::handlePgoodOff(sd_bus_message *msg, void *usrData,
+                           sd_bus_error *retError)
+{
+    log<level::INFO>("Pgood has turned off",
+                     entry("CURRENT_POWER_STATE=%s","Off"));
+    Chassis* chassisInst = static_cast<Chassis*>(usrData);
+    chassisInst->currentPowerState(PowerState::Off);
+
+    return 0;
 }
 
 // TODO - Will be rewritten once sdbusplus client bindings are in place
