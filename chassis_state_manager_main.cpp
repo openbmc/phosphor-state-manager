@@ -9,13 +9,14 @@
 int main(int argc, char *argv[])
 {
     auto bus = sdbusplus::bus::new_default();
+    int instance = 0;
 
     // For now, we only have one instance of the chassis
     std::string objPathInst = {CHASSIS_OBJPATH};
-    objPathInst+="0";
+    objPathInst+=std::to_string(instance);
 
     auto manager = phosphor::state::manager::Chassis(bus,
-                                                     CHASSIS_BUSNAME,
+                                                     instance,
                                                      objPathInst.c_str());
 
     bus.request_name(CHASSIS_BUSNAME);

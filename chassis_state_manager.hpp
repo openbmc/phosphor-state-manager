@@ -29,12 +29,15 @@ class Chassis : public sdbusplus::server::object::object<
         /** @brief Constructs Chassis State Manager
          *
          * @param[in] bus       - The Dbus bus object
-         * @param[in] busName   - The Dbus name to own
+         * @param[in] instance  - The instance of this object
          * @param[in] objPath   - The Dbus object path
          */
         Chassis(sdbusplus::bus::bus& bus,
-                const char* busName,
+                int instance,
                 const char* objPath);
+
+        /** @brief Determine initial chassis state and set internally */
+        void determineInitialState();
 
         /** @brief Set value of RequestedPowerTransition */
         Transition requestedPowerTransition(Transition value) override;
@@ -47,8 +50,8 @@ class Chassis : public sdbusplus::server::object::object<
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
 
-        /** @brief Path of the chassis instance */
-        std::string path;
+        /** @brief Instance number of this chassis */
+        int instance;
 };
 
 } // namespace manager
