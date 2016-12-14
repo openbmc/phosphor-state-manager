@@ -35,7 +35,15 @@ class Chassis : public sdbusplus::server::object::object<
                 sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Chassis>(
                             bus, objPath, true),
-                bus(bus)
+                bus(bus),
+                pgoodOn(bus,
+                        "type='signal',member='PowerGood'",
+                        Chassis::handlePgoodOn,
+                        this),
+                pgoodOff(bus,
+                        "type='signal',member='PowerLost'",
+                        Chassis::handlePgoodOff,
+                        this)
         {
             determineInitialState();
 
@@ -53,8 +61,40 @@ class Chassis : public sdbusplus::server::object::object<
         PowerState currentPowerState(PowerState value) override;
 
     private:
+        /** @brief Callback function for pgood going to on state
+         *
+         *  Update chassis object state to reflect pgood going to on state
+         *
+         * @param[in] msg        - Data associated with subscribed signal
+         * @param[in] userData   - Pointer to this object instance
+         * @param[in] retError   - Return error data
+         *
+         */
+        static int handlePgoodOn(sd_bus_message* msg,
+                                 void* userData,
+                                 sd_bus_error* retError);
+
+        /** @brief Callback function for pgood going to off state
+         *
+         *  Update chassis object state to reflect pgood going to off state
+         *
+         * @param[in] msg        - Data associated with subscribed signal
+         * @param[in] userData   - Pointer to this object instance
+         * @param[in] retError   - Return error data
+         *
+         */
+        static int handlePgoodOff(sd_bus_message* msg,
+                                  void* userData,
+                                  sd_bus_error* retError);
+
         /** @brief Persistent sdbusplus DBus connection. */
         sdbusplus::bus::bus& bus;
+
+        /** @brief Used to subscribe to dbus pgood on state changes */
+        sdbusplus::server::match::match pgoodOn;
+
+        /** @brief Used to subscribe to dbus pgood off state changes */
+        sdbusplus::server::match::match pgoodOff;
 };
 
 } // namespace manager
