@@ -21,8 +21,12 @@ class Chassis : public sdbusplus::server::object::object<
     public:
         /** @brief Constructs Chassis State Manager
          *
+         * @note This constructor passes 'true' to the base class in order to
+         *       defer dbus object registration until we can run
+         *       determineInitialState() and set our properties
+         *
          * @param[in] bus       - The Dbus bus object
-         * @param[in] busName   - The Dbus name to own
+         * @param[in] instance  - The instance of this object
          * @param[in] objPath   - The Dbus object path
          */
         Chassis(sdbusplus::bus::bus& bus,
@@ -30,9 +34,17 @@ class Chassis : public sdbusplus::server::object::object<
                 const char* objPath) :
                 sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Chassis>(
-                            bus, objPath),
+                            bus, objPath,true),
                 bus(bus)
-        {}
+        {
+            determineInitialState();
+
+            // We deferred this until we could get our property correct
+            this->emit_object_added();
+        }
+
+        /** @brief Determine initial chassis state and set internally */
+        void determineInitialState();
 
         /** @brief Set value of RequestedPowerTransition */
         Transition requestedPowerTransition(Transition value) override;
