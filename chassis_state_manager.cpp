@@ -13,6 +13,41 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
+// TODO - Will be rewritten once sdbusplus client bindings are in place
+//        and persistent storage design is in place and sdbusplus
+//        has read property function
+void Chassis::determineInitialState()
+{
+    sdbusplus::message::variant<int> pgood = -1;
+    auto method = this->bus.new_method_call("org.openbmc.control.Power",
+                                            "/org/openbmc/control/power0",
+                                            "org.freedesktop.DBus.Properties",
+                                            "Get");
+
+    method.append("org.openbmc.control.Power", "pgood");
+    auto reply = this->bus.call(method);
+    reply.read(pgood);
+
+    if(pgood == 1)
+    {
+        log<level::INFO>("Initial Chassis State will be On",
+                         entry("CHASSIS_CURRENT_POWER_STATE=%s",
+                               convertForMessage(PowerState::On).c_str()));
+        server::Chassis::currentPowerState(PowerState::On);
+        server::Chassis::requestedPowerTransition(Transition::On);
+    }
+    else
+    {
+        log<level::INFO>("Initial Chassis State will be Off",
+                         entry("CHASSIS_CURRENT_POWER_STATE=%s",
+                               convertForMessage(PowerState::Off).c_str()));
+        server::Chassis::currentPowerState(PowerState::Off);
+        server::Chassis::requestedPowerTransition(Transition::Off);
+    }
+
+    return;
+}
+
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
 
