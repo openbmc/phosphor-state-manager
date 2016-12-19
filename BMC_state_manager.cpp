@@ -12,9 +12,14 @@ using namespace sdbusplus::xyz::openbmc_project::State;
 
 /* Map a transition to it's systemd target */
 const std::map<server::BMC::Transition,std::string> SYSTEMD_TABLE = {
-        {server::BMC::Transition::Reboot,"reboot.target"}
+        {BMC::Transition::Reboot,"reboot.target"}
 };
 
+/* Map a system state to the BMCState */
+const std::map<std::string,server::BMC::BMCState> SYS_BMC_STATE_TABLE = {
+        {"BMC_READY",BMC::BMCState::Ready},
+        {"BMC_NOTREADY",BMC::BMCState::NotReady}
+};
 
 void BMC::determineInitialState()
 {
@@ -64,6 +69,28 @@ void BMC::executeTransition(const Transition tranReq)
     return;
 }
 
+int BMC::handleSysStateChange(sd_bus_message *msg, void *usrData,
+                              sd_bus_error *retError)
+{
+    const char *newState = nullptr;
+    int rc = sd_bus_message_read(msg, "s", &newState);
+    if (rc < 0)
+    {
+        printf("Failed to parse handleSysStateChange signal data");
+        return -1;
+    }
+
+    auto it = SYS_BMC_STATE_TABLE.find(newState);
+    if(it != SYS_BMC_STATE_TABLE.end())
+    {
+        BMCState gotoState = it->second;
+        auto BMCInst = static_cast<BMC*>(usrData);
+        BMCInst->server::BMC::currentBMCState(gotoState);
+        BMCInst->tranActive = false;
+    }
+    return 0;
+}
+
 BMC::Transition BMC::requestedBMCTransition(Transition value)
 {
     std::cout << "Setting the RequestedBMCTransition field" << std::endl;
@@ -75,7 +102,7 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
 BMC::BMCState BMC::currentBMCState(BMCState value)
 {
     std::cout << "Setting the BMCState field" << std::endl;
-    return server::BMC::currentBMCState();
+    return server::BMC::currentBMCState(value);
 }
 
 
