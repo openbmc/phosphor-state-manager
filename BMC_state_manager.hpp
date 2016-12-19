@@ -32,7 +32,11 @@ class BMC : public sdbusplus::server::object::object<
                  sdbusplus::xyz::openbmc_project::State::server::BMC>(
                          bus, objPath),
              bus(bus),
-             path(objPath)
+             path(objPath),
+             stateSignal(bus,
+                         "type='signal',member='JobRemoved',path='/org/freedesktop/systemd1',interface='org.freedesktop.systemd1.Manager'",
+                         handleSysStateChange,
+                         this)
         {
             subscribeToSystemdSignals();
         };
@@ -51,7 +55,7 @@ class BMC : public sdbusplus::server::object::object<
     private:
 
         /** @brief Execute the transition request
-         * 
+         *
          * This function assumes the state has been validated and the BMC
          * is in an appropriate state for the transition to be started.
          * Currently for the BMC a request to reboot is valid at any time.
@@ -60,11 +64,28 @@ class BMC : public sdbusplus::server::object::object<
          */
         void executeTransition(const Transition tranReq);
 
+        /** @brief Callback function on system state changes
+         *
+         * Check if the state is relevant to the BMC and if so, update
+         * corresponding BMC object's state
+         *
+         * @param[in] msg       - Data associated with subscribed signal
+         * @param[in] userData  - Pointer to this object instance
+         * @param[in] retError  - return error data
+         *
+         */
+         static int handleSysStateChange(sd_bus_message* msg,
+                                         void* userData,
+                                         sd_bus_error* retError);
+
         /** @brief Persistent sdbusplus DBus bus connection. **/
         sdbusplus::bus::bus& bus;
 
         /** @brief Path of the BMC instance */
         std::string path;
+
+        /** @brief Used to subscribe to dbus system state changes **/
+        sdbusplus::server::match::match stateSignal;
 };
 
 } // namespace manager

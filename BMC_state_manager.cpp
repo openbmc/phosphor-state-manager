@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <systemd/sd-bus.h>
 #include "BMC_state_manager.hpp"
 
@@ -9,7 +10,7 @@ namespace state
 namespace manager
 {
 
-//When you see server:: you know we're referencing our base class
+// When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 /* Map a transition to it's systemd target */
@@ -21,6 +22,12 @@ const std::map<server::BMC::Transition,std::string> SYSTEMD_TABLE =
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+
+/* Map a system state to the BMCState */
+const std::map<std::string, server::BMC::BMCState> SYS_BMC_STATE_TABLE =
+{
+        {"BMC_READY", server::BMC::BMCState::Ready},
+};
 
 void BMC::subscribeToSystemdSignals()
 {
@@ -51,6 +58,34 @@ void BMC::executeTransition(const Transition tranReq)
     this->bus.call(method);
 
     return;
+}
+
+int BMC::handleSysStateChange(sd_bus_message *msg, void *usrData,
+                              sd_bus_error *retError)
+{
+    uint32_t newStateID;
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit;
+    std::string newStateResult;
+
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    //Read the msg and populate each variable
+    sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    //Caught the signal that indicates the BMC is now BMC_READY
+    if((newStateUnit == "obmc-standby.target") &&
+       (newStateResult == "done"))
+    {
+        auto it = SYS_BMC_STATE_TABLE.find("BMC_READY");
+        if(it != SYS_BMC_STATE_TABLE.end())
+        {
+            BMC::BMCState gotoState = it->second;
+            auto BMCInst = static_cast<BMC*>(usrData);
+            BMCInst->currentBMCState(gotoState);
+        }
+    }
+
+    return 0;
 }
 
 BMC::Transition BMC::requestedBMCTransition(Transition value)
