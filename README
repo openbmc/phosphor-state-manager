@@ -1,0 +1,24 @@
+Instructions on how to use phosphor-bmc-state-manager
+
+- First generate the configure script with a call
+  to ./bootstrap.sh.
+- Once built, configure flags with
+  "./configure ${CONFIGURE_FLAGS}"
+- Lastly do a make and it will build the application
+  phosphor-bmc-state-manager for you to use.
+
+* When running the application you can get and set
+  properties by doing things such as:
+  - "busctl get-property xyz.openbmc_project.State.BMC /xyz/openbmc_project/state/BMC0 xyz.openbmc_project.State.BMC CurrentBMCState"
+  - "busctl set-property xyz.openbmc_project.State.BMC /xyz/openbmc_project/state/BMC0 xyz.openbmc_project.State.BMC CurrentBMCState s xyz.openbmc_project.State.BMC.BMCState.NotReady"
+  - "busctl set-property xyz.openbmc_project.State.BMC /xyz/openbmc_project/state/BMC0 xyz.openbmc_project.State.BMC CurrentBMCState s xyz.openbmc_project.State.BMC.BMCState.Ready"
+  - "busctl set-property xyz.openbmc_project.State.BMC /xyz/openbmc_project/state/BMC0 xyz.openbmc_project.State.BMC RequestedBMCTransition s xyz.openbmc_project.State.BMC.Transition.Reboot"
+
+**** Note that this application subscribes to systemd signals
+****  and looks for obmc-standby.target on start up so it will
+****  know when the bmc is ready.
+  - For example you can set the property of the BMC to NotReady
+    and then run "systemctl restart multi-user.target" and the
+    application is subscribed to the signals and will set
+    the property BMC state to ready whenever it gets the
+    proper signal.
