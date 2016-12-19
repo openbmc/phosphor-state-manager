@@ -36,9 +36,26 @@ class BMC : public sdbusplus::server::object::object<
              sdbusplus::server::object::object<
                  sdbusplus::xyz::openbmc_project::State::server::BMC>(
                          bus, objPath),
-             path(objPath) {};
+             bus(bus),
+             path(objPath)
+        {
+            determineInitialState();
+        };
+
+        /**
+         * @breif Determine intitial BMC state and set internally
+         **/
+        void determineInitialState();
+
+        /** @brief Set value of BMCTransition **/
+        Transition requestedBMCTransition(Transition value) override;
+
+        /** @breif Set value of CurrentBMCState **/
+        BMCState currentBMCState(BMCState value) override;
 
     private:
+        /** @brief Persistent sdbusplus DBus bus connection. **/
+        sdbusplus::bus::bus& bus;
 
         /** @brief Path of the BMC instance */
         std::string path;
