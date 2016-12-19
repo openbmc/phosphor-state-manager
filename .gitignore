@@ -43,6 +43,7 @@ Makefile.in
 /config.status
 /phosphor-host-state-manager
 /phosphor-chassis-state-manager
+/phosphor-bmc-state-manager
 Makefile
 .deps
 *-libtool
