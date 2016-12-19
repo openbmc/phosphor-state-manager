@@ -30,9 +30,31 @@ class BMC : public sdbusplus::server::object::object<
              const char* objPath) :
              sdbusplus::server::object::object<
                  sdbusplus::xyz::openbmc_project::State::server::BMC>(
-                         bus, objPath) {};
+                         bus, objPath),
+             bus(bus),
+             path(objPath)
+        {
+            subscribeToSystemdSignals();
+        };
+
+        /**
+         * @brief subscribe to the systemd signals
+         **/
+        void subscribeToSystemdSignals();
+
+        /** @brief Set value of BMCTransition **/
+        Transition requestedBMCTransition(Transition value) override;
+
+        /** @breif Set value of CurrentBMCState **/
+        BMCState currentBMCState(BMCState value) override;
 
     private:
+        /** @brief Persistent sdbusplus DBus bus connection. **/
+        sdbusplus::bus::bus& bus;
+
+        /** @brief Path of the BMC instance */
+        std::string path;
+
 };
 
 } // namespace manager
