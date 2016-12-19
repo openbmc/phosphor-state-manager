@@ -8,13 +8,19 @@ namespace state
 {
 namespace manager
 {
-using namespace sdbusplus::xyz::openbmc_project::State;
+
+// When you see server:: you know we're referencing our base class
+namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 /* Map a transition to it's systemd target */
 const std::map<server::BMC::Transition,std::string> SYSTEMD_TABLE = {
         {server::BMC::Transition::Reboot,"reboot.target"}
 };
 
+/* Map a system state to the BMCState */
+const std::map<std::string, server::BMC::BMCState> SYS_BMC_STATE_TABLE = {
+        {"BMC_READY", server::BMC::BMCState::Ready},
+};
 
 void BMC::determineInitialState()
 {
@@ -60,8 +66,27 @@ void BMC::executeTransition(const Transition tranReq)
     method.append(sysdUnit);
     method.append("replace");
 
-    auto reply = this->bus.call(method);
+    this->bus.call(method);
     return;
+}
+
+int BMC::handleSysStateChange(sd_bus_message *msg, void *usrData,
+                              sd_bus_error *retError)
+{
+    const char *newState = nullptr;
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    sdPlusMsg.read(newState);
+    
+
+    auto it = SYS_BMC_STATE_TABLE.find(newState);
+    if(it != SYS_BMC_STATE_TABLE.end())
+    {
+        BMC::BMCState gotoState = it->second;
+        auto BMCInst = static_cast<BMC*>(usrData);
+        BMCInst->currentBMCState(gotoState);
+        BMCInst->tranActive = false;
+    }
+    return 0;
 }
 
 BMC::Transition BMC::requestedBMCTransition(Transition value)
