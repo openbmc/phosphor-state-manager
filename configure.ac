@@ -21,9 +21,17 @@ AC_ARG_VAR(BUSNAME, [The Dbus busname to own])
 AS_IF([test "x$BUSNAME" == "x"], [BUSNAME="xyz.openbmc_project.State.Host"])
 AC_DEFINE_UNQUOTED([BUSNAME], ["$BUSNAME"], [The DBus busname to own])
 
-AC_ARG_VAR(OBJPATH, [The host state manager Dbus root])
+AC_ARG_VAR(OBJPATH, [The state manager Dbus root])
 AS_IF([test "x$OBJPATH" == "x"], [OBJPATH="/xyz/openbmc_project/state/host"])
-AC_DEFINE_UNQUOTED([OBJPATH], ["$OBJPATH"], [The host state manager Dbus root])
+AC_DEFINE_UNQUOTED([OBJPATH], ["$OBJPATH"], [The state manager Dbus root])
+
+AC_ARG_VAR(BMC_BUSNAME, [The BMC Dbus busname to own])
+AS_IF([test "x$BMC_BUSNAME" == "x"], [BMC_BUSNAME="xyz.openbmc_project.State.BMC"])
+AC_DEFINE_UNQUOTED([BMC_BUSNAME], ["$BMC_BUSNAME"], [The BMC DBus busname to own])
+
+AC_ARG_VAR(BMC_OBJPATH, [The BMC state manager Dbus root])
+AS_IF([test "x$BMC_OBJPATH" == "x"], [BMC_OBJPATH="/xyz/openbmc_project/state/BMC0"])
+AC_DEFINE_UNQUOTED([BMC_OBJPATH], ["$BMC_OBJPATH"], [The BMC state manager Dbus root])
 
 # Check for header files.
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find systemd/sd-bus.h...systemd developement package required])])
