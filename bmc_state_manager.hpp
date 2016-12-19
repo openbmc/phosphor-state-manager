@@ -21,6 +21,10 @@ class BMC : public sdbusplus::server::object::object<
     public:
         /** @brief Constructs BMC State Manager
          *
+         *  @note This constructor passes 'true' to the base class in order to
+         *  defer dbus object registration until we can run
+         *  subscribeToSystemdSignals() and set our properties
+         *
          * @param[in] bus       - The Dbus bus object
          * @param[in] busName   - The Dbus name to own
          * @param[in] objPath   - The Dbus object path
@@ -40,8 +44,6 @@ class BMC : public sdbusplus::server::object::object<
         /** @brief Set value of BMCTransition **/
         Transition requestedBMCTransition(Transition value) override;
 
-        /** @breif Set value of CurrentBMCState **/
-        BMCState currentBMCState(BMCState value) override;
 
     private:
         /**
@@ -49,9 +51,14 @@ class BMC : public sdbusplus::server::object::object<
          **/
         void subscribeToSystemdSignals();
 
+        /** @brief Execute the transition request
+         *
+         *  @param[in] tranReq   - Transition requested
+         */
+        void executeTransition(Transition tranReq);
+
         /** @brief Persistent sdbusplus DBus bus connection. **/
         sdbusplus::bus::bus& bus;
-
 
 };
 
