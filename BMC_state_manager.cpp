@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <log.hpp>
 #include "BMC_state_manager.hpp"
 
@@ -12,6 +13,12 @@ namespace manager
 using namespace sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
+
+/* Map a transition to it's systemd target */
+const std::map<BMC::Transition, std::string> SYSTEMD_TABLE =
+{
+        {BMC::Transition::Reboot, "reboot.target"}
+};
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
@@ -28,22 +35,32 @@ void BMC::subscribeToSystemdSignals()
     return;
 }
 
+void BMC::executeTransition(const Transition tranReq)
+{
+    auto sysdUnit = SYSTEMD_TABLE.find(tranReq)->second;
+
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "StartUnit");
+
+    method.append(sysdUnit);
+    method.append("replace");
+
+    this->bus.call(method);
+
+    return;
+}
+
 BMC::Transition BMC::requestedBMCTransition(Transition value)
 {
     log<level::INFO>(
             "Setting the RequestedBMCTransition field",
             entry("REQUESTED_BMC_TRANSITION=0x%s",
                   convertForMessage(value).c_str()));
-    return BMC::requestedBMCTransition(value);
-}
 
-BMC::BMCState BMC::currentBMCState(BMCState value)
-{
-    log<level::INFO>(
-            "Setting the BMCState field",
-            entry("CURRENT_BMC_STATE=0x%s",
-                  convertForMessage(value).c_str()));
-    return BMC::currentBMCState(value);
+    executeTransition(value);
+    return BMC::requestedBMCTransition(value);
 }
 
 
