@@ -44,13 +44,16 @@ class BMC : public sdbusplus::server::object::object<
         /** @brief Set value of BMCTransition **/
         Transition requestedBMCTransition(Transition value) override;
 
-        /** @breif Set value of CurrentBMCState **/
+        /** @brief Set value of CurrentBMCState **/
         BMCState currentBMCState(BMCState value) override;
 
     private:
+
+        /** @brief Execute the transition request **/
+        void executeTransition(const Transition tranReq);
+
         /** @brief Persistent sdbusplus DBus bus connection. **/
         sdbusplus::bus::bus& bus;
-
 
 };
 
