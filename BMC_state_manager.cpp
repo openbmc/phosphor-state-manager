@@ -12,6 +12,11 @@ namespace manager
 //When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
+/* Map a transition to it's systemd target */
+const std::map<server::BMC::Transition,std::string> SYSTEMD_TABLE =
+{
+        {BMC::Transition::Reboot,"reboot.target"}
+};
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
@@ -31,9 +36,28 @@ void BMC::subscribeToSystemdSignals()
     return;
 }
 
+void BMC::executeTransition(const Transition tranReq)
+{
+    auto sysdUnit = SYSTEMD_TABLE.find(tranReq)->second;
+
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "StartUnit");
+
+    method.append(sysdUnit);
+    method.append("replace");
+
+    this->bus.call(method);
+
+    return;
+}
+
 BMC::Transition BMC::requestedBMCTransition(Transition value)
 {
     std::cout << "Setting the RequestedBMCTransition field" << std::endl;
+    executeTransition(value);
+    std::cout << "......SUCCESS" << std::endl;
     return server::BMC::requestedBMCTransition(value);
 }
 

@@ -45,16 +45,26 @@ class BMC : public sdbusplus::server::object::object<
         /** @brief Set value of BMCTransition **/
         Transition requestedBMCTransition(Transition value) override;
 
-        /** @breif Set value of CurrentBMCState **/
+        /** @brief Set value of CurrentBMCState **/
         BMCState currentBMCState(BMCState value) override;
 
     private:
+
+        /** @brief Execute the transition request
+         * 
+         * This function assumes the state has been validated and the BMC
+         * is in an appropriate state for the transition to be started.
+         * Currently for the BMC a request to reboot is valid at any time.
+         *
+         * @param[in] tranReq    - Transition requested
+         */
+        void executeTransition(const Transition tranReq);
+
         /** @brief Persistent sdbusplus DBus bus connection. **/
         sdbusplus::bus::bus& bus;
 
         /** @brief Path of the BMC instance */
         std::string path;
-
 };
 
 } // namespace manager
