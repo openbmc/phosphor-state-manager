@@ -10,7 +10,7 @@ namespace state
 namespace manager
 {
 
-//When you see server:: you know we're referencing our base class
+// When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
@@ -51,6 +51,30 @@ void BMC::executeTransition(const Transition tranReq)
     this->bus.call(method);
 
     return;
+}
+
+int BMC::handleSysStateChange(sd_bus_message *msg, void *usrData,
+                              sd_bus_error *retError)
+{
+    uint32_t newStateID;
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit;
+    std::string newStateResult;
+
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    //Read the msg and populate each variable
+    sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    //Caught the signal that indicates the BMC is now BMC_READY
+    if((newStateUnit == "obmc-standby.target") &&
+       (newStateResult == "done"))
+    {
+        log<level::INFO>("BMC_READY");
+        auto BMCInst = static_cast<BMC*>(usrData);
+        BMCInst->currentBMCState(BMCState::Ready);
+    }
+
+    return 0;
 }
 
 BMC::Transition BMC::requestedBMCTransition(Transition value)
