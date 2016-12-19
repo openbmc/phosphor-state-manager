@@ -8,7 +8,12 @@ namespace state
 {
 namespace manager
 {
-using namespace sdbusplus::xyz::openbmc_project::State::server;
+using namespace sdbusplus::xyz::openbmc_project::State;
+
+/* Map a transition to it's systemd target */
+const std::map<server::BMC::Transition,std::string> SYSTEMD_TABLE = {
+        {server::BMC::Transition::Reboot,"reboot.target"}
+};
 
 
 void BMC::determineInitialState()
@@ -27,29 +32,50 @@ void BMC::determineInitialState()
     if(sysState == "BMC_READY")
     {
         std::cout << "BMC is BOOTED " << sysState << std::endl;
-        currentBMCState(BMCState::Ready);
+        server::BMC::currentBMCState(BMCState::Ready);
     }
     else
     {
         std::cout << "BMC is not BOOTED " << sysState << std::endl;
-        currentBMCState(BMCState::NotReady);
+        server::BMC::currentBMCState(BMCState::NotReady);
     }
 
+    //Set transition intially to None
+    //TODO - Eventually need to restore this from persistent storage
+    server::BMC::requestedBMCTransition(Transition::None);
+    return;
+}
+
+void BMC::executeTransition(const Transition tranReq)
+{
+    tranActive = true;
+
+    std::string sysdUnit = SYSTEMD_TABLE.find(tranReq)->second;
+
+    auto method = this->bus.new_method_call("org.freedesktop.systemd1",
+                                            "/org/freedesktop/systemd1",
+                                            "org.freedesktop.systemd1.Manager",
+                                            "StartUnit");
+
+    method.append(sysdUnit);
+    method.append("replace");
+
+    auto reply = this->bus.call(method);
     return;
 }
 
 BMC::Transition BMC::requestedBMCTransition(Transition value)
 {
     std::cout << "Setting the RequestedBMCTransition field" << std::endl;
-    return sdbusplus::xyz::openbmc_project::State::server::BMC::
-            requestedBMCTransition(value);
+    executeTransition(value);
+    std::cout << "......SUCCESS" << std::endl;
+    return server::BMC::requestedBMCTransition(value);
 }
 
 BMC::BMCState BMC::currentBMCState(BMCState value)
 {
     std::cout << "Setting the BMCState field" << std::endl;
-    return sdbusplus::xyz::openbmc_project::State::server::BMC::
-            currentBMCState(value);
+    return server::BMC::currentBMCState();
 }
 
 
