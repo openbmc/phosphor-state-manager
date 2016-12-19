@@ -15,6 +15,9 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
+constexpr auto obmcStandbyTarget = "obmc-standby.target";
+constexpr auto signalDone = "done";
+
 /* Map a transition to it's systemd target */
 const std::map<server::BMC::Transition, const char*> SYSTEMD_TABLE =
 {
@@ -56,6 +59,42 @@ void BMC::executeTransition(const Transition tranReq)
     return;
 }
 
+int BMC::bmcStateChangeSignal(sd_bus_message *msg, void *userData,
+                              sd_bus_error *retError)
+{
+    return static_cast<BMC*>(userData)->bmcStateChange(msg, retError);
+}
+
+int BMC::bmcStateChange(sd_bus_message *msg,
+                        sd_bus_error *retError)
+{
+    uint32_t newStateID {};
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit{};
+    std::string newStateResult{};
+
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    //Read the msg and populate each variable
+    sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    //Caught the signal that indicates the BMC is now BMC_READY
+    if((newStateUnit == obmcStandbyTarget) &&
+       (newStateResult == signalDone))
+    {
+        log<level::INFO>("BMC_READY");
+        this->currentBMCState(BMCState::Ready);
+
+        //Unsubscribe so we stop processing all other signals
+        auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                                   SYSTEMD_OBJ_PATH,
+                                                   SYSTEMD_INTERFACE,
+                                                   "Unsubscribe");
+        this->bus.call(method);
+    }
+
+    return 0;
+}
+
 BMC::Transition BMC::requestedBMCTransition(Transition value)
 {
     log<level::INFO>(
@@ -65,6 +104,16 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
 
     executeTransition(value);
     return server::BMC::requestedBMCTransition(value);
+}
+
+BMC::BMCState BMC::currentBMCState(BMCState value)
+{
+    log<level::INFO>(
+            "Setting the BMCState field",
+            entry("CURRENT_BMC_STATE=0x%s",
+                  convertForMessage(value).c_str()));
+
+    return server::BMC::currentBMCState(value);
 }
 
 
