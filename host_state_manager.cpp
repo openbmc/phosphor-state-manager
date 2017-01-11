@@ -92,7 +92,7 @@ int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
                                sd_bus_error *retError)
 {
     const char *newState = nullptr;
-    auto sdPlusMsg = sdbusplus::message::message(msg);
+    auto sdPlusMsg = sdbusplus::message::message(sd_bus_message_ref(msg));
     sdPlusMsg.read(newState);
 
     std::cout << "The System State has changed to " << newState << std::endl;
