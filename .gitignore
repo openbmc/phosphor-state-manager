@@ -41,8 +41,8 @@ Makefile.in
 /config.h.in~
 /config.log
 /config.status
-/op-host-state-manager
-/op-chassis-state-manager
+/phosphor-host-state-manager
+/phosphor-chassis-state-manager
 Makefile
 .deps
 *-libtool
