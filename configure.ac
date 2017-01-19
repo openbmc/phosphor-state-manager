@@ -17,6 +17,9 @@ PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
 AX_CXX_COMPILE_STDCXX_14([noext])
 AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
 
+# Checks for library functions
+LT_INIT # Required for systemd linking
+
 AC_ARG_VAR(HOST_BUSNAME, [The Host Dbus busname to own])
 AS_IF([test "x$HOST_BUSNAME" == "x"], [HOST_BUSNAME="xyz.openbmc_project.State.Host"])
 AC_DEFINE_UNQUOTED([HOST_BUSNAME], ["$HOST_BUSNAME"], [The Host DBus busname to own])
