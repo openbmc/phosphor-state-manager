@@ -15,4 +15,6 @@ phosphor_chassis_state_manager_SOURCES = \
 	chassis_state_manager_main.cpp
 
 phosphor_host_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
+phosphor_host_state_manager_CXXFLAGS = $(SYSTEMD_CFLAGS)
 phosphor_chassis_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
+phosphor_chassis_state_manager_CXXFLAGS = $(SYSTEMD_CFLAGS)
