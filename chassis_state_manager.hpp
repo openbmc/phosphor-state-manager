@@ -61,6 +61,15 @@ class Chassis : public sdbusplus::server::object::object<
         PowerState currentPowerState(PowerState value) override;
 
     private:
+        /** @brief Execute the transition request
+         *
+         * This function calls the appropriate systemd target for the input
+         * transition.
+         *
+         * @param[in] tranReq    - Transition requested
+         */
+        void executeTransition(Transition tranReq);
+
         /** @brief Callback function for pgood going to on state
          *
          *  Update chassis object state to reflect pgood going to on state
