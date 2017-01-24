@@ -1,3 +1,4 @@
+#include <sdbusplus/bus.hpp>
 #include <log.hpp>
 #include "chassis_state_manager.hpp"
 
@@ -13,40 +14,29 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
+constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-power-chassis-off@0.target";
+constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-power-chassis-on@0.target";
+
 /* Map a transition to it's systemd target */
 const std::map<server::Chassis::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
-        {server::Chassis::Transition::Off, "obmc-power-chassis-off@0.target"},
-        {server::Chassis::Transition::On, "obmc-power-chassis-on@0.target"}
+        {server::Chassis::Transition::Off, CHASSIS_STATE_POWEROFF_TGT},
+        {server::Chassis::Transition::On, CHASSIS_STATE_POWERON_TGT}
 };
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
-/* TODO:Issue 774 - Use systemd target signals to control chassis state */
-int Chassis::handlePgoodOn(sd_bus_message* /*msg*/, void* usrData,
-                           sd_bus_error* retError)
+void Chassis::subscribeToSystemdSignals()
 {
-    log<level::INFO>("Pgood has turned on",
-                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                           convertForMessage(PowerState::On).c_str()));
-    auto chassisInst = static_cast<Chassis*>(usrData);
-    chassisInst->currentPowerState(PowerState::On);
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "Subscribe");
+    this->bus.call_noreply(method);
 
-    return 0;
-}
-
-int Chassis::handlePgoodOff(sd_bus_message* /*msg*/, void* usrData,
-                           sd_bus_error* retError)
-{
-    log<level::INFO>("Pgood has turned off",
-                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                           convertForMessage(PowerState::Off).c_str()));
-    auto chassisInst = static_cast<Chassis*>(usrData);
-    chassisInst->currentPowerState(PowerState::Off);
-
-    return 0;
+    return;
 }
 
 // TODO - Will be rewritten once sdbusplus client bindings are in place
@@ -99,6 +89,40 @@ void Chassis::executeTransition(Transition tranReq)
     this->bus.call_noreply(method);
 
     return;
+}
+
+int Chassis::sysStateChangeSignal(sd_bus_message *msg, void *userData,
+                                  sd_bus_error *retError)
+{
+    return static_cast<Chassis*>(userData)->sysStateChange(msg, retError);
+}
+
+int Chassis::sysStateChange(sd_bus_message* msg,
+                            sd_bus_error* retError)
+{
+    uint32_t newStateID {};
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit{};
+    std::string newStateResult{};
+
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    //Read the msg and populate each variable
+    sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    if((newStateUnit == CHASSIS_STATE_POWEROFF_TGT) &&
+       (newStateResult == "done"))
+    {
+        log<level::INFO>("Recieved signal that power OFF is complete");
+        this->currentPowerState(server::Chassis::PowerState::Off);
+    }
+    else if((newStateUnit == CHASSIS_STATE_POWERON_TGT) &&
+            (newStateResult == "done"))
+     {
+         log<level::INFO>("Recieved signal that power ON is complete");
+         this->currentPowerState(server::Chassis::PowerState::On);
+     }
+
+    return 0;
 }
 
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
