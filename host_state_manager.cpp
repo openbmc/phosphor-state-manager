@@ -72,16 +72,16 @@ void Host::determineInitialState()
         log<level::INFO>("Initial Host State will be Running",
                          entry("CURRENT_HOST_STATE=%s",
                                convertForMessage(HostState::Running).c_str()));
-        currentHostState(HostState::Running);
-        requestedHostTransition(Transition::On);
+        server::Host::currentHostState(HostState::Running);
+        server::Host::requestedHostTransition(Transition::On);
     }
     else
     {
         log<level::INFO>("Initial Host State will be Off",
                          entry("CURRENT_HOST_STATE=%s",
                                convertForMessage(HostState::Off).c_str()));
-        currentHostState(HostState::Off);
-        requestedHostTransition(Transition::Off);
+        server::Host::currentHostState(HostState::Off);
+        server::Host::requestedHostTransition(Transition::Off);
     }
 
     // Set transition initially to Off
