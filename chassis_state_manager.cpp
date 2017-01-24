@@ -13,6 +13,17 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
+/* Map a transition to it's systemd target */
+const std::map<server::Chassis::Transition,std::string> SYSTEMD_TARGET_TABLE =
+{
+        {server::Chassis::Transition::Off, "obmc-power-chassis-off@0.target"},
+        {server::Chassis::Transition::On, "obmc-power-chassis-on@0.target"}
+};
+
+constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+
 /* TODO:Issue 774 - Use systemd target signals to control chassis state */
 int Chassis::handlePgoodOn(sd_bus_message* /*msg*/, void* usrData,
                            sd_bus_error* retError)
@@ -73,12 +84,30 @@ void Chassis::determineInitialState()
     return;
 }
 
+void Chassis::executeTransition(Transition tranReq)
+{
+    auto sysdUnit = SYSTEMD_TARGET_TABLE.find(tranReq)->second;
+
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "StartUnit");
+
+    method.append(sysdUnit);
+    method.append("replace");
+
+    this->bus.call(method);
+
+    return;
+}
+
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
 
     log<level::INFO>("Change to Chassis Requested Power State",
                      entry("CHASSIS_REQUESTED_POWER_STATE=%s",
                            convertForMessage(value).c_str()));
+    executeTransition(value);
     return server::Chassis::requestedPowerTransition(value);
 }
 
