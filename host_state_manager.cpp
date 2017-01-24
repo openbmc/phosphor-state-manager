@@ -17,11 +17,14 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
+constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
+constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
+
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
-        {server::Host::Transition::Off, "obmc-chassis-stop@0.target"},
-        {server::Host::Transition::On, "obmc-chassis-start@0.target"}
+        {server::Host::Transition::Off, HOST_STATE_POWEROFF_TGT},
+        {server::Host::Transition::On, HOST_STATE_POWERON_TGT}
 };
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
@@ -38,6 +41,17 @@ const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
         {"HOST_BOOTING", server::Host::HostState::Running},
         {"HOST_POWERED_OFF", server::Host::HostState::Off}
 };
+
+void Host::subscribeToSystemdSignals()
+{
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "Subscribe");
+    this->bus.call(method);
+
+    return;
+}
 
 // TODO - Will be rewritten once sdbusplus client bindings are in place
 //        and persistent storage design is in place
@@ -95,35 +109,40 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
-int Host::handleSysStateChange(sd_bus_message *msg, void *usrData,
-                               sd_bus_error *retError)
+int Host::handleSysStateChange(sd_bus_message *msg, void *userData,
+                                  sd_bus_error *retError)
 {
-    const char *newState = nullptr;
-    auto sdPlusMsg = sdbusplus::message::message(msg);
-    sdPlusMsg.read(newState);
+    uint32_t newStateID {};
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit{};
+    std::string newStateResult{};
 
-    auto it = SYS_HOST_STATE_TABLE.find(newState);
-    if(it != SYS_HOST_STATE_TABLE.end())
+    auto sdPlusMsg = sdbusplus::message::message(msg);
+    //Read the msg and populate each variable
+    sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    if((newStateUnit == HOST_STATE_POWEROFF_TGT) &&
+       (newStateResult == "done"))
     {
-        // This is a state change we're interested in so process it
-        Host::HostState gotoState = it->second;
-        // Grab the host object instance from the userData
-        auto hostInst = static_cast<Host*>(usrData);
-        hostInst->currentHostState(gotoState);
+        log<level::INFO>("Recieved signal that host is off");
+        auto hostInst = static_cast<Host*>(userData);
+        hostInst->currentHostState(server::Host::HostState::Off);
 
         // Check if we need to start a new transition (i.e. a Reboot)
-        if((gotoState == server::Host::HostState::Off) &&
-           (hostInst->server::Host::requestedHostTransition() ==
-               Transition::Reboot))
+        if(hostInst->server::Host::requestedHostTransition() ==
+               Transition::Reboot)
         {
             log<level::DEBUG>("Reached intermediate state, going to next");
             hostInst->executeTransition(server::Host::Transition::On);
         }
-        else
-        {
-            log<level::DEBUG>("Reached final state");
-        }
     }
+    else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
+            (newStateResult == "done"))
+     {
+         log<level::INFO>("Recieved signal that host is running");
+         auto hostInst = static_cast<Host*>(userData);
+         hostInst->currentHostState(server::Host::HostState::Running);
+     }
 
     return 0;
 }
