@@ -36,20 +36,30 @@ class Chassis : public sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Chassis>(
                             bus, objPath, true),
                 bus(bus),
-                pgoodOn(bus,
-                        "type='signal',member='PowerGood'",
-                        Chassis::handlePgoodOn,
-                        this),
-                pgoodOff(bus,
-                        "type='signal',member='PowerLost'",
-                        Chassis::handlePgoodOff,
-                        this)
+                systemdSignals(bus,
+                               "type='signal',"
+                               "member='JobRemoved',"
+                               "path='/org/freedesktop/systemd1',"
+                               "interface='org.freedesktop.systemd1.Manager'",
+                                handleSysStateChange,
+                                this)
         {
             determineInitialState();
+
+            subscribeToSystemdSignals();
 
             // We deferred this until we could get our property correct
             this->emit_object_added();
         }
+
+        /**
+         * @brief subscribe to the systemd signals
+         *
+         * This object needs to capture when it's systemd targets complete
+         * so it can keep it's state updated
+         *
+         **/
+        void subscribeToSystemdSignals();
 
         /** @brief Determine initial chassis state and set internally */
         void determineInitialState();
@@ -70,40 +80,25 @@ class Chassis : public sdbusplus::server::object::object<
          */
         void executeTransition(Transition tranReq);
 
-        /** @brief Callback function for pgood going to on state
+        /** @brief Callback function on systemd state changes
          *
-         *  Update chassis object state to reflect pgood going to on state
+         * Check if the state is relevant to the Chassis and if so, update
+         * corresponding Chassis object's state
          *
-         * @param[in] msg        - Data associated with subscribed signal
-         * @param[in] userData   - Pointer to this object instance
-         * @param[in] retError   - Return error data
-         *
-         */
-        static int handlePgoodOn(sd_bus_message* msg,
-                                 void* userData,
-                                 sd_bus_error* retError);
-
-        /** @brief Callback function for pgood going to off state
-         *
-         *  Update chassis object state to reflect pgood going to off state
-         *
-         * @param[in] msg        - Data associated with subscribed signal
-         * @param[in] userData   - Pointer to this object instance
-         * @param[in] retError   - Return error data
+         * @param[in]  msg       - Data associated with subscribed signal
+         * @param[in]  userData  - Pointer to this object instance
+         * @param[out] retError  - Not used but required with signal API
          *
          */
-        static int handlePgoodOff(sd_bus_message* msg,
-                                  void* userData,
-                                  sd_bus_error* retError);
+         static int handleSysStateChange(sd_bus_message* msg,
+                                         void* userData,
+                                         sd_bus_error* retError);
 
         /** @brief Persistent sdbusplus DBus connection. */
         sdbusplus::bus::bus& bus;
 
-        /** @brief Used to subscribe to dbus pgood on state changes */
-        sdbusplus::server::match::match pgoodOn;
-
-        /** @brief Used to subscribe to dbus pgood off state changes */
-        sdbusplus::server::match::match pgoodOff;
+        /** @brief Used to subscribe to dbus systemd signals **/
+        sdbusplus::server::match::match systemdSignals;
 };
 
 } // namespace manager
