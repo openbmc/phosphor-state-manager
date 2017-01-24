@@ -36,24 +36,23 @@ class Host : public sdbusplus::server::object::object<
                     sdbusplus::xyz::openbmc_project::State::server::Host>(
                             bus, objPath, true),
                 bus(bus),
-                stateSignal(bus,
-                            "type='signal',member='GotoSystemState'",
-                            handleSysStateChange,
-                            this)
+                systemdSignals(bus,
+                               "type='signal',"
+                               "member='JobRemoved',"
+                               "path='/org/freedesktop/systemd1',"
+                               "interface='org.freedesktop.systemd1.Manager'",
+                                handleSysStateChange,
+                                this)
         {
             // Will throw exception on fail
             determineInitialState();
 
             // We deferred this until we could get our property correct
             this->emit_object_added();
-        }
 
-        /**
-         * @brief Determine initial host state and set internally
-         *
-         * @return Will throw exceptions on failure
-         **/
-        void determineInitialState();
+            // Enable systemd signals
+            subscribeToSystemdSignals();
+        }
 
         /** @brief Set value of HostTransition */
         Transition requestedHostTransition(Transition value) override;
@@ -62,6 +61,22 @@ class Host : public sdbusplus::server::object::object<
         HostState currentHostState(HostState value) override;
 
     private:
+        /**
+         * @brief subscribe to the systemd signals
+         *
+         * This object needs to capture when it's systemd targets complete
+         * so it can keep it's state updated
+         *
+         **/
+        void subscribeToSystemdSignals();
+
+        /**
+         * @brief Determine initial host state and set internally
+         *
+         * @return Will throw exceptions on failure
+         **/
+        void determineInitialState();
+
         /** @brief Execute the transition request
          *
          * This function assumes the state has been validated and the host
@@ -71,25 +86,25 @@ class Host : public sdbusplus::server::object::object<
          */
         void executeTransition(Transition tranReq);
 
-        /** @brief Callback function on system state changes
+        /** @brief Callback function on systemd state changes
          *
-         *  Check if the state is relevant to the Host and if so, update
-         *  corresponding host object's state
+         * Check if the state is relevant to the Host and if so, update
+         * corresponding Host object's state
          *
-         * @param[in] msg        - Data associated with subscribed signal
-         * @param[in] userData   - Pointer to this object instance
-         * @param[in] retError   - Return error data
+         * @param[in]  msg       - Data associated with subscribed signal
+         * @param[in]  userData  - Pointer to this object instance
+         * @param[out] retError  - Not used but required with signal API
          *
          */
-        static int handleSysStateChange(sd_bus_message* msg,
-                                        void* userData,
-                                        sd_bus_error* retError);
+         static int handleSysStateChange(sd_bus_message* msg,
+                                         void* userData,
+                                         sd_bus_error* retError);
 
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
 
-        /** @brief Used to subscribe to dbus system state changes */
-        sdbusplus::server::match::match stateSignal;
+        /** @brief Used to subscribe to dbus systemd signals **/
+        sdbusplus::server::match::match systemdSignals;
 };
 
 } // namespace manager
