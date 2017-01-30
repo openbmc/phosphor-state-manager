@@ -7,19 +7,24 @@ sbin_PROGRAMS = \
 
 phosphor_host_state_manager_SOURCES = \
 	host_state_manager.cpp \
-	xyz.openbmc_project.State.Host.cpp \
 	host_state_manager_main.cpp
 
 phosphor_chassis_state_manager_SOURCES = \
 	chassis_state_manager.cpp \
-	xyz.openbmc_project.State.Chassis.cpp \
 	chassis_state_manager_main.cpp
 
 phosphor_bmc_state_manager_SOURCES = \
 	bmc_state_manager.cpp \
-	xyz.openbmc_project.State.BMC.cpp \
 	bmc_state_manager_main.cpp
 
-phosphor_host_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
-phosphor_chassis_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
-phosphor_bmc_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
+generic_cxxflags = $(SYSTEMD_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
+generic_ldflags = $(SYSTEMD_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS)
+
+phosphor_host_state_manager_CXXFLAGS = $(generic_cxxflags)
+phosphor_host_state_manager_LDFLAGS = $(generic_ldflags)
+
+phosphor_chassis_state_manager_CXXFLAGS = $(generic_cxxflags)
+phosphor_chassis_state_manager_LDFLAGS = $(generic_ldflags)
+
+phosphor_bmc_state_manager_CXXFLAGS = $(generic_cxxflags)
+phosphor_bmc_state_manager_LDFLAGS = $(generic_ldflags)
