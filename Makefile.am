@@ -17,8 +17,8 @@ phosphor_bmc_state_manager_SOURCES = \
 	bmc_state_manager.cpp \
 	bmc_state_manager_main.cpp
 
-generic_cxxflags = $(SYSTEMD_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
-generic_ldflags = $(SYSTEMD_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS)
+generic_cxxflags = $(SYSTEMD_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) $(SDBUSPLUS_CFLAGS)
+generic_ldflags = $(SYSTEMD_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS) $(SDBUSPLUS_LIBS)
 
 phosphor_host_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_state_manager_LDFLAGS = $(generic_ldflags)
