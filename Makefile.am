@@ -20,6 +20,9 @@ phosphor_bmc_state_manager_SOURCES = \
 	xyz.openbmc_project.State.BMC.cpp \
 	bmc_state_manager_main.cpp
 
-phosphor_host_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
-phosphor_chassis_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
-phosphor_bmc_state_manager_LDFLAGS = $(SYSTEMD_LIBS)
+phosphor_host_state_manager_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
+phosphor_host_state_manager_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
+phosphor_chassis_state_manager_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
+phosphor_chassis_state_manager_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
+phosphor_bmc_state_manager_LDFLAGS = $(SYSTEMD_LIBS) $(SDBUSPLUS_LIBS)
+phosphor_bmc_state_manager_CXXFLAGS = $(SYSTEMD_CFLAGS) $(SDBUSPLUS_CFLAGS)
