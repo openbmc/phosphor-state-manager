@@ -43,6 +43,7 @@ class BMC : public sdbusplus::server::object::object<
                                 this))
         {
             subscribeToSystemdSignals();
+            discoverInitialState();
         };
 
         /** @brief Set value of BMCTransition **/
@@ -52,6 +53,11 @@ class BMC : public sdbusplus::server::object::object<
         BMCState currentBMCState(BMCState value) override;
 
     private:
+        /**
+         * @brief discover the state of the bmc
+         **/
+        void discoverInitialState();
+
         /**
          * @brief subscribe to the systemd signals
          **/

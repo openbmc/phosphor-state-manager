@@ -17,6 +17,7 @@ using namespace phosphor::logging;
 
 constexpr auto obmcStandbyTarget = "obmc-standby.target";
 constexpr auto signalDone = "done";
+constexpr auto activeState = "active";
 
 /* Map a transition to it's systemd target */
 const std::map<server::BMC::Transition, const char*> SYSTEMD_TABLE =
@@ -27,6 +28,48 @@ const std::map<server::BMC::Transition, const char*> SYSTEMD_TABLE =
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+
+constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
+constexpr auto SYSTEMD_TGT_PATH  = "/org/freedesktop/systemd1/unit/"
+                                   "obmc_2dstandby_2etarget";
+
+void BMC::discoverInitialState()
+{
+    sdbusplus::message::variant<std::string> currentState;
+
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_TGT_PATH,
+                                            SYSTEMD_PRP_INTERFACE,
+                                            "Get");
+
+    method.append("org.freedesktop.systemd1.Unit", "ActiveState");
+
+    auto result = this->bus.call(method);
+
+    //Is obmc-standby.target active or inactive?
+    result.read(currentState);
+
+    if(currentState == activeState)
+    {
+        log<level::INFO>("BMC_READY");
+        this->currentBMCState(BMCState::Ready);
+
+        //Unsubscribe so we stop processing all other signals
+        method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                           SYSTEMD_OBJ_PATH,
+                                           SYSTEMD_INTERFACE,
+                                           "Unsubscribe");
+        this->bus.call(method);
+        this->stateSignal.release();
+    }
+    else
+    {
+        log<level::INFO>("BMC_NOTREADY");
+        this->currentBMCState(BMCState::NotReady);
+    }
+
+    return;
+}
 
 void BMC::subscribeToSystemdSignals()
 {
