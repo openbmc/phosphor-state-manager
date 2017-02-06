@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <systemd/sd-bus.h>
+#include <sdbusplus/server.hpp>
 #include <log.hpp>
 #include "host_state_manager.hpp"
 
@@ -19,6 +20,7 @@ using namespace phosphor::logging;
 
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
+constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-quiesce-host@0.target";
 
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
@@ -108,6 +110,22 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
+std::string Host::determineAutoReboot()
+{
+    sdbusplus::message::variant<std::string> autoRebootParam;
+
+    auto method = this->bus.new_method_call("org.openbmc.settings.Host",
+                                            "/org/openbmc/settings/host0",
+                                            "org.freedesktop.DBus.Properties",
+                                            "Get");
+
+    method.append("org.openbmc.settings.Host", "auto_reboot");
+    auto reply = this->bus.call(method);
+    reply.read(autoRebootParam);
+
+    return sdbusplus::message::variant_ns::get<std::string>(autoRebootParam);
+}
+
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
                                   sd_bus_error *retError)
 {
@@ -145,6 +163,17 @@ int Host::sysStateChange(sd_bus_message* msg,
      {
          log<level::INFO>("Recieved signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
+     }
+     else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
+             (newStateResult == "done"))
+     {
+         if (Host::determineAutoReboot() == "yes") {
+             log<level::DEBUG>("Auto reboot enabled. Beginning reboot...");
+             Host::requestedHostTransition(server::Host::Transition::Reboot);
+         } else {
+             log<level::DEBUG>("Auto reboot disabled. Maintaining quiesce.");
+         }
+
      }
 
     return 0;
