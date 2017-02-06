@@ -19,12 +19,14 @@ using namespace phosphor::logging;
 
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
+constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-quiesce-system@0.target";
 
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
         {server::Host::Transition::Off, HOST_STATE_POWEROFF_TGT},
         {server::Host::Transition::On, HOST_STATE_POWERON_TGT}
+        // need something here?
 };
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
@@ -108,6 +110,22 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
+std::string Host::determineAutoReboot()
+{
+    std::string autoRebootParam;
+
+    auto method = this->bus.new_method_call("org.openbmc.settings.Host",
+                                            "/org/openbmc/control/host0",
+                                            "org.freedesktop.DBus.Properties",
+                                            "Get");
+
+    method.append("org.openbmc.settings.Host", "auto_reboot");
+    auto reply = this->bus.call(method);
+    reply.read(autoRebootParam);
+
+    return autoRebootParam;
+}
+
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
                                   sd_bus_error *retError)
 {
@@ -121,10 +139,13 @@ int Host::sysStateChange(sd_bus_message* msg,
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
+    std::string settingsdParam;
 
     auto sdPlusMsg = sdbusplus::message::message(msg);
     //Read the msg and populate each variable
     sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    log<level::DEBUG>("made it to sysStateChange");
 
     if((newStateUnit == HOST_STATE_POWEROFF_TGT) &&
        (newStateResult == "done"))
@@ -145,6 +166,21 @@ int Host::sysStateChange(sd_bus_message* msg,
      {
          log<level::INFO>("Recieved signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
+     }
+     else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
+             (newStateResult == "done"))
+     {
+         log<level::DEBUG>("Quiesce DEBUG log message");
+
+         settingsdParam = Host::determineAutoReboot();
+
+         if (settingsdParam == "yes") {
+             log<level::DEBUG>("Auto reboot enabled. Beginning reboot...");
+             this->executeTransition(server::Host::Transition::Reboot);
+         } else {
+             log<level::DEBUG>("Auto reboot disabled. Maintaining quiesce.");
+         }
+
      }
 
     return 0;
