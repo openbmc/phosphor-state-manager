@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/State/Host/server.hpp"
 
@@ -85,6 +86,13 @@ class Host : public sdbusplus::server::object::object<
          * @param[in] tranReq    - Transition requested
          */
         void executeTransition(Transition tranReq);
+
+        /**
+         * @brief Determine if auto reboot flag is set
+         *
+         * @return boolean corresponding to current auto_reboot setting
+         **/
+        bool isAutoReboot();
 
         /** @brief Callback function on systemd state changes
          *
