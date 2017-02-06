@@ -19,6 +19,7 @@ using namespace phosphor::logging;
 
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
+constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-quiesce-system@0.target";
 
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
@@ -145,6 +146,11 @@ int Host::sysStateChange(sd_bus_message* msg,
      {
          log<level::INFO>("Recieved signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
+     }
+     else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
+             (newStateResult == "done"))
+     {
+         log<level::INFO>("Amazing! Quiesce state operating at full power!!!!");
      }
 
     return 0;
