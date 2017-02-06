@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <systemd/sd-bus.h>
+#include <sdbusplus/server.hpp>
 #include <log.hpp>
 #include "host_state_manager.hpp"
 
@@ -19,6 +20,7 @@ using namespace phosphor::logging;
 
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
+constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-quiesce-host@0.target";
 
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
@@ -34,6 +36,10 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEM_SERVICE   = "org.openbmc.managers.System";
 constexpr auto SYSTEM_OBJ_PATH  = "/org/openbmc/managers/System";
 constexpr auto SYSTEM_INTERFACE = SYSTEM_SERVICE;
+
+constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+constexpr auto MAPPER_PATH = "/xyz/openbmc_project/ObjectMapper";
+constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
@@ -108,6 +114,70 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
+int Host::determineAutoReboot()
+{
+    sdbusplus::message::variant<std::string> autoRebootParam;
+    std::string strParam;
+
+    std::string HOST_PATH("/org/openbmc/settings/host0");
+    std::string HOST_INTERFACE("org.openbmc.settings.Host");
+
+    auto mapper = this->bus.new_method_call(MAPPER_BUSNAME,
+                                            MAPPER_PATH,
+                                            MAPPER_INTERFACE,
+                                            "GetObject");
+
+    mapper.append(HOST_PATH, std::vector<std::string>({HOST_INTERFACE}));
+    auto mapperResponseMsg = this->bus.call(mapper);
+
+    if (mapperResponseMsg.is_method_error())
+    {
+        log<level::ERR>("Error in mapper call");
+        return 0;
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if (mapperResponse.begin() == mapperResponse.end())
+    {
+        log<level::ERR>("Error reading mapper response");
+        return 0;
+    }
+
+    const auto& host = mapperResponse.begin()->first;
+
+    auto method = this->bus.new_method_call(host.c_str(),
+                                            HOST_PATH.c_str(),
+                                            "org.freedesktop.DBus.Properties",
+                                            "Get");
+
+    method.append(HOST_INTERFACE.c_str(), "auto_reboot");
+    auto reply = this->bus.call(method);
+
+    if (reply.is_method_error())
+    {
+        log<level::ERR>("Error in auto_reboot Get");
+        return 0;
+    }
+
+    reply.read(autoRebootParam);
+    strParam =
+        sdbusplus::message::variant_ns::get<std::string>(autoRebootParam);
+
+    if (strParam.begin() == strParam.end())
+    {
+        log<level::ERR>("Error reading auto_reboot response");
+        return 0;
+    }
+
+    if (strParam == "yes")
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
                                   sd_bus_error *retError)
 {
@@ -145,6 +215,20 @@ int Host::sysStateChange(sd_bus_message* msg,
      {
          log<level::INFO>("Recieved signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
+     }
+     else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
+             (newStateResult == "done"))
+     {
+         if (Host::determineAutoReboot())
+         {
+             log<level::INFO>("Auto reboot enabled. Beginning reboot...");
+             Host::requestedHostTransition(server::Host::Transition::Reboot);
+         }
+         else
+         {
+             log<level::INFO>("Auto reboot disabled. Maintaining quiesce.");
+         }
+
      }
 
     return 0;
