@@ -1,5 +1,5 @@
 #include <sdbusplus/bus.hpp>
-#include <log.hpp>
+#include <phosphor-logging/log.hpp>
 #include "chassis_state_manager.hpp"
 
 namespace phosphor
