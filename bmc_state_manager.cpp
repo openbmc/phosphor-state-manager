@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <log.hpp>
+#include <phosphor-logging/log.hpp>
 #include "bmc_state_manager.hpp"
 
 namespace phosphor

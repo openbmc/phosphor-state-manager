@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 #include <systemd/sd-bus.h>
-#include <log.hpp>
+#include <phosphor-logging/log.hpp>
 #include "host_state_manager.hpp"
 
 namespace phosphor
