@@ -25,26 +25,35 @@ const std::map<server::BMC::Transition, const char*> SYSTEMD_TABLE =
         {server::BMC::Transition::Reboot, "reboot.target"}
 };
 
-constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
-constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-
+constexpr auto SYSTEMD_SERVICE       = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_OBJ_PATH      = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE     = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
-constexpr auto SYSTEMD_TGT_PATH      = "/org/freedesktop/systemd1/unit/"
-                                       "obmc_2dstandby_2etarget";
 
 void BMC::discoverInitialState()
 {
     sdbusplus::message::variant<std::string> currentState;
+    sdbusplus::message::object_path unitTargetPath;
 
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                            SYSTEMD_TGT_PATH,
-                                            SYSTEMD_PRP_INTERFACE,
-                                            "Get");
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "GetUnit");
+
+    method.append("obmc-standby.target");
+
+    auto result = this->bus.call(method);
+
+    result.read(unitTargetPath);
+
+    method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                       ((std::string)unitTargetPath).c_str(),
+                                       SYSTEMD_PRP_INTERFACE,
+                                       "Get");
 
     method.append("org.freedesktop.systemd1.Unit", "ActiveState");
 
-    auto result = this->bus.call(method);
+    result = this->bus.call(method);
 
     //Is obmc-standby.target active or inactive?
     result.read(currentState);
