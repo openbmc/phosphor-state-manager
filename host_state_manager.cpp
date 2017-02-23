@@ -44,7 +44,8 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
         {"HOST_BOOTING", server::Host::HostState::Running},
-        {"HOST_POWERED_OFF", server::Host::HostState::Off}
+        {"HOST_POWERED_OFF", server::Host::HostState::Off},
+        {"HOST_QUIESCED", server::Host::HostState::Quiesced}
 };
 
 void Host::subscribeToSystemdSignals()
@@ -227,6 +228,7 @@ int Host::sysStateChange(sd_bus_message* msg,
          else
          {
              log<level::INFO>("Auto reboot disabled. Maintaining quiesce.");
+             this->currentHostState(server::Host::HostState::Quiesced);
          }
 
      }
