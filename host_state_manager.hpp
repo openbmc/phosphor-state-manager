@@ -86,6 +86,8 @@ class Host : public sdbusplus::server::object::object<
          */
         void executeTransition(Transition tranReq);
 
+        bool isPoweringOff();
+
         /** @brief Callback function on systemd state changes
          *
          * Will just do a call into the appropriate object for processing

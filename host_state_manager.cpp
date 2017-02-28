@@ -20,6 +20,8 @@ using namespace phosphor::logging;
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
 
+constexpr auto activeState = "active";
+
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
@@ -34,6 +36,9 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEM_SERVICE   = "org.openbmc.managers.System";
 constexpr auto SYSTEM_OBJ_PATH  = "/org/openbmc/managers/System";
 constexpr auto SYSTEM_INTERFACE = SYSTEM_SERVICE;
+
+constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
+
 
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
@@ -108,6 +113,57 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
+bool Host::isPoweringOff()
+{
+    sdbusplus::message::variant<std::string> currentState;
+    sdbusplus::message::object_path unitTargetPath;
+
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "GetUnit");
+
+    method.append(HOST_STATE_POWERON_TGT);
+    auto result = this->bus.call(method);
+
+    //Check that the bus call didn't result in an error
+    if(result.is_method_error())
+    {
+        log<level::ERR>("Error in bus call.");
+        return false;
+    }
+
+    result.read(unitTargetPath);
+
+    method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                       static_cast<const std::string&>
+                                           (unitTargetPath).c_str(),
+                                       SYSTEMD_PRP_INTERFACE,
+                                       "Get");
+
+    method.append("org.freedesktop.systemd1.Unit", "ActiveState");
+    result = this->bus.call(method);
+
+    //Check that the bus call didn't result in an error
+    if(result.is_method_error())
+    {
+        log<level::INFO>("Error in bus call.");
+        return false;
+    }
+
+    //Is obmc-chassis-start@0.target active or inactive?
+    result.read(currentState);
+
+    if(currentState != activeState)
+    {
+        //True - then its powering down 
+        return true;
+    } else {
+        //False - then its powering up
+        return false;
+    }
+}
+
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
                                   sd_bus_error *retError)
 {
@@ -141,7 +197,8 @@ int Host::sysStateChange(sd_bus_message* msg,
         }
     }
     else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
-            (newStateResult == "done"))
+            (newStateResult == "done") &&
+            (isPoweringOff() == false))
      {
          log<level::INFO>("Recieved signal that host is running");
          this->currentHostState(server::Host::HostState::Running);

@@ -17,6 +17,8 @@ using namespace phosphor::logging;
 constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-power-chassis-off@0.target";
 constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-power-chassis-on@0.target";
 
+constexpr auto activeState = "active";
+
 /* Map a transition to it's systemd target */
 const std::map<server::Chassis::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
@@ -27,6 +29,8 @@ const std::map<server::Chassis::Transition,std::string> SYSTEMD_TARGET_TABLE =
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+
+constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void Chassis::subscribeToSystemdSignals()
 {
@@ -91,6 +95,57 @@ void Chassis::executeTransition(Transition tranReq)
     return;
 }
 
+bool Chassis::isPoweringOff()
+{
+    sdbusplus::message::variant<std::string> currentState;
+    sdbusplus::message::object_path unitTargetPath;
+
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "GetUnit");
+
+    method.append(CHASSIS_STATE_POWERON_TGT);
+    auto result = this->bus.call(method);
+
+    //Check that the bus call didn't result in an error
+    if(result.is_method_error())
+    {
+        log<level::ERR>("Error in bus call.");
+        return false;
+    }
+
+    result.read(unitTargetPath);
+
+    method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                       static_cast<const std::string&>
+                                           (unitTargetPath).c_str(),
+                                       SYSTEMD_PRP_INTERFACE,
+                                       "Get");
+
+    method.append("org.freedesktop.systemd1.Unit", "ActiveState");
+    result = this->bus.call(method);
+
+    //Check that the bus call didn't result in an error
+    if(result.is_method_error())
+    {
+        log<level::INFO>("Error in bus call.");
+        return false;
+    }
+
+    //Is obmc-chassis-power-off@0.target active or inactive?
+    result.read(currentState);
+
+    if(currentState != activeState)
+    {
+        //True - then its powering down  
+        return true;
+    } else {
+        //False - then its powering up
+        return false;
+    }
+}
+
 int Chassis::sysStateChangeSignal(sd_bus_message *msg, void *userData,
                                   sd_bus_error *retError)
 {
@@ -116,7 +171,8 @@ int Chassis::sysStateChange(sd_bus_message* msg,
         this->currentPowerState(server::Chassis::PowerState::Off);
     }
     else if((newStateUnit == CHASSIS_STATE_POWERON_TGT) &&
-            (newStateResult == "done"))
+            (newStateResult == "done") &&
+            (isPoweringOff() == false))
      {
          log<level::INFO>("Recieved signal that power ON is complete");
          this->currentPowerState(server::Chassis::PowerState::On);
