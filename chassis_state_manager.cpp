@@ -138,7 +138,7 @@ bool Chassis::isPoweringOff()
 
     if(currentState != activeState)
     {
-        //True - then its powering down  
+        //True - then its powering down
         return true;
     } else {
         //False - then its powering up
