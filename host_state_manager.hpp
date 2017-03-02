@@ -88,6 +88,18 @@ class Host : public sdbusplus::server::object::object<
         void executeTransition(Transition tranReq);
 
         /**
+         * @brief Determine if target is active
+         *
+         * This function determines if the target is active and
+         * helps prevent misleading log recorded states.
+         *
+         * @param[in] target - Target string to check on
+         *
+         * @return boolean corresponding to state active
+         **/
+        bool stateActive(const std::string& target);
+
+        /**
          * @brief Determine if auto reboot flag is set
          *
          * @return boolean corresponding to current auto_reboot setting
