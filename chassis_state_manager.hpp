@@ -80,6 +80,16 @@ class Chassis : public sdbusplus::server::object::object<
          */
         void executeTransition(Transition tranReq);
 
+        /**
+         * @brief Determine if target is powered off
+         *
+         * This function determines if the target is powered off and
+         * helps prevent misleading log recorded states.
+         *
+         * @return boolean corresponding to host powered off
+         **/
+        bool poweredOff();
+
         /** @brief Callback function on systemd state changes
          *
          * Will just do a call into the appropriate object for processing
