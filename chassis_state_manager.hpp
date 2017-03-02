@@ -80,6 +80,18 @@ class Chassis : public sdbusplus::server::object::object<
          */
         void executeTransition(Transition tranReq);
 
+        /**
+         * @brief Determine if target is powered active
+         *
+         * This function determines if the target is active and
+         * helps prevent misleading log recorded states.
+         *
+         * @param[in] target - Target string to check on
+         *
+         * @return boolean corresponding to state active
+         **/
+        bool stateActive(const std::string& target);
+
         /** @brief Callback function on systemd state changes
          *
          * Will just do a call into the appropriate object for processing
