@@ -88,6 +88,15 @@ class Host : public sdbusplus::server::object::object<
         void executeTransition(Transition tranReq);
 
         /**
+         * @brief Determine if target is powering off
+         *
+         * This function determines if the target is powering off and
+         * helps prevent misleading log recorded states.
+         *
+         **/
+        bool isPoweringOff();
+
+        /**
          * @brief Determine if auto reboot flag is set
          *
          * @return boolean corresponding to current auto_reboot setting
