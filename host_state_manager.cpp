@@ -22,6 +22,9 @@ constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-quiesce-host@0.target";
 
+constexpr auto ACTIVE_STATE = "active";
+constexpr auto ACTIVATING_STATE = "activating";
+
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
@@ -45,7 +48,11 @@ constexpr auto REBOOTCOUNTER_SERVICE("org.openbmc.Sensors");
 constexpr auto REBOOTCOUNTER_PATH("/org/openbmc/sensors/host/BootCount");
 constexpr auto REBOOTCOUNTER_INTERFACE("org.openbmc.SensorValue");
 
+constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
+constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
+
 const sdbusplus::message::variant<int>  DEFAULT_BOOTCOUNT = 2;
+
 
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
@@ -120,6 +127,58 @@ void Host::executeTransition(Transition tranReq)
 
     return;
 }
+
+bool Host::stateActive(const std::string& target)
+{
+    sdbusplus::message::variant<std::string> currentState;
+    sdbusplus::message::object_path unitTargetPath;
+
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                            SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE,
+                                            "GetUnit");
+
+    method.append(target);
+    auto result = this->bus.call(method);
+
+    //Check that the bus call didn't result in an error
+    if(result.is_method_error())
+    {
+        log<level::ERR>("Error in bus call - could not resolve GetUnit for:",
+                        entry(" %s", SYSTEMD_INTERFACE));
+        return false;
+    }
+
+    result.read(unitTargetPath);
+
+    method = this->bus.new_method_call(SYSTEMD_SERVICE,
+                                       static_cast<const std::string&>
+                                           (unitTargetPath).c_str(),
+                                       SYSTEMD_PROPERTY_IFACE,
+                                       "Get");
+
+    method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
+    result = this->bus.call(method);
+
+    //Check that the bus call didn't result in an error
+    if(result.is_method_error())
+    {
+        log<level::ERR>("Error in bus call - could not resolve Get for:",
+                        entry(" %s", SYSTEMD_PROPERTY_IFACE));
+        return false;
+    }
+
+    result.read(currentState);
+
+    if(currentState != ACTIVE_STATE && currentState != ACTIVATING_STATE)
+    {
+        //False - not active
+        return false;
+    }
+    //True - active
+    return true;
+}
+
 
 bool Host::isAutoReboot()
 {
@@ -205,7 +264,7 @@ bool Host::isAutoReboot()
             return true;
         }
         if(rebootCounterParam == 0)
-         {
+        {
             // Reset reboot counter and go to quiesce state
             method.append(DEFAULT_BOOTCOUNT);
             this->bus.call_noreply(method);
@@ -235,7 +294,8 @@ int Host::sysStateChange(sd_bus_message* msg,
     sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     if((newStateUnit == HOST_STATE_POWEROFF_TGT) &&
-       (newStateResult == "done"))
+       (newStateResult == "done") &&
+       (!stateActive(HOST_STATE_POWERON_TGT)))
     {
         log<level::INFO>("Recieved signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
@@ -249,7 +309,8 @@ int Host::sysStateChange(sd_bus_message* msg,
         }
     }
     else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
-            (newStateResult == "done"))
+            (newStateResult == "done") &&
+            (stateActive(HOST_STATE_POWERON_TGT)))
      {
          log<level::INFO>("Recieved signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
