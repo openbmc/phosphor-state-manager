@@ -94,6 +94,20 @@ class Host : public sdbusplus::server::object::object<
          **/
         bool isAutoReboot();
 
+        /**
+         * @brief This function reads the reboot counter value
+         *
+         * @return int corresponding to the rebootCounter value
+         **/
+        int readRebootCounter();
+
+        /**
+         * @brief This function sets the reboot counter value
+         *
+         * @return None
+         **/
+        void setRebootCounter(int rebootCounterValue);
+
         /** @brief Callback function on systemd state changes
          *
          * Will just do a call into the appropriate object for processing
