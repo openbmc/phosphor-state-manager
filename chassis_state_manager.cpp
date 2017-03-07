@@ -14,8 +14,8 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
-constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-power-chassis-off@0.target";
-constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-power-chassis-on@0.target";
+constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
+constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-chassis-poweron@0.target";
 
 /* Map a transition to it's systemd target */
 const std::map<server::Chassis::Transition,std::string> SYSTEMD_TARGET_TABLE =

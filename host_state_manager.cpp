@@ -18,8 +18,8 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
-constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-chassis-stop@0.target";
-constexpr auto HOST_STATE_POWERON_TGT = "obmc-chassis-start@0.target";
+constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
+constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-quiesce-host@0.target";
 
 /* Map a transition to it's systemd target */
