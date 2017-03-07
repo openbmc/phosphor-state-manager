@@ -1,6 +1,8 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <fstream>
+#include <unistd.h>
 #include <systemd/sd-bus.h>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
@@ -47,6 +49,10 @@ const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
         {"HOST_POWERED_OFF", server::Host::HostState::Off},
         {"HOST_QUIESCED", server::Host::HostState::Quiesced}
 };
+
+/* Reboot Counter Constants */
+const int defaultRebootCounterValue = 2;
+const char *rebootCounterFile = "/tmp/rebootcounter";
 
 void Host::subscribeToSystemdSignals()
 {
@@ -171,13 +177,75 @@ bool Host::isAutoReboot()
         return false;
     }
 
+    int rebootCounter = Host::readRebootCounter();
+    if(rebootCounter == 0)
+    {
+        return false;
+    }
+
     if (strParam == "yes")
     {
+        setRebootCounter(rebootCounter - 1);
         return true;
     }
 
     return false;
 }
+
+void Host::setRebootCounter(int rebootCounterValue)
+{
+    // Convert rebootCounter int value to string
+    std::string s = std::to_string(rebootCounterValue);
+
+    // Create a file in /tmp to hold rebootCounter value
+    std::ofstream file(rebootCounterFile);
+    std::string data(s);
+    file << data;
+}
+
+int Host::readRebootCounter()
+{
+    const char *mode = NULL;
+
+    // Sets the initial value for the reboot counter
+    if( access(rebootCounterFile , F_OK) == -1){
+        std::ofstream file(rebootCounterFile);
+        int defaultRebootCounterValue = 2;
+        std::string s = std::to_string(defaultRebootCounterValue);
+        std::string data(s);
+        file << data;
+    }
+
+    if( access( rebootCounterFile , R_OK ) == -1 ) {
+        mode = "wb";
+    } else {
+        mode = "rb+";
+    }
+
+    FILE *file = NULL;
+    file = fopen(rebootCounterFile, mode);
+
+    if( file==NULL) {fputs ("File error", stderr); return -2;}
+
+    // Obtain the file size;
+    fseek(file, 0, SEEK_END);
+    long lSize = ftell (file);
+    rewind (file);
+
+    // allocate memory to contain the whole file:
+    char * buffer = (char*) malloc (sizeof(char)*lSize);
+
+    fread (buffer,1,lSize,file);
+
+    // Terminate
+    fclose (file);
+
+    int result = atoi(buffer);
+    free (buffer);
+
+    return result;
+}
+
 
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
                                   sd_bus_error *retError)
@@ -192,6 +260,9 @@ int Host::sysStateChange(sd_bus_message* msg,
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
+
+    // It will set the initial value for rebootCounter if not already set
+    Host::readRebootCounter();
 
     auto sdPlusMsg = sdbusplus::message::message(msg);
     //Read the msg and populate each variable
