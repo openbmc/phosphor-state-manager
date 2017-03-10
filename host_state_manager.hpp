@@ -92,7 +92,7 @@ class Host : public sdbusplus::server::object::object<
          *
          * @return boolean corresponding to current auto_reboot setting
          **/
-        bool isAutoReboot();
+        bool isAutoReboot();        
 
         /** @brief Callback function on systemd state changes
          *
