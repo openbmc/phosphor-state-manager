@@ -41,6 +41,12 @@ constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/ObjectMapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 
+constexpr auto REBOOTCUNTER_SERVICE("org.openbmc.Sensors");
+constexpr auto REBOOTCOUNTER_PATH("/org/openbmc/sensors/host/BootCount");
+constexpr auto REBOOTCOUNTER_INTERFACE("org.openbmc.SensorValue");
+
+const sdbusplus::message::variant<int>  DEFAULT_BOOTCOUNT = 2;
+
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
         {"HOST_BOOTING", server::Host::HostState::Running},
@@ -171,9 +177,39 @@ bool Host::isAutoReboot()
         return false;
     }
 
+    sdbusplus::message::variant<int> rebootCounterParam;
+    method = this->bus.new_method_call(REBOOTCUNTER_SERVICE,
+                                       REBOOTCOUNTER_PATH,
+                                       REBOOTCOUNTER_INTERFACE,
+                                       "getValue");
+    reply = this->bus.call(method);
+    if (reply.is_method_error())
+    {
+        log<level::ERR>("Error in BOOTCOUNT getValue");
+        return false;
+    }
+    reply.read(rebootCounterParam);
+
     if (strParam == "yes")
     {
-        return true;
+        method = this->bus.new_method_call(REBOOTCUNTER_SERVICE,
+                                           REBOOTCOUNTER_PATH,
+                                           REBOOTCOUNTER_INTERFACE,
+                                           "setValue");
+        if( rebootCounterParam > 0)
+        {
+            // Reduce BOOTCOUNT by 1
+            method.append((sdbusplus::message::variant_ns::
+                           get<int>(rebootCounterParam)) - 1);
+            this->bus.call_noreply(method);
+            return true;
+        }
+        if(rebootCounterParam == 0)
+         {
+            // Reset reboot counter and go to quiesce state
+            method.append(DEFAULT_BOOTCOUNT);
+            this->bus.call_noreply(method);
+        }
     }
 
     return false;
