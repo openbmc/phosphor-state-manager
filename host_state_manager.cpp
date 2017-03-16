@@ -37,9 +37,9 @@ constexpr auto SYSTEM_SERVICE   = "org.openbmc.managers.System";
 constexpr auto SYSTEM_OBJ_PATH  = "/org/openbmc/managers/System";
 constexpr auto SYSTEM_INTERFACE = SYSTEM_SERVICE;
 
-constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-constexpr auto MAPPER_PATH = "/xyz/openbmc_project/ObjectMapper";
-constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.object_mapper";
+constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.object_mapper";
 
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
