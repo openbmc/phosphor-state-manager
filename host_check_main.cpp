@@ -1,9 +1,13 @@
 #include <cstdlib>
 #include <unistd.h>
+#include <iostream>
+#include <fstream>
+#include <cstdio>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/match.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Control/Host/server.hpp>
+#include <config.h>
 
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Control::server;
@@ -128,8 +132,18 @@ int main(int argc, char *argv[])
     // If host running then create file
     if(hostRunning)
     {
-        // TODO - Add file creation
         log<level::INFO>("Host is running!");
+        // Create file for host instance and create in filesystem to indicate
+        // to services that host is running
+        auto size = std::snprintf(nullptr,0,HOST_RUNNING_FILE,0);
+        std::unique_ptr<char[]> buf(new char[ size ]);
+        std::snprintf(buf.get(),size,HOST_RUNNING_FILE,0);
+        std::ofstream outfile(buf.get());
+        outfile.close();
+    }
+    else
+    {
+        log<level::INFO>("Host is not running!");
     }
 
     return 0;
