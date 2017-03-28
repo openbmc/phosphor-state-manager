@@ -1,13 +1,19 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <sdbusplus/bus.hpp>
-#include <sdbusplus/bus/match.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Control/Host/server.hpp>
 
+using namespace std::literals;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Control::server;
 
+// Required strings for sending the msg to check on host
+constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+constexpr auto CONTROL_HOST_PATH = "/xyz/openbmc_project/control/host0";
+constexpr auto CONTROL_HOST_INTERFACE = "xyz.openbmc_project.Control.Host";
 
 bool cmdDone     = false;
 bool hostRunning = false;
@@ -41,22 +47,69 @@ static int hostControlSignal(sd_bus_message* msg,
     return 0;
 }
 
+// Send hearbeat to host to determine if it's running
+void sendHeartbeat(sdbusplus::bus::bus& bus)
+{
+    auto mapper = bus.new_method_call(MAPPER_BUSNAME,
+                                      MAPPER_PATH,
+                                      MAPPER_INTERFACE,
+                                      "GetObject");
+
+    mapper.append(CONTROL_HOST_PATH,
+                  std::vector<std::string>({CONTROL_HOST_INTERFACE}));
+    auto mapperResponseMsg = bus.call(mapper);
+
+    if (mapperResponseMsg.is_method_error())
+    {
+        log<level::ERR>("Error in mapper call for control host");
+        // TODO openbmc/openbmc#851 - Once available, throw returned error
+        throw std::runtime_error("Error in mapper call for control host");
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if (mapperResponse.empty())
+    {
+        log<level::ERR>("Error reading mapper resp for control host");
+        // TODO openbmc/openbmc#851 - Once available, throw returned error
+        throw std::runtime_error("Error reading mapper resp for control host");
+    }
+
+    const auto& host = mapperResponse.begin()->first;
+
+    auto method = bus.new_method_call(host.c_str(),
+                                      CONTROL_HOST_PATH,
+                                      CONTROL_HOST_INTERFACE,
+                                      "Execute");
+    method.append(convertForMessage(Host::Command::Heartbeat).c_str());
+
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
+    {
+        log<level::ERR>("Error in call to control host Execute");
+        throw std::runtime_error("Error in call to control host Execute");
+    }
+
+    return;
+}
+
 int main(int argc, char *argv[])
 {
     log<level::INFO>("Check if host is running");
 
     auto bus = sdbusplus::bus::new_default();
 
+    auto s = "type='signal',member='CommandComplete',path='"s +
+             CONTROL_HOST_PATH + "',interface='" +
+             CONTROL_HOST_INTERFACE + "'";
+
     // Setup Signal Handler
     sdbusplus::bus::match::match hostControlSignals(bus,
-                               "type='signal',"
-                               "member='CommandComplete',"
-                               "path='/xyz/openbmc_project/control/host0',"
-                               "interface='xyz.openbmc_project.Control.Host'",
+                               s.c_str(),
                                hostControlSignal,
                                nullptr);
 
-    // TODO Initiate heartbeat command
+    sendHeartbeat(bus);
 
     // Wait for signal
     while(!cmdDone)
