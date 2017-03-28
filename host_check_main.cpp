@@ -1,5 +1,7 @@
 #include <cstdlib>
 #include <unistd.h>
+#include <iostream>
+#include <fstream>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/match.hpp>
 #include <phosphor-logging/log.hpp>
@@ -128,8 +130,13 @@ int main(int argc, char *argv[])
     // If host running then create file
     if(hostRunning)
     {
-        // TODO - Add file creation
         log<level::INFO>("Host is running!");
+        std::ofstream outfile ("/run/openbmc/host@0-on");
+        outfile.close();
+    }
+    else
+    {
+        log<level::INFO>("Host is not running!");
     }
 
     return 0;
