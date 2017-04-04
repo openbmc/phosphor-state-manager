@@ -100,6 +100,13 @@ class Host : public sdbusplus::server::object::object<
         bool stateActive(const std::string& target);
 
         /**
+         * @brief Set the HOST BOOTCOUNT Sensor value
+         *
+         * @param[in] bootCount  - new BOOTCOUNT value
+         */
+        void setHostbootCount(int bootCount);
+
+        /**
          * @brief Determine if auto reboot flag is set
          *
          * @return boolean corresponding to current auto_reboot setting
