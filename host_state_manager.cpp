@@ -192,6 +192,7 @@ bool Host::isAutoReboot()
 
     if (strParam == "yes")
     {
+        log<level::INFO>("Auto reboot enabled.");
         method = this->bus.new_method_call(REBOOTCOUNTER_SERVICE,
                                            REBOOTCOUNTER_PATH,
                                            REBOOTCOUNTER_INTERFACE,
@@ -199,21 +200,33 @@ bool Host::isAutoReboot()
         if( rebootCounterParam > 0)
         {
             // Reduce BOOTCOUNT by 1
+            log<level::INFO>("Reducing BOOTCOUNT by 1. Beginning Reboot...");
             method.append((sdbusplus::message::variant_ns::
                            get<int>(rebootCounterParam)) - 1);
             this->bus.call_noreply(method);
             return true;
         }
-        if(rebootCounterParam == 0)
-         {
+        else if(rebootCounterParam == 0)
+        {
             // Reset reboot counter and go to quiesce state
+            log<level::INFO>("BOOTCOUNT is already set to 0. \
+                              Going to quiesce state");
             method.append(DEFAULT_BOOTCOUNT);
             this->bus.call_noreply(method);
             return false;
         }
+        else
+        {
+            log<level::INFO>("There was an error getting the BOOTCOUNT. \
+                              Going to quiesce state.");
+            return false;
+        }
     }
-
-    return false;
+    else
+    {
+        log<level::INFO>("Auto reboot disabled. Going to quiesce state.");
+        return false;
+    }
 }
 
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
@@ -259,12 +272,10 @@ int Host::sysStateChange(sd_bus_message* msg,
      {
          if (Host::isAutoReboot())
          {
-             log<level::INFO>("Auto reboot enabled. Beginning reboot...");
              Host::requestedHostTransition(server::Host::Transition::Reboot);
          }
          else
          {
-             log<level::INFO>("Auto reboot disabled. Maintaining quiesce.");
              this->currentHostState(server::Host::HostState::Quiesced);
          }
 
