@@ -51,8 +51,7 @@ constexpr auto REBOOTCOUNTER_INTERFACE("org.openbmc.SensorValue");
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
-const sdbusplus::message::variant<int>  DEFAULT_BOOTCOUNT = 2;
-
+constexpr auto DEFAULT_BOOTCOUNT = 2;
 
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
@@ -179,6 +178,15 @@ bool Host::stateActive(const std::string& target)
     return true;
 }
 
+void Host::setHostbootCount(const sdbusplus::message::variant<int> bootCount)
+{
+    auto method = this->bus.new_method_call(REBOOTCOUNTER_SERVICE,
+                                            REBOOTCOUNTER_PATH,
+                                            REBOOTCOUNTER_INTERFACE,
+                                            "setValue");
+    method.append(bootCount);
+    this->bus.call_noreply(method);
+}
 
 bool Host::isAutoReboot()
 {
@@ -236,7 +244,7 @@ bool Host::isAutoReboot()
         return false;
     }
 
-    sdbusplus::message::variant<int> rebootCounterParam;
+    sdbusplus::message::variant<int> rebootCounterParam = 0;
     method = this->bus.new_method_call(REBOOTCOUNTER_SERVICE,
                                        REBOOTCOUNTER_PATH,
                                        REBOOTCOUNTER_INTERFACE,
@@ -251,28 +259,35 @@ bool Host::isAutoReboot()
 
     if (strParam == "yes")
     {
-        method = this->bus.new_method_call(REBOOTCOUNTER_SERVICE,
-                                           REBOOTCOUNTER_PATH,
-                                           REBOOTCOUNTER_INTERFACE,
-                                           "setValue");
         if( rebootCounterParam > 0)
         {
             // Reduce BOOTCOUNT by 1
-            method.append((sdbusplus::message::variant_ns::
+            log<level::INFO>("Auto reboot enabled. "
+                              "Reducing HOST BOOTCOUNT by 1.");
+            Host::setHostbootCount((sdbusplus::message::variant_ns::
                            get<int>(rebootCounterParam)) - 1);
-            this->bus.call_noreply(method);
             return true;
         }
-        if(rebootCounterParam == 0)
+        else if(rebootCounterParam == 0)
         {
             // Reset reboot counter and go to quiesce state
-            method.append(DEFAULT_BOOTCOUNT);
-            this->bus.call_noreply(method);
+            log<level::INFO>("Auto reboot enabled. "
+                             "HOST BOOTCOUNT already set to 0.");
+            Host::setHostbootCount(DEFAULT_BOOTCOUNT);
+            return false;
+        }
+        else
+        {
+            log<level::INFO>("Auto reboot enabled."
+                             " HOST BOOTCOUNT has an invalid value.");
             return false;
         }
     }
-
-    return false;
+    else
+    {
+        log<level::INFO>("Auto reboot disabled.");
+        return false;
+    }
 }
 
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
@@ -320,12 +335,12 @@ int Host::sysStateChange(sd_bus_message* msg,
      {
          if (Host::isAutoReboot())
          {
-             log<level::INFO>("Auto reboot enabled. Beginning reboot...");
+             log<level::INFO>("Beginning reboot...");
              Host::requestedHostTransition(server::Host::Transition::Reboot);
          }
          else
          {
-             log<level::INFO>("Auto reboot disabled. Maintaining quiesce.");
+             log<level::INFO>("Maintaining quiesce");
              this->currentHostState(server::Host::HostState::Quiesced);
          }
 
