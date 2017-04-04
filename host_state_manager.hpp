@@ -88,6 +88,13 @@ class Host : public sdbusplus::server::object::object<
         void executeTransition(Transition tranReq);
 
         /**
+         * @brief Set the HOST BOOTCOUNT Sensor value
+         *
+         * @param[in] bootCount  - new BOOTCOUNT value
+         */
+        void setHOSTBOOTCOUNT(const sdbusplus::message::variant<int> bootCount);
+
+        /**
          * @brief Determine if auto reboot flag is set
          *
          * @return boolean corresponding to current auto_reboot setting

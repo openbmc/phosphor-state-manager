@@ -121,6 +121,16 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
+void Host::setHOSTBOOTCOUNT(const sdbusplus::message::variant<int> bootCount)
+{
+    auto method = this->bus.new_method_call(REBOOTCOUNTER_SERVICE,
+                                            REBOOTCOUNTER_PATH,
+                                            REBOOTCOUNTER_INTERFACE,
+                                            "setValue");
+    method.append(bootCount);
+    this->bus.call_noreply(method);
+}
+
 bool Host::isAutoReboot()
 {
     sdbusplus::message::variant<std::string> autoRebootParam;
@@ -192,28 +202,34 @@ bool Host::isAutoReboot()
 
     if (strParam == "yes")
     {
-        method = this->bus.new_method_call(REBOOTCOUNTER_SERVICE,
-                                           REBOOTCOUNTER_PATH,
-                                           REBOOTCOUNTER_INTERFACE,
-                                           "setValue");
         if( rebootCounterParam > 0)
         {
             // Reduce BOOTCOUNT by 1
-            method.append((sdbusplus::message::variant_ns::
-                           get<int>(rebootCounterParam)) - 1);
-            this->bus.call_noreply(method);
+            log<level::INFO>("Auto reboot enabled. \
+                              Reducing HOST BOOTCOUNT by 1.");
+            Host::setHOSTBOOTCOUNT((sdbusplus::message::variant_ns::
+                                    get<int>(rebootCounterParam)) - 1);
             return true;
         }
-        if(rebootCounterParam == 0)
-         {
+        else if(rebootCounterParam == 0)
+        {
             // Reset reboot counter and go to quiesce state
-            method.append(DEFAULT_BOOTCOUNT);
-            this->bus.call_noreply(method);
+            log<level::INFO>("Auto reboot enabled. HOST BOOTCOUNT already set to 0.");
+            Host::setHOSTBOOTCOUNT(DEFAULT_BOOTCOUNT);
+            return false;
+        }
+        else
+        {
+            log<level::INFO>("Auto reboot enabled. \
+                              HOST BOOTCOUNT has an invalid value.");
             return false;
         }
     }
-
-    return false;
+    else
+    {
+        log<level::INFO>("Auto reboot disabled.");
+        return false;
+    }
 }
 
 int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
@@ -251,6 +267,9 @@ int Host::sysStateChange(sd_bus_message* msg,
     else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
             (newStateResult == "done"))
      {
+         // Reset HOST BOOTCOUNT on successful boot
+         Host::setHOSTBOOTCOUNT(DEFAULT_BOOTCOUNT);
+
          log<level::INFO>("Recieved signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
      }
@@ -259,12 +278,12 @@ int Host::sysStateChange(sd_bus_message* msg,
      {
          if (Host::isAutoReboot())
          {
-             log<level::INFO>("Auto reboot enabled. Beginning reboot...");
+             log<level::INFO>("Beginning reboot...");
              Host::requestedHostTransition(server::Host::Transition::Reboot);
          }
          else
          {
-             log<level::INFO>("Auto reboot disabled. Maintaining quiesce.");
+             log<level::INFO>("Maintaining quiesce");
              this->currentHostState(server::Host::HostState::Quiesced);
          }
 
