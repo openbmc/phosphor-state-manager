@@ -171,14 +171,14 @@ int Chassis::sysStateChange(sd_bus_message* msg,
        (newStateResult == "done") &&
        (!stateActive(CHASSIS_STATE_POWERON_TGT)))
     {
-        log<level::INFO>("Recieved signal that power OFF is complete");
+        log<level::INFO>("Received signal that power OFF is complete");
         this->currentPowerState(server::Chassis::PowerState::Off);
     }
     else if((newStateUnit == CHASSIS_STATE_POWERON_TGT) &&
             (newStateResult == "done") &&
             (stateActive(CHASSIS_STATE_POWERON_TGT)))
      {
-         log<level::INFO>("Recieved signal that power ON is complete");
+         log<level::INFO>("Received signal that power ON is complete");
          this->currentPowerState(server::Chassis::PowerState::On);
      }
 

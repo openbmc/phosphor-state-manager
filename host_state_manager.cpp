@@ -297,7 +297,7 @@ int Host::sysStateChange(sd_bus_message* msg,
        (newStateResult == "done") &&
        (!stateActive(HOST_STATE_POWERON_TGT)))
     {
-        log<level::INFO>("Recieved signal that host is off");
+        log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
 
         // Check if we need to start a new transition (i.e. a Reboot)
@@ -312,7 +312,7 @@ int Host::sysStateChange(sd_bus_message* msg,
             (newStateResult == "done") &&
             (stateActive(HOST_STATE_POWERON_TGT)))
      {
-         log<level::INFO>("Recieved signal that host is running");
+         log<level::INFO>("Received signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
      }
      else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
