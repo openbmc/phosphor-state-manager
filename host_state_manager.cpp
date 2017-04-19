@@ -20,7 +20,7 @@ using namespace phosphor::logging;
 
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
-constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-quiesce-host@0.target";
+constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
