@@ -316,7 +316,8 @@ int Host::sysStateChange(sd_bus_message* msg,
          this->currentHostState(server::Host::HostState::Running);
      }
      else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
-             (newStateResult == "done"))
+             (newStateResult == "done") &&
+             (stateActive(HOST_STATE_QUIESCE_TGT)))
      {
          if (Host::isAutoReboot())
          {
