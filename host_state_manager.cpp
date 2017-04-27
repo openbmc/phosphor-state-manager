@@ -25,6 +25,8 @@ constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
+bool powerOffRequested = false;
+
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
@@ -297,6 +299,7 @@ int Host::sysStateChange(sd_bus_message* msg,
        (newStateResult == "done") &&
        (!stateActive(HOST_STATE_POWERON_TGT)))
     {
+        powerOffRequested = true;
         log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
 
@@ -312,13 +315,14 @@ int Host::sysStateChange(sd_bus_message* msg,
             (newStateResult == "done") &&
             (stateActive(HOST_STATE_POWERON_TGT)))
      {
+         powerOffRequested = false;
          log<level::INFO>("Received signal that host is running");
          this->currentHostState(server::Host::HostState::Running);
      }
      else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
              (newStateResult == "done"))
      {
-         if (Host::isAutoReboot())
+         if (Host::isAutoReboot() && !powerOffRequested)
          {
              log<level::INFO>("Auto reboot enabled. Beginning reboot...");
              Host::requestedHostTransition(server::Host::Transition::Reboot);
