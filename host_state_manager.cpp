@@ -275,23 +275,15 @@ bool Host::isAutoReboot()
     return false;
 }
 
-int Host::sysStateChangeSignal(sd_bus_message *msg, void *userData,
-                                  sd_bus_error *retError)
-{
-    return static_cast<Host*>(userData)->sysStateChange(msg, retError);
-}
-
-int Host::sysStateChange(sd_bus_message* msg,
-                         sd_bus_error* retError)
+void Host::sysStateChange(sdbusplus::message::message& msg)
 {
     uint32_t newStateID {};
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
 
-    auto sdPlusMsg = sdbusplus::message::message(msg);
     //Read the msg and populate each variable
-    sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+    msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     if((newStateUnit == HOST_STATE_POWEROFF_TGT) &&
        (newStateResult == "done") &&
@@ -330,8 +322,6 @@ int Host::sysStateChange(sd_bus_message* msg,
          }
 
      }
-
-    return 0;
 }
 
 Host::Transition Host::requestedHostTransition(Transition value)

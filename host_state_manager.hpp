@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <functional>
 #include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/State/Host/server.hpp"
 
@@ -11,13 +12,16 @@ namespace state
 namespace manager
 {
 
+using HostInherit = sdbusplus::server::object::object<
+        sdbusplus::xyz::openbmc_project::State::server::Host>;
+namespace sdbusRule = sdbusplus::bus::match::rules;
+
 /** @class Host
  *  @brief OpenBMC host state management implementation.
  *  @details A concrete implementation for xyz.openbmc_project.State.Host
  *  DBus API.
  */
-class Host : public sdbusplus::server::object::object<
-                sdbusplus::xyz::openbmc_project::State::server::Host>
+class Host : public HostInherit
 {
     public:
         /** @brief Constructs Host State Manager
@@ -31,19 +35,19 @@ class Host : public sdbusplus::server::object::object<
          * @param[in] objPath   - The Dbus object path
          */
         Host(sdbusplus::bus::bus& bus,
-                const char* busName,
-                const char* objPath) :
-                sdbusplus::server::object::object<
-                    sdbusplus::xyz::openbmc_project::State::server::Host>(
-                            bus, objPath, true),
+             const char* busName,
+             const char* objPath) :
+                HostInherit(bus, objPath, true),
                 bus(bus),
-                systemdSignals(bus,
-                               "type='signal',"
-                               "member='JobRemoved',"
-                               "path='/org/freedesktop/systemd1',"
-                               "interface='org.freedesktop.systemd1.Manager'",
-                                sysStateChangeSignal,
-                                this)
+                systemdSignals(
+                        bus,
+                        sdbusRule::type::signal() +
+                        sdbusRule::member("JobRemoved") +
+                        sdbusRule::path("/org/freedesktop/systemd1") +
+                        sdbusRule::interface(
+                                "org.freedesktop.systemd1.Manager"),
+                        std::bind(std::mem_fn(&Host::sysStateChange),
+                                  this, std::placeholders::_1))
         {
             // Enable systemd signals
             subscribeToSystemdSignals();
@@ -106,36 +110,21 @@ class Host : public sdbusplus::server::object::object<
          **/
         bool isAutoReboot();
 
-        /** @brief Callback function on systemd state changes
-         *
-         * Will just do a call into the appropriate object for processing
-         *
-         * @param[in]  msg       - Data associated with subscribed signal
-         * @param[in]  userData  - Pointer to this object instance
-         * @param[out] retError  - Not used but required with signal API
-         *
-         */
-        static int sysStateChangeSignal(sd_bus_message* msg,
-                                        void* userData,
-                                        sd_bus_error* retError);
-
         /** @brief Check if systemd state change is relevant to this object
          *
          * Instance specific interface to handle the detected systemd state
          * change
          *
          * @param[in]  msg       - Data associated with subscribed signal
-         * @param[out] retError  - Not used but required with signal API
          *
          */
-        int sysStateChange(sd_bus_message* msg,
-                           sd_bus_error* retError);
+        void sysStateChange(sdbusplus::message::message& msg);
 
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
 
         /** @brief Used to subscribe to dbus systemd signals **/
-        sdbusplus::server::match::match systemdSignals;
+        sdbusplus::bus::match_t systemdSignals;
 };
 
 } // namespace manager
