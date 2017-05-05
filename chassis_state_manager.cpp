@@ -149,23 +149,15 @@ bool Chassis::stateActive(const std::string& target)
 
 }
 
-int Chassis::sysStateChangeSignal(sd_bus_message *msg, void *userData,
-                                  sd_bus_error *retError)
-{
-    return static_cast<Chassis*>(userData)->sysStateChange(msg, retError);
-}
-
-int Chassis::sysStateChange(sd_bus_message* msg,
-                            sd_bus_error* retError)
+int Chassis::sysStateChange(sdbusplus::message::message& msg)
 {
     uint32_t newStateID {};
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
 
-    auto sdPlusMsg = sdbusplus::message::message(msg);
     //Read the msg and populate each variable
-    sdPlusMsg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+    msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     if((newStateUnit == CHASSIS_STATE_POWEROFF_TGT) &&
        (newStateResult == "done") &&
