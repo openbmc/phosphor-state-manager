@@ -130,7 +130,8 @@ int main(int argc, char *argv[])
         // Create file for host instance and create in filesystem to indicate
         // to services that host is running
         auto size = std::snprintf(nullptr,0,HOST_RUNNING_FILE,0);
-        std::unique_ptr<char[]> buf(new char[size+1]);
+        size++; // null
+        std::unique_ptr<char[]> buf(new char[size]);
         std::snprintf(buf.get(),size,HOST_RUNNING_FILE,0);
         std::ofstream outfile(buf.get());
         outfile.close();
