@@ -18,6 +18,10 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 
+// host-shutdown notifies host of shutdown and that path calls host-stop
+// so initiate a host shutdown with the -shutdown target and consider the
+// host shut down when the -stop target is complete
+constexpr auto HOST_STATE_SOFT_POWEROFF_TGT = "obmc-host-shutdown@0.target";
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
@@ -28,7 +32,7 @@ constexpr auto ACTIVATING_STATE = "activating";
 /* Map a transition to it's systemd target */
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
-        {server::Host::Transition::Off, HOST_STATE_POWEROFF_TGT},
+        {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
         {server::Host::Transition::On, HOST_STATE_POWERON_TGT}
 };
 
