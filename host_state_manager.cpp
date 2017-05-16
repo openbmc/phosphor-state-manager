@@ -36,10 +36,6 @@ constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
-constexpr auto SYSTEM_SERVICE   = "org.openbmc.managers.System";
-constexpr auto SYSTEM_OBJ_PATH  = "/org/openbmc/managers/System";
-constexpr auto SYSTEM_INTERFACE = SYSTEM_SERVICE;
-
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
@@ -77,16 +73,7 @@ void Host::determineInitialState()
 {
     std::string sysState;
 
-    auto method = this->bus.new_method_call(SYSTEM_SERVICE,
-                                            SYSTEM_OBJ_PATH,
-                                            SYSTEM_INTERFACE,
-                                            "getSystemState");
-
-    auto reply = this->bus.call(method);
-
-    reply.read(sysState);
-
-    if(sysState == "HOST_BOOTED")
+    if(stateActive(HOST_STATE_POWERON_TGT))
     {
         log<level::INFO>("Initial Host State will be Running",
                          entry("CURRENT_HOST_STATE=%s",
