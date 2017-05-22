@@ -47,7 +47,8 @@ constexpr auto REBOOTCOUNTER_INTERFACE("org.openbmc.SensorValue");
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
-constexpr auto DEFAULT_BOOTCOUNT = 2;
+// TODO openbmc/openbmc#1646 - boot count needs to be defined in 1 place
+constexpr auto DEFAULT_BOOTCOUNT = 3;
 
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
