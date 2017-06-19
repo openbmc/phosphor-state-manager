@@ -4,6 +4,10 @@
 #include <functional>
 #include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/State/Host/server.hpp"
+#include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
+#include <xyz/openbmc_project/Control/Boot/RebootAttempts/server.hpp>
+#include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
+#include "config.h"
 
 namespace phosphor
 {
@@ -13,7 +17,11 @@ namespace manager
 {
 
 using HostInherit = sdbusplus::server::object::object<
-        sdbusplus::xyz::openbmc_project::State::server::Host>;
+        sdbusplus::xyz::openbmc_project::State::server::Host,
+        sdbusplus::xyz::openbmc_project::State::Boot::server::Progress,
+        sdbusplus::xyz::openbmc_project::Control::Boot::server::RebootAttempts,
+        sdbusplus::xyz::openbmc_project::State::OperatingSystem::server::Status>;
+
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class Host
@@ -54,6 +62,8 @@ class Host : public HostInherit
 
             // Will throw exception on fail
             determineInitialState();
+
+            attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
 
             // We deferred this until we could get our property correct
             this->emit_object_added();
@@ -108,7 +118,10 @@ class Host : public HostInherit
          *
          * @param[in] bootCount  - new BOOTCOUNT value
          */
-        void setHostbootCount(int bootCount);
+        void setHostbootCount(int bootCount)
+        {
+            attemptsLeft(bootCount);
+        }
 
         /**
          * @brief Determine if auto reboot flag is set
