@@ -26,6 +26,7 @@ phosphor_discover_system_state_SOURCES = \
 phosphor_host_check_SOURCES = \
 	host_check_main.cpp
 
+
 generic_cxxflags = $(SYSTEMD_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) $(SDBUSPLUS_CFLAGS)
 generic_ldflags = $(SYSTEMD_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS) $(SDBUSPLUS_LIBS)
 
@@ -43,3 +44,4 @@ phosphor_discover_system_state_LDFLAGS = $(generic_ldflags)
 
 phosphor_host_check_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_check_LDFLAGS = $(generic_ldflags)
+
