@@ -5,7 +5,9 @@ sbin_PROGRAMS = \
 	phosphor-chassis-state-manager \
 	phosphor-bmc-state-manager \
 	phosphor-discover-system-state \
-	phosphor-host-check
+	phosphor-host-check \
+        phosphor-os-status \
+        phosphor-boot-progress
 
 phosphor_host_state_manager_SOURCES = \
 	host_state_manager.cpp \
@@ -25,6 +27,12 @@ phosphor_discover_system_state_SOURCES = \
 phosphor_host_check_SOURCES = \
 	host_check_main.cpp
 
+phosphor_os_status_SOURCES = \
+	os_status_main.cpp
+
+phosphor_boot_progress_SOURCES = \
+	boot_progress_main.cpp
+
 generic_cxxflags = $(SYSTEMD_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) $(SDBUSPLUS_CFLAGS)
 generic_ldflags = $(SYSTEMD_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS) $(SDBUSPLUS_LIBS)
 
@@ -42,3 +50,9 @@ phosphor_discover_system_state_LDFLAGS = $(generic_ldflags)
 
 phosphor_host_check_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_check_LDFLAGS = $(generic_ldflags)
+
+phosphor_os_status_CXXFLAGS = $(generic_cxxflags)
+phosphor_os_status_LDFLAGS = $(generic_ldflags)
+
+phosphor_boot_progress_CXXFLAGS = $(generic_cxxflags)
+phosphor_boot_progress_LDFLAGS = $(generic_ldflags)
