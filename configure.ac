@@ -52,6 +52,10 @@ AC_ARG_VAR(HOST_RUNNING_FILE, [File to create if host is running])
 AS_IF([test "x$HOST_RUNNING_FILE" == "x"], [HOST_RUNNING_FILE="/run/openbmc/host@%u-on"])
 AC_DEFINE_UNQUOTED([HOST_RUNNING_FILE], ["$HOST_RUNNING_FILE"], [File to create if host is running])
 
+AC_ARG_VAR(BOOT_COUNT_MAX_ALLOWED, [The maximum allowed reboot count])
+AS_IF([test "x$BOOT_COUNT_MAX_ALLOWED" == "x"], [BOOT_COUNT_MAX_ALLOWED=3])
+AC_DEFINE_UNQUOTED([BOOT_COUNT_MAX_ALLOWED], [$BOOT_COUNT_MAX_ALLOWED], [The maximum allowed reboot count])
+
 # Check for header files.
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find systemd/sd-bus.h...systemd developement package required])])
 AC_CHECK_HEADER(sdbusplus/server.hpp, ,[AC_MSG_ERROR([Could not find sdbusplus/server.hpp...openbmc/sdbusplus package required])])
