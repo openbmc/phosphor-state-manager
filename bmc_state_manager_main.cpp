@@ -12,7 +12,7 @@ int main(int argc, char**)
     auto objPathInst = std::string(BMC_OBJPATH) + '0';
 
     // Add sdbusplus ObjectManager.
-    sdbusplus::server::manager::manager objManager(bus, objPathInst.c_str());
+    sdbusplus::server::manager::manager objManager(bus, "");
 
     phosphor::state::manager::BMC manager(bus,
                                           objPathInst.c_str());
