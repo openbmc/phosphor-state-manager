@@ -51,9 +51,6 @@ constexpr auto REBOOTCOUNTER_INTERFACE("org.openbmc.SensorValue");
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
-// TODO openbmc/openbmc#1646 - boot count needs to be defined in 1 place
-constexpr auto DEFAULT_BOOTCOUNT = 3;
-
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
         {"HOST_BOOTING", server::Host::HostState::Running},
@@ -263,7 +260,7 @@ bool Host::isAutoReboot()
             // Reset reboot counter and go to quiesce state
             log<level::INFO>("Auto reboot enabled. "
                              "HOST BOOTCOUNT already set to 0.");
-            Host::setHostbootCount(DEFAULT_BOOTCOUNT);
+            Host::setHostbootCount(BOOT_COUNT_MAX_ALLOWED);
             return false;
         }
         else
