@@ -122,11 +122,11 @@ void BMC::executeTransition(const Transition tranReq)
                                             SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE,
                                             "StartUnit");
-
-    method.append(sysdUnit, "replace");
+    // The only valid transition is reboot and that
+    // needs to be irreversible once started
+    method.append(sysdUnit, "replace-irreversibly");
 
     this->bus.call(method);
-
     return;
 }
 
