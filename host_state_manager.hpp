@@ -127,6 +127,12 @@ class Host : public HostInherit
          */
         void sysStateChange(sdbusplus::message::message& msg);
 
+        /** @brief Determine whether restoring of host requested state is enabled
+         *
+         * @return boolean corresponding to restore setting
+         */
+        bool getStateRestoreSetting();
+
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
 

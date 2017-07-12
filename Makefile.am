@@ -9,7 +9,8 @@ sbin_PROGRAMS = \
 
 phosphor_host_state_manager_SOURCES = \
 	host_state_manager.cpp \
-	host_state_manager_main.cpp
+	host_state_manager_main.cpp \
+        host_state_serialize.cpp
 
 phosphor_chassis_state_manager_SOURCES = \
 	chassis_state_manager.cpp \
@@ -29,7 +30,7 @@ generic_cxxflags = $(SYSTEMD_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) $(SDBUSP
 generic_ldflags = $(SYSTEMD_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS) $(SDBUSPLUS_LIBS)
 
 phosphor_host_state_manager_CXXFLAGS = $(generic_cxxflags)
-phosphor_host_state_manager_LDFLAGS = $(generic_ldflags)
+phosphor_host_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
 
 phosphor_chassis_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_chassis_state_manager_LDFLAGS = $(generic_ldflags)
