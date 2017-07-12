@@ -2,6 +2,7 @@
 #include <iostream>
 #include <exception>
 #include <sdbusplus/bus.hpp>
+#include <experimental/filesystem>
 #include "config.h"
 #include "host_state_manager.hpp"
 
@@ -18,6 +19,12 @@ int main(int argc, char *argv[])
     phosphor::state::manager::Host manager(bus,
                                            HOST_BUSNAME,
                                            objPathInst.c_str());
+
+    std::string path(HOST_STATE_PERSIST_PATH);
+
+    std::size_t pos = path.rfind("/");
+    std::string dir = path.substr(0,pos);
+    std::experimental::filesystem::create_directories(dir);
 
     bus.request_name(HOST_BUSNAME);
 

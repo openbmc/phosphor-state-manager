@@ -4,7 +4,11 @@
 #include <systemd/sd-bus.h>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
+#include <experimental/filesystem>
 #include "host_state_manager.hpp"
+#include "host_state_serialize.hpp"
+#include "config.h"
+
 
 namespace phosphor
 {
@@ -17,6 +21,7 @@ namespace manager
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
+namespace fs = std::experimental::filesystem;
 
 // host-shutdown notifies host of shutdown and that leads to host-stop being
 // called so initiate a host shutdown with the -shutdown target and consider the
@@ -50,6 +55,11 @@ constexpr auto REBOOTCOUNTER_INTERFACE("org.openbmc.SensorValue");
 
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
+
+constexpr auto SETTINGS_INTERFACE = "org.openbmc.settings.Host";
+constexpr auto SETTINGS_PATH = "org/openbmc/settings/host0";
+constexpr auto SETTINGS_HOST_STATE_RESTORE = "power_policy";
+
 
 // TODO openbmc/openbmc#1646 - boot count needs to be defined in 1 place
 constexpr auto DEFAULT_BOOTCOUNT = 3;
@@ -92,11 +102,73 @@ void Host::determineInitialState()
         server::Host::requestedHostTransition(Transition::Off);
     }
 
-    // Set transition initially to Off
-    // TODO - Eventually need to restore this from persistent storage
-    server::Host::requestedHostTransition(Transition::Off);
+
+    auto restore = getStateRestoreSetting();
+
+    if(fs::exists(HOST_STATE_PERSIST_PATH)&& restore)
+    {
+        if(!deserialize(HOST_STATE_PERSIST_PATH,*this))
+        {
+            server::Host::requestedHostTransition(Transition::Off);
+        }
+    }
+    else
+    {
+        server::Host::requestedHostTransition(Transition::Off);
+    }
 
     return;
+}
+
+bool Host::getStateRestoreSetting()
+{
+    using namespace phosphor::logging;
+    auto mapperCall = bus.new_method_call(MAPPER_BUSNAME,
+                                          MAPPER_PATH,
+                                          MAPPER_INTERFACE,
+                                          "GetObject");
+    mapperCall.append(SETTINGS_PATH);
+    mapperCall.append(std::vector<std::string>({SETTINGS_INTERFACE}));
+
+    auto mapperResponseMsg = bus.call(mapperCall);
+    if (mapperResponseMsg.is_method_error())
+    {
+        log<level::ERR>("Error in mapper call");
+        return false;
+    }
+
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    mapperResponseMsg.read(mapperResponse);
+    if(mapperResponse.empty())
+    {
+        log<level::ERR>("Invalid response from mapper");
+        return false;
+    }
+
+    auto& service = mapperResponse.begin()->first;
+
+    auto cmdMsg  =  bus.new_method_call(service.c_str(),
+                                        SETTINGS_PATH,
+                                        SYSTEMD_PROPERTY_IFACE,
+                                        "Get");
+    cmdMsg.append(SETTINGS_INTERFACE);
+    cmdMsg.append(SETTINGS_HOST_STATE_RESTORE);
+
+    auto response = bus.call(cmdMsg);
+    if(response.is_method_error())
+    {
+        log<level::ERR>("Error in fetching host state restore settings");
+        return false;
+    }
+
+    sdbusplus::message::variant<std::string> result;
+    response.read(result);
+
+    if(sdbusplus::message::variant_ns::get<std::string>(result).compare("RESTORE_LAST_STATE"))
+    {
+        return true;
+    }
+    return false;
 }
 
 void Host::executeTransition(Transition tranReq)
@@ -355,7 +427,9 @@ Host::Transition Host::requestedHostTransition(Transition value)
     }
 
     executeTransition(tranReq);
-    return server::Host::requestedHostTransition(value);
+    auto retVal =  server::Host::requestedHostTransition(value);
+    serialize(*this);
+    return retVal;
 }
 
 Host::HostState Host::currentHostState(HostState value)
