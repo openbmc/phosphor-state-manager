@@ -4,7 +4,11 @@
 #include <systemd/sd-bus.h>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
+#include <experimental/filesystem>
 #include "host_state_manager.hpp"
+#include "host_state_serialize.hpp"
+#include "config.h"
+
 
 namespace phosphor
 {
@@ -17,6 +21,7 @@ namespace manager
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
+namespace fs = std::experimental::filesystem;
 
 // host-shutdown notifies host of shutdown and that leads to host-stop being
 // called so initiate a host shutdown with the -shutdown target and consider the
@@ -92,11 +97,28 @@ void Host::determineInitialState()
         server::Host::requestedHostTransition(Transition::Off);
     }
 
-    // Set transition initially to Off
-    // TODO - Eventually need to restore this from persistent storage
-    server::Host::requestedHostTransition(Transition::Off);
+
+    auto restore = getStateRestoreSetting();
+
+    if(fs::exists(HOST_STATE_PERSIST_PATH)&& restore)
+    {
+        if(!deserialize(HOST_STATE_PERSIST_PATH,*this))
+        {
+            server::Host::requestedHostTransition(Transition::Off);
+        }
+    }
+    else
+    {
+        server::Host::requestedHostTransition(Transition::Off);
+    }
 
     return;
+}
+
+bool Host::getStateRestoreSetting()
+{
+    //TODO will be done in next commit.
+    return true;
 }
 
 void Host::executeTransition(Transition tranReq)
@@ -355,7 +377,9 @@ Host::Transition Host::requestedHostTransition(Transition value)
     }
 
     executeTransition(tranReq);
-    return server::Host::requestedHostTransition(value);
+    auto retVal =  server::Host::requestedHostTransition(value);
+    serialize(*this);
+    return retVal;
 }
 
 Host::HostState Host::currentHostState(HostState value)

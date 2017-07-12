@@ -52,6 +52,12 @@ AC_ARG_VAR(HOST_RUNNING_FILE, [File to create if host is running])
 AS_IF([test "x$HOST_RUNNING_FILE" == "x"], [HOST_RUNNING_FILE="/run/openbmc/host@%u-on"])
 AC_DEFINE_UNQUOTED([HOST_RUNNING_FILE], ["$HOST_RUNNING_FILE"], [File to create if host is running])
 
+AC_ARG_VAR(HOST_STATE_PERSIST_PATH, [Path of file for storing requested host  state.])
+AS_IF([test "x$HOST_STATE_PERSIST_PATH" == "x"], \
+    [HOST_STATE_PERSIST_PATH="/var/lib/phosphor-state-manager/requestedHostTransition"])
+AC_DEFINE_UNQUOTED([HOST_STATE_PERSIST_PATH], ["$HOST_STATE_PERSIST_PATH"], \
+    [Path of file for storing requested host  state.])
+
 # Check for header files.
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find systemd/sd-bus.h...systemd developement package required])])
 AC_CHECK_HEADER(sdbusplus/server.hpp, ,[AC_MSG_ERROR([Could not find sdbusplus/server.hpp...openbmc/sdbusplus package required])])
