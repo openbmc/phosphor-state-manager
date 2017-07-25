@@ -4,8 +4,10 @@
 #include <systemd/sd-bus.h>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <experimental/filesystem>
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 #include "host_state_manager.hpp"
 #include "host_state_serialize.hpp"
 #include "config.h"
@@ -56,11 +58,6 @@ constexpr auto REBOOTCOUNTER_INTERFACE("org.openbmc.SensorValue");
 
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
-
-constexpr auto SETTINGS_INTERFACE =
-               "xyz.openbmc_project.Control.Power.RestorePolicy";
-constexpr auto SETTINGS_SERVICE_ROOT = "/";
-constexpr auto SETTINGS_HOST_STATE_RESTORE = "PowerRestorePolicy";
 
 // TODO openbmc/openbmc#1646 - boot count needs to be defined in 1 place
 constexpr auto DEFAULT_BOOTCOUNT = 3;
@@ -116,58 +113,32 @@ void Host::determineInitialState()
 
 bool Host::getStateRestoreSetting() const
 {
-    using namespace phosphor::logging;
-    auto depth = 0;
-    auto mapperCall = bus.new_method_call(MAPPER_BUSNAME,
-                                          MAPPER_PATH,
-                                          MAPPER_INTERFACE,
-                                          "GetSubTree");
-    mapperCall.append(SETTINGS_SERVICE_ROOT);
-    mapperCall.append(depth);
-    mapperCall.append(std::vector<std::string>({SETTINGS_INTERFACE}));
+    using namespace settings;
+    using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+    using namespace sdbusplus::xyz::openbmc_project::Control::Power::server;
 
-    auto mapperResponseMsg = bus.call(mapperCall);
-    if (mapperResponseMsg.is_method_error())
+    auto method =
+        bus.new_method_call(
+                settings.service(settings.powerRestorePolicy,
+                    powerRestoreIntf).c_str(),
+                settings.powerRestorePolicy.c_str(),
+                "org.freedesktop.DBus.Properties",
+                "Get");
+
+    method.append(powerRestoreIntf, "PowerRestorePolicy");
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
     {
-        log<level::ERR>("Error in mapper call");
-        return false;
-    }
-
-    using MapperResponseType = std::map<std::string,
-                               std::map<std::string, std::vector<std::string>>>;
-    MapperResponseType mapperResponse;
-    mapperResponseMsg.read(mapperResponse);
-    if (mapperResponse.empty())
-    {
-        log<level::ERR>("Invalid response from mapper");
-        return false;
-    }
-
-    auto& settingsPath = mapperResponse.begin()->first;
-    auto& service = mapperResponse.begin()->second.begin()->first;
-
-    auto cmdMsg  =  bus.new_method_call(service.c_str(),
-                                        settingsPath.c_str(),
-                                        SYSTEMD_PROPERTY_IFACE,
-                                        "Get");
-    cmdMsg.append(SETTINGS_INTERFACE);
-    cmdMsg.append(SETTINGS_HOST_STATE_RESTORE);
-
-    auto response = bus.call(cmdMsg);
-    if (response.is_method_error())
-    {
-        log<level::ERR>("Error in fetching host state restore settings");
-        return false;
+        log<level::ERR>("Error in PowerRestorePolicy Get");
+        elog<InternalFailure>();
     }
 
     sdbusplus::message::variant<std::string> result;
-    response.read(result);
+    reply.read(result);
+    auto powerPolicy = result.get<std::string>();
 
-    using RestorePolicy = sdbusplus::xyz::openbmc_project::Control::
-         Power::server::RestorePolicy;
-
-    if (RestorePolicy::convertPolicyFromString(result.get<std::string>()) ==
-        RestorePolicy::Policy::Restore)
+    if (RestorePolicy::Policy::Restore ==
+        RestorePolicy::convertPolicyFromString(powerPolicy))
     {
         return true;
     }
