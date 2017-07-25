@@ -21,7 +21,8 @@ phosphor_bmc_state_manager_SOURCES = \
 	bmc_state_manager_main.cpp
 
 phosphor_discover_system_state_SOURCES = \
-	discover_system_state.cpp
+	discover_system_state.cpp \
+	settings.cpp
 
 phosphor_host_check_SOURCES = \
 	host_check_main.cpp

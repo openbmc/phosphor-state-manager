@@ -5,8 +5,12 @@
 #include <systemd/sd-bus.h>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include "chassis_state_manager.hpp"
 #include "host_state_manager.hpp"
+#include "settings.hpp"
+#include "xyz/openbmc_project/Common/error.hpp"
+#include "xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp"
 
 namespace phosphor
 {
@@ -16,6 +20,8 @@ namespace manager
 {
 
 using namespace phosphor::logging;
+using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+using namespace sdbusplus::xyz::openbmc_project::Control::Power::server;
 
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
@@ -24,9 +30,6 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 constexpr auto HOST_PATH = "/xyz/openbmc_project/state/host0";
-
-constexpr auto SETTINGS_PATH = "/org/openbmc/settings/host0";
-constexpr auto SETTINGS_INTERFACE = "org.openbmc.settings.Host";
 
 constexpr auto CHASSIS_PATH = "/xyz/openbmc_project/state/chassis0";
 
@@ -118,7 +121,12 @@ void setProperty(sdbusplus::bus::bus& bus, std::string path,
 
 int main()
 {
+    using namespace phosphor::logging;
+
     auto bus = sdbusplus::bus::new_default();
+
+    using namespace settings;
+    Objects settings(bus);
 
     using namespace phosphor::state::manager;
     namespace server = sdbusplus::xyz::openbmc_project::State::server;
@@ -129,14 +137,30 @@ int main()
 
     if(currentPowerState == convertForMessage(server::Chassis::PowerState::Off))
     {
-        std::string power_policy = getProperty(bus, SETTINGS_PATH,
-                                               SETTINGS_INTERFACE,
-                                               "power_policy");
+        auto method =
+            bus.new_method_call(
+                    settings.service(settings.powerRestorePolicy,
+                        powerRestoreIntf).c_str(),
+                    settings.powerRestorePolicy.c_str(),
+                    "org.freedesktop.DBus.Properties",
+                    "Get");
+        method.append(powerRestoreIntf, "PowerRestorePolicy");
+        auto reply = bus.call(method);
+        if (reply.is_method_error())
+        {
+            log<level::ERR>("Error in PowerRestorePolicy Get");
+            elog<InternalFailure>();
+        }
+
+        sdbusplus::message::variant<std::string> result;
+        reply.read(result);
+        auto powerPolicy = result.get<std::string>();
 
         log<level::INFO>("Host power is off, checking power policy",
-                         entry("POWER_POLICY=%s", power_policy.c_str()));
+                         entry("POWER_POLICY=%s", powerPolicy.c_str()));
 
-        if (power_policy == "ALWAYS_POWER_ON")
+        if (RestorePolicy::Policy::AlwaysOn ==
+            RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
             setProperty(bus, HOST_PATH, HOST_BUSNAME,
