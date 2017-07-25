@@ -180,59 +180,25 @@ void Host::setHostbootCount(int bootCount)
 
 bool Host::isAutoReboot()
 {
-    sdbusplus::message::variant<std::string> autoRebootParam;
-    std::string strParam;
+    using namespace settings;
 
-    std::string HOST_PATH("/org/openbmc/settings/host0");
-    std::string HOST_INTERFACE("org.openbmc.settings.Host");
-
-    auto mapper = this->bus.new_method_call(MAPPER_BUSNAME,
-                                            MAPPER_PATH,
-                                            MAPPER_INTERFACE,
-                                            "GetObject");
-
-    mapper.append(HOST_PATH, std::vector<std::string>({HOST_INTERFACE}));
-    auto mapperResponseMsg = this->bus.call(mapper);
-
-    if (mapperResponseMsg.is_method_error())
-    {
-        log<level::ERR>("Error in mapper call");
-        return false;
-    }
-
-    std::map<std::string, std::vector<std::string>> mapperResponse;
-    mapperResponseMsg.read(mapperResponse);
-    if (mapperResponse.empty())
-    {
-        log<level::ERR>("Error reading mapper response");
-        return false;
-    }
-
-    const auto& host = mapperResponse.begin()->first;
-
-    auto method = this->bus.new_method_call(host.c_str(),
-                                            HOST_PATH.c_str(),
-                                            "org.freedesktop.DBus.Properties",
-                                            "Get");
-
-    method.append(HOST_INTERFACE.c_str(), "auto_reboot");
-    auto reply = this->bus.call(method);
-
+    auto method =
+        bus.new_method_call(
+                settings.service(settings.autoReboot, autoRebootIntf).c_str(),
+                settings.autoReboot.c_str(),
+                "org.freedesktop.DBus.Properties",
+                "Get");
+    method.append(autoRebootIntf, "AutoReboot");
+    auto reply = bus.call(method);
     if (reply.is_method_error())
     {
-        log<level::ERR>("Error in auto_reboot Get");
+        log<level::ERR>("Error in AutoReboot Get");
         return false;
     }
 
-    reply.read(autoRebootParam);
-    strParam =
-        sdbusplus::message::variant_ns::get<std::string>(autoRebootParam);
-
-    if (strParam.empty())
-    {
-        log<level::ERR>("Error reading auto_reboot response");
-        return false;
-    }
+    sdbusplus::message::variant<bool> result;
+    reply.read(result);
+    auto autoReboot = result.get<bool>();
 
     sdbusplus::message::variant<int> rebootCounterParam = 0;
     method = this->bus.new_method_call(REBOOTCOUNTER_SERVICE,
@@ -247,7 +213,7 @@ bool Host::isAutoReboot()
     }
     reply.read(rebootCounterParam);
 
-    if (strParam == "yes")
+    if (autoReboot)
     {
         if( rebootCounterParam > 0)
         {

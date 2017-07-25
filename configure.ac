@@ -16,6 +16,8 @@ PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces],,\
     AC_MSG_ERROR(["Requires phosphor-dbus-interfaces package."]))
 PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,
     AC_MSG_ERROR(["Requires sdbusplus package."]))
+PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging],,\
+    AC_MSG_ERROR(["Requires phosphor-logging package."]))
 
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX_14([noext])
