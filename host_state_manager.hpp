@@ -4,6 +4,7 @@
 #include <functional>
 #include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/State/Host/server.hpp"
+#include "settings.hpp"
 
 namespace phosphor
 {
@@ -47,7 +48,8 @@ class Host : public HostInherit
                         sdbusRule::interface(
                                 "org.freedesktop.systemd1.Manager"),
                         std::bind(std::mem_fn(&Host::sysStateChange),
-                                  this, std::placeholders::_1))
+                                  this, std::placeholders::_1)),
+                settings(bus)
         {
             // Enable systemd signals
             subscribeToSystemdSignals();
@@ -138,6 +140,9 @@ class Host : public HostInherit
 
         /** @brief Used to subscribe to dbus systemd signals **/
         sdbusplus::bus::match_t systemdSignals;
+
+        // Settings objects of interest
+        settings::Objects settings;
 };
 
 } // namespace manager
