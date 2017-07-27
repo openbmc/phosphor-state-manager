@@ -30,6 +30,7 @@ namespace fs = std::experimental::filesystem;
 constexpr auto HOST_STATE_SOFT_POWEROFF_TGT = "obmc-host-shutdown@0.target";
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
+constexpr auto HOST_STATE_REBOOT_TGT = "obmc-host-reboot@0.target";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
 constexpr auto ACTIVE_STATE = "active";
@@ -39,7 +40,8 @@ constexpr auto ACTIVATING_STATE = "activating";
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
         {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
-        {server::Host::Transition::On, HOST_STATE_POWERON_TGT}
+        {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
+        {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT}
 };
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
@@ -372,13 +374,6 @@ void Host::sysStateChange(sdbusplus::message::message& msg)
         log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
 
-        // Check if we need to start a new transition (i.e. a Reboot)
-        if(this->server::Host::requestedHostTransition() ==
-               Transition::Reboot)
-        {
-            log<level::DEBUG>("Reached intermediate state, going to next");
-            this->executeTransition(server::Host::Transition::On);
-        }
     }
     else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
             (newStateResult == "done") &&
@@ -412,24 +407,7 @@ Host::Transition Host::requestedHostTransition(Transition value)
             entry("REQUESTED_HOST_TRANSITION=%s",
                   convertForMessage(value).c_str()));
 
-    Transition tranReq = value;
-    if(value == server::Host::Transition::Reboot)
-    {
-        // On reboot requests we just need to do a off if we're on and
-        // vice versa.  The handleSysStateChange() code above handles the
-        // second part of the reboot
-        if(this->server::Host::currentHostState() ==
-            server::Host::HostState::Off)
-        {
-            tranReq = server::Host::Transition::On;
-        }
-        else
-        {
-            tranReq = server::Host::Transition::Off;
-        }
-    }
-
-    executeTransition(tranReq);
+    executeTransition(value);
     auto retVal =  server::Host::requestedHostTransition(value);
     serialize(*this);
     return retVal;
