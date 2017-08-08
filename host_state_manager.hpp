@@ -3,6 +3,7 @@
 #include <string>
 #include <functional>
 #include <sdbusplus/bus.hpp>
+#include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 #include <xyz/openbmc_project/Control/Boot/RebootAttempts/server.hpp>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
@@ -22,6 +23,8 @@ using HostInherit = sdbusplus::server::object::object<
         sdbusplus::xyz::openbmc_project::State::Boot::server::Progress,
         sdbusplus::xyz::openbmc_project::Control::Boot::server::RebootAttempts,
         sdbusplus::xyz::openbmc_project::State::OperatingSystem::server::Status>;
+
+using namespace phosphor::logging;
 
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
@@ -76,6 +79,28 @@ class Host : public HostInherit
 
         /** @brief Set value of CurrentHostState */
         HostState currentHostState(HostState value) override;
+
+        /**
+         * @brief Set value boot attempts left
+         *
+         * OpenBMC software controls the number of allowed reboot attempts so
+         * any external set request of this property will be overridden by
+         * this function and set to the default.
+         *
+         * The only code responsible for decrementing the boot count resides
+         * within this process and that will use the sub class interface
+         * directly
+         *
+         * @param[in] value      - Reboot count value, will be ignored
+         */
+        uint32_t attemptsLeft(uint32_t value) override
+        {
+            namespace reboot = sdbusplus::xyz::openbmc_project::Control::
+                    Boot::server;
+            log<level::INFO>("External request to reset reboot count");
+            return (reboot::RebootAttempts::attemptsLeft(
+                    BOOT_COUNT_MAX_ALLOWED));
+        }
 
     private:
         /**
@@ -137,6 +162,16 @@ class Host : public HostInherit
          * @return boolean corresponding to restore setting
          */
         bool getStateRestoreSetting() const;
+
+        /** @brief Cedrement reboot count
+         *
+         * This is used internally to this application to decrement the boot
+         * count on each boot attempt. The host will use the external
+         * attemptsLeft() interface to reset the count when a boot is successful
+         *
+         * @return number of reboot count attempts left
+         * */
+        uint32_t decrementRebootCount();
 
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
