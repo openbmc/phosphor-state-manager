@@ -234,9 +234,7 @@ bool Host::isAutoReboot()
         if (rebootCounterParam > 0)
         {
             // Reduce BOOTCOUNT by 1
-            log<level::INFO>("Auto reboot enabled. "
-                             "Reducing HOST BOOTCOUNT by 1.");
-            attemptsLeft(rebootCounterParam - 1);
+            log<level::INFO>("Auto reboot enabled, rebooting");
             return true;
         }
         else if(rebootCounterParam == 0)
@@ -333,6 +331,17 @@ Host::Transition Host::requestedHostTransition(Transition value)
         {
             tranReq = server::Host::Transition::Off;
         }
+    }
+
+    // If this is not a power off request then we need to
+    // decrement the reboot counter.  This code should
+    // never prevent a power on, it should just decrement
+    // the count to 0.  The quiesce handling is where the
+    // check of this count will occur
+    if((value != server::Host::Transition::Off) &&
+       (attemptsLeft() > 0))
+    {
+        attemptsLeft(attemptsLeft() - 1);
     }
 
     executeTransition(tranReq);
