@@ -20,8 +20,9 @@ namespace state
 namespace manager
 {
 
-// When you see server:: you know we're referencing our base class
+// When you see server:: or reboot:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace reboot = sdbusplus::xyz::openbmc_project::Control::Boot::server;
 
 using namespace phosphor::logging;
 namespace fs = std::experimental::filesystem;
@@ -229,16 +230,14 @@ bool Host::isAutoReboot()
     sdbusplus::message::variant<bool> result;
     reply.read(result);
     auto autoReboot = result.get<bool>();
-    auto rebootCounterParam = attemptsLeft();
+    auto rebootCounterParam = reboot::RebootAttempts::attemptsLeft();
 
     if (autoReboot)
     {
         if (rebootCounterParam > 0)
         {
             // Reduce BOOTCOUNT by 1
-            log<level::INFO>("Auto reboot enabled. "
-                             "Reducing HOST BOOTCOUNT by 1.");
-            attemptsLeft(rebootCounterParam - 1);
+            log<level::INFO>("Auto reboot enabled, rebooting");
             return true;
         }
         else if(rebootCounterParam == 0)
@@ -306,6 +305,16 @@ void Host::sysStateChange(sdbusplus::message::message& msg)
      }
 }
 
+uint32_t Host::decrementRebootCount()
+{
+    auto rebootCount = reboot::RebootAttempts::attemptsLeft();
+    if(rebootCount > 0)
+    {
+        return(reboot::RebootAttempts::attemptsLeft(rebootCount - 1));
+    }
+    return rebootCount;
+}
+
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     log<level::INFO>(
@@ -313,7 +322,18 @@ Host::Transition Host::requestedHostTransition(Transition value)
             entry("REQUESTED_HOST_TRANSITION=%s",
                   convertForMessage(value).c_str()));
 
+    // If this is not a power off request then we need to
+    // decrement the reboot counter.  This code should
+    // never prevent a power on, it should just decrement
+    // the count to 0.  The quiesce handling is where the
+    // check of this count will occur
+    if(value != server::Host::Transition::Off)
+    {
+        decrementRebootCount();
+    }
+
     executeTransition(value);
+
     auto retVal =  server::Host::requestedHostTransition(value);
     serialize(*this);
     return retVal;
