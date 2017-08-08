@@ -22,6 +22,7 @@ namespace manager
 
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace reboot = sdbusplus::xyz::openbmc_project::Control::Boot::server;
 
 using namespace phosphor::logging;
 namespace fs = std::experimental::filesystem;
@@ -32,6 +33,7 @@ namespace fs = std::experimental::filesystem;
 constexpr auto HOST_STATE_SOFT_POWEROFF_TGT = "obmc-host-shutdown@0.target";
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
+constexpr auto HOST_STATE_REBOOT_TGT = "obmc-host-reboot@0.target";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
 constexpr auto ACTIVE_STATE = "active";
@@ -41,7 +43,8 @@ constexpr auto ACTIVATING_STATE = "activating";
 const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
 {
         {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
-        {server::Host::Transition::On, HOST_STATE_POWERON_TGT}
+        {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
+        {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT}
 };
 
 constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
@@ -227,16 +230,14 @@ bool Host::isAutoReboot()
     sdbusplus::message::variant<bool> result;
     reply.read(result);
     auto autoReboot = result.get<bool>();
-    auto rebootCounterParam = attemptsLeft();
+    auto rebootCounterParam = reboot::RebootAttempts::attemptsLeft();
 
     if (autoReboot)
     {
         if (rebootCounterParam > 0)
         {
             // Reduce BOOTCOUNT by 1
-            log<level::INFO>("Auto reboot enabled. "
-                             "Reducing HOST BOOTCOUNT by 1.");
-            attemptsLeft(rebootCounterParam - 1);
+            log<level::INFO>("Auto reboot enabled, rebooting");
             return true;
         }
         else if(rebootCounterParam == 0)
@@ -278,13 +279,6 @@ void Host::sysStateChange(sdbusplus::message::message& msg)
         log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
 
-        // Check if we need to start a new transition (i.e. a Reboot)
-        if(this->server::Host::requestedHostTransition() ==
-               Transition::Reboot)
-        {
-            log<level::DEBUG>("Reached intermediate state, going to next");
-            this->executeTransition(server::Host::Transition::On);
-        }
     }
     else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
             (newStateResult == "done") &&
@@ -311,6 +305,12 @@ void Host::sysStateChange(sdbusplus::message::message& msg)
      }
 }
 
+uint32_t Host::decrementRebootCount()
+{
+    return(reboot::RebootAttempts::attemptsLeft(
+            reboot::RebootAttempts::attemptsLeft() - 1));
+}
+
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     log<level::INFO>(
@@ -318,24 +318,19 @@ Host::Transition Host::requestedHostTransition(Transition value)
             entry("REQUESTED_HOST_TRANSITION=%s",
                   convertForMessage(value).c_str()));
 
-    Transition tranReq = value;
-    if(value == server::Host::Transition::Reboot)
+    executeTransition(value);
+
+    // If this is not a power off request then we need to
+    // decrement the reboot counter.  This code should
+    // never prevent a power on, it should just decrement
+    // the count to 0.  The quiesce handling is where the
+    // check of this count will occur
+    if((value != server::Host::Transition::Off) &&
+       (reboot::RebootAttempts::attemptsLeft() > 0))
     {
-        // On reboot requests we just need to do a off if we're on and
-        // vice versa.  The handleSysStateChange() code above handles the
-        // second part of the reboot
-        if(this->server::Host::currentHostState() ==
-            server::Host::HostState::Off)
-        {
-            tranReq = server::Host::Transition::On;
-        }
-        else
-        {
-            tranReq = server::Host::Transition::Off;
-        }
+        decrementRebootCount();
     }
 
-    executeTransition(tranReq);
     auto retVal =  server::Host::requestedHostTransition(value);
     serialize(*this);
     return retVal;
