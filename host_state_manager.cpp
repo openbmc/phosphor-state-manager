@@ -23,7 +23,9 @@ namespace manager
 // When you see server:: or reboot:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 namespace reboot = sdbusplus::xyz::openbmc_project::Control::Boot::server;
-
+namespace bootprogress = sdbusplus::xyz::openbmc_project::State::Boot::server;
+namespace osstatus =
+    sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
 using namespace phosphor::logging;
 namespace fs = std::experimental::filesystem;
 
@@ -278,6 +280,8 @@ void Host::sysStateChange(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
+        this->bootProgress(bootprogress::Progress::ProgressStages::Unspecified);
+        this->operatingSystemState(osstatus::Status::OSStatus::PoweredOff);
 
     }
     else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
