@@ -2,6 +2,12 @@
 #include <map>
 #include <string>
 #include <systemd/sd-bus.h>
+#include <cereal/cereal.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/tuple.hpp>
+#include <cereal/archives/json.hpp>
+#include <fstream>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
@@ -9,7 +15,7 @@
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include "host_state_manager.hpp"
-#include "host_state_serialize.hpp"
+//#include "host_state_serialize.hpp"
 #include "config.h"
 
 
@@ -98,49 +104,13 @@ void Host::determineInitialState()
         server::Host::requestedHostTransition(Transition::Off);
     }
 
-    auto restore = getStateRestoreSetting();
-
-    if ((!restore) || (!deserialize(HOST_STATE_PERSIST_PATH, *this)))
+    if (!deserialize(HOST_STATE_PERSIST_PATH, *this))
     {
         //set to default value.
         server::Host::requestedHostTransition(Transition::Off);
     }
 
     return;
-}
-
-bool Host::getStateRestoreSetting() const
-{
-    using namespace settings;
-    using namespace sdbusplus::xyz::openbmc_project::Common::Error;
-    using namespace sdbusplus::xyz::openbmc_project::Control::Power::server;
-
-    auto method =
-        bus.new_method_call(
-                settings.service(settings.powerRestorePolicy,
-                    powerRestoreIntf).c_str(),
-                settings.powerRestorePolicy.c_str(),
-                "org.freedesktop.DBus.Properties",
-                "Get");
-
-    method.append(powerRestoreIntf, "PowerRestorePolicy");
-    auto reply = bus.call(method);
-    if (reply.is_method_error())
-    {
-        log<level::ERR>("Error in PowerRestorePolicy Get");
-        elog<InternalFailure>();
-    }
-
-    sdbusplus::message::variant<std::string> result;
-    reply.read(result);
-    auto powerPolicy = result.get<std::string>();
-
-    if (RestorePolicy::Policy::Restore ==
-        RestorePolicy::convertPolicyFromString(powerPolicy))
-    {
-        return true;
-    }
-    return false;
 }
 
 void Host::executeTransition(Transition tranReq)
@@ -317,6 +287,47 @@ uint32_t Host::decrementRebootCount()
         return(reboot::RebootAttempts::attemptsLeft(rebootCount - 1));
     }
     return rebootCount;
+}
+
+template<class Archive>
+void Host::save(Archive& archive, const Host& host)
+{
+    archive(convertForMessage(host.sdbusplus::xyz::openbmc_project::
+           State::server::Host::requestedHostTransition()));
+}
+
+template<class Archive>
+void Host::load(Archive& archive, Host& host)
+{
+    using namespace
+        sdbusplus::xyz::openbmc_project::State::server;
+
+    Host::Transition requestedHostTransition{};
+
+    std::string str;
+    archive(str);
+    requestedHostTransition = Host::convertTransitionFromString(str);
+    host.requestedHostTransition(requestedHostTransition);
+}
+
+fs::path Host::serialize(const Host& host, const fs::path& dir)
+{
+    std::ofstream os(dir.c_str(), std::ios::binary);
+    cereal::JSONOutputArchive oarchive(os);
+    oarchive(host);
+    return dir;
+}
+
+bool Host::deserialize(const fs::path& path, Host& host)
+{
+    if (fs::exists(path))
+    {
+        std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
+        cereal::JSONInputArchive iarchive(is);
+        iarchive(host);
+        return true;
+    }
+    return false;
 }
 
 Host::Transition Host::requestedHostTransition(Transition value)
