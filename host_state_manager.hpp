@@ -2,6 +2,8 @@
 
 #include <string>
 #include <functional>
+#include <experimental/filesystem>
+#include <cereal/access.hpp>
 #include <sdbusplus/bus.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
@@ -27,6 +29,7 @@ using HostInherit = sdbusplus::server::object::object<
 using namespace phosphor::logging;
 
 namespace sdbusRule = sdbusplus::bus::match::rules;
+namespace fs = std::experimental::filesystem;
 
 /** @class Host
  *  @brief OpenBMC host state management implementation.
@@ -157,12 +160,6 @@ class Host : public HostInherit
          */
         void sysStateChange(sdbusplus::message::message& msg);
 
-        /** @brief Determine whether restoring of host requested state is enabled
-         *
-         * @return boolean corresponding to restore setting
-         */
-        bool getStateRestoreSetting() const;
-
         /** @brief Decrement reboot count
          *
          * This is used internally to this application to decrement the boot
@@ -172,6 +169,63 @@ class Host : public HostInherit
          * @return number of reboot count attempts left
          */
         uint32_t decrementRebootCount();
+
+        // Allow cereal class access to allow these next two function to be
+        // private
+        friend class cereal::access;
+
+        /** @brief Function required by Cereal to perform serialization.
+         *
+         *  @tparam Archive - Cereal archive type (binary in our case).
+         *  @param[in] archive - reference to Cereal archive.
+         */
+        template<class Archive>
+        void save(Archive& archive) const
+        {
+            archive(convertForMessage(sdbusplus::xyz::openbmc_project::
+                                      State::server::Host::
+                                      requestedHostTransition()));
+        }
+
+        /** @brief Function required by Cereal to perform deserialization.
+         *
+         *  @tparam Archive - Cereal archive type (binary in our case).
+         *  @param[in] archive - reference to Cereal archive.
+         */
+        template<class Archive>
+        void load(Archive& archive)
+        {
+            std::string str;
+            archive(str);
+            auto reqTran = Host::convertTransitionFromString(str);
+            // When restoring, set the requested state with persistent value
+            // but don't call the override which would execute it
+            sdbusplus::xyz::openbmc_project::State::server::Host::
+                requestedHostTransition(reqTran);
+        }
+
+        /** @brief Serialize and persist requested host state
+         *
+         *  @param[in] host - const reference to host state.
+         *  @param[in] dir - pathname of file where the serialized host state will
+         *                   be placed.
+         *
+         *  @return fs::path - pathname of persisted requested host state.
+         */
+        fs::path serialize(const Host& host,
+                           const fs::path& dir =
+                                   fs::path(HOST_STATE_PERSIST_PATH));
+
+        /** @brief Deserialze a persisted requested host state.
+         *
+         *  @param[in] path - pathname of persisted host state file
+         *  @param[in] host - reference to host state object which is the target
+         *                    of deserialization.
+         *
+         *  @return bool - true if the deserialization was successful, false
+         *                 otherwise.
+         */
+        bool deserialize(const fs::path& path, Host& host);
 
         /** @brief Persistent sdbusplus DBus bus connection. */
         sdbusplus::bus::bus& bus;
