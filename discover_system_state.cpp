@@ -6,7 +6,6 @@
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
-#include "chassis_state_manager.hpp"
 #include "host_state_manager.hpp"
 #include "settings.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
@@ -30,8 +29,6 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 constexpr auto HOST_PATH = "/xyz/openbmc_project/state/host0";
-
-constexpr auto CHASSIS_PATH = "/xyz/openbmc_project/state/chassis0";
 
 std::string getService(sdbusplus::bus::bus& bus, std::string path,
                        std::string interface)
@@ -131,43 +128,50 @@ int main()
     using namespace phosphor::state::manager;
     namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
-    std::string currentPowerState = getProperty(bus, CHASSIS_PATH,
-                                                CHASSIS_BUSNAME,
-                                                "CurrentPowerState");
+    // This application is only run if chassis power is off
 
-    if(currentPowerState == convertForMessage(server::Chassis::PowerState::Off))
+    auto method =
+        bus.new_method_call(
+                settings.service(settings.powerRestorePolicy,
+                    powerRestoreIntf).c_str(),
+                settings.powerRestorePolicy.c_str(),
+                "org.freedesktop.DBus.Properties",
+                "Get");
+    method.append(powerRestoreIntf, "PowerRestorePolicy");
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
     {
-        auto method =
-            bus.new_method_call(
-                    settings.service(settings.powerRestorePolicy,
-                        powerRestoreIntf).c_str(),
-                    settings.powerRestorePolicy.c_str(),
-                    "org.freedesktop.DBus.Properties",
-                    "Get");
-        method.append(powerRestoreIntf, "PowerRestorePolicy");
-        auto reply = bus.call(method);
-        if (reply.is_method_error())
-        {
-            log<level::ERR>("Error in PowerRestorePolicy Get");
-            elog<InternalFailure>();
-        }
+        log<level::ERR>("Error in PowerRestorePolicy Get");
+        elog<InternalFailure>();
+    }
 
-        sdbusplus::message::variant<std::string> result;
-        reply.read(result);
-        auto powerPolicy = result.get<std::string>();
+    sdbusplus::message::variant<std::string> result;
+    reply.read(result);
+    auto powerPolicy = result.get<std::string>();
 
-        log<level::INFO>("Host power is off, checking power policy",
-                         entry("POWER_POLICY=%s", powerPolicy.c_str()));
+    log<level::INFO>("Host power is off, checking power policy",
+                     entry("POWER_POLICY=%s", powerPolicy.c_str()));
 
-        if (RestorePolicy::Policy::AlwaysOn ==
+    if (RestorePolicy::Policy::AlwaysOn ==
+        RestorePolicy::convertPolicyFromString(powerPolicy))
+    {
+        log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
+        setProperty(bus, HOST_PATH, HOST_BUSNAME,
+                    "RequestedHostTransition",
+                    convertForMessage(server::Host::Transition::On));
+    }
+    else if(RestorePolicy::Policy::Restore ==
             RestorePolicy::convertPolicyFromString(powerPolicy))
-        {
-            log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
-            setProperty(bus, HOST_PATH, HOST_BUSNAME,
-                        "RequestedHostTransition",
-                        convertForMessage(server::Host::Transition::On));
-        }
+    {
+        log<level::INFO>("power_policy=RESTORE, restoring last state");
 
+        // Read last requested state and re-request it to execute it
+        auto hostReqState = getProperty(bus, HOST_PATH,
+                                        HOST_BUSNAME,
+                                        "RequestedHostTransition");
+        setProperty(bus, HOST_PATH, HOST_BUSNAME,
+                    "RequestedHostTransition",
+                    hostReqState);
     }
 
     return 0;

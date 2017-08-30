@@ -10,7 +10,6 @@ sbin_PROGRAMS = \
 phosphor_host_state_manager_SOURCES = \
 	host_state_manager.cpp \
 	host_state_manager_main.cpp \
-	host_state_serialize.cpp \
 	settings.cpp
 
 phosphor_chassis_state_manager_SOURCES = \
