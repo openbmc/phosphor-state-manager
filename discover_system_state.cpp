@@ -1,3 +1,4 @@
+#include <getopt.h>
 #include <iostream>
 #include <map>
 #include <string>
@@ -28,7 +29,7 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-constexpr auto HOST_PATH = "/xyz/openbmc_project/state/host0";
+constexpr auto CHASSIS_PATH = "/xyz/openbmc_project/state/chassis0";
 
 std::string getService(sdbusplus::bus::bus& bus, std::string path,
                        std::string interface)
@@ -116,9 +117,32 @@ void setProperty(sdbusplus::bus::bus& bus, std::string path,
 } // namespace state
 } // namepsace phosphor
 
-int main()
+int main(int argc, char** argv)
 {
     using namespace phosphor::logging;
+
+    std::string hostPath = "/xyz/openbmc_project/state/host0";
+    int arg;
+    int optIndex = 0;
+
+    static struct option longOpts[] =
+    {
+          {"host", required_argument, 0, 'h'},
+          {0, 0, 0, 0}
+    };
+
+    while((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
+    {
+        switch (arg)
+        {
+            case 'h':
+                hostPath = std::string("/xyz/openbmc_project/state/host") +
+                        optarg;
+                break;
+            default:
+                break;
+        }
+    }
 
     auto bus = sdbusplus::bus::new_default();
 
@@ -156,7 +180,7 @@ int main()
         RestorePolicy::convertPolicyFromString(powerPolicy))
     {
         log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
-        setProperty(bus, HOST_PATH, HOST_BUSNAME,
+        setProperty(bus, hostPath, HOST_BUSNAME,
                     "RequestedHostTransition",
                     convertForMessage(server::Host::Transition::On));
     }
@@ -166,10 +190,10 @@ int main()
         log<level::INFO>("power_policy=RESTORE, restoring last state");
 
         // Read last requested state and re-request it to execute it
-        auto hostReqState = getProperty(bus, HOST_PATH,
+        auto hostReqState = getProperty(bus, hostPath,
                                         HOST_BUSNAME,
                                         "RequestedHostTransition");
-        setProperty(bus, HOST_PATH, HOST_BUSNAME,
+        setProperty(bus, hostPath, HOST_BUSNAME,
                     "RequestedHostTransition",
                     hostReqState);
     }
