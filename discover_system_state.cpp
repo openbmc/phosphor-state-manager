@@ -28,8 +28,6 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-constexpr auto HOST_PATH = "/xyz/openbmc_project/state/host0";
-
 std::string getService(sdbusplus::bus::bus& bus, std::string path,
                        std::string interface)
 {
@@ -116,9 +114,21 @@ void setProperty(sdbusplus::bus::bus& bus, std::string path,
 } // namespace state
 } // namepsace phosphor
 
-int main()
+int main(int argc, char** argv)
 {
     using namespace phosphor::logging;
+
+    std::string HOST_PATH;
+
+    if ((argc > 2) && strcmp(argv[1], "--host") == 0)
+    {
+        HOST_PATH = std::string("/xyz/openbmc_project/state/host") +
+                argv[2];
+    }
+    else
+    {
+        HOST_PATH = "/xyz/openbmc_project/state/host0";
+    }
 
     auto bus = sdbusplus::bus::new_default();
 
