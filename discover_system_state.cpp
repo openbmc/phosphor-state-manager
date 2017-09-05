@@ -1,3 +1,4 @@
+#include <getopt.h>
 #include <iostream>
 #include <map>
 #include <string>
@@ -28,7 +29,7 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-constexpr auto HOST_PATH = "/xyz/openbmc_project/state/host0";
+constexpr auto CHASSIS_PATH = "/xyz/openbmc_project/state/chassis0";
 
 std::string getService(sdbusplus::bus::bus& bus, std::string path,
                        std::string interface)
@@ -116,9 +117,39 @@ void setProperty(sdbusplus::bus::bus& bus, std::string path,
 } // namespace state
 } // namepsace phosphor
 
-int main()
+int main(int argc, char** argv)
 {
     using namespace phosphor::logging;
+
+    std::string HOST_PATH;
+    int arg;
+    bool hostSpecified = false;
+    int opt_index = 0;
+
+    static struct option long_opts[] =
+    {
+          {"host", required_argument, 0, 'h'},
+          {0, 0, 0, 0}
+    };
+
+    while((arg = getopt_long(argc, argv, "h:", long_opts, &opt_index)) != -1)
+    {
+        switch (arg)
+        {
+            case 'h':
+                HOST_PATH = std::string("/xyz/openbmc_project/state/host") +
+                        optarg;
+                hostSpecified = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (hostSpecified == false)
+    {
+        HOST_PATH = "/xyz/openbmc_project/state/host0";
+    }
 
     auto bus = sdbusplus::bus::new_default();
 
