@@ -249,7 +249,7 @@ void Host::sysStateChange(sdbusplus::message::message& msg)
         log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
         this->bootProgress(bootprogress::Progress::ProgressStages::Unspecified);
-        this->operatingSystemState(osstatus::Status::OSStatus::Inactive);
+        this->operatingSystemState(osstatus::Status::OSStatus::BootComplete);
 
     }
     else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
@@ -327,6 +327,20 @@ Host::Transition Host::requestedHostTransition(Transition value)
     executeTransition(value);
 
     auto retVal =  server::Host::requestedHostTransition(value);
+    serialize();
+    return retVal;
+}
+
+Host::ProgressStages Host::bootProgress(ProgressStages value)
+{
+    auto retVal = bootprogress::Progress::bootProgress(value);
+    serialize();
+    return retVal;
+}
+
+Host::OSStatus Host::operatingSystemState(OSStatus value)
+{
+    auto retVal = osstatus::Status::operatingSystemState(value);
     serialize();
     return retVal;
 }
