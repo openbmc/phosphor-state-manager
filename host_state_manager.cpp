@@ -340,6 +340,20 @@ Host::Transition Host::requestedHostTransition(Transition value)
     return retVal;
 }
 
+Host::ProgressStages Host::bootProgress(ProgressStages value)
+{
+    auto retVal = bootprogress::Progress::bootProgress(value);
+    serialize();
+    return retVal;
+}
+
+Host::OSStatus Host::operatingSystemState(OSStatus value)
+{
+    auto retVal = osstatus::Status::operatingSystemState(value);
+    serialize();
+    return retVal;
+}
+
 Host::HostState Host::currentHostState(HostState value)
 {
     log<level::INFO>("Change to Host State",
