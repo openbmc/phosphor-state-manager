@@ -297,14 +297,23 @@ fs::path Host::serialize(const fs::path& dir)
 
 bool Host::deserialize(const fs::path& path)
 {
-    if (fs::exists(path))
+    try
     {
-        std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
-        cereal::JSONInputArchive iarchive(is);
-        iarchive(*this);
-        return true;
+        if (fs::exists(path))
+        {
+            std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
+            cereal::JSONInputArchive iarchive(is);
+            iarchive(*this);
+            return true;
+        }
+        return false;
     }
-    return false;
+    catch(cereal::Exception& e)
+    {
+        log<level::ERR>(e.what());
+        fs::remove(path);
+        return false;
+    }
 }
 
 Host::Transition Host::requestedHostTransition(Transition value)
