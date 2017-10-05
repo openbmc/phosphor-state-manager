@@ -4,6 +4,7 @@
 #include <functional>
 #include <experimental/filesystem>
 #include <cereal/access.hpp>
+#include <cereal/cereal.hpp>
 #include <sdbusplus/bus.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
@@ -184,9 +185,11 @@ class Host : public HostInherit
          *
          *  @tparam Archive - Cereal archive type (binary in our case).
          *  @param[in] archive - reference to Cereal archive.
+         *  @param[in] version - Class version that enables handling
+         *                       a serialized data across code levels
          */
         template<class Archive>
-        void save(Archive& archive) const
+        void save(Archive& archive, const std::uint32_t version) const
         {
             archive(convertForMessage(sdbusplus::xyz::openbmc_project::
                                       State::server::Host::
@@ -203,9 +206,11 @@ class Host : public HostInherit
          *
          *  @tparam Archive - Cereal archive type (binary in our case).
          *  @param[in] archive - reference to Cereal archive.
+         *  @param[in] version - Class version that enables handling
+         *                       a serialized data across code levels
          */
         template<class Archive>
-        void load(Archive& archive)
+        void load(Archive& archive, const std::uint32_t version)
         {
             std::string reqTranState;
             std::string bootProgress;
@@ -256,3 +261,6 @@ class Host : public HostInherit
 } // namespace manager
 } // namespace state
 } // namespace phosphor
+
+// Register the version with cereal
+CEREAL_CLASS_VERSION(phosphor::state::manager::Host, CLASS_VERSION);

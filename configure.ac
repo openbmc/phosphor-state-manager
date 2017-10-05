@@ -69,5 +69,9 @@ AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find systemd/sd-bus.
 AC_CHECK_HEADER(sdbusplus/server.hpp, ,[AC_MSG_ERROR([Could not find sdbusplus/server.hpp...openbmc/sdbusplus package required])])
 AC_CHECK_HEADER(phosphor-logging/log.hpp, ,[AC_MSG_ERROR([Could not find phosphor-logging/log.hpp...openbmc/phosphor-logging package required])])
 
+AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
+AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=1])
+AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
