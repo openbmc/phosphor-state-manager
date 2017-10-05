@@ -16,6 +16,8 @@
 #include "host_state_manager.hpp"
 #include "config.h"
 
+// Register class version with Cereal
+CEREAL_CLASS_VERSION(phosphor::state::manager::Host, CLASS_VERSION);
 
 namespace phosphor
 {
