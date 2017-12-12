@@ -102,6 +102,10 @@ void Host::determineInitialState()
                                convertForMessage(HostState::Off).c_str()));
         server::Host::currentHostState(HostState::Off);
         server::Host::requestedHostTransition(Transition::Off);
+        bootprogress::Progress::bootProgress(
+            bootprogress::Progress::ProgressStages::Unspecified);
+        osstatus::Status::operatingSystemState(
+            osstatus::Status::OSStatus::Inactive);
     }
 
     if (!deserialize(HOST_STATE_PERSIST_PATH))
