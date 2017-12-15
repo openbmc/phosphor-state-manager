@@ -1,3 +1,4 @@
+#include <systemd/sd-id128.h>
 #include <sdbusplus/bus.hpp>
 #include <phosphor-logging/log.hpp>
 #include "chassis_state_manager.hpp"
@@ -52,6 +53,10 @@ void Chassis::subscribeToSystemdSignals()
 //        has read property function
 void Chassis::determineInitialState()
 {
+    sd_id128_t id;
+    int r;
+    char s[33];
+
     sdbusplus::message::variant<int> pgood = -1;
     auto method = this->bus.new_method_call("org.openbmc.control.Power",
                                             "/org/openbmc/control/power0",
@@ -79,6 +84,16 @@ void Chassis::determineInitialState()
         server::Chassis::requestedPowerTransition(Transition::Off);
     }
 
+#define MESSAGE_APPID SD_ID128_MAKE(e0,e1,73,76,64,61,47,da,a5,0c,d0,cc,64,12,45,78)
+
+    r = sd_id128_get_machine_app_specific(MESSAGE_APPID, &id);
+    if (r < 0) {
+         log<level::ERR>("Error in sd_id128 call");
+         return;
+     }
+
+    sd_id128_to_string(id, s);
+    server::Chassis::uuid(std::string(s));
     return;
 }
 
