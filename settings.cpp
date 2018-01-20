@@ -13,16 +13,12 @@ constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 
-Objects::Objects(sdbusplus::bus::bus& bus):
-    bus(bus)
+Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
 {
-    std::vector<std::string> settingsIntfs =
-        {autoRebootIntf, powerRestoreIntf};
+    std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
     auto depth = 0;
 
-    auto mapperCall = bus.new_method_call(mapperService,
-                                          mapperPath,
-                                          mapperIntf,
+    auto mapperCall = bus.new_method_call(mapperService, mapperPath, mapperIntf,
                                           "GetSubTree");
     mapperCall.append(root);
     mapperCall.append(depth);
@@ -63,10 +59,8 @@ Objects::Objects(sdbusplus::bus::bus& bus):
 Service Objects::service(const Path& path, const Interface& interface) const
 {
     using Interfaces = std::vector<Interface>;
-    auto mapperCall = bus.new_method_call(mapperService,
-                                          mapperPath,
-                                          mapperIntf,
-                                          "GetObject");
+    auto mapperCall =
+        bus.new_method_call(mapperService, mapperPath, mapperIntf, "GetObject");
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 
