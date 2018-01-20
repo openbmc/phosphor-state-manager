@@ -20,14 +20,12 @@ constexpr auto signalDone = "done";
 constexpr auto activeState = "active";
 
 /* Map a transition to it's systemd target */
-const std::map<server::BMC::Transition, const char*> SYSTEMD_TABLE =
-{
-        {server::BMC::Transition::Reboot, "reboot.target"}
-};
+const std::map<server::BMC::Transition, const char*> SYSTEMD_TABLE = {
+    {server::BMC::Transition::Reboot, "reboot.target"}};
 
-constexpr auto SYSTEMD_SERVICE       = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH      = "/org/freedesktop/systemd1";
-constexpr auto SYSTEMD_INTERFACE     = "org.freedesktop.systemd1.Manager";
+constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void BMC::discoverInitialState()
@@ -35,17 +33,15 @@ void BMC::discoverInitialState()
     sdbusplus::message::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
 
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                            SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE,
-                                            "GetUnit");
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "GetUnit");
 
     method.append(obmcStandbyTarget);
 
     auto result = this->bus.call(method);
 
-    //Check that the bus call didn't result in an error
-    if(result.is_method_error())
+    // Check that the bus call didn't result in an error
+    if (result.is_method_error())
     {
         log<level::ERR>("Error in bus call.");
         return;
@@ -53,46 +49,41 @@ void BMC::discoverInitialState()
 
     result.read(unitTargetPath);
 
-    method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                       static_cast<const std::string&>
-                                           (unitTargetPath).c_str(),
-                                       SYSTEMD_PRP_INTERFACE,
-                                       "Get");
+    method = this->bus.new_method_call(
+        SYSTEMD_SERVICE,
+        static_cast<const std::string&>(unitTargetPath).c_str(),
+        SYSTEMD_PRP_INTERFACE, "Get");
 
     method.append("org.freedesktop.systemd1.Unit", "ActiveState");
 
     result = this->bus.call(method);
 
-    //Check that the bus call didn't result in an error
-    if(result.is_method_error())
+    // Check that the bus call didn't result in an error
+    if (result.is_method_error())
     {
         log<level::INFO>("Error in bus call.");
         return;
     }
 
-    //Is obmc-standby.target active or inactive?
+    // Is obmc-standby.target active or inactive?
     result.read(currentState);
 
-    if(currentState == activeState)
+    if (currentState == activeState)
     {
         log<level::INFO>("Setting the BMCState field",
-                         entry("CURRENT_BMC_STATE=%s",
-                               "BMC_READY"));
+                         entry("CURRENT_BMC_STATE=%s", "BMC_READY"));
         this->currentBMCState(BMCState::Ready);
 
-        //Unsubscribe so we stop processing all other signals
-        method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                           SYSTEMD_OBJ_PATH,
-                                           SYSTEMD_INTERFACE,
-                                           "Unsubscribe");
+        // Unsubscribe so we stop processing all other signals
+        method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                           SYSTEMD_INTERFACE, "Unsubscribe");
         this->bus.call(method);
         this->stateSignal.release();
     }
     else
     {
         log<level::INFO>("Setting the BMCState field",
-                         entry("CURRENT_BMC_STATE=%s",
-                               "BMC_NOTREADY"));
+                         entry("CURRENT_BMC_STATE=%s", "BMC_NOTREADY"));
         this->currentBMCState(BMCState::NotReady);
     }
 
@@ -101,10 +92,8 @@ void BMC::discoverInitialState()
 
 void BMC::subscribeToSystemdSignals()
 {
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                            SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE,
-                                            "Subscribe");
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "Subscribe");
     this->bus.call(method);
 
     return;
@@ -112,16 +101,15 @@ void BMC::subscribeToSystemdSignals()
 
 void BMC::executeTransition(const Transition tranReq)
 {
-    //Check to make sure it can be found
+    // Check to make sure it can be found
     auto iter = SYSTEMD_TABLE.find(tranReq);
-    if (iter == SYSTEMD_TABLE.end()) return;
+    if (iter == SYSTEMD_TABLE.end())
+        return;
 
     const auto& sysdUnit = iter->second;
 
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                            SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE,
-                                            "StartUnit");
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "StartUnit");
     // The only valid transition is reboot and that
     // needs to be irreversible once started
     method.append(sysdUnit, "replace-irreversibly");
@@ -132,26 +120,24 @@ void BMC::executeTransition(const Transition tranReq)
 
 int BMC::bmcStateChange(sdbusplus::message::message& msg)
 {
-    uint32_t newStateID {};
+    uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
 
-    //Read the msg and populate each variable
+    // Read the msg and populate each variable
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
-    //Caught the signal that indicates the BMC is now BMC_READY
-    if((newStateUnit == obmcStandbyTarget) &&
-       (newStateResult == signalDone))
+    // Caught the signal that indicates the BMC is now BMC_READY
+    if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone))
     {
         log<level::INFO>("BMC_READY");
         this->currentBMCState(BMCState::Ready);
 
-        //Unsubscribe so we stop processing all other signals
-        auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                                SYSTEMD_OBJ_PATH,
-                                                SYSTEMD_INTERFACE,
-                                                "Unsubscribe");
+        // Unsubscribe so we stop processing all other signals
+        auto method =
+            this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                      SYSTEMD_INTERFACE, "Unsubscribe");
         this->bus.call(method);
         this->stateSignal.release();
     }
@@ -161,10 +147,9 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
 
 BMC::Transition BMC::requestedBMCTransition(Transition value)
 {
-    log<level::INFO>(
-            "Setting the RequestedBMCTransition field",
-            entry("REQUESTED_BMC_TRANSITION=0x%s",
-                  convertForMessage(value).c_str()));
+    log<level::INFO>("Setting the RequestedBMCTransition field",
+                     entry("REQUESTED_BMC_TRANSITION=0x%s",
+                           convertForMessage(value).c_str()));
 
     executeTransition(value);
     return server::BMC::requestedBMCTransition(value);
@@ -173,15 +158,12 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
 BMC::BMCState BMC::currentBMCState(BMCState value)
 {
     log<level::INFO>(
-            "Setting the BMCState field",
-            entry("CURRENT_BMC_STATE=0x%s",
-                  convertForMessage(value).c_str()));
+        "Setting the BMCState field",
+        entry("CURRENT_BMC_STATE=0x%s", convertForMessage(value).c_str()));
 
     return server::BMC::currentBMCState(value);
 }
 
-
 } // namespace manager
 } // namespace state
 } // namepsace phosphor
-

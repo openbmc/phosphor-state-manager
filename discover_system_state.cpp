@@ -32,18 +32,15 @@ constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 std::string getService(sdbusplus::bus::bus& bus, std::string path,
                        std::string interface)
 {
-    auto mapper = bus.new_method_call(MAPPER_BUSNAME,
-                                      MAPPER_PATH,
-                                      MAPPER_INTERFACE,
-                                      "GetObject");
+    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                      MAPPER_INTERFACE, "GetObject");
 
     mapper.append(path, std::vector<std::string>({interface}));
     auto mapperResponseMsg = bus.call(mapper);
 
     if (mapperResponseMsg.is_method_error())
     {
-        log<level::ERR>("Error in mapper call",
-                        entry("PATH=%s", path.c_str()),
+        log<level::ERR>("Error in mapper call", entry("PATH=%s", path.c_str()),
                         entry("INTERFACE=%s", interface.c_str()));
         throw std::runtime_error("Error in mapper call");
     }
@@ -67,10 +64,8 @@ std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
     sdbusplus::message::variant<std::string> property;
     std::string service = getService(bus, path, interface);
 
-    auto method = bus.new_method_call(service.c_str(),
-                                      path.c_str(),
-                                      PROPERTY_INTERFACE,
-                                      "Get");
+    auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                      PROPERTY_INTERFACE, "Get");
 
     method.append(interface, propertyName);
     auto reply = bus.call(method);
@@ -100,10 +95,8 @@ void setProperty(sdbusplus::bus::bus& bus, std::string path,
     sdbusplus::message::variant<std::string> variantValue = value;
     std::string service = getService(bus, path, interface);
 
-    auto method = bus.new_method_call(service.c_str(),
-                                      path.c_str(),
-                                      PROPERTY_INTERFACE,
-                                      "Set");
+    auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                      PROPERTY_INTERFACE, "Set");
 
     method.append(interface, property, variantValue);
     bus.call_noreply(method);
@@ -123,22 +116,18 @@ int main(int argc, char** argv)
     int arg;
     int optIndex = 0;
 
-    static struct option longOpts[] =
-    {
-          {"host", required_argument, 0, 'h'},
-          {0, 0, 0, 0}
-    };
+    static struct option longOpts[] = {{"host", required_argument, 0, 'h'},
+                                       {0, 0, 0, 0}};
 
-    while((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
+    while ((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
     {
         switch (arg)
         {
-            case 'h':
-                hostPath = std::string("/xyz/openbmc_project/state/host") +
-                        optarg;
-                break;
-            default:
-                break;
+        case 'h':
+            hostPath = std::string("/xyz/openbmc_project/state/host") + optarg;
+            break;
+        default:
+            break;
         }
     }
 
@@ -152,13 +141,10 @@ int main(int argc, char** argv)
 
     // This application is only run if chassis power is off
 
-    auto method =
-        bus.new_method_call(
-                settings.service(settings.powerRestorePolicy,
-                    powerRestoreIntf).c_str(),
-                settings.powerRestorePolicy.c_str(),
-                "org.freedesktop.DBus.Properties",
-                "Get");
+    auto method = bus.new_method_call(
+        settings.service(settings.powerRestorePolicy, powerRestoreIntf).c_str(),
+        settings.powerRestorePolicy.c_str(), "org.freedesktop.DBus.Properties",
+        "Get");
     method.append(powerRestoreIntf, "PowerRestorePolicy");
     auto reply = bus.call(method);
     if (reply.is_method_error())
@@ -178,21 +164,18 @@ int main(int argc, char** argv)
         RestorePolicy::convertPolicyFromString(powerPolicy))
     {
         log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
-        setProperty(bus, hostPath, HOST_BUSNAME,
-                    "RequestedHostTransition",
+        setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
                     convertForMessage(server::Host::Transition::On));
     }
-    else if(RestorePolicy::Policy::Restore ==
-            RestorePolicy::convertPolicyFromString(powerPolicy))
+    else if (RestorePolicy::Policy::Restore ==
+             RestorePolicy::convertPolicyFromString(powerPolicy))
     {
         log<level::INFO>("power_policy=RESTORE, restoring last state");
 
         // Read last requested state and re-request it to execute it
-        auto hostReqState = getProperty(bus, hostPath,
-                                        HOST_BUSNAME,
-                                        "RequestedHostTransition");
-        setProperty(bus, hostPath, HOST_BUSNAME,
-                    "RequestedHostTransition",
+        auto hostReqState =
+            getProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
+        setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
                     hostReqState);
     }
 

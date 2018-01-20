@@ -18,8 +18,7 @@ int main(int argc, char *argv[])
     // Add sdbusplus ObjectManager.
     sdbusplus::server::manager::manager objManager(bus, objPathInst.c_str());
 
-    phosphor::state::manager::Host manager(bus,
-                                           HOST_BUSNAME,
+    phosphor::state::manager::Host manager(bus, HOST_BUSNAME,
                                            objPathInst.c_str());
 
     auto dir = fs::path(HOST_STATE_PERSIST_PATH).parent_path();
@@ -27,7 +26,7 @@ int main(int argc, char *argv[])
 
     bus.request_name(HOST_BUSNAME);
 
-    while(true)
+    while (true)
     {
         bus.process_discard();
         bus.wait();

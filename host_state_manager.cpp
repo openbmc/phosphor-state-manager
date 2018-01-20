@@ -48,15 +48,13 @@ constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
 /* Map a transition to it's systemd target */
-const std::map<server::Host::Transition,std::string> SYSTEMD_TARGET_TABLE =
-{
-        {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
-        {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
-        {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT}
-};
+const std::map<server::Host::Transition, std::string> SYSTEMD_TARGET_TABLE = {
+    {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
+    {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
+    {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT}};
 
-constexpr auto SYSTEMD_SERVICE   = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH  = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
@@ -68,17 +66,14 @@ constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
 /* Map a system state to the HostState */
 const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
-        {"HOST_BOOTING", server::Host::HostState::Running},
-        {"HOST_POWERED_OFF", server::Host::HostState::Off},
-        {"HOST_QUIESCED", server::Host::HostState::Quiesced}
-};
+    {"HOST_BOOTING", server::Host::HostState::Running},
+    {"HOST_POWERED_OFF", server::Host::HostState::Off},
+    {"HOST_QUIESCED", server::Host::HostState::Quiesced}};
 
 void Host::subscribeToSystemdSignals()
 {
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                            SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE,
-                                            "Subscribe");
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "Subscribe");
     this->bus.call_noreply(method);
 
     return;
@@ -87,7 +82,7 @@ void Host::subscribeToSystemdSignals()
 void Host::determineInitialState()
 {
 
-    if(stateActive(HOST_STATE_POWERON_TGT))
+    if (stateActive(HOST_STATE_POWERON_TGT))
     {
         log<level::INFO>("Initial Host State will be Running",
                          entry("CURRENT_HOST_STATE=%s",
@@ -106,7 +101,7 @@ void Host::determineInitialState()
 
     if (!deserialize(HOST_STATE_PERSIST_PATH))
     {
-        //set to default value.
+        // set to default value.
         server::Host::requestedHostTransition(Transition::Off);
     }
 
@@ -117,10 +112,8 @@ void Host::executeTransition(Transition tranReq)
 {
     auto sysdUnit = SYSTEMD_TARGET_TABLE.find(tranReq)->second;
 
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                            SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE,
-                                            "StartUnit");
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "StartUnit");
 
     method.append(sysdUnit);
     method.append("replace");
@@ -135,15 +128,13 @@ bool Host::stateActive(const std::string& target)
     sdbusplus::message::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
 
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                            SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE,
-                                            "GetUnit");
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "GetUnit");
 
     method.append(target);
     auto result = this->bus.call(method);
 
-    //Check that the bus call didn't result in an error
+    // Check that the bus call didn't result in an error
     if (result.is_method_error())
     {
         log<level::ERR>("Error in bus call - could not resolve GetUnit for:",
@@ -153,16 +144,15 @@ bool Host::stateActive(const std::string& target)
 
     result.read(unitTargetPath);
 
-    method = this->bus.new_method_call(SYSTEMD_SERVICE,
-                                       static_cast<const std::string&>
-                                           (unitTargetPath).c_str(),
-                                       SYSTEMD_PROPERTY_IFACE,
-                                       "Get");
+    method = this->bus.new_method_call(
+        SYSTEMD_SERVICE,
+        static_cast<const std::string&>(unitTargetPath).c_str(),
+        SYSTEMD_PROPERTY_IFACE, "Get");
 
     method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
     result = this->bus.call(method);
 
-    //Check that the bus call didn't result in an error
+    // Check that the bus call didn't result in an error
     if (result.is_method_error())
     {
         log<level::ERR>("Error in bus call - could not resolve Get for:",
@@ -174,10 +164,10 @@ bool Host::stateActive(const std::string& target)
 
     if (currentState != ACTIVE_STATE && currentState != ACTIVATING_STATE)
     {
-        //False - not active
+        // False - not active
         return false;
     }
-    //True - active
+    // True - active
     return true;
 }
 
@@ -185,12 +175,9 @@ bool Host::isAutoReboot()
 {
     using namespace settings;
 
-    auto method =
-        bus.new_method_call(
-                settings.service(settings.autoReboot, autoRebootIntf).c_str(),
-                settings.autoReboot.c_str(),
-                "org.freedesktop.DBus.Properties",
-                "Get");
+    auto method = bus.new_method_call(
+        settings.service(settings.autoReboot, autoRebootIntf).c_str(),
+        settings.autoReboot.c_str(), "org.freedesktop.DBus.Properties", "Get");
     method.append(autoRebootIntf, "AutoReboot");
     auto reply = bus.call(method);
     if (reply.is_method_error())
@@ -212,7 +199,7 @@ bool Host::isAutoReboot()
             log<level::INFO>("Auto reboot enabled, rebooting");
             return true;
         }
-        else if(rebootCounterParam == 0)
+        else if (rebootCounterParam == 0)
         {
             // Reset reboot counter and go to quiesce state
             log<level::INFO>("Auto reboot enabled. "
@@ -236,55 +223,52 @@ bool Host::isAutoReboot()
 
 void Host::sysStateChange(sdbusplus::message::message& msg)
 {
-    uint32_t newStateID {};
+    uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
 
-    //Read the msg and populate each variable
+    // Read the msg and populate each variable
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
-    if((newStateUnit == HOST_STATE_POWEROFF_TGT) &&
-       (newStateResult == "done") &&
-       (!stateActive(HOST_STATE_POWERON_TGT)))
+    if ((newStateUnit == HOST_STATE_POWEROFF_TGT) &&
+        (newStateResult == "done") && (!stateActive(HOST_STATE_POWERON_TGT)))
     {
         log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
         this->bootProgress(bootprogress::Progress::ProgressStages::Unspecified);
         this->operatingSystemState(osstatus::Status::OSStatus::Inactive);
-
     }
-    else if((newStateUnit == HOST_STATE_POWERON_TGT) &&
-            (newStateResult == "done") &&
-            (stateActive(HOST_STATE_POWERON_TGT)))
-     {
-         log<level::INFO>("Received signal that host is running");
-         this->currentHostState(server::Host::HostState::Running);
-     }
-     else if((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
+    else if ((newStateUnit == HOST_STATE_POWERON_TGT) &&
+             (newStateResult == "done") &&
+             (stateActive(HOST_STATE_POWERON_TGT)))
+    {
+        log<level::INFO>("Received signal that host is running");
+        this->currentHostState(server::Host::HostState::Running);
+    }
+    else if ((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
              (newStateResult == "done") &&
              (stateActive(HOST_STATE_QUIESCE_TGT)))
-     {
-         if (Host::isAutoReboot())
-         {
-             log<level::INFO>("Beginning reboot...");
-             Host::requestedHostTransition(server::Host::Transition::Reboot);
-         }
-         else
-         {
-             log<level::INFO>("Maintaining quiesce");
-             this->currentHostState(server::Host::HostState::Quiesced);
-         }
-
-     }
+    {
+        if (Host::isAutoReboot())
+        {
+            log<level::INFO>("Beginning reboot...");
+            Host::requestedHostTransition(server::Host::Transition::Reboot);
+        }
+        else
+        {
+            log<level::INFO>("Maintaining quiesce");
+            this->currentHostState(server::Host::HostState::Quiesced);
+        }
+    }
 }
 
 uint32_t Host::decrementRebootCount()
 {
     auto rebootCount = reboot::RebootAttempts::attemptsLeft();
-    if(rebootCount > 0)
+    if (rebootCount > 0)
     {
-        return(reboot::RebootAttempts::attemptsLeft(rebootCount - 1));
+        return (reboot::RebootAttempts::attemptsLeft(rebootCount - 1));
     }
     return rebootCount;
 }
@@ -310,7 +294,7 @@ bool Host::deserialize(const fs::path& path)
         }
         return false;
     }
-    catch(cereal::Exception& e)
+    catch (cereal::Exception& e)
     {
         log<level::ERR>(e.what());
         fs::remove(path);
@@ -320,24 +304,23 @@ bool Host::deserialize(const fs::path& path)
 
 Host::Transition Host::requestedHostTransition(Transition value)
 {
-    log<level::INFO>(
-            "Host State transaction request",
-            entry("REQUESTED_HOST_TRANSITION=%s",
-                  convertForMessage(value).c_str()));
+    log<level::INFO>("Host State transaction request",
+                     entry("REQUESTED_HOST_TRANSITION=%s",
+                           convertForMessage(value).c_str()));
 
     // If this is not a power off request then we need to
     // decrement the reboot counter.  This code should
     // never prevent a power on, it should just decrement
     // the count to 0.  The quiesce handling is where the
     // check of this count will occur
-    if(value != server::Host::Transition::Off)
+    if (value != server::Host::Transition::Off)
     {
         decrementRebootCount();
     }
 
     executeTransition(value);
 
-    auto retVal =  server::Host::requestedHostTransition(value);
+    auto retVal = server::Host::requestedHostTransition(value);
     serialize();
     return retVal;
 }
@@ -358,9 +341,9 @@ Host::OSStatus Host::operatingSystemState(OSStatus value)
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    log<level::INFO>("Change to Host State",
-                     entry("CURRENT_HOST_STATE=%s",
-                           convertForMessage(value).c_str()));
+    log<level::INFO>(
+        "Change to Host State",
+        entry("CURRENT_HOST_STATE=%s", convertForMessage(value).c_str()));
     return server::Host::currentHostState(value);
 }
 
