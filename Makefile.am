@@ -1,4 +1,5 @@
 AM_DEFAULT_SOURCE_EXT = .cpp
+ACLOCAL_AMFLAGS = -I m4
 
 sbin_PROGRAMS = \
 	phosphor-host-state-manager \
