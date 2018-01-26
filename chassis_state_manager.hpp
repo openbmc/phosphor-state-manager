@@ -3,6 +3,7 @@
 #include <functional>
 #include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/State/Chassis/server.hpp"
+#include <xyz/openbmc_project/Control/PowerSupplyRedundancy/server.hpp>
 
 namespace phosphor
 {
@@ -12,7 +13,8 @@ namespace manager
 {
 
 using ChassisInherit = sdbusplus::server::object::object<
-        sdbusplus::xyz::openbmc_project::State::server::Chassis>;
+        sdbusplus::xyz::openbmc_project::State::server::Chassis,
+        sdbusplus::xyz::openbmc_project::Control::server::PowerSupplyRedundancy>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class Chassis
