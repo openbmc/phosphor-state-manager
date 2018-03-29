@@ -41,6 +41,7 @@ namespace fs = std::experimental::filesystem;
 constexpr auto HOST_STATE_SOFT_POWEROFF_TGT = "obmc-host-shutdown@0.target";
 constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
+constexpr auto HOST_STATE_POWERON_MIN_TGT = "obmc-host-startmin@0.target";
 constexpr auto HOST_STATE_REBOOT_TGT = "obmc-host-reboot@0.target";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
@@ -82,7 +83,7 @@ void Host::subscribeToSystemdSignals()
 void Host::determineInitialState()
 {
 
-    if (stateActive(HOST_STATE_POWERON_TGT))
+    if (stateActive(HOST_STATE_POWERON_MIN_TGT))
     {
         log<level::INFO>("Initial Host State will be Running",
                          entry("CURRENT_HOST_STATE=%s",
@@ -232,16 +233,17 @@ void Host::sysStateChange(sdbusplus::message::message& msg)
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     if ((newStateUnit == HOST_STATE_POWEROFF_TGT) &&
-        (newStateResult == "done") && (!stateActive(HOST_STATE_POWERON_TGT)))
+        (newStateResult == "done") &&
+        (!stateActive(HOST_STATE_POWERON_MIN_TGT)))
     {
         log<level::INFO>("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
         this->bootProgress(bootprogress::Progress::ProgressStages::Unspecified);
         this->operatingSystemState(osstatus::Status::OSStatus::Inactive);
     }
-    else if ((newStateUnit == HOST_STATE_POWERON_TGT) &&
+    else if ((newStateUnit == HOST_STATE_POWERON_MIN_TGT) &&
              (newStateResult == "done") &&
-             (stateActive(HOST_STATE_POWERON_TGT)))
+             (stateActive(HOST_STATE_POWERON_MIN_TGT)))
     {
         log<level::INFO>("Received signal that host is running");
         this->currentHostState(server::Host::HostState::Running);
