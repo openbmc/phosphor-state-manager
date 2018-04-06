@@ -60,6 +60,12 @@ AS_IF([test "x$HOST_STATE_PERSIST_PATH" == "x"], \
 AC_DEFINE_UNQUOTED([HOST_STATE_PERSIST_PATH], ["$HOST_STATE_PERSIST_PATH"], \
     [Path of file for storing requested host state.])
 
+AC_ARG_VAR(POH_COUNTER_PERSIST_PATH, [Path of file for storing requested host state.])
+AS_IF([test "x$POH_COUNTER_PERSIST_PATH" == "x"], \
+    [POH_COUNTER_PERSIST_PATH="/var/lib/phosphor-state-manager/POHCounter"])
+AC_DEFINE_UNQUOTED([POH_COUNTER_PERSIST_PATH], ["$POH_COUNTER_PERSIST_PATH"], \
+    [Path of file for storing requested host state.])
+
 AC_ARG_VAR(BOOT_COUNT_MAX_ALLOWED, [The maximum allowed reboot count])
 AS_IF([test "x$BOOT_COUNT_MAX_ALLOWED" == "x"], [BOOT_COUNT_MAX_ALLOWED=3])
 AC_DEFINE_UNQUOTED([BOOT_COUNT_MAX_ALLOWED], [$BOOT_COUNT_MAX_ALLOWED], [The maximum allowed reboot count])
