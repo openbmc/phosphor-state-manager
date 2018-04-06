@@ -37,14 +37,14 @@ generic_cxxflags = \
 generic_ldflags = \
 	$(SYSTEMD_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
-	$(SDBUSPLUS_LIBS)
+	$(SDBUSPLUS_LIBS) \
 	$(PHOSPHOR_LOGGING_LIBS)
 
 phosphor_host_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
 
 phosphor_chassis_state_manager_CXXFLAGS = $(generic_cxxflags)
-phosphor_chassis_state_manager_LDFLAGS = $(generic_ldflags)
+phosphor_chassis_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
 
 phosphor_bmc_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_bmc_state_manager_LDFLAGS = $(generic_ldflags)
