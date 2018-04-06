@@ -19,12 +19,7 @@ int main(int argc, char *argv[])
                                               objPathInst.c_str());
 
     bus.request_name(CHASSIS_BUSNAME);
-
-    while (true)
-    {
-        bus.process_discard();
-        bus.wait();
-    }
+    manager.startPOHCounter();
 
     return 0;
 }
