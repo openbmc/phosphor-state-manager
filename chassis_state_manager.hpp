@@ -1,8 +1,18 @@
 #pragma once
 
 #include <functional>
+#include <experimental/filesystem>
+#include <cereal/access.hpp>
+#include <cereal/cereal.hpp>
 #include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/State/Chassis/server.hpp"
+#include "xyz/openbmc_project/State/PowerOnHours/server.hpp"
+#include "chassis_state_manager.hpp"
+#include <chrono>
+#include "config.h"
+#include "timer.hpp"
+
+#define MIN_PER_COUNT                        60   //Minutes per count
 
 namespace phosphor
 {
@@ -12,8 +22,10 @@ namespace manager
 {
 
 using ChassisInherit = sdbusplus::server::object::object<
-    sdbusplus::xyz::openbmc_project::State::server::Chassis>;
+    sdbusplus::xyz::openbmc_project::State::server::Chassis,
+    sdbusplus::xyz::openbmc_project::State::server::PowerOnHours>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
+namespace fs = std::experimental::filesystem;
 
 /** @class Chassis
  *  @brief OpenBMC chassis state management implementation.
@@ -49,6 +61,8 @@ class Chassis : public ChassisInherit
 
         determineInitialState();
 
+        restorePOHCounter(); // restore POHCounter from persisted file
+
         // We deferred this until we could get our property correct
         this->emit_object_added();
     }
@@ -58,6 +72,11 @@ class Chassis : public ChassisInherit
 
     /** @brief Set value of CurrentPowerState */
     PowerState currentPowerState(PowerState value) override;
+
+    /** @brief Get value of POHCounter */
+    uint32_t pOHCounter() const override;
+
+    void startPOHCounter();
 
   private:
     /** @brief Determine initial chassis state and set internally */
@@ -108,6 +127,67 @@ class Chassis : public ChassisInherit
 
     /** @brief Used to subscribe to dbus systemd signals **/
     sdbusplus::bus::match_t systemdSignals;
+
+    /** @brief Used to Set value of POHCounter */
+    uint32_t pOHCounter(uint32_t value) override;
+
+    /** @brief Used to restore POHCounter value form persisted file */
+    void restorePOHCounter();
+
+    /** @brief Function required by Cereal to perform serialization.
+     *
+     *  @tparam Archive - Cereal archive type (binary in our case).
+     *  @param[in] archive - reference to Cereal archive.
+     *  @param[in] version - Class version that enables handling
+     *                       a serialized data across code levels
+     */
+    template <class Archive>
+    inline void save(Archive& archive, const std::uint32_t version) const
+    {
+       archive(pOHCounter());
+    }
+
+    /** @brief Function required by Cereal to perform deserialization.
+     *
+     *  @tparam Archive - Cereal archive type (binary in our case).
+     *  @param[in] archive - reference to Cereal archive.
+     *  @param[in] version - Class version that enables handling
+     *                       a serialized data across code levels
+     */
+    template <class Archive>
+    inline void load(Archive& archive, const std::uint32_t version)
+    {
+        uint32_t value;
+        archive(value);
+        pOHCounter(value);
+    }
+
+    /** @brief Serialize and persist requested POH counter.
+     *
+     *  @param[in] dir - pathname of file where the serialized POH counter will
+     *                   be placed.
+     *
+     *  @return fs::path - pathname of persisted requested POH counter.
+     */
+    fs::path serialize(const fs::path& dir = fs::path(POH_COUNTER_PERSIST_PATH));
+
+    /** @brief Deserialze a persisted requested POH counter.
+     *
+     *  @param[in] path - pathname of persisted POH counter file
+     *  @param[in] retCounter - deserialized POH counter value
+     *
+     *  @return bool - true if the deserialization was successful, false
+     *                 otherwise.
+     */
+    bool deserialize(const fs::path& path, uint32_t& retCounter);
+
+    /** @brief Read Chassis Power-on state */
+    void readChassisState();
+
+    /** @brief Timer */
+    std::unique_ptr<phosphor::state::manager::Timer> timer;
+    /** @brief the sd_event structure */
+    sd_event* loop = nullptr;
 };
 
 } // namespace manager
