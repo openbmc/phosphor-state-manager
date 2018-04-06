@@ -1,6 +1,15 @@
 #include <sdbusplus/bus.hpp>
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog-errors.hpp>
+#include "xyz/openbmc_project/Common/error.hpp"
 #include "chassis_state_manager.hpp"
+#include <cereal/archives/json.hpp>
+#include <fstream>
+#include "config.h"
+#include <experimental/filesystem>
+
+// Register class version with Cereal
+CEREAL_CLASS_VERSION(phosphor::state::manager::Chassis, CLASS_VERSION);
 
 namespace phosphor
 {
@@ -21,6 +30,7 @@ constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-chassis-poweron@0.target";
 
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
+constexpr auto POWERON = "xyz.openbmc_project.State.Chassis.PowerState.On";
 
 /* Map a transition to it's systemd target */
 const std::map<server::Chassis::Transition, std::string> SYSTEMD_TARGET_TABLE =
@@ -185,6 +195,108 @@ Chassis::PowerState Chassis::currentPowerState(PowerState value)
                      entry("CHASSIS_CURRENT_POWER_STATE=%s",
                            convertForMessage(value).c_str()));
     return server::Chassis::currentPowerState(value);
+}
+
+uint32_t Chassis::pOHCounter(uint32_t value)
+{
+    if (value != pOHCounter())
+    {
+        ChassisInherit::pOHCounter(value);
+        serialize();
+    }
+    return pOHCounter();
+}
+
+void Chassis::restorePOHCounter()
+{
+    uint32_t counter;
+    if (!deserialize(POH_COUNTER_PERSIST_PATH, counter))
+    {
+        // set to default value
+        pOHCounter(0);
+    }
+    else
+    {
+        pOHCounter(counter);
+    }
+}
+
+fs::path Chassis::serialize(const fs::path& path)
+{
+    std::ofstream os(path.c_str(), std::ios::binary);
+    cereal::JSONOutputArchive oarchive(os);
+    oarchive(pOHCounter());
+    return path;
+}
+
+bool Chassis::deserialize(const fs::path& path, uint32_t& pOHCounter)
+{
+    try
+    {
+        if (fs::exists(path))
+        {
+            std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
+            cereal::JSONInputArchive iarchive(is);
+            iarchive(pOHCounter);
+            return true;
+        }
+        return false;
+    }
+    catch (cereal::Exception& e)
+    {
+        log<level::ERR>(e.what());
+        fs::remove(path);
+        return false;
+    }
+    catch (const fs::filesystem_error& e)
+    {
+        return false;
+    }
+
+    return false;
+}
+
+void Chassis::startPOHCounter()
+{
+    using namespace std::chrono_literals;
+    using namespace phosphor::logging;
+    using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+
+    auto dir = fs::path(POH_COUNTER_PERSIST_PATH).parent_path();
+    fs::create_directories(dir);
+
+    sd_event* event = nullptr;
+    auto r = sd_event_default(&event);
+    if (r < 0)
+    {
+        log<level::ERR>("Error creating a default sd_event handler");
+        throw;
+    }
+
+    phosphor::state::manager::EventPtr eventP{event};
+    event = nullptr;
+
+    auto callback = [&]()
+    {
+        if (ChassisInherit::currentPowerState() ==  PowerState::On)
+        {
+            pOHCounter(pOHCounter() + 1);
+        }
+    };
+
+    try
+    {
+        timer = std::make_unique<phosphor::state::manager::Timer>(
+            eventP, callback, std::chrono::seconds(POH::secondsPerHour),
+            phosphor::state::manager::timer::ON);
+        bus.attach_event(eventP.get(), SD_EVENT_PRIORITY_NORMAL);
+        sd_event_loop(eventP.get());
+    }
+    catch (InternalFailure& e)
+    {
+        elog<InternalFailure>();
+        throw;
+    }
 }
 
 } // namespace manager
