@@ -4,9 +4,12 @@
 #include <sdbusplus/bus.hpp>
 #include "config.h"
 #include "chassis_state_manager.hpp"
+#include <experimental/filesystem>
 
 int main(int argc, char *argv[])
 {
+    namespace fs = std::experimental::filesystem;
+
     auto bus = sdbusplus::bus::new_default();
 
     // For now, we only have one instance of the chassis
@@ -18,7 +21,11 @@ int main(int argc, char *argv[])
     phosphor::state::manager::Chassis manager(bus, CHASSIS_BUSNAME,
                                               objPathInst.c_str());
 
+    auto dir = fs::path(POH_COUNTER_PERSIST_PATH).parent_path();
+    fs::create_directories(dir);
+
     bus.request_name(CHASSIS_BUSNAME);
+    manager.startPOHCounter();
 
     while (true)
     {
