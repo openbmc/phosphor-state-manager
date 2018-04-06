@@ -44,7 +44,7 @@ phosphor_host_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
 
 phosphor_chassis_state_manager_CXXFLAGS = $(generic_cxxflags)
-phosphor_chassis_state_manager_LDFLAGS = $(generic_ldflags)
+phosphor_chassis_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
 
 phosphor_bmc_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_bmc_state_manager_LDFLAGS = $(generic_ldflags)
