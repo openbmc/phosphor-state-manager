@@ -14,7 +14,8 @@ phosphor_host_state_manager_SOURCES = \
 
 phosphor_chassis_state_manager_SOURCES = \
 	chassis_state_manager.cpp \
-	chassis_state_manager_main.cpp
+	chassis_state_manager_main.cpp \
+	timer.cpp
 
 phosphor_bmc_state_manager_SOURCES = \
 	bmc_state_manager.cpp \
