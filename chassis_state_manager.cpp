@@ -66,24 +66,42 @@ void Chassis::determineInitialState()
 
     method.append("org.openbmc.control.Power", "pgood");
     auto reply = this->bus.call(method);
-    reply.read(pgood);
+    if (reply.is_method_error())
+    {
+        log<level::ERR>("Error in bus call - could not get initial pgood");
+        goto fail;
+    }
 
-    if (pgood == 1)
+    try
     {
-        log<level::INFO>("Initial Chassis State will be On",
-                         entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                               convertForMessage(PowerState::On).c_str()));
-        server::Chassis::currentPowerState(PowerState::On);
-        server::Chassis::requestedPowerTransition(Transition::On);
+        reply.read(pgood);
     }
-    else
+    catch (const SdBusError& e)
     {
-        log<level::INFO>("Initial Chassis State will be Off",
-                         entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                               convertForMessage(PowerState::Off).c_str()));
-        server::Chassis::currentPowerState(PowerState::Off);
-        server::Chassis::requestedPowerTransition(Transition::Off);
+        log<level::ERR>("Error in bus response - bad encoding of pgood",
+                        entry("ERROR=%s", e.what()),
+                        entry("REPLY_SIG=%s", reply.get_signature()));
+        goto fail;
     }
+
+    if (pgood != 1)
+    {
+        goto fail;
+    }
+
+    log<level::INFO>("Initial Chassis State will be On",
+                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
+                           convertForMessage(PowerState::On).c_str()));
+    server::Chassis::currentPowerState(PowerState::On);
+    server::Chassis::requestedPowerTransition(Transition::On);
+    return;
+
+fail:
+    log<level::INFO>("Initial Chassis State will be Off",
+                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
+                           convertForMessage(PowerState::Off).c_str()));
+    server::Chassis::currentPowerState(PowerState::Off);
+    server::Chassis::requestedPowerTransition(Transition::Off);
 
     return;
 }
@@ -122,7 +140,17 @@ bool Chassis::stateActive(const std::string& target)
         return false;
     }
 
-    result.read(unitTargetPath);
+    try
+    {
+        result.read(unitTargetPath);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in bus response - bad encoding for GetUnit",
+                        entry("ERROR=%s", e.what()),
+                        entry("REPLY_SIG=%s", result.get_signature()));
+        return false;
+    }
 
     method = this->bus.new_method_call(
         SYSTEMD_SERVICE,
@@ -159,7 +187,17 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     std::string newStateResult{};
 
     // Read the msg and populate each variable
-    msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+    try
+    {
+        msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in state change - bad encoding",
+                        entry("ERROR=%s", e.what()),
+                        entry("REPLY_SIG=%s", msg.get_signature()));
+        return 0;
+    }
 
     if ((newStateUnit == CHASSIS_STATE_POWEROFF_TGT) &&
         (newStateResult == "done") && (!stateActive(CHASSIS_STATE_POWERON_TGT)))
