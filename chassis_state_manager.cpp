@@ -67,33 +67,52 @@ void Chassis::determineInitialState()
         "org.freedesktop.DBus.Properties", "Get");
 
     method.append("org.openbmc.control.Power", "pgood");
-    auto reply = this->bus.call(method);
-    if (reply.is_method_error())
-    {
-        log<level::ERR>("Error in bus call - could not get initial pgood");
-        goto fail;
-    }
-
     try
     {
-        reply.read(pgood);
+        auto reply = this->bus.call(method);
+        if (reply.is_method_error())
+        {
+            log<level::ERR>(
+                "Error in response message - could not get initial pgood");
+            goto fail;
+        }
+
+        try
+        {
+            reply.read(pgood);
+        }
+        catch (const SdBusError& e)
+        {
+            log<level::ERR>("Error in bus response - bad encoding of pgood",
+                            entry("ERROR=%s", e.what()),
+                            entry("REPLY_SIG=%s", reply.get_signature()));
+            goto fail;
+        }
+
+        if (pgood == 1)
+        {
+            log<level::INFO>("Initial Chassis State will be On",
+                             entry("CHASSIS_CURRENT_POWER_STATE=%s",
+                                   convertForMessage(PowerState::On).c_str()));
+            server::Chassis::currentPowerState(PowerState::On);
+            server::Chassis::requestedPowerTransition(Transition::On);
+            return;
+        }
     }
     catch (const SdBusError& e)
     {
-        log<level::ERR>("Error in bus response - bad encoding of pgood",
-                        entry("ERROR=%s", e.what()),
-                        entry("REPLY_SIG=%s", reply.get_signature()));
-        goto fail;
-    }
+        // It's acceptable for the pgood state service to not be available
+        // since it will notify us of the pgood state when it comes up.
+        if (e.name() != nullptr &&
+            strcmp("org.freedesktop.DBus.Error.ServiceUnknown", e.name()) == 0)
+        {
+            goto fail;
+        }
 
-    if (pgood == 1)
-    {
-        log<level::INFO>("Initial Chassis State will be On",
-                         entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                               convertForMessage(PowerState::On).c_str()));
-        server::Chassis::currentPowerState(PowerState::On);
-        server::Chassis::requestedPowerTransition(Transition::On);
-        return;
+        // Only log for unexpected error types.
+        log<level::ERR>("Error performing call to get pgood",
+                        entry("ERROR=%s", e.what()));
+        goto fail;
     }
 
 fail:
