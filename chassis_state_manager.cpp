@@ -9,9 +9,6 @@
 #include "config.h"
 #include <experimental/filesystem>
 
-// Register class version with Cereal
-CEREAL_CLASS_VERSION(phosphor::state::manager::Chassis, CLASS_VERSION);
-
 namespace phosphor
 {
 namespace state
@@ -269,7 +266,7 @@ uint32_t Chassis::pOHCounter(uint32_t value)
     if (value != pOHCounter())
     {
         ChassisInherit::pOHCounter(value);
-        serialize();
+        serializePOH();
     }
     return pOHCounter();
 }
@@ -277,7 +274,7 @@ uint32_t Chassis::pOHCounter(uint32_t value)
 void Chassis::restorePOHCounter()
 {
     uint32_t counter;
-    if (!deserialize(POH_COUNTER_PERSIST_PATH, counter))
+    if (!deserializePOH(POH_COUNTER_PERSIST_PATH, counter))
     {
         // set to default value
         pOHCounter(0);
@@ -288,7 +285,7 @@ void Chassis::restorePOHCounter()
     }
 }
 
-fs::path Chassis::serialize(const fs::path& path)
+fs::path Chassis::serializePOH(const fs::path& path)
 {
     std::ofstream os(path.c_str(), std::ios::binary);
     cereal::JSONOutputArchive oarchive(os);
@@ -296,7 +293,7 @@ fs::path Chassis::serialize(const fs::path& path)
     return path;
 }
 
-bool Chassis::deserialize(const fs::path& path, uint32_t& pOHCounter)
+bool Chassis::deserializePOH(const fs::path& path, uint32_t& pOHCounter)
 {
     try
     {
