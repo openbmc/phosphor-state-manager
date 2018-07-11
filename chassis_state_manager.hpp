@@ -61,6 +61,8 @@ class Chassis : public ChassisInherit
     {
         subscribeToSystemdSignals();
 
+        restoreChassisStateChangeTime();
+
         determineInitialState();
 
         restorePOHCounter(); // restore POHCounter from persisted file
@@ -156,6 +158,35 @@ class Chassis : public ChassisInherit
      *                 otherwise.
      */
     bool deserializePOH(const fs::path& path, uint32_t& retCounter);
+
+    /** @brief Sets the LastStateChangeTime property and persists it. */
+    void setStateChangeTime();
+
+    /** @brief Serialize the last power state change time.
+     *
+     *  Save the time the state changed and the state itself.
+     *  The state needs to be saved as well so that during rediscovery
+     *  on reboots there's a way to know not to update the time again.
+     */
+    void serializeStateChangeTime();
+
+    /** @brief Deserialize the last power state change time.
+     *
+     *  @param[out] time - Deserialized time
+     *  @param[out] state - Deserialized power state
+     *
+     *  @return bool - true if successful, false otherwise.
+     */
+    bool deserializeStateChangeTime(uint64_t& time, PowerState& state);
+
+    /** @brief Restores the power state change time.
+     *
+     *  The time is loaded into the LastStateChangeTime D-Bus property.
+     *  On the very first start after this code has been applied but
+     *  before the state has changed, the LastStateChangeTime value
+     *  will be zero.
+     */
+    void restoreChassisStateChangeTime();
 
     /** @brief Timer */
     std::unique_ptr<phosphor::state::manager::Timer> timer;

@@ -66,6 +66,12 @@ AS_IF([test "x$POH_COUNTER_PERSIST_PATH" == "x"], \
 AC_DEFINE_UNQUOTED([POH_COUNTER_PERSIST_PATH], ["$POH_COUNTER_PERSIST_PATH"], \
     [Path of file for storing POH counter.])
 
+AC_ARG_VAR(CHASSIS_STATE_CHANGE_PERSIST_PATH, [Path of file for storing the state change time.])
+AS_IF([test "x$CHASSIS_STATE_CHANGE_PERSIST_PATH" == "x"], \
+    [CHASSIS_STATE_CHANGE_PERSIST_PATH="/var/lib/phosphor-state-manager/chassisStateChangeTime"])
+AC_DEFINE_UNQUOTED([CHASSIS_STATE_CHANGE_PERSIST_PATH], ["$CHASSIS_STATE_CHANGE_PERSIST_PATH"], \
+    [Path of file for storing the state change time.])
+
 AC_ARG_VAR(BOOT_COUNT_MAX_ALLOWED, [The maximum allowed reboot count])
 AS_IF([test "x$BOOT_COUNT_MAX_ALLOWED" == "x"], [BOOT_COUNT_MAX_ALLOWED=3])
 AC_DEFINE_UNQUOTED([BOOT_COUNT_MAX_ALLOWED], [$BOOT_COUNT_MAX_ALLOWED], [The maximum allowed reboot count])
