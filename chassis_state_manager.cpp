@@ -95,6 +95,22 @@ void Chassis::determineInitialState()
             server::Chassis::requestedPowerTransition(Transition::On);
             return;
         }
+        else
+        {
+            // The system is off.  If we think it should be on then
+            // we probably lost AC while up, so set a new state
+            // change time.
+            uint64_t lastTime;
+            PowerState lastState;
+
+            if (deserializeStateChangeTime(lastTime, lastState))
+            {
+                if (lastState == PowerState::On)
+                {
+                    setStateChangeTime();
+                }
+            }
+        }
     }
     catch (const SdBusError& e)
     {
@@ -220,6 +236,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that power OFF is complete");
         this->currentPowerState(server::Chassis::PowerState::Off);
+        this->setStateChangeTime();
     }
     else if ((newStateUnit == CHASSIS_STATE_POWERON_TGT) &&
              (newStateResult == "done") &&
@@ -227,6 +244,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that power ON is complete");
         this->currentPowerState(server::Chassis::PowerState::On);
+        this->setStateChangeTime();
     }
 
     return 0;
@@ -365,6 +383,80 @@ void Chassis::startPOHCounter()
     {
         phosphor::logging::commit<InternalFailure>();
     }
+}
+
+void Chassis::serializeStateChangeTime()
+{
+    fs::path path{CHASSIS_STATE_CHANGE_PERSIST_PATH};
+    std::ofstream os(path.c_str(), std::ios::binary);
+    cereal::JSONOutputArchive oarchive(os);
+
+    oarchive(ChassisInherit::lastStateChangeTime(),
+             ChassisInherit::currentPowerState());
+}
+
+bool Chassis::deserializeStateChangeTime(uint64_t& time, PowerState& state)
+{
+    fs::path path{CHASSIS_STATE_CHANGE_PERSIST_PATH};
+
+    try
+    {
+        if (fs::exists(path))
+        {
+            std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
+            cereal::JSONInputArchive iarchive(is);
+            iarchive(time, state);
+            return true;
+        }
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>(e.what());
+        fs::remove(path);
+    }
+
+    return false;
+}
+
+void Chassis::restoreChassisStateChangeTime()
+{
+    uint64_t time;
+    PowerState state;
+
+    if (!deserializeStateChangeTime(time, state))
+    {
+        ChassisInherit::lastStateChangeTime(0);
+    }
+    else
+    {
+        ChassisInherit::lastStateChangeTime(time);
+    }
+}
+
+void Chassis::setStateChangeTime()
+{
+    using namespace std::chrono;
+    uint64_t lastTime;
+    PowerState lastState;
+
+    auto now =
+        duration_cast<milliseconds>(system_clock::now().time_since_epoch())
+            .count();
+
+    // If power is on when the BMC is rebooted, this function will get called
+    // because sysStateChange() runs.  Since the power state didn't change
+    // in this case, neither should the state change time, so check that
+    // the power state actually did change here.
+    if (deserializeStateChangeTime(lastTime, lastState))
+    {
+        if (lastState == ChassisInherit::currentPowerState())
+        {
+            return;
+        }
+    }
+
+    ChassisInherit::lastStateChangeTime(now);
+    serializeStateChangeTime();
 }
 
 } // namespace manager
