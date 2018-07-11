@@ -137,34 +137,6 @@ class Chassis : public ChassisInherit
     /** @brief Used to restore POHCounter value from persisted file */
     void restorePOHCounter();
 
-    /** @brief Function required by Cereal to perform serialization.
-     *
-     *  @tparam Archive - Cereal archive type (json in our case).
-     *  @param[in] archive - reference to Cereal archive.
-     *  @param[in] version - Class version that enables handling
-     *                       a serialized data across code levels
-     */
-    template <class Archive>
-    inline void save(Archive& archive, const std::uint32_t version) const
-    {
-        archive(pOHCounter());
-    }
-
-    /** @brief Function required by Cereal to perform deserialization.
-     *
-     *  @tparam Archive - Cereal archive type (json in our case).
-     *  @param[in] archive - reference to Cereal archive.
-     *  @param[in] version - Class version that enables handling
-     *                       a serialized data across code levels
-     */
-    template <class Archive>
-    inline void load(Archive& archive, const std::uint32_t version)
-    {
-        uint32_t value;
-        archive(value);
-        pOHCounter(value);
-    }
-
     /** @brief Serialize and persist requested POH counter.
      *
      *  @param[in] dir - pathname of file where the serialized POH counter will
@@ -173,9 +145,9 @@ class Chassis : public ChassisInherit
      *  @return fs::path - pathname of persisted requested POH counter.
      */
     fs::path
-        serialize(const fs::path& dir = fs::path(POH_COUNTER_PERSIST_PATH));
+        serializePOH(const fs::path& dir = fs::path(POH_COUNTER_PERSIST_PATH));
 
-    /** @brief Deserialze a persisted requested POH counter.
+    /** @brief Deserialize a persisted requested POH counter.
      *
      *  @param[in] path - pathname of persisted POH counter file
      *  @param[in] retCounter - deserialized POH counter value
@@ -183,7 +155,7 @@ class Chassis : public ChassisInherit
      *  @return bool - true if the deserialization was successful, false
      *                 otherwise.
      */
-    bool deserialize(const fs::path& path, uint32_t& retCounter);
+    bool deserializePOH(const fs::path& path, uint32_t& retCounter);
 
     /** @brief Timer */
     std::unique_ptr<phosphor::state::manager::Timer> timer;
