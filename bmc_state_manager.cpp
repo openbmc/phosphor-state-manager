@@ -1,6 +1,9 @@
 #include <iostream>
-#include <string>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
+#include <string>
+#include <sys/sysinfo.h>
+#include <xyz/openbmc_project/Common/error.hpp>
 #include "bmc_state_manager.hpp"
 
 namespace phosphor
@@ -14,6 +17,7 @@ namespace manager
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
+using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 constexpr auto obmcStandbyTarget = "obmc-standby.target";
 constexpr auto signalDone = "done";
@@ -162,6 +166,26 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
         entry("CURRENT_BMC_STATE=0x%s", convertForMessage(value).c_str()));
 
     return server::BMC::currentBMCState(value);
+}
+
+uint64_t BMC::lastRebootTime() const
+{
+    using namespace std::chrono;
+    struct sysinfo info;
+
+    auto rc = sysinfo(&info);
+    if (rc != 0)
+    {
+        auto e = errno;
+        log<level::ERR>("Cannot get last reboot time", entry("ERRNO=%d", e));
+        elog<InternalFailure>();
+    }
+
+    // Since uptime is in seconds, also get the current time in seconds.
+    auto now = time_point_cast<seconds>(system_clock::now());
+    auto rebootTime = now - seconds(info.uptime);
+
+    return duration_cast<milliseconds>(rebootTime.time_since_epoch()).count();
 }
 
 } // namespace manager
