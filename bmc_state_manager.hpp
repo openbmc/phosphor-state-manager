@@ -50,6 +50,16 @@ class BMC : public BMCInherit
     /** @brief Set value of CurrentBMCState **/
     BMCState currentBMCState(BMCState value) override;
 
+    /** @brief Returns the last time the BMC was rebooted
+     *
+     *  @details Uses uptime information to determine when
+     *           the BMC was last rebooted.
+     *
+     *  @return uint64_t - Epoch time, in milliseconds, of the
+     *                     last reboot.
+     */
+    uint64_t lastRebootTime() const override;
+
   private:
     /**
      * @brief discover the state of the bmc

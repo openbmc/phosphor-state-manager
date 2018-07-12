@@ -1,6 +1,5 @@
-#include <iostream>
-#include <string>
 #include <phosphor-logging/log.hpp>
+#include <sys/sysinfo.h>
 #include "bmc_state_manager.hpp"
 
 namespace phosphor
@@ -162,6 +161,21 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
         entry("CURRENT_BMC_STATE=0x%s", convertForMessage(value).c_str()));
 
     return server::BMC::currentBMCState(value);
+}
+
+uint64_t BMC::lastRebootTime() const
+{
+    using namespace std::chrono;
+    struct sysinfo info;
+
+    auto rc = sysinfo(&info);
+    assert(rc == 0);
+
+    // Since uptime is in seconds, also get the current time in seconds.
+    auto now = time_point_cast<seconds>(system_clock::now());
+    auto rebootTime = now - seconds(info.uptime);
+
+    return duration_cast<milliseconds>(rebootTime.time_since_epoch()).count();
 }
 
 } // namespace manager
