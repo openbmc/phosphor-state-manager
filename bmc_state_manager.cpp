@@ -180,4 +180,4 @@ uint64_t BMC::lastRebootTime() const
 
 } // namespace manager
 } // namespace state
-} // namepsace phosphor
+} // namespace phosphor

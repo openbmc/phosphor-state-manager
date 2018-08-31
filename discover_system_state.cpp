@@ -106,7 +106,7 @@ void setProperty(sdbusplus::bus::bus& bus, std::string path,
 
 } // namespace manager
 } // namespace state
-} // namepsace phosphor
+} // namespace phosphor
 
 int main(int argc, char** argv)
 {

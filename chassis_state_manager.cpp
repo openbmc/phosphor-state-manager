@@ -461,4 +461,4 @@ void Chassis::setStateChangeTime()
 
 } // namespace manager
 } // namespace state
-} // namepsace phosphor
+} // namespace phosphor

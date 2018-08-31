@@ -351,4 +351,4 @@ Host::HostState Host::currentHostState(HostState value)
 
 } // namespace manager
 } // namespace state
-} // namepsace phosphor
+} // namespace phosphor
