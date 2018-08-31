@@ -1,0 +1,10 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Gunnar Mills <gmills@us.ibm.com>
+Code-Review+1: Matt Spinler <spinler@us.ibm.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Fri, 31 Aug 2018 18:44:25 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/12267
+Project: openbmc/phosphor-state-manager
+Branch: refs/heads/master
