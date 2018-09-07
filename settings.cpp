@@ -43,15 +43,20 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
     for (const auto& iter : result)
     {
         const Path& path = iter.first;
-        const Interface& interface = iter.second.begin()->second[0];
 
-        if (autoRebootIntf == interface)
+        for (const auto& serviceIter : iter.second)
         {
-            autoReboot = path;
-        }
-        else if (powerRestoreIntf == interface)
-        {
-            powerRestorePolicy = path;
+            for (const auto& interface : serviceIter.second)
+            {
+                if (autoRebootIntf == interface)
+                {
+                    autoReboot = path;
+                }
+                else if (powerRestoreIntf == interface)
+                {
+                    powerRestorePolicy = path;
+                }
+            }
         }
     }
 }
