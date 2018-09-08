@@ -1,11 +1,13 @@
-#include <cstdlib>
-#include <iostream>
-#include <exception>
-#include <sdbusplus/bus.hpp>
 #include "config.h"
+
 #include "chassis_state_manager.hpp"
 
-int main(int argc, char *argv[])
+#include <cstdlib>
+#include <exception>
+#include <iostream>
+#include <sdbusplus/bus.hpp>
+
+int main(int argc, char* argv[])
 {
     auto bus = sdbusplus::bus::new_default();
 

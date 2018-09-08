@@ -1,9 +1,10 @@
 #pragma once
 
-#include <memory>
+#include <systemd/sd-event.h>
+
 #include <chrono>
 #include <functional>
-#include <systemd/sd-event.h>
+#include <memory>
 
 namespace phosphor
 {

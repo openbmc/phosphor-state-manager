@@ -1,12 +1,14 @@
-#include <cstdlib>
-#include <iostream>
-#include <exception>
-#include <sdbusplus/bus.hpp>
-#include <experimental/filesystem>
 #include "config.h"
+
 #include "host_state_manager.hpp"
 
-int main(int argc, char *argv[])
+#include <cstdlib>
+#include <exception>
+#include <experimental/filesystem>
+#include <iostream>
+#include <sdbusplus/bus.hpp>
+
+int main(int argc, char* argv[])
 {
     namespace fs = std::experimental::filesystem;
 

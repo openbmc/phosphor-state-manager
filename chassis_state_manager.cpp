@@ -1,13 +1,16 @@
+#include "config.h"
+
+#include "chassis_state_manager.hpp"
+
+#include "xyz/openbmc_project/Common/error.hpp"
+
+#include <cereal/archives/json.hpp>
+#include <experimental/filesystem>
+#include <fstream>
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
-#include <phosphor-logging/log.hpp>
-#include <phosphor-logging/elog-errors.hpp>
-#include "xyz/openbmc_project/Common/error.hpp"
-#include "chassis_state_manager.hpp"
-#include <cereal/archives/json.hpp>
-#include <fstream>
-#include "config.h"
-#include <experimental/filesystem>
 
 namespace phosphor
 {

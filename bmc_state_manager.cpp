@@ -1,6 +1,8 @@
-#include <phosphor-logging/log.hpp>
-#include <sys/sysinfo.h>
 #include "bmc_state_manager.hpp"
+
+#include <sys/sysinfo.h>
+
+#include <phosphor-logging/log.hpp>
 
 namespace phosphor
 {

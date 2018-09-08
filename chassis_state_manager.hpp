@@ -1,13 +1,15 @@
 #pragma once
 
-#include <functional>
-#include <experimental/filesystem>
-#include <cereal/cereal.hpp>
-#include <sdbusplus/bus.hpp>
+#include "config.h"
+
+#include "timer.hpp"
 #include "xyz/openbmc_project/State/Chassis/server.hpp"
 #include "xyz/openbmc_project/State/PowerOnHours/server.hpp"
-#include "config.h"
-#include "timer.hpp"
+
+#include <cereal/cereal.hpp>
+#include <experimental/filesystem>
+#include <functional>
+#include <sdbusplus/bus.hpp>
 
 namespace phosphor
 {

@@ -1,7 +1,9 @@
+#include "settings.hpp"
+
+#include "xyz/openbmc_project/Common/error.hpp"
+
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
-#include "xyz/openbmc_project/Common/error.hpp"
-#include "settings.hpp"
 
 namespace settings
 {

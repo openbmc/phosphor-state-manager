@@ -1,20 +1,23 @@
-#include <iostream>
-#include <map>
-#include <string>
+#include "config.h"
+
+#include "host_state_manager.hpp"
+
 #include <systemd/sd-bus.h>
+
+#include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
 #include <cereal/types/string.hpp>
-#include <cereal/types/vector.hpp>
 #include <cereal/types/tuple.hpp>
-#include <cereal/archives/json.hpp>
+#include <cereal/types/vector.hpp>
 #include <fstream>
-#include <sdbusplus/server.hpp>
-#include <phosphor-logging/log.hpp>
+#include <iostream>
+#include <map>
 #include <phosphor-logging/elog-errors.hpp>
-#include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
+#include <phosphor-logging/log.hpp>
+#include <sdbusplus/server.hpp>
+#include <string>
 #include <xyz/openbmc_project/Common/error.hpp>
-#include "host_state_manager.hpp"
-#include "config.h"
+#include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
 
 // Register class version with Cereal
 CEREAL_CLASS_VERSION(phosphor::state::manager::Host, CLASS_VERSION);

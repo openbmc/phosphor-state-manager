@@ -1,7 +1,9 @@
+#include "timer.hpp"
+
+#include <string.h>
+
 #include <chrono>
 #include <system_error>
-#include <string.h>
-#include "timer.hpp"
 
 namespace phosphor
 {
