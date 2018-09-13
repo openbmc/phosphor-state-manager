@@ -1,7 +1,8 @@
 #!/bin/sh
+OPTS="bmcstate,bootprogress,chassisstate,hoststate,power,state,status"
 
 USAGE="Usage: obmcutil [-h]
-                {bmcstate,bootprogress,chassisstate,hoststate,state,status}"
+                {$OPTS}"
 
 SERVICE_ROOT=xyz.openbmc_project
 SERVICE_CONTROL=$SERVICE_ROOT.State
@@ -14,7 +15,7 @@ print_help ()
     echo "$USAGE"
     echo ""
     echo "positional arguments:"
-    echo "  {bmcstate,bootprogress,chassisstate,hoststate,state,status}"
+    echo "  {$OPTS}"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -72,6 +73,21 @@ parse_arg ()
             INTERFACE=$SERVICE_CONTROL.Boot.Progress
             PROPERTY=BootProgress
             state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            ;;
+        power)
+            OBJECT=/org/openbmc/control/power0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$SERVICE
+            for property in pgood state pgood_timeout
+            do
+                # get_property can potentially return several
+                # different formats of values, so we do the parsing outside
+                # of get_property depending on the query. These queries
+                # return 'i VALUE' formatted strings.
+                STATE=$(get_property $SERVICE $OBJECT $INTERFACE $property \
+                    | sed 's/i[ ^I]*//')
+                printf "%s = %s\n" $property $STATE
+            done
             ;;
         -h|--help)
             print_help
