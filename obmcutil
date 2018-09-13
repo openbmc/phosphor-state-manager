@@ -1,7 +1,10 @@
 #!/bin/sh
 
+OPTS="bmcstate,bootprogress,chassisoff,chassison,chassisstate,hoststate,\
+power,poweroff,poweron,state,status"
+
 USAGE="Usage: obmcutil [-h]
-                {bmcstate,bootprogress,chassisstate,hoststate,power,state,status}"
+                {$OPTS}"
 
 SERVICE_ROOT=xyz.openbmc_project
 SERVICE_CONTROL=$SERVICE_ROOT.State
@@ -14,7 +17,7 @@ print_help ()
     echo "$USAGE"
     echo ""
     echo "positional arguments:"
-    echo "  {bmcstate,bootprogress,chassisstate,hoststate,power,state,status}"
+    echo "  {$OPTS}"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -23,6 +26,11 @@ print_help ()
 call ()
 {
     busctl $1 | cut -d '"' -f2
+}
+
+set_property ()
+{
+    call "set-property $1 $2 $3 $4 $5"
 }
 
 get_property ()
@@ -39,6 +47,38 @@ state_query ()
 parse_arg ()
 {
     case "$1" in
+        chassisoff)
+            OBJECT=$OBJECT_CONTROL/chassis0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$SERVICE
+            PROPERTY=RequestedPowerTransition
+            VALUE=xyz.openbmc_project.State.Chassis.Transition.Off
+            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s $VALUE")
+            ;;
+        chassison)
+            OBJECT=$OBJECT_CONTROL/chassis0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$SERVICE
+            PROPERTY=RequestedPowerTransition
+            VALUE=xyz.openbmc_project.State.Chassis.Transition.On
+            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s $VALUE")
+            ;;
+        poweroff)
+            OBJECT=$OBJECT_CONTROL/host0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$SERVICE
+            PROPERTY=RequestedHostTransition
+            VALUE=xyz.openbmc_project.State.Host.Transition.Off
+            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s $VALUE")
+            ;;
+        poweron)
+            OBJECT=$OBJECT_CONTROL/host0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$SERVICE
+            PROPERTY=RequestedHostTransition
+            VALUE=xyz.openbmc_project.State.Host.Transition.On
+            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s $VALUE")
+            ;;
         bmcstate)
             OBJECT=$OBJECT_CONTROL/bmc0
             SERVICE=$(mapper get-service $OBJECT)
