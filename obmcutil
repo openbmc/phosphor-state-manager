@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-OPTS="bmcstate,bootprogress,chassisstate,hoststate,power,state,status"
+OPTS="bmcstate,bootprogress,chassisoff,chassison,chassisstate,hoststate,\
+power,poweroff,poweron,state,status"
 
 USAGE="Usage: obmcutil [-h]
                 {$OPTS}"
@@ -25,6 +26,11 @@ print_help ()
     exit 0
 }
 
+set_property ()
+{
+    busctl set-property "$@"
+}
+
 get_property ()
 {
     busctl get-property "$@"
@@ -39,6 +45,38 @@ state_query ()
 handle_cmd ()
 {
     case "$1" in
+        chassisoff)
+            OBJECT=$STATE_OBJECT/chassis0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.Chassis
+            PROPERTY=RequestedPowerTransition
+            VALUE=$INTERFACE.Transition.Off
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            ;;
+        chassison)
+            OBJECT=$STATE_OBJECT/chassis0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.Chassis
+            PROPERTY=RequestedPowerTransition
+            VALUE=$INTERFACE.Transition.On
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            ;;
+        poweroff)
+            OBJECT=$STATE_OBJECT/host0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.Host
+            PROPERTY=RequestedHostTransition
+            VALUE=$INTERFACE.Transition.Off
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            ;;
+        poweron)
+            OBJECT=$STATE_OBJECT/host0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.Host
+            PROPERTY=RequestedHostTransition
+            VALUE=$INTERFACE.Transition.On
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            ;;
         bmcstate)
             OBJECT=$STATE_OBJECT/bmc0
             SERVICE=$(mapper get-service $OBJECT)
