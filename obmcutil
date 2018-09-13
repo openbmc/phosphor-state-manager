@@ -1,12 +1,24 @@
 #!/bin/sh
 
-USAGE="Usage: obmcutil {bmcstate,chassisstate,hoststate,state,status}"
+USAGE="Usage: obmcutil [-h]
+        {bmcstate,chassisstate,hoststate,state,status}"
 
 SERVICE_ROOT=xyz.openbmc_project
 SERVICE_CONTROL=$SERVICE_ROOT.State
 
 OBJECT_ROOT=/xyz/openbmc_project
 OBJECT_CONTROL=$OBJECT_ROOT/state
+
+print_help ()
+{
+    echo "$USAGE"
+    echo ""
+    echo "positional arguments:"
+    echo "  {bmcstate,chassisstate,hoststate,state,status}"
+    echo ""
+    echo "optional arguments:"
+    echo "  -h, --help          show this help message and exit"
+}
 
 call ()
 {
@@ -53,6 +65,9 @@ parse_arg ()
             do
                 parse_arg $query
             done
+            ;;
+        -h|--help)
+            print_help
             ;;
         *)
             echo "ERROR: Invalid Choice: '$1'"
