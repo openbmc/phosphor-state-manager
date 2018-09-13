@@ -1,7 +1,7 @@
 #!/bin/sh
 
 USAGE="Usage: obmcutil [-h]
-                {bmcstate,bootprogress,chassisstate,hoststate,state,status}"
+                {bmcstate,bootprogress,chassisstate,hoststate,power,state,status}"
 
 SERVICE_ROOT=xyz.openbmc_project
 SERVICE_CONTROL=$SERVICE_ROOT.State
@@ -14,7 +14,7 @@ print_help ()
     echo "$USAGE"
     echo ""
     echo "positional arguments:"
-    echo "  {bmcstate,bootprogress,chassisstate,hoststate,state,status}"
+    echo "  {bmcstate,bootprogress,chassisstate,hoststate,power,state,status}"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -72,6 +72,16 @@ parse_arg ()
             INTERFACE=$SERVICE_CONTROL.Boot.Progress
             PROPERTY=BootProgress
             state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            ;;
+        power)
+            OBJECT=/org/openbmc/control/power0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$SERVICE
+            for property in pgood state pgood_timeout
+            do
+                STATE=$(get_property $SERVICE $OBJECT $INTERFACE $property | sed 's/i[ ^I]*//')
+                printf "%s = %s\n" $property $STATE
+            done
             ;;
         -h|--help)
             print_help
