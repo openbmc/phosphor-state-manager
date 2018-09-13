@@ -1,0 +1,64 @@
+#!/bin/sh
+
+USAGE="Usage: obmcutil {bmcstate,chassisstate,hoststate,state,status}"
+
+SERVICE_ROOT=xyz.openbmc_project
+STATE_SERVICE=$SERVICE_ROOT.State
+
+OBJECT_ROOT=/xyz/openbmc_project
+STATE_OBJECT=$OBJECT_ROOT/state
+
+call ()
+{
+    busctl $1 | cut -d '"' -f2
+}
+
+get_property ()
+{
+    call "get-property $1 $2 $3 $4"
+}
+
+state_query ()
+{
+    STATE=$(get_property $1 $2 $3 $4)
+    printf "%-20s: %s\n" $4 $STATE
+}
+
+parse_arg ()
+{
+    case "$1" in
+        bmcstate)
+            OBJECT=$STATE_OBJECT/bmc0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_SERVICE.BMC
+            PROPERTY=CurrentBMCState
+            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            ;;
+        chassisstate)
+            OBJECT=$STATE_OBJECT/chassis0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_SERVICE.Chassis
+            PROPERTY=CurrentPowerState
+            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            ;;
+        hoststate)
+            OBJECT=$STATE_OBJECT/host0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_SERVICE.Host
+            PROPERTY=CurrentHostState
+            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            ;;
+        state|status)
+            for query in bmcstate chassisstate hoststate
+            do
+                parse_arg $query
+            done
+            ;;
+        *)
+            echo "ERROR: Invalid Choice: '$1'"
+            echo "$USAGE"
+            ;;
+    esac
+}
+
+parse_arg $1
