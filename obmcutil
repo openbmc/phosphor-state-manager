@@ -21,11 +21,88 @@ print_help ()
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
+    echo "  -w, --wait          block until state transition succeeds or fails"
+    exit 0
+}
+
+run_timeout ()
+{
+    local cmd="$1";
+    local timeout="$2";
+
+    if [[ $VALUE = "$STATE_INTERFACE.Host"* ]]; then
+        query="hoststate"
+        if [[ $VALUE = *"On" ]]; then
+            expected_state="$STATE_INTERFACE.Host.HostState.Running"
+        else
+            expected_state="$STATE_INTERFACE.Host.HostState.Off"
+        fi
+    elif [[ $VALUE = "$STATE_INTERFACE.Chassis"* ]]; then
+        query="chassisstate"
+        if [[ $VALUE = *".On" ]]; then
+            expected_state="$STATE_INTERFACE.Chassis.PowerState.On"
+        else
+            expected_state="$STATE_INTERFACE.Chassis.PowerState.Off"
+        fi
+    else
+        # Should never hit this, more of a debug case...
+        echo "Unable to match value: $VALUE"
+    fi
+
+    eval "$cmd"
+
+    # Run a background query for the transition to the expected state
+    # This will be killed if the transition doesn't succeed within
+    # a timeout period.
+    (
+        while : ; do
+            local state=$(handle_arg $query)
+            if grep -q $expected_state <<< "$state"; then
+                break
+            fi
+        done
+    ) &
+    child=$!
+
+    # Could be bad if process is killed before 'timeout' occurs if
+    # transition doesn't succeed.
+    trap -- "" SIGTERM
+
+    # To check if the command was killed from time out.
+    set +e
+
+    # Workaround for lack of 'timeout' command.
+    (
+        sleep $timeout
+        kill $child
+    ) > /dev/null 2>&1 &
+
+    wait $child
+
+    rc=$?
+    if [[ $rc != 0 ]]; then
+        echo "Unable to confirm '$ROOT_COMMAND' success" \
+        "within timeout period (${timeout}s)"
+    fi
+
+    set -e
+}
+
+run_cmd ()
+{
+    local cmd="$@";
+
+    if [ "$WAIT" == "y" ]; then
+        local timeout=30
+        run_timeout "$cmd" $timeout
+    else
+        eval $cmd
+    fi
 }
 
 call ()
 {
-    busctl "$@"
+    run_cmd 'busctl' "$@"
 }
 
 set_property ()
@@ -35,6 +112,7 @@ set_property ()
 
 get_property ()
 {
+    WAIT="n"
     call 'get-property' "$@"
 }
 
@@ -44,7 +122,14 @@ state_query ()
     printf "%-20s: %s\n" $4 $state
 }
 
-parse_arg ()
+print_err ()
+{
+    echo "ERROR: $1" >&2
+    echo "$USAGE"
+    exit 1
+}
+
+handle_arg ()
 {
     case "$1" in
         chassisoff)
@@ -53,7 +138,7 @@ parse_arg ()
             INTERFACE=$STATE_INTERFACE.Chassis
             PROPERTY=RequestedPowerTransition
             VALUE=$INTERFACE.Transition.Off
-            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY s $VALUE)
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         chassison)
             OBJECT=$STATE_OBJECT/chassis0
@@ -61,7 +146,7 @@ parse_arg ()
             INTERFACE=$STATE_INTERFACE.Chassis
             PROPERTY=RequestedPowerTransition
             VALUE=$INTERFACE.Transition.On
-            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY s $VALUE)
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweroff)
             OBJECT=$STATE_OBJECT/host0
@@ -69,7 +154,7 @@ parse_arg ()
             INTERFACE=$STATE_INTERFACE.Host
             PROPERTY=RequestedHostTransition
             VALUE=$INTERFACE.Transition.Off
-            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY s $VALUE)
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweron)
             OBJECT=$STATE_OBJECT/host0
@@ -77,7 +162,7 @@ parse_arg ()
             INTERFACE=$STATE_INTERFACE.Host
             PROPERTY=RequestedHostTransition
             VALUE=$INTERFACE.Transition.On
-            STATE=$(set_property $SERVICE $OBJECT $INTERFACE $PROPERTY s $VALUE)
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         bmcstate)
             OBJECT=$STATE_OBJECT/bmc0
@@ -103,7 +188,7 @@ parse_arg ()
         state|status)
             for query in bmcstate chassisstate hoststate
             do
-                parse_arg $query
+                handle_arg $query
             done
             ;;
         bootprogress)
@@ -128,14 +213,28 @@ parse_arg ()
                 printf "%s = %s\n" $property $STATE
             done
             ;;
-        -h|--help)
-            print_help
-            ;;
         *)
-            echo "ERROR: Invalid Choice: '$1'"
-            echo "$USAGE"
+            print_err "Invalid command '$1'"
             ;;
     esac
 }
 
-parse_arg $1
+for arg in "$@"; do
+    case $arg in
+        -w|--wait)
+            WAIT=y
+            continue
+            ;;
+        -h|--help)
+            print_help
+            ;;
+        -*)
+            print_err "Unknown option: $1"
+            ;;
+        *)
+            ROOT_COMMAND=$arg
+            handle_arg $arg
+            break
+            ;;
+    esac
+done
