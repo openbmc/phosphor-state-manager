@@ -42,6 +42,13 @@ state_query ()
     printf "%-20s: %s\n" $4 $state
 }
 
+print_err ()
+{
+    echo "ERROR: $1" >&2
+    echo "$USAGE"
+    exit 1
+}
+
 handle_cmd ()
 {
     case "$1" in
@@ -126,14 +133,23 @@ handle_cmd ()
                 printf "%s = %s\n" $property $STATE
             done
             ;;
-        -h|--help)
-            print_help
-            ;;
         *)
-            echo "ERROR: Invalid Choice: '$1'"
-            echo "$USAGE"
+            print_err "Invalid command '$1'"
             ;;
     esac
 }
 
-handle_cmd $1
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            print_help
+            ;;
+        -*)
+            print_err "Unknown option: $arg"
+            ;;
+        *)
+            handle_cmd $arg
+            break
+            ;;
+    esac
+done
