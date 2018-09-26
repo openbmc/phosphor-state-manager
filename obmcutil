@@ -21,6 +21,7 @@ print_help ()
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
+    exit 0
 }
 
 call ()
@@ -44,7 +45,14 @@ state_query ()
     printf "%-20s: %s\n" $4 $state
 }
 
-parse_arg ()
+print_err ()
+{
+    echo "ERROR: $1" >&2
+    echo "$USAGE"
+    exit 1
+}
+
+handle_command ()
 {
     case "$1" in
         chassisoff)
@@ -103,7 +111,7 @@ parse_arg ()
         state|status)
             for query in bmcstate chassisstate hoststate
             do
-                parse_arg $query
+                handle_command $query
             done
             ;;
         bootprogress)
@@ -128,14 +136,23 @@ parse_arg ()
                 printf "%s = %s\n" $property $STATE
             done
             ;;
-        -h|--help)
-            print_help
-            ;;
         *)
-            echo "ERROR: Invalid Choice: '$1'"
-            echo "$USAGE"
+            print_err "Invalid command '$1'"
             ;;
     esac
 }
 
-parse_arg $1
+for arg in "$@"; do
+    case $arg in
+        -h|--help)
+            print_help
+            ;;
+        -*)
+            print_err "Unknown option: $1"
+            ;;
+        *)
+            handle_command $arg
+            break
+            ;;
+    esac
+done
