@@ -89,8 +89,9 @@ std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
     return sdbusplus::message::variant_ns::get<std::string>(property);
 }
 
-void setProperty(sdbusplus::bus::bus& bus, std::string path,
-                 std::string interface, std::string property, std::string value)
+void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
+                 const std::string& interface, const std::string& property,
+                 const std::string& value)
 {
     sdbusplus::message::variant<std::string> variantValue = value;
     std::string service = getService(bus, path, interface);
