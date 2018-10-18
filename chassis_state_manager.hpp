@@ -1,13 +1,16 @@
 #pragma once
 
+#include <chrono>
 #include <functional>
 #include <experimental/filesystem>
 #include <cereal/cereal.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/utility/timer.hpp>
 #include "xyz/openbmc_project/State/Chassis/server.hpp"
 #include "xyz/openbmc_project/State/PowerOnHours/server.hpp"
 #include "config.h"
-#include "timer.hpp"
 
 namespace phosphor
 {
@@ -15,13 +18,6 @@ namespace state
 {
 namespace manager
 {
-namespace POH
-{
-
-using namespace std::chrono_literals;
-constexpr auto hour = 3600s; // seconds Per Hour
-
-} // namespace  POH
 
 using ChassisInherit = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::State::server::Chassis,
@@ -57,7 +53,10 @@ class Chassis : public ChassisInherit
                 sdbusRule::path("/org/freedesktop/systemd1") +
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Chassis::sysStateChange), this,
-                      std::placeholders::_1))
+                      std::placeholders::_1)),
+        pOHTimer(sdeventplus::Event::get_default(),
+                 std::bind(&Chassis::pOHCallback, this), std::chrono::hours{1},
+                 std::chrono::minutes{1})
     {
         subscribeToSystemdSignals();
 
@@ -136,6 +135,9 @@ class Chassis : public ChassisInherit
     /** @brief Used to Set value of POHCounter */
     uint32_t pOHCounter(uint32_t value) override;
 
+    /** @brief Used by the timer to update the POHCounter */
+    void pOHCallback();
+
     /** @brief Used to restore POHCounter value from persisted file */
     void restorePOHCounter();
 
@@ -188,8 +190,8 @@ class Chassis : public ChassisInherit
      */
     void restoreChassisStateChangeTime();
 
-    /** @brief Timer */
-    std::unique_ptr<phosphor::state::manager::Timer> timer;
+    /** @brief Timer used for tracking power on hours */
+    sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> pOHTimer;
 };
 
 } // namespace manager

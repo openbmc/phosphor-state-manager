@@ -1,5 +1,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/exception.hpp>
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include "xyz/openbmc_project/Common/error.hpp"
@@ -21,6 +23,7 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 using sdbusplus::exception::SdBusError;
+using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT =
@@ -268,14 +271,7 @@ Chassis::PowerState Chassis::currentPowerState(PowerState value)
                            convertForMessage(value).c_str()));
 
     chassisPowerState = server::Chassis::currentPowerState(value);
-    if (chassisPowerState == PowerState::On)
-    {
-        timer->state(timer::ON);
-    }
-    else
-    {
-        timer->state(timer::OFF);
-    }
+    pOHTimer.setEnabled(chassisPowerState == PowerState::On);
     return chassisPowerState;
 }
 
@@ -287,6 +283,14 @@ uint32_t Chassis::pOHCounter(uint32_t value)
         serializePOH();
     }
     return pOHCounter();
+}
+
+void Chassis::pOHCallback()
+{
+    if (ChassisInherit::currentPowerState() == PowerState::On)
+    {
+        pOHCounter(pOHCounter() + 1);
+    }
 }
 
 void Chassis::restorePOHCounter()
@@ -340,47 +344,19 @@ bool Chassis::deserializePOH(const fs::path& path, uint32_t& pOHCounter)
 
 void Chassis::startPOHCounter()
 {
-    using namespace std::chrono_literals;
-    using namespace phosphor::logging;
-    using namespace sdbusplus::xyz::openbmc_project::Common::Error;
-
     auto dir = fs::path(POH_COUNTER_PERSIST_PATH).parent_path();
     fs::create_directories(dir);
 
-    sd_event* event = nullptr;
-    auto r = sd_event_default(&event);
-    if (r < 0)
-    {
-        log<level::ERR>("Error creating a default sd_event handler");
-        throw;
-    }
-
-    phosphor::state::manager::EventPtr eventP{event};
-    event = nullptr;
-
-    auto callback = [&]() {
-        if (ChassisInherit::currentPowerState() == PowerState::On)
-        {
-            pOHCounter(pOHCounter() + 1);
-        }
-    };
-
     try
     {
-        timer = std::make_unique<phosphor::state::manager::Timer>(
-            eventP, callback, std::chrono::seconds(POH::hour),
-            phosphor::state::manager::timer::ON);
-        bus.attach_event(eventP.get(), SD_EVENT_PRIORITY_NORMAL);
-        r = sd_event_loop(eventP.get());
-        if (r < 0)
-        {
-            log<level::ERR>("Error occurred during the sd_event_loop",
-                            entry("RC=%d", r));
-            elog<InternalFailure>();
-        }
+        auto event = sdeventplus::Event::get_default();
+        bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+        event.loop();
     }
-    catch (InternalFailure& e)
+    catch (const sdeventplus::SdEventError& e)
     {
+        log<level::ERR>("Error occurred during the sdeventplus loop",
+                        entry("ERROR=%s", e.what()));
         phosphor::logging::commit<InternalFailure>();
     }
 }

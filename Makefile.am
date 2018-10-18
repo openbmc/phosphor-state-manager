@@ -14,8 +14,7 @@ phosphor_host_state_manager_SOURCES = \
 
 phosphor_chassis_state_manager_SOURCES = \
 	chassis_state_manager.cpp \
-	chassis_state_manager_main.cpp \
-	timer.cpp
+	chassis_state_manager_main.cpp
 
 phosphor_bmc_state_manager_SOURCES = \
 	bmc_state_manager.cpp \
@@ -43,8 +42,13 @@ generic_ldflags = \
 phosphor_host_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
 
-phosphor_chassis_state_manager_CXXFLAGS = $(generic_cxxflags)
-phosphor_chassis_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
+phosphor_chassis_state_manager_CXXFLAGS = \
+	$(generic_cxxflags) \
+	$(SDEVENTPLUS_CFLAGS)
+phosphor_chassis_state_manager_LDFLAGS = \
+	$(generic_ldflags) \
+	$(SDEVENTPLUS_LIBS) \
+	-lstdc++fs
 
 phosphor_bmc_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_bmc_state_manager_LDFLAGS = $(generic_ldflags)
