@@ -5,12 +5,17 @@ sbin_PROGRAMS = \
 	phosphor-chassis-state-manager \
 	phosphor-bmc-state-manager \
 	phosphor-discover-system-state \
-	phosphor-host-check
+	phosphor-host-check \
+	chassiskill
 
 phosphor_host_state_manager_SOURCES = \
 	host_state_manager.cpp \
 	host_state_manager_main.cpp \
 	settings.cpp
+
+chassiskill_SOURCES = \
+	chassiskill.cpp \
+	utility.cpp
 
 phosphor_chassis_state_manager_SOURCES = \
 	chassis_state_manager.cpp \
@@ -38,6 +43,9 @@ generic_ldflags = \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(SDBUSPLUS_LIBS) \
 	$(PHOSPHOR_LOGGING_LIBS)
+
+chassiskill_CXXFLAGS = $(GPIOPLUS_FLAGS) $(generic_cxxflags)
+chassiskill_LDFLAGS = $(GPIOPLUS_LIBS) $(generic_ldflags)
 
 phosphor_host_state_manager_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_state_manager_LDFLAGS = $(generic_ldflags) -lstdc++fs
