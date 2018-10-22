@@ -20,6 +20,8 @@ PKG_CHECK_MODULES([SDEVENTPLUS], [sdeventplus],,
     AC_MSG_ERROR(["Requires sdeventplus package."]))
 PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging],,\
     AC_MSG_ERROR(["Requires phosphor-logging package."]))
+PKG_CHECK_MODULES([GPIOPLUS], [gpioplus],,\
+    [AC_MSG_ERROR([Could not find gpioplus...openbmc/gpioplus package required])])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX_17([noext])
