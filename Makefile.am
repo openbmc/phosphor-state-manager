@@ -62,3 +62,5 @@ phosphor_discover_system_state_LDFLAGS = $(generic_ldflags)
 
 phosphor_host_check_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_check_LDFLAGS = $(generic_ldflags)
+
+SUBDIRS = . test
