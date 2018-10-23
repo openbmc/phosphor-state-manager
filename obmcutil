@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-OPTS="bmcstate,bootprogress,chassisoff,chassison,chassisstate,hoststate,\
+OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 power,poweroff,poweron,state,status"
 
 USAGE="Usage: obmcutil [-h] [--wait]
@@ -42,6 +42,18 @@ print_help ()
     echo "  -h, --help          show this help message and exit"
     echo "  -w, --wait          block until state transition succeeds or fails"
     exit 0
+}
+
+run_chassiskill ()
+{
+    local out=$(/usr/libexec/chassiskill 2>&1)
+    local rc=$?
+
+    if ! $rc ; then
+        echo "Error: failed to run chassiskill"
+        echo "$out"
+        exit $rc
+    fi
 }
 
 run_timeout ()
@@ -203,6 +215,9 @@ handle_cmd ()
                     | sed 's/i[ ^I]*//')
                 printf "%s = %s\n" $property $STATE
             done
+            ;;
+        chassiskill)
+            run_chassiskill
             ;;
         *)
             print_usage_err "Invalid command '$1'"
