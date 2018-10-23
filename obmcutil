@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-OPTS="bmcstate,bootprogress,chassisoff,chassison,chassisstate,hoststate,\
+OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 power,poweroff,poweron,state,status"
 
 USAGE="Usage: obmcutil [-h] [--wait]
@@ -203,6 +203,9 @@ handle_cmd ()
                     | sed 's/i[ ^I]*//')
                 printf "%s = %s\n" $property $STATE
             done
+            ;;
+        chassiskill)
+            /usr/libexec/chassiskill
             ;;
         *)
             print_usage_err "Invalid command '$1'"
