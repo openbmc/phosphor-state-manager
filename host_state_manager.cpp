@@ -8,6 +8,7 @@
 #include <cereal/types/tuple.hpp>
 #include <cereal/archives/json.hpp>
 #include <fstream>
+#include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
@@ -34,6 +35,7 @@ namespace osstatus =
     sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
 using namespace phosphor::logging;
 namespace fs = std::experimental::filesystem;
+using sdbusplus::exception::SdBusError;
 
 // host-shutdown notifies host of shutdown and that leads to host-stop being
 // called so initiate a host shutdown with the -shutdown target and consider the
@@ -133,17 +135,18 @@ bool Host::stateActive(const std::string& target)
                                             SYSTEMD_INTERFACE, "GetUnit");
 
     method.append(target);
-    auto result = this->bus.call(method);
 
-    // Check that the bus call didn't result in an error
-    if (result.is_method_error())
+    try
     {
-        log<level::ERR>("Error in bus call - could not resolve GetUnit for:",
-                        entry(" %s", SYSTEMD_INTERFACE));
+        auto result = this->bus.call(method);
+        result.read(unitTargetPath);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in GetUnit call",
+                        entry("ERROR=%s", e.what()));
         return false;
     }
-
-    result.read(unitTargetPath);
 
     method = this->bus.new_method_call(
         SYSTEMD_SERVICE,
@@ -151,17 +154,18 @@ bool Host::stateActive(const std::string& target)
         SYSTEMD_PROPERTY_IFACE, "Get");
 
     method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
-    result = this->bus.call(method);
 
-    // Check that the bus call didn't result in an error
-    if (result.is_method_error())
+    try
     {
-        log<level::ERR>("Error in bus call - could not resolve Get for:",
-                        entry(" %s", SYSTEMD_PROPERTY_IFACE));
+        auto result = this->bus.call(method);
+        result.read(currentState);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in ActiveState Get",
+                        entry("ERROR=%s", e.what()));
         return false;
     }
-
-    result.read(currentState);
 
     if (currentState != ACTIVE_STATE && currentState != ACTIVATING_STATE)
     {
@@ -180,44 +184,50 @@ bool Host::isAutoReboot()
         settings.service(settings.autoReboot, autoRebootIntf).c_str(),
         settings.autoReboot.c_str(), "org.freedesktop.DBus.Properties", "Get");
     method.append(autoRebootIntf, "AutoReboot");
-    auto reply = bus.call(method);
-    if (reply.is_method_error())
-    {
-        log<level::ERR>("Error in AutoReboot Get");
-        return false;
-    }
 
-    sdbusplus::message::variant<bool> result;
-    reply.read(result);
-    auto autoReboot = result.get<bool>();
-    auto rebootCounterParam = reboot::RebootAttempts::attemptsLeft();
-
-    if (autoReboot)
+    try
     {
-        if (rebootCounterParam > 0)
+        auto reply = bus.call(method);
+
+        sdbusplus::message::variant<bool> result;
+        reply.read(result);
+
+        auto autoReboot = result.get<bool>();
+        auto rebootCounterParam = reboot::RebootAttempts::attemptsLeft();
+
+        if (autoReboot)
         {
-            // Reduce BOOTCOUNT by 1
-            log<level::INFO>("Auto reboot enabled, rebooting");
-            return true;
-        }
-        else if (rebootCounterParam == 0)
-        {
-            // Reset reboot counter and go to quiesce state
-            log<level::INFO>("Auto reboot enabled. "
-                             "HOST BOOTCOUNT already set to 0.");
-            attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
-            return false;
+            if (rebootCounterParam > 0)
+            {
+                // Reduce BOOTCOUNT by 1
+                log<level::INFO>("Auto reboot enabled, rebooting");
+                return true;
+            }
+            else if (rebootCounterParam == 0)
+            {
+                // Reset reboot counter and go to quiesce state
+                log<level::INFO>("Auto reboot enabled. "
+                                 "HOST BOOTCOUNT already set to 0.");
+                attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
+                return false;
+            }
+            else
+            {
+                log<level::INFO>("Auto reboot enabled. "
+                                 "HOST BOOTCOUNT has an invalid value.");
+                return false;
+            }
         }
         else
         {
-            log<level::INFO>("Auto reboot enabled. "
-                             "HOST BOOTCOUNT has an invalid value.");
+            log<level::INFO>("Auto reboot disabled.");
             return false;
         }
     }
-    else
+    catch (const SdBusError& e)
     {
-        log<level::INFO>("Auto reboot disabled.");
+        log<level::ERR>("Error in AutoReboot Get",
+                        entry("ERROR=%s", e.what()));
         return false;
     }
 }
