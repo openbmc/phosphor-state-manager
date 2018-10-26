@@ -4,6 +4,7 @@
 #include <string>
 #include <config.h>
 #include <systemd/sd-bus.h>
+#include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
@@ -22,6 +23,7 @@ namespace manager
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 using namespace sdbusplus::xyz::openbmc_project::Control::Power::server;
+using sdbusplus::exception::SdBusError;
 
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
@@ -36,23 +38,28 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
                                       MAPPER_INTERFACE, "GetObject");
 
     mapper.append(path, std::vector<std::string>({interface}));
-    auto mapperResponseMsg = bus.call(mapper);
-
-    if (mapperResponseMsg.is_method_error())
-    {
-        log<level::ERR>("Error in mapper call", entry("PATH=%s", path.c_str()),
-                        entry("INTERFACE=%s", interface.c_str()));
-        throw std::runtime_error("Error in mapper call");
-    }
 
     std::map<std::string, std::vector<std::string>> mapperResponse;
-    mapperResponseMsg.read(mapperResponse);
-    if (mapperResponse.empty())
+    try
     {
-        log<level::ERR>("Error reading mapper response",
+        auto mapperResponseMsg = bus.call(mapper);
+
+        mapperResponseMsg.read(mapperResponse);
+        if (mapperResponse.empty())
+        {
+            log<level::ERR>("Error reading mapper response",
+                            entry("PATH=%s", path.c_str()),
+                            entry("INTERFACE=%s", interface.c_str()));
+            throw std::runtime_error("Error reading mapper response");
+        }
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in mapper call: ",
+                        entry("ERROR=%s", e.what()),
                         entry("PATH=%s", path.c_str()),
                         entry("INTERFACE=%s", interface.c_str()));
-        throw std::runtime_error("Error reading mapper response");
+        throw std::runtime_error("Error in mapper call");
     }
 
     return mapperResponse.begin()->first;
@@ -68,16 +75,19 @@ std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
                                       PROPERTY_INTERFACE, "Get");
 
     method.append(interface, propertyName);
-    auto reply = bus.call(method);
 
-    if (reply.is_method_error())
+    try
     {
-        log<level::ERR>("Error in property Get",
+        auto reply = bus.call(method);
+        reply.read(property);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in property Get: ",
+                        entry("ERROR=%s", e.what()),
                         entry("PROPERTY=%s", propertyName.c_str()));
         throw std::runtime_error("Error in property Get");
     }
-
-    reply.read(property);
 
     if (sdbusplus::message::variant_ns::get<std::string>(property).empty())
     {
@@ -148,15 +158,20 @@ int main(int argc, char** argv)
         settings.powerRestorePolicy.c_str(), "org.freedesktop.DBus.Properties",
         "Get");
     method.append(powerRestoreIntf, "PowerRestorePolicy");
-    auto reply = bus.call(method);
-    if (reply.is_method_error())
+
+    sdbusplus::message::variant<std::string> result;
+    try
     {
-        log<level::ERR>("Error in PowerRestorePolicy Get");
+        auto reply = bus.call(method);
+        reply.read(result);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in PowerRestorePolicy Get: ",
+                         entry("ERROR=%s", e.what()));
         elog<InternalFailure>();
     }
 
-    sdbusplus::message::variant<std::string> result;
-    reply.read(result);
     auto powerPolicy = result.get<std::string>();
 
     log<level::INFO>("Host power is off, checking power policy",

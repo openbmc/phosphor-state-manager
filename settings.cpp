@@ -1,5 +1,6 @@
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/exception.hpp>
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "settings.hpp"
 
@@ -8,6 +9,7 @@ namespace settings
 
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+using sdbusplus::exception::SdBusError;
 
 constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
@@ -23,20 +25,26 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
     mapperCall.append(root);
     mapperCall.append(depth);
     mapperCall.append(settingsIntfs);
-    auto response = bus.call(mapperCall);
-    if (response.is_method_error())
-    {
-        log<level::ERR>("Error in mapper GetSubTree");
-        elog<InternalFailure>();
-    }
 
     using Interfaces = std::vector<Interface>;
     using MapperResponse = std::map<Path, std::map<Service, Interfaces>>;
     MapperResponse result;
-    response.read(result);
-    if (result.empty())
+
+    try
     {
-        log<level::ERR>("Invalid response from mapper");
+        auto response = bus.call(mapperCall);
+
+        response.read(result);
+        if (result.empty())
+        {
+            log<level::ERR>("Invalid response from mapper");
+            elog<InternalFailure>();
+        }
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in mapper GetSubTree: ",
+                        entry("ERROR=%s", e.what()));
         elog<InternalFailure>();
     }
 
@@ -69,15 +77,20 @@ Service Objects::service(const Path& path, const Interface& interface) const
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 
-    auto response = bus.call(mapperCall);
-    if (response.is_method_error())
+    std::map<Service, Interfaces> result;
+
+    try
     {
-        log<level::ERR>("Error in mapper GetObject");
+        auto response = bus.call(mapperCall);
+        response.read(result);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in mapper GetObject: ",
+                        entry("ERROR=%s", e.what()));
         elog<InternalFailure>();
     }
 
-    std::map<Service, Interfaces> result;
-    response.read(result);
     if (result.empty())
     {
         log<level::ERR>("Invalid response from mapper");
