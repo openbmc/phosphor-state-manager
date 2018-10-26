@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cstdio>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/exception.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Control/Host/server.hpp>
 #include <config.h>
@@ -11,6 +12,7 @@
 using namespace std::literals;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Control::server;
+using sdbusplus::exception::SdBusError;
 
 // Required strings for sending the msg to check on host
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
@@ -59,17 +61,21 @@ void sendHeartbeat(sdbusplus::bus::bus& bus)
 
     mapper.append(CONTROL_HOST_PATH,
                   std::vector<std::string>({CONTROL_HOST_INTERFACE}));
-    auto mapperResponseMsg = bus.call(mapper);
-
-    if (mapperResponseMsg.is_method_error())
-    {
-        log<level::ERR>("Error in mapper call for control host");
-        // TODO openbmc/openbmc#851 - Once available, throw returned error
-        throw std::runtime_error("Error in mapper call for control host");
-    }
 
     std::map<std::string, std::vector<std::string>> mapperResponse;
-    mapperResponseMsg.read(mapperResponse);
+
+    try
+    {
+        auto mapperResponseMsg = bus.call(mapper);
+        mapperResponseMsg.read(mapperResponse);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in mapper call for control host",
+                        entry("ERROR=%s", e.what()));
+        throw;
+    }
+
     if (mapperResponse.empty())
     {
         log<level::ERR>("Error reading mapper resp for control host");
@@ -83,11 +89,15 @@ void sendHeartbeat(sdbusplus::bus::bus& bus)
                                       CONTROL_HOST_INTERFACE, "Execute");
     method.append(convertForMessage(Host::Command::Heartbeat).c_str());
 
-    auto reply = bus.call(method);
-    if (reply.is_method_error())
+    try
     {
-        log<level::ERR>("Error in call to control host Execute");
-        throw std::runtime_error("Error in call to control host Execute");
+        auto reply = bus.call(method);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in call to control host Execute",
+                        entry("ERROR=%s", e.what()));
+        throw;
     }
 
     return;

@@ -1,5 +1,6 @@
 #include <cassert>
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/exception.hpp>
 #include <sys/sysinfo.h>
 #include "bmc_state_manager.hpp"
 
@@ -14,6 +15,7 @@ namespace manager
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
+using sdbusplus::exception::SdBusError;
 
 constexpr auto obmcStandbyTarget = "obmc-standby.target";
 constexpr auto signalDone = "done";
@@ -38,16 +40,16 @@ void BMC::discoverInitialState()
 
     method.append(obmcStandbyTarget);
 
-    auto result = this->bus.call(method);
-
-    // Check that the bus call didn't result in an error
-    if (result.is_method_error())
+    try
     {
-        log<level::ERR>("Error in bus call.");
+        auto result = this->bus.call(method);
+        result.read(unitTargetPath);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error in GetUnit call", entry("ERROR=%s", e.what()));
         return;
     }
-
-    result.read(unitTargetPath);
 
     method = this->bus.new_method_call(
         SYSTEMD_SERVICE,
@@ -56,19 +58,23 @@ void BMC::discoverInitialState()
 
     method.append("org.freedesktop.systemd1.Unit", "ActiveState");
 
-    result = this->bus.call(method);
-
-    // Check that the bus call didn't result in an error
-    if (result.is_method_error())
+    try
     {
-        log<level::INFO>("Error in bus call.");
+        auto result = this->bus.call(method);
+
+        // Is obmc-standby.target active or inactive?
+        result.read(currentState);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::INFO>("Error in ActiveState Get",
+                         entry("ERROR=%s", e.what()));
         return;
     }
 
-    // Is obmc-standby.target active or inactive?
-    result.read(currentState);
-
-    if (currentState == activeState)
+    auto currentStateStr =
+        sdbusplus::message::variant_ns::get<std::string>(currentState);
+    if (currentStateStr == activeState)
     {
         log<level::INFO>("Setting the BMCState field",
                          entry("CURRENT_BMC_STATE=%s", "BMC_READY"));
@@ -77,8 +83,16 @@ void BMC::discoverInitialState()
         // Unsubscribe so we stop processing all other signals
         method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                            SYSTEMD_INTERFACE, "Unsubscribe");
-        this->bus.call(method);
-        this->stateSignal.release();
+        try
+        {
+            this->bus.call(method);
+            this->stateSignal.release();
+        }
+        catch (const SdBusError& e)
+        {
+            log<level::INFO>("Error in Unsubscribe",
+                             entry("ERROR=%s", e.what()));
+        }
     }
     else
     {
@@ -94,7 +108,15 @@ void BMC::subscribeToSystemdSignals()
 {
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE, "Subscribe");
-    this->bus.call(method);
+
+    try
+    {
+        this->bus.call(method);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::INFO>("Error in Subscribe", entry("ERROR=%s", e.what()));
+    }
 
     return;
 }
@@ -114,7 +136,16 @@ void BMC::executeTransition(const Transition tranReq)
     // needs to be irreversible once started
     method.append(sysdUnit, "replace-irreversibly");
 
-    this->bus.call(method);
+    try
+    {
+        this->bus.call(method);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::INFO>("Error in StartUnit - replace-irreversibly",
+                         entry("ERROR=%s", e.what()));
+    }
+
     return;
 }
 
@@ -138,8 +169,17 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         auto method =
             this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                       SYSTEMD_INTERFACE, "Unsubscribe");
-        this->bus.call(method);
-        this->stateSignal.release();
+
+        try
+        {
+            this->bus.call(method);
+            this->stateSignal.release();
+        }
+        catch (const SdBusError& e)
+        {
+            log<level::INFO>("Error in Unsubscribe",
+                             entry("ERROR=%s", e.what()));
+        }
     }
 
     return 0;
