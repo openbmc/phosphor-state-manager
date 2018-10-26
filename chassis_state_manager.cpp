@@ -69,23 +69,26 @@ void Chassis::determineInitialState()
     method.append("org.openbmc.control.Power", "pgood");
     try
     {
-        auto reply = this->bus.call(method);
-        if (reply.is_method_error())
-        {
-            log<level::ERR>(
-                "Error in response message - could not get initial pgood");
-            goto fail;
-        }
-
         try
         {
-            reply.read(pgood);
+            auto reply = this->bus.call(method);
+
+            try
+            {
+                reply.read(pgood);
+            }
+            catch (const SdBusError& e)
+            {
+                log<level::ERR>("Error in bus response - bad encoding of pgood",
+                                entry("ERROR=%s", e.what()),
+                                entry("REPLY_SIG=%s", reply.get_signature()));
+                goto fail;
+            }
         }
         catch (const SdBusError& e)
         {
-            log<level::ERR>("Error in bus response - bad encoding of pgood",
-                            entry("ERROR=%s", e.what()),
-                            entry("REPLY_SIG=%s", reply.get_signature()));
+            log<level::ERR>(
+                "Error in response message - could not get initial pgood");
             goto fail;
         }
 
@@ -165,25 +168,27 @@ bool Chassis::stateActive(const std::string& target)
                                             SYSTEMD_INTERFACE, "GetUnit");
 
     method.append(target);
-    auto result = this->bus.call(method);
-
-    // Check that the bus call didn't result in an error
-    if (result.is_method_error())
-    {
-        log<level::ERR>("Error in bus call - could not resolve GetUnit for:",
-                        entry(" %s", SYSTEMD_INTERFACE));
-        return false;
-    }
 
     try
     {
-        result.read(unitTargetPath);
+        auto result = this->bus.call(method);
+
+        try
+        {
+            result.read(unitTargetPath);
+        }
+        catch (const SdBusError& e)
+        {
+            log<level::ERR>("Error in bus response - bad encoding for GetUnit",
+                            entry("ERROR=%s", e.what()),
+                            entry("REPLY_SIG=%s", result.get_signature()));
+            return false;
+        }
     }
     catch (const SdBusError& e)
     {
-        log<level::ERR>("Error in bus response - bad encoding for GetUnit",
-                        entry("ERROR=%s", e.what()),
-                        entry("REPLY_SIG=%s", result.get_signature()));
+        log<level::ERR>("Error in bus call - could not resolve GetUnit for:",
+                        entry(" %s", SYSTEMD_INTERFACE));
         return false;
     }
 
@@ -193,17 +198,18 @@ bool Chassis::stateActive(const std::string& target)
         SYSTEMD_PROPERTY_IFACE, "Get");
 
     method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
-    result = this->bus.call(method);
 
-    // Check that the bus call didn't result in an error
-    if (result.is_method_error())
+    try
+    {
+        auto result = this->bus.call(method);
+        result.read(currentState);
+    }
+    catch (const SdBusError& e)
     {
         log<level::ERR>("Error in bus call - could not resolve Get for:",
                         entry(" %s", SYSTEMD_PROPERTY_IFACE));
         return false;
     }
-
-    result.read(currentState);
 
     if (currentState != ACTIVE_STATE && currentState != ACTIVATING_STATE)
     {
