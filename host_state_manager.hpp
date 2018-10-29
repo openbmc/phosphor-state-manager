@@ -192,7 +192,9 @@ class Host : public HostInherit
                                       server::Progress::bootProgress()),
                 convertForMessage(
                     sdbusplus::xyz::openbmc_project::State::OperatingSystem::
-                        server::Status::operatingSystemState()));
+                        server::Status::operatingSystemState()),
+                convertForMessage(sdbusplus::xyz::openbmc_project::State::
+                                      server::Host::currentHostState()));
     }
 
     /** @brief Function required by Cereal to perform deserialization.
@@ -208,7 +210,8 @@ class Host : public HostInherit
         std::string reqTranState;
         std::string bootProgress;
         std::string osState;
-        archive(reqTranState, bootProgress, osState);
+        std::string currentHostState;
+        archive(reqTranState, bootProgress, osState, currentHostState);
         auto reqTran = Host::convertTransitionFromString(reqTranState);
         // When restoring, set the requested state with persistent value
         // but don't call the override which would execute it
@@ -219,6 +222,8 @@ class Host : public HostInherit
         sdbusplus::xyz::openbmc_project::State::OperatingSystem::server::
             Status::operatingSystemState(
                 Host::convertOSStatusFromString(osState));
+        sdbusplus::xyz::openbmc_project::State::server::Host::currentHostState(
+            Host::convertHostStateFromString(currentHostState));
     }
 
     /** @brief Serialize and persist requested host state
