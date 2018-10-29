@@ -346,7 +346,9 @@ Host::HostState Host::currentHostState(HostState value)
     log<level::INFO>(
         "Change to Host State",
         entry("CURRENT_HOST_STATE=%s", convertForMessage(value).c_str()));
-    return server::Host::currentHostState(value);
+    auto retVal = server::Host::currentHostState(value);
+    serialize();
+    return retVal;
 }
 
 } // namespace manager
