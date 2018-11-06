@@ -60,6 +60,15 @@ class Handler
     void longPowerPress(sdbusplus::message::message& msg);
 
     /**
+     * @brief The handler for an ID button press
+     *
+     * Toggles the ID LED group
+     *
+     * @param[in] msg - sdbusplus message from signal
+     */
+    void idPress(sdbusplus::message::message& msg);
+
+    /**
      * @brief The handler for a reset button press
      *
      * Reboots the host if it is powered on.
@@ -111,6 +120,11 @@ class Handler
      * @brief Matches on the power button long press released signal
      */
     std::unique_ptr<sdbusplus::bus::match_t> powerButtonLongPressRelease;
+
+    /**
+     * @brief Matches on the ID button released signal
+     */
+    std::unique_ptr<sdbusplus::bus::match_t> idButtonRelease;
 
     /**
      * @brief Matches on the reset button released signal
