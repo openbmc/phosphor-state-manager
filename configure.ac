@@ -95,5 +95,13 @@ AC_ARG_VAR(RESET_BUTTON_OBJ_PATH, [The reset button D-Bus object path])
 AS_IF([test "x$RESET_BUTTON_OBJ_PATH" == "x"], [RESET_BUTTON_OBJ_PATH="/xyz/openbmc_project/Chassis/Buttons/Reset0"])
 AC_DEFINE_UNQUOTED([RESET_BUTTON_OBJ_PATH], ["$RESET_BUTTON_OBJ_PATH"], [The reset button D-Bus object path])
 
+AC_ARG_VAR(ID_BUTTON_OBJ_PATH, [The ID button D-Bus object path])
+AS_IF([test "x$ID_BUTTON_OBJ_PATH" == "x"], [ID_BUTTON_OBJ_PATH="/xyz/openbmc_project/Chassis/Buttons/ID0"])
+AC_DEFINE_UNQUOTED([ID_BUTTON_OBJ_PATH], ["$ID_BUTTON_OBJ_PATH"], [The ID button D-Bus object path])
+
+AC_ARG_VAR(ID_LED_GROUP, [LED group name to use with the identify button])
+AS_IF([test "x$ID_LED_GROUP" == "x"], [ID_LED_GROUP="enclosure_identify"])
+AC_DEFINE_UNQUOTED([ID_LED_GROUP], ["$ID_LED_GROUP"], [LED group name to use with the identify button])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
