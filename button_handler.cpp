@@ -20,6 +20,7 @@ constexpr auto propertyIface = "org.freedesktop.DBus.Properties";
 constexpr auto chassisIface = "xyz.openbmc_project.State.Chassis";
 constexpr auto hostIface = "xyz.openbmc_project.State.Host";
 constexpr auto powerButtonIface = "xyz.openbmc_project.Chassis.Buttons.Power";
+constexpr auto resetButtonIface = "xyz.openbmc_project.Chassis.Buttons.Reset";
 constexpr auto mapperIface = "xyz.openbmc_project.ObjectMapper";
 
 constexpr auto mapperObjPath = "/xyz/openbmc_project/object_mapper";
@@ -47,6 +48,17 @@ Handler::Handler(sdbusplus::bus::bus& bus) :
                     sdbusRule::interface(powerButtonIface),
                 std::bind(std::mem_fn(&Handler::longPowerPressed), this,
                           std::placeholders::_1));
+    }
+
+    if (!getService(RESET_BUTTON_OBJ_PATH, resetButtonIface).empty())
+    {
+        resetButtonReleased = std::make_unique<sdbusplus::bus::match_t>(
+            bus,
+            sdbusRule::type::signal() + sdbusRule::member("Released") +
+                sdbusRule::path(RESET_BUTTON_OBJ_PATH) +
+                sdbusRule::interface(resetButtonIface),
+            std::bind(std::mem_fn(&Handler::resetPressed), this,
+                      std::placeholders::_1));
     }
 }
 
@@ -141,6 +153,35 @@ void Handler::longPowerPressed(sdbusplus::message::message& msg)
     catch (SdBusError& e)
     {
         log<level::ERR>("Failed powering off on long power button press",
+                        entry("ERROR=%s", e.what()));
+    }
+}
+
+void Handler::resetPressed(sdbusplus::message::message& msg)
+{
+    try
+    {
+        if (!poweredOn())
+        {
+            log<level::INFO>("Power is off so ignoring reset button press");
+            return;
+        }
+
+        log<level::INFO>("Handling reset button press");
+
+        sdbusplus::message::variant<std::string> state =
+            convertForMessage(Host::Transition::Reboot);
+
+        auto method = bus.new_method_call(HOST_BUSNAME, hostPath.c_str(),
+                                          propertyIface, "Set");
+
+        method.append(hostIface, "RequestedHostTransition", state);
+
+        bus.call(method);
+    }
+    catch (SdBusError& e)
+    {
+        log<level::ERR>("Failed power state change on a reset button press",
                         entry("ERROR=%s", e.what()));
     }
 }

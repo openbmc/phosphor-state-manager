@@ -91,5 +91,9 @@ AC_ARG_VAR(POWER_BUTTON_OBJ_PATH, [The power button D-Bus object path])
 AS_IF([test "x$POWER_BUTTON_OBJ_PATH" == "x"], [POWER_BUTTON_OBJ_PATH="/xyz/openbmc_project/Chassis/Buttons/Power0"])
 AC_DEFINE_UNQUOTED([POWER_BUTTON_OBJ_PATH], ["$POWER_BUTTON_OBJ_PATH"], [The power button D-Bus object path])
 
+AC_ARG_VAR(RESET_BUTTON_OBJ_PATH, [The reset button D-Bus object path])
+AS_IF([test "x$RESET_BUTTON_OBJ_PATH" == "x"], [RESET_BUTTON_OBJ_PATH="/xyz/openbmc_project/Chassis/Buttons/Reset0"])
+AC_DEFINE_UNQUOTED([RESET_BUTTON_OBJ_PATH], ["$RESET_BUTTON_OBJ_PATH"], [The reset button D-Bus object path])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
