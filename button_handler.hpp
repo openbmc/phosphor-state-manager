@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/bus/match.hpp>
 
 namespace phosphor
 {
@@ -39,9 +40,68 @@ class Handler
 
   private:
     /**
+     * @brief The handler for a power button press
+     *
+     * It will power on the system if it's currently off,
+     * else it will soft power it off.
+     *
+     * @param[in] msg - sdbusplus message from signal
+     */
+    void powerPressed(sdbusplus::message::message& msg);
+
+    /**
+     * @brief The handler for a long power button press
+     *
+     * If the system is currently powered on, it will
+     * perform an immediate power off.
+     *
+     * @param[in] msg - sdbusplus message from signal
+     */
+    void longPowerPressed(sdbusplus::message::message& msg);
+
+    /**
+     * @brief Checks if system is powered on
+     *
+     * @return true if powered on, false else
+     */
+    bool poweredOn() const;
+
+    /**
+     * @brief Returns the service name for an object
+     *
+     * @param[in] path - the object path
+     * @param[in] interface - the interface name
+     *
+     * @return std::string - the D-Bus service name if found, else
+     *                       an empty string
+     */
+    std::string getService(const std::string& path,
+                           const std::string& interface) const;
+
+    /**
      * @brief sdbusplus connection object
      */
     sdbusplus::bus::bus& bus;
+
+    /**
+     *  @brief The object path of the chassis state manager
+     */
+    const std::string chassisPath;
+
+    /**
+     *  @brief The object path of the host state manager
+     */
+    const std::string hostPath;
+
+    /**
+     * @brief Matches on the power button released signal
+     */
+    std::unique_ptr<sdbusplus::bus::match_t> powerButtonReleased;
+
+    /**
+     * @brief Matches on the power button long press released signal
+     */
+    std::unique_ptr<sdbusplus::bus::match_t> powerButtonLongPressReleased;
 };
 
 } // namespace button

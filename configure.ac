@@ -87,5 +87,9 @@ AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
 AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=1])
 AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
 
+AC_ARG_VAR(POWER_BUTTON_OBJ_PATH, [The power button D-Bus object path])
+AS_IF([test "x$POWER_BUTTON_OBJ_PATH" == "x"], [POWER_BUTTON_OBJ_PATH="/xyz/openbmc_project/Chassis/Buttons/Power0"])
+AC_DEFINE_UNQUOTED([POWER_BUTTON_OBJ_PATH], ["$POWER_BUTTON_OBJ_PATH"], [The power button D-Bus object path])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
