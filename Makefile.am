@@ -5,7 +5,8 @@ sbin_PROGRAMS = \
 	phosphor-chassis-state-manager \
 	phosphor-bmc-state-manager \
 	phosphor-discover-system-state \
-	phosphor-host-check
+	phosphor-host-check \
+	phosphor-button-handler
 
 phosphor_host_state_manager_SOURCES = \
 	host_state_manager.cpp \
@@ -26,6 +27,10 @@ phosphor_discover_system_state_SOURCES = \
 
 phosphor_host_check_SOURCES = \
 	host_check_main.cpp
+
+phosphor_button_handler_SOURCES = \
+	button_handler.cpp \
+	button_handler_main.cpp
 
 generic_cxxflags = \
 	$(SYSTEMD_CFLAGS) \
@@ -58,3 +63,6 @@ phosphor_discover_system_state_LDFLAGS = $(generic_ldflags)
 
 phosphor_host_check_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_check_LDFLAGS = $(generic_ldflags)
+
+phosphor_button_handler_CXXFLAGS = $(generic_cxxflags)
+phosphor_button_handler_LDFLAGS = $(generic_ldflags)

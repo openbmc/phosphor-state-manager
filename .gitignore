@@ -46,6 +46,7 @@ Makefile.in
 /phosphor-bmc-state-manager
 /phosphor-discover-system-state
 /phosphor-host-check
+/phosphor-button-handler
 Makefile
 .deps
 *-libtool
