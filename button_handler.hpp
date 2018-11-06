@@ -60,6 +60,15 @@ class Handler
     void longPowerPress(sdbusplus::message::message& msg);
 
     /**
+     * @brief The handler for a reset button press
+     *
+     * Reboots the host if it is powered on.
+     *
+     * @param[in] msg - sdbusplus message from signal
+     */
+    void resetPress(sdbusplus::message::message& msg);
+
+    /**
      * @brief Checks if system is powered on
      *
      * @return true if powered on, false else
@@ -102,6 +111,11 @@ class Handler
      * @brief Matches on the power button long press released signal
      */
     std::unique_ptr<sdbusplus::bus::match_t> powerButtonLongPressRelease;
+
+    /**
+     * @brief Matches on the reset button released signal
+     */
+    std::unique_ptr<sdbusplus::bus::match_t> resetButtonRelease;
 };
 
 } // namespace button
