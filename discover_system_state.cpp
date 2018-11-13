@@ -157,7 +157,7 @@ int main(int argc, char** argv)
 
     sdbusplus::message::variant<std::string> result;
     reply.read(result);
-    auto powerPolicy = result.get<std::string>();
+    auto powerPolicy = sdbusplus::message::variant_ns::get<std::string>(result);
 
     log<level::INFO>("Host power is off, checking power policy",
                      entry("POWER_POLICY=%s", powerPolicy.c_str()));

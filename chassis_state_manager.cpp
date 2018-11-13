@@ -89,7 +89,7 @@ void Chassis::determineInitialState()
             goto fail;
         }
 
-        if (pgood == 1)
+        if (sdbusplus::message::variant_ns::get<int>(pgood) == 1)
         {
             log<level::INFO>("Initial Chassis State will be On",
                              entry("CHASSIS_CURRENT_POWER_STATE=%s",
@@ -204,14 +204,10 @@ bool Chassis::stateActive(const std::string& target)
     }
 
     result.read(currentState);
-
-    if (currentState != ACTIVE_STATE && currentState != ACTIVATING_STATE)
-    {
-        // False - not active
-        return false;
-    }
-    // True - active
-    return true;
+    const auto& currentStateStr =
+        sdbusplus::message::variant_ns::get<std::string>(currentState);
+    return currentStateStr == ACTIVE_STATE ||
+           currentStateStr == ACTIVATING_STATE;
 }
 
 int Chassis::sysStateChange(sdbusplus::message::message& msg)
