@@ -1,3 +1,4 @@
+#include <cassert>
 #include <phosphor-logging/log.hpp>
 #include <sys/sysinfo.h>
 #include "bmc_state_manager.hpp"
