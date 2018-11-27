@@ -68,7 +68,9 @@ void BMC::discoverInitialState()
     // Is obmc-standby.target active or inactive?
     result.read(currentState);
 
-    if (currentState == activeState)
+    const auto& currentStateStr =
+        sdbusplus::message::variant_ns::get<std::string>(currentState);
+    if (currentStateStr == activeState)
     {
         log<level::INFO>("Setting the BMCState field",
                          entry("CURRENT_BMC_STATE=%s", "BMC_READY"));
