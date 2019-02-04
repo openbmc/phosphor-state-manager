@@ -7,6 +7,9 @@ sbin_PROGRAMS = \
 	phosphor-discover-system-state \
 	phosphor-host-check
 
+sbin_SCRIPTS = \
+	obmcutil
+
 phosphor_host_state_manager_SOURCES = \
 	host_state_manager.cpp \
 	host_state_manager_main.cpp \
