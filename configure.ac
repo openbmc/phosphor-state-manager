@@ -12,14 +12,10 @@ AC_PROG_MAKE_SET
 
 # Check for libraries
 PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
-PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces],,\
-    AC_MSG_ERROR(["Requires phosphor-dbus-interfaces package."]))
-PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,
-    AC_MSG_ERROR(["Requires sdbusplus package."]))
-PKG_CHECK_MODULES([SDEVENTPLUS], [sdeventplus],,
-    AC_MSG_ERROR(["Requires sdeventplus package."]))
-PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging],,\
-    AC_MSG_ERROR(["Requires phosphor-logging package."]))
+PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
+PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
+PKG_CHECK_MODULES([SDEVENTPLUS], [sdeventplus])
+PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX_17([noext])
