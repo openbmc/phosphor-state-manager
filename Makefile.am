@@ -1,13 +1,13 @@
 AM_DEFAULT_SOURCE_EXT = .cpp
 
-sbin_PROGRAMS = \
+bin_PROGRAMS = \
 	phosphor-host-state-manager \
 	phosphor-chassis-state-manager \
 	phosphor-bmc-state-manager \
 	phosphor-discover-system-state \
 	phosphor-host-check
 
-dist_sbin_SCRIPTS = \
+dist_bin_SCRIPTS = \
 	obmcutil
 
 phosphor_host_state_manager_SOURCES = \
