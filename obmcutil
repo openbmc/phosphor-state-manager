@@ -3,7 +3,7 @@
 set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
-power,poweroff,poweron,state,status"
+osstate,power,poweroff,poweron,state,status"
 
 USAGE="Usage: obmcutil [-h] [--wait]
                 {$OPTS}"
@@ -176,8 +176,15 @@ handle_cmd ()
             PROPERTY=CurrentHostState
             state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
             ;;
+        osstate)
+            OBJECT=$STATE_OBJECT/host0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.OperatingSystem.Status
+            PROPERTY=OperatingSystemState
+            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            ;;
         state|status)
-            for query in bmcstate chassisstate hoststate
+            for query in bmcstate chassisstate hoststate bootprogress osstate
             do
                 handle_cmd $query
             done
