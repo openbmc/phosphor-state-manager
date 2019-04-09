@@ -18,6 +18,7 @@ using sdbusplus::exception::SdBusError;
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+constexpr auto CONTROL_HOST_DEFAULT_SVC = "xyz.openbmc_project.Control.Host";
 constexpr auto CONTROL_HOST_PATH = "/xyz/openbmc_project/control/host0";
 constexpr auto CONTROL_HOST_INTERFACE = "xyz.openbmc_project.Control.Host";
 
@@ -71,19 +72,22 @@ void sendHeartbeat(sdbusplus::bus::bus& bus)
     }
     catch (const SdBusError& e)
     {
-        log<level::ERR>("Error in mapper call for control host",
-                        entry("ERROR=%s", e.what()));
-        throw;
+        log<level::INFO>("Error in mapper call for control host, use default "
+                         "service",
+                         entry("ERROR=%s", e.what()));
     }
 
-    if (mapperResponse.empty())
+    std::string host;
+    if (!mapperResponse.empty())
     {
-        log<level::ERR>("Error reading mapper resp for control host");
-        // TODO openbmc/openbmc#851 - Once available, throw returned error
-        throw std::runtime_error("Error reading mapper resp for control host");
+        log<level::DEBUG>("Use mapper response");
+        host = mapperResponse.begin()->first;
     }
-
-    const auto& host = mapperResponse.begin()->first;
+    else
+    {
+        log<level::DEBUG>("Use hard coded host");
+        host = CONTROL_HOST_DEFAULT_SVC;
+    }
 
     auto method = bus.new_method_call(host.c_str(), CONTROL_HOST_PATH,
                                       CONTROL_HOST_INTERFACE, "Execute");
