@@ -17,7 +17,7 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
 using sdbusplus::exception::SdBusError;
 
-constexpr auto obmcStandbyTarget = "obmc-standby.target";
+constexpr auto obmcStandbyTarget = "multi-user.target";
 constexpr auto signalDone = "done";
 constexpr auto activeState = "active";
 
