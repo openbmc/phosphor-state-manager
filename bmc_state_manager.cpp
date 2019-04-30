@@ -17,7 +17,7 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
 using sdbusplus::exception::SdBusError;
 
-constexpr auto obmcStandbyTarget = "obmc-standby.target";
+constexpr auto multiUserTarget = "multi-user.target";
 constexpr auto signalDone = "done";
 constexpr auto activeState = "active";
 
@@ -38,7 +38,7 @@ void BMC::discoverInitialState()
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE, "GetUnit");
 
-    method.append(obmcStandbyTarget);
+    method.append(multiUserTarget);
 
     try
     {
@@ -62,7 +62,7 @@ void BMC::discoverInitialState()
     {
         auto result = this->bus.call(method);
 
-        // Is obmc-standby.target active or inactive?
+        // Is multi-user.target active or inactive?
         result.read(currentState);
     }
     catch (const SdBusError& e)
@@ -160,7 +160,7 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     // Caught the signal that indicates the BMC is now BMC_READY
-    if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone))
+    if ((newStateUnit == multiUserTarget) && (newStateResult == signalDone))
     {
         log<level::INFO>("BMC_READY");
         this->currentBMCState(BMCState::Ready);
