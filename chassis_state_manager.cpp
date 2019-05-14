@@ -49,9 +49,18 @@ constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
 void Chassis::subscribeToSystemdSignals()
 {
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "Subscribe");
-    this->bus.call_noreply(method);
+    try
+    {
+        auto method = this->bus.new_method_call(
+            SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH, SYSTEMD_INTERFACE, "Subscribe");
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        log<level::ERR>("Failed to subscribe to systemd signals",
+                        entry("ERR=%s", ex.what()));
+        elog<InternalFailure>();
+    }
 
     return;
 }
