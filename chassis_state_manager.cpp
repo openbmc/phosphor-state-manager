@@ -53,7 +53,7 @@ void Chassis::subscribeToSystemdSignals()
     {
         auto method = this->bus.new_method_call(
             SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH, SYSTEMD_INTERFACE, "Subscribe");
-        this->bus.call_noreply(method);
+        this->bus.call(method);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
