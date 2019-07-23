@@ -5,12 +5,13 @@
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include "xyz/openbmc_project/Common/error.hpp"
+#include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 #include "chassis_state_manager.hpp"
 #include <cereal/archives/json.hpp>
 #include <fstream>
 #include "config.h"
 #include <experimental/filesystem>
-
+#include <iostream>
 namespace phosphor
 {
 namespace state
@@ -24,7 +25,8 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
 using sdbusplus::exception::SdBusError;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
-
+using Fault =
+    sdbusplus::xyz::openbmc_project::State::Shutdown::Power::Error::Fault;
 constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT =
     "obmc-chassis-hard-poweroff@0.target";
@@ -133,6 +135,22 @@ fail:
     return;
 }
 
+void Chassis::powerStateCheck()
+{
+    PowerState tmpPower;
+    if (deserializeCurrentPowerState(CURRENT_POWER_STATE_PERSIST_PATH, tmpPower))
+    {    
+        if ( (server::Chassis::currentPowerState() == PowerState::Off) && (tmpPower == PowerState::On) )
+	{
+            log<level::ERR>("Error, power check failed. ",
+                        entry("ERROR=%s","power error" ));
+            report<Fault>();
+        }
+    }
+    //peresisting the currentPowerState again.
+    serializeCurrentPowerState();
+}	
+
 void Chassis::executeTransition(Transition tranReq)
 {
     auto sysdTarget = SYSTEMD_TARGET_TABLE.find(tranReq)->second;
@@ -219,6 +237,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that power OFF is complete");
         this->currentPowerState(server::Chassis::PowerState::Off);
+        serializeCurrentPowerState();
         this->setStateChangeTime();
     }
     else if ((newStateUnit == CHASSIS_STATE_POWERON_TGT) &&
@@ -227,6 +246,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that power ON is complete");
         this->currentPowerState(server::Chassis::PowerState::On);
+        serializeCurrentPowerState();	
         this->setStateChangeTime();
     }
 
@@ -251,8 +271,44 @@ Chassis::PowerState Chassis::currentPowerState(PowerState value)
                            convertForMessage(value).c_str()));
 
     chassisPowerState = server::Chassis::currentPowerState(value);
+    serializeCurrentPowerState();
     pOHTimer.setEnabled(chassisPowerState == PowerState::On);
     return chassisPowerState;
+}
+
+fs::path Chassis::serializeCurrentPowerState(const fs::path& path)
+{
+    std::ofstream os(path.c_str(), std::ios::binary);
+    cereal::JSONOutputArchive oarchive(os);
+    oarchive(currentPowerState());
+    return path;
+}
+
+bool Chassis::deserializeCurrentPowerState(const fs::path& path, PowerState& value)
+{
+    try
+    {
+        if (fs::exists(path))
+        {
+            std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
+            cereal::JSONInputArchive iarchive(is);
+            iarchive(value);
+            return true;
+        }
+        return false;
+    }
+    catch (cereal::Exception& e)
+    {
+        log<level::ERR>(e.what());
+        fs::remove(path);
+        return false;
+    }
+    catch (const fs::filesystem_error& e)
+    {
+        return false;
+    }
+
+    return false;
 }
 
 uint32_t Chassis::pOHCounter(uint32_t value)

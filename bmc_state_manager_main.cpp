@@ -1,7 +1,7 @@
 #include <sdbusplus/bus.hpp>
 #include "config.h"
 #include "bmc_state_manager.hpp"
-
+#include <iostream>
 int main(int argc, char**)
 {
     auto bus = sdbusplus::bus::new_default();
@@ -16,6 +16,8 @@ int main(int argc, char**)
     phosphor::state::manager::BMC manager(bus, objPathInst.c_str());
 
     bus.request_name(BMC_BUSNAME);
+
+    std::cout<<"Hello World, aatir testing22" <<std::endl;
 
     while (true)
     {
