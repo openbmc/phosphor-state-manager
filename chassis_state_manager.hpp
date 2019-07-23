@@ -64,6 +64,8 @@ class Chassis : public ChassisInherit
 
         determineInitialState();
 
+        powerStateCheck();
+
         restorePOHCounter(); // restore POHCounter from persisted file
 
         // We deferred this until we could get our property correct
@@ -73,8 +75,31 @@ class Chassis : public ChassisInherit
     /** @brief Set value of RequestedPowerTransition */
     Transition requestedPowerTransition(Transition value) override;
 
+    /** @brief Get value of CurrentPowerState */
+    using ChassisInherit::currentPowerState;
+
     /** @brief Set value of CurrentPowerState */
     PowerState currentPowerState(PowerState value) override;
+
+    /** @brief Serialize and persist requested current power state.
+     *
+     *  @param[in] dir - pathname of file where the serialized power state will
+     *                   be placed.
+     *
+     *  @return fs::path - pathname of persisted requested current power state.
+     */
+    fs::path serializeCurrentPowerState(
+        const fs::path& dir = fs::path(CURRENT_POWER_STATE_PERSIST_PATH));
+
+    /** @brief Deserialize a persisted requested current power state.
+     *
+     *  @param[in] path - pathname of persisted current power state file
+     *  @param[in] value - deserialized current power state  value
+     *
+     *  @return bool - true if the deserialization was successful, false
+     *                 otherwise.
+     */
+    bool deserializeCurrentPowerState(const fs::path& path, PowerState& value);
 
     /** @brief Get value of POHCounter */
     using ChassisInherit::pOHCounter;
@@ -85,6 +110,9 @@ class Chassis : public ChassisInherit
   private:
     /** @brief Determine initial chassis state and set internally */
     void determineInitialState();
+
+    /** @brief power check */
+    void powerStateCheck();
 
     /**
      * @brief subscribe to the systemd signals
