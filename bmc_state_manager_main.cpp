@@ -1,7 +1,6 @@
 #include <sdbusplus/bus.hpp>
 #include "config.h"
 #include "bmc_state_manager.hpp"
-
 int main(int argc, char**)
 {
     auto bus = sdbusplus::bus::new_default();
