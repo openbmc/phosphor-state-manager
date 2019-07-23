@@ -5,6 +5,7 @@
 #include <phosphor-logging/log.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include "xyz/openbmc_project/Common/error.hpp"
+#include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 #include "chassis_state_manager.hpp"
 #include <cereal/archives/json.hpp>
 #include <fstream>
@@ -24,7 +25,8 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
 using sdbusplus::exception::SdBusError;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
-
+using Blackout =
+    sdbusplus::xyz::openbmc_project::State::Shutdown::Power::Error::Blackout;
 constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT =
     "obmc-chassis-hard-poweroff@0.target";
@@ -102,6 +104,7 @@ void Chassis::determineInitialState()
             {
                 if (lastState == PowerState::On)
                 {
+                    report<Blackout>();
                     setStateChangeTime();
                 }
             }
