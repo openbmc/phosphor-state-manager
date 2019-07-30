@@ -17,6 +17,13 @@ PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
 PKG_CHECK_MODULES([SDEVENTPLUS], [sdeventplus])
 PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging])
 
+# We need the header only CLI library
+AC_CHECK_HEADERS(
+    [CLI/CLI.hpp],
+    [],
+    [AC_MSG_ERROR([Could not find CLI11 CLI/CLI.hpp])]
+)
+
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX_17([noext])
 AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
