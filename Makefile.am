@@ -5,7 +5,8 @@ bin_PROGRAMS = \
 	phosphor-chassis-state-manager \
 	phosphor-bmc-state-manager \
 	phosphor-discover-system-state \
-	phosphor-host-check
+	phosphor-host-check \
+	phosphor-systemd-target-monitor
 
 dist_bin_SCRIPTS = \
 	obmcutil
@@ -29,6 +30,9 @@ phosphor_discover_system_state_SOURCES = \
 
 phosphor_host_check_SOURCES = \
 	host_check_main.cpp
+
+phosphor_systemd_target_monitor_SOURCES = \
+	systemd_target_monitor.cpp
 
 generic_cxxflags = \
 	$(SYSTEMD_CFLAGS) \
@@ -61,3 +65,11 @@ phosphor_discover_system_state_LDFLAGS = $(generic_ldflags)
 
 phosphor_host_check_CXXFLAGS = $(generic_cxxflags)
 phosphor_host_check_LDFLAGS = $(generic_ldflags)
+
+phosphor_systemd_target_monitor_CXXFLAGS = \
+	$(generic_cxxflags) \
+	$(SDEVENTPLUS_CFLAGS)
+phosphor_systemd_target_monitor_LDFLAGS = \
+	$(generic_ldflags) \
+	$(SDEVENTPLUS_LIBS) \
+	-lstdc++fs
