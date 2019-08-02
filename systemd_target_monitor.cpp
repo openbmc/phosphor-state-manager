@@ -4,9 +4,28 @@
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
 #include <set>
+#include <systemd_target_parser.hpp>
 
 using phosphor::logging::level;
 using phosphor::logging::log;
+
+bool gVerbose = false;
+
+void dump_targets(TargetErrorData& targetData)
+{
+    std::cout << "## Data Structure of Json ##" << std::endl;
+    for (auto& [key, value] : targetData)
+    {
+        std::cout << key << " " << value.errorToLog << std::endl;
+        std::cout << "    ";
+        for (auto& eToMonitor : value.errorsToMonitor)
+        {
+            std::cout << eToMonitor << ", ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
 
 void print_usage(void)
 {
@@ -29,15 +48,19 @@ int main(int argc, char* argv[])
     std::set<std::string> filePaths;
 
     static struct option longOpts[] = {{"file", required_argument, 0, 'f'},
+                                       {"verbose", no_argument, 0, 'v'},
                                        {"help", no_argument, 0, 'h'},
                                        {0, 0, 0, 0}};
 
-    while ((arg = getopt_long(argc, argv, "f:h", longOpts, &optIndex)) != -1)
+    while ((arg = getopt_long(argc, argv, "f:hv", longOpts, &optIndex)) != -1)
     {
         switch (arg)
         {
             case 'f':
                 filePaths.insert(optarg);
+                break;
+            case 'v':
+                gVerbose = true;
                 break;
             case 'h':
             default:
@@ -53,7 +76,19 @@ int main(int argc, char* argv[])
         exit(-1);
     }
 
-    // TODO - Load in json config file(s)
+    TargetErrorData targetData = parseFiles(filePaths);
+
+    if (gVerbose)
+    {
+        dump_targets(targetData);
+    }
+
+    if (targetData.size() == 0)
+    {
+        log<level::ERR>("Invalid input files, no targets found");
+        print_usage();
+        exit(-1);
+    }
 
     // TODO - Begin monitoring for systemd unit changes and logging appropriate
     //        errors
