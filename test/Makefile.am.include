@@ -1,0 +1,4 @@
+test_systemd_parser_SOURCES = %reldir%/systemd_parser.cpp systemd_target_parser.cpp
+
+check_PROGRAMS += \
+	%reldir%/systemd_parser
