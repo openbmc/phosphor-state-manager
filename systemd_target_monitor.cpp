@@ -1,7 +1,31 @@
 #include <CLI/CLI.hpp>
 #include <iostream>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
+#include <systemd_target_parser.hpp>
+#include <vector>
+
+using phosphor::logging::level;
+using phosphor::logging::log;
+
+bool gVerbose = false;
+
+void dump_targets(TargetErrorData& targetData)
+{
+    std::cout << "## Data Structure of Json ##" << std::endl;
+    for (auto& [key, value] : targetData)
+    {
+        std::cout << key << " " << value.errorToLog << std::endl;
+        std::cout << "    ";
+        for (auto& eToMonitor : value.errorsToMonitor)
+        {
+            std::cout << eToMonitor << ", ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
 
 void print_usage(void)
 {
@@ -21,6 +45,7 @@ int main(int argc, char* argv[])
     CLI::App app{"OpenBmc systemd target monitor"};
     app.add_option("-f,--file", filePaths,
                    "Full path to json file(s) with target/error mappings");
+    app.add_flag("-v", gVerbose, "Enable verbose output");
 
     CLI11_PARSE(app, argc, argv);
 
@@ -31,7 +56,19 @@ int main(int argc, char* argv[])
         exit(-1);
     }
 
-    // TODO - Load in json config file(s)
+    TargetErrorData targetData = parseFiles(filePaths);
+
+    if (gVerbose)
+    {
+        dump_targets(targetData);
+    }
+
+    if (targetData.size() == 0)
+    {
+        log<level::ERR>("Invalid input files, no targets found");
+        print_usage();
+        exit(-1);
+    }
 
     // TODO - Begin monitoring for systemd unit changes and logging appropriate
     //        errors
