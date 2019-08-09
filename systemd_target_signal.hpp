@@ -1,0 +1,89 @@
+#pragma once
+
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/bus/match.hpp>
+#include <systemd_target_parser.hpp>
+
+extern bool gVerbose;
+
+namespace phosphor
+{
+namespace state
+{
+namespace manager
+{
+/** @class SystemdTargetLogging
+ *  @brief Object to monitor input systemd targets and create corresponding
+ *         input errors for on failures
+ */
+class SystemdTargetLogging
+{
+  public:
+    SystemdTargetLogging(TargetErrorData& targetData,
+                         sdbusplus::bus::bus& bus) :
+        targetData(targetData),
+        bus(bus),
+        systemdSignals(
+            bus,
+            sdbusplus::bus::match::rules::type::signal() +
+                sdbusplus::bus::match::rules::member("JobRemoved") +
+                sdbusplus::bus::match::rules::path(
+                    "/org/freedesktop/systemd1") +
+                sdbusplus::bus::match::rules::interface(
+                    "org.freedesktop.systemd1.Manager"),
+            std::bind(std::mem_fn(&SystemdTargetLogging::systemdUnitChange),
+                      this, std::placeholders::_1))
+    {
+    }
+
+    /**
+     * @brief subscribe to the systemd signals
+     *
+     * This object needs to monitor systemd target changes so it can create
+     * the required error logs on failures
+     *
+     **/
+    void subscribeToSystemdSignals();
+
+    /** @brief Process the target fail and return error to log
+     *
+     * @note This is public for unit testing purposes
+     *
+     * @param[in]  unit       - The systemd unit that failed
+     * @param[in]  result     - The failure code from the system unit
+     *
+     * @return valid pointer to error to log, otherwise nullptr
+     */
+    std::string* processError(std::string& unit, std::string& result);
+
+  private:
+    /** @brief Process the target fail and return error to log
+     *
+     * @param[in]  error      - The error to log
+     * @param[in]  result     - The failure code from the system unit
+     */
+    void logError(std::string& error, std::string& result);
+
+    /** @brief Check if systemd state change is one to monitor
+     *
+     * Instance specific interface to handle the detected systemd state
+     * change
+     *
+     * @param[in]  msg       - Data associated with subscribed signal
+     *
+     */
+    void systemdUnitChange(sdbusplus::message::message& msg);
+
+    /** @brief Systemd targets to monitor and error logs to create */
+    TargetErrorData& targetData;
+
+    /** @brief Persistent sdbusplus DBus bus connection. */
+    sdbusplus::bus::bus& bus;
+
+    /** @brief Used to subscribe to dbus systemd signals **/
+    sdbusplus::bus::match_t systemdSignals;
+};
+
+} // namespace manager
+} // namespace state
+} // namespace phosphor
