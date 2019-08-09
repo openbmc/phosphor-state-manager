@@ -63,6 +63,9 @@ TEST(TargetJsonParser, BasicGoodPath)
     EXPECT_EQ(tgt.errorToLog,
               "xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure");
     EXPECT_EQ(tgt.errorsToMonitor.size(), 2);
+    // Check a target with "default" for errorsToMonitor, should have 3 defaults
+    tgt = targetData["obmc-host-start@0.target"];
+    EXPECT_EQ(tgt.errorsToMonitor.size(), 3);
 
     std::remove("/tmp/good_file1.json");
     std::remove("/tmp/good_file2.json");
@@ -106,4 +109,29 @@ TEST(TargetJsonParser, InvalidFileFormat)
     EXPECT_THROW(TargetErrorData targetData = parseFiles(filePaths),
                  nlohmann::detail::parse_error);
     std::remove("/tmp/invalid_json_file.json");
+}
+
+TEST(TargetJsonParser, NotJustDefault)
+{
+    auto notJustDefault = R"(
+        {
+            "targets" : {
+                "obmc-chassis-poweron@0.target" : {
+                    "errorsToMonitor": ["timeout", "default"],
+                    "errorToLog": "xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure"}
+                }
+        }
+    )"_json;
+
+    std::FILE* tmpf = fopen("/tmp/not_just_default_file.json", "w");
+    std::fputs(notJustDefault.dump().c_str(), tmpf);
+    std::fclose(tmpf);
+
+    std::vector<std::string> filePaths;
+    filePaths.push_back("/tmp/not_just_default_file.json");
+
+    // Verify exception thrown on invalid errorsToMonitor
+    EXPECT_THROW(TargetErrorData targetData = parseFiles(filePaths),
+                 std::invalid_argument);
+    std::remove("/tmp/not_just_default_file.json");
 }
