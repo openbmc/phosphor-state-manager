@@ -13,10 +13,12 @@ AM_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS) -UNDEBUG $(GTEST_CPPFLAGS)
 AM_CFLAGS = $(CODE_COVERAGE_CFLAGS)
 AM_CXXFLAGS = $(CODE_COVERAGE_CXXFLAGS) \
 	-DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_ERROR_CODE_HEADER_ONLY \
-	-DBOOST_ALL_NO_LIB
+	-DBOOST_ALL_NO_LIB  $(SDEVENTPLUS_CFLAGS) \
+	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) $(PHOSPHOR_LOGGING_CFLAGS)
 AM_LDFLAGS = $(GMOCK_LIBS) -lgmock_main \
 	$(GTEST_LIBS) $(OESDK_TESTCASE_FLAGS) $(PTHREAD_LIBS) \
-$(SDBUSPLUS_LIBS) -lboost_system
+	$(SDBUSPLUS_LIBS) -lboost_system $(SDEVENTPLUS_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) $(PHOSPHOR_LOGGING_LIBS)
 
 bin_PROGRAMS = \
 	phosphor-host-state-manager \
@@ -51,7 +53,8 @@ phosphor_host_check_SOURCES = \
 
 phosphor_systemd_target_monitor_SOURCES = \
 	systemd_target_monitor.cpp \
-	systemd_target_parser.cpp
+	systemd_target_parser.cpp \
+	systemd_target_signal.cpp
 
 generic_cxxflags = \
 	$(SYSTEMD_CFLAGS) \

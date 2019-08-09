@@ -4,6 +4,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
 #include <systemd_target_parser.hpp>
+#include <systemd_target_signal.hpp>
 #include <vector>
 
 using phosphor::logging::level;
@@ -70,8 +71,10 @@ int main(int argc, char* argv[])
         dump_targets(targetData);
     }
 
-    // TODO - Begin monitoring for systemd unit changes and logging appropriate
-    //        errors
+    phosphor::state::manager::SystemdTargetLogging targetMon(targetData, bus);
+
+    // Subscribe to systemd D-bus signals indicating target completions
+    targetMon.subscribeToSystemdSignals();
 
     return event.loop();
 }
