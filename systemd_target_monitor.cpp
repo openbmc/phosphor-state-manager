@@ -5,6 +5,7 @@
 #include <sdeventplus/event.hpp>
 #include <set>
 #include <systemd_target_parser.hpp>
+#include <systemd_target_signal.hpp>
 
 using phosphor::logging::level;
 using phosphor::logging::log;
@@ -90,8 +91,10 @@ int main(int argc, char* argv[])
         exit(-1);
     }
 
-    // TODO - Begin monitoring for systemd unit changes and logging appropriate
-    //        errors
+    phosphor::state::manager::SystemdTargetLogging targetMon(targetData, bus);
+
+    // Enable systemd signals
+    targetMon.subscribeToSystemdSignals();
 
     return event.loop();
 }
