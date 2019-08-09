@@ -63,6 +63,9 @@ TEST(TargetJsonParser, BasicGoodPath)
     EXPECT_EQ(tgt.errorToLog,
               "xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure");
     EXPECT_EQ(tgt.errorsToMonitor.size(), 2);
+    // Check a target with "default" for errorsToMonitor, should have 3 defaults
+    tgt = targetData["obmc-host-start@0.target"];
+    EXPECT_EQ(tgt.errorsToMonitor.size(), 3);
 }
 
 TEST(TargetJsonParser, InvalidErrorToMonitor)
