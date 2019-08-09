@@ -1,4 +1,8 @@
 test_systemd_parser_SOURCES = %reldir%/systemd_parser.cpp systemd_target_parser.cpp
+test_systemd_signal_SOURCES = %reldir%/systemd_signal.cpp systemd_target_signal.cpp
 
 check_PROGRAMS += \
 	%reldir%/systemd_parser
+
+check_PROGRAMS += \
+	%reldir%/systemd_signal
