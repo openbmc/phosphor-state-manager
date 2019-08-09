@@ -17,6 +17,17 @@ void validateErrorsToMonitor(std::vector<std::string>& errorsToMonitor)
             throw std::out_of_range("Found invalid error to monitor");
         }
     }
+    // See if default was in the errors to monitor, if so replace with defaults
+    auto errorItr =
+        std::find(errorsToMonitor.begin(), errorsToMonitor.end(), "default");
+    if (errorItr != errorsToMonitor.end())
+    {
+        // delete "default" and insert defaults
+        errorsToMonitor.erase(errorItr);
+        errorsToMonitor.push_back("timeout");
+        errorsToMonitor.push_back("failed");
+        errorsToMonitor.push_back("dependency");
+    }
 }
 
 TargetErrorData parseFiles(const std::vector<std::string>& filePaths)
