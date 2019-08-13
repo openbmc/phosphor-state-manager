@@ -8,6 +8,9 @@ else
 @CODE_COVERAGE_RULES@
 endif
 
+systemdsystemunit_DATA = \
+  phosphor-systemd-target-monitor.service
+
 AM_LIBS = $(CODE_COVERAGE_LIBS)
 AM_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS) -UNDEBUG $(GTEST_CPPFLAGS)
 AM_CFLAGS = $(CODE_COVERAGE_CFLAGS)
@@ -96,6 +99,9 @@ phosphor_systemd_target_monitor_LDFLAGS = \
 	$(SDEVENTPLUS_LIBS) \
 	-lstdc++fs
 
+install-data-local:
+	mkdir -p ${DESTDIR}/$(sysconfdir)/phosphor-systemd-target-monitor
+	cp $(srcdir)/phosphor-target-monitor-default.json ${DESTDIR}/$(sysconfdir)/phosphor-systemd-target-monitor
 
 check_PROGRAMS =
 XFAIL_TESTS =
