@@ -1,4 +1,5 @@
 #include <cassert>
+#include <config.h>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sys/sysinfo.h>
@@ -111,7 +112,11 @@ void BMC::subscribeToSystemdSignals()
 
     try
     {
-        this->bus.call(method);
+        // The phosphor-state-manager service start around the same time
+        // systemd is mounting the host filesystems. This can cause a delay
+        // in D-bus calls to systemd. Use a configurable timeout when
+        // subscribing to systemd signals. The timeout is in microseconds
+        this->bus.call(method, (SYSTEMD_SUBSCRIBE_DBUS_TIMEOUT * 1000000L));
     }
     catch (const SdBusError& e)
     {
