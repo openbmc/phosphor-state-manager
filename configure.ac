@@ -83,5 +83,9 @@ AC_ARG_VAR(CLASS_VERSION, [Class version to register with Cereal])
 AS_IF([test "x$CLASS_VERSION" == "x"], [CLASS_VERSION=1])
 AC_DEFINE_UNQUOTED([CLASS_VERSION], [$CLASS_VERSION], [Class version to register with Cereal])
 
+AC_ARG_VAR(SYSTEMD_SUBSCRIBE_DBUS_TIMEOUT, [The maximum time in seconds to wait for the D-bus systemd signal subscribe call])
+AS_IF([test "x$SYSTEMD_SUBSCRIBE_DBUS_TIMEOUT" == "x"], [SYSTEMD_SUBSCRIBE_DBUS_TIMEOUT=60])
+AC_DEFINE_UNQUOTED([SYSTEMD_SUBSCRIBE_DBUS_TIMEOUT], [$SYSTEMD_SUBSCRIBE_DBUS_TIMEOUT], [The maximum time in seconds to wait for the D-bus systemd signal subscribe call])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
