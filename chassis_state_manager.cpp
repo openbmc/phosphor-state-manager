@@ -198,7 +198,6 @@ bool Chassis::stateActive(const std::string& target)
 
 int Chassis::sysStateChange(sdbusplus::message::message& msg)
 {
-    uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
@@ -206,6 +205,9 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     // Read the msg and populate each variable
     try
     {
+        // newStateID is a throwaway that is needed in order to read the
+        // parameters that are useful out of the dbus message
+        uint32_t newStateID{};
         msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
     }
     catch (const SdBusError& e)
