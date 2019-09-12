@@ -113,8 +113,9 @@ int main(int argc, char* argv[])
 
     auto bus = sdbusplus::bus::new_default();
 
-    auto s = "type='signal',member='CommandComplete',path='"s +
-             CONTROL_HOST_PATH + "',interface='" + CONTROL_HOST_INTERFACE + "'";
+    std::string s = "type='signal',member='CommandComplete',path='"s +
+                    CONTROL_HOST_PATH + "',interface='" +
+                    CONTROL_HOST_INTERFACE + "'";
 
     // Setup Signal Handler
     sdbusplus::bus::match::match hostControlSignals(bus, s.c_str(),
