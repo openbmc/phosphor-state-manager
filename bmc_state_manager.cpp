@@ -1,9 +1,11 @@
 #include <cassert>
 #include <config.h>
 #include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sys/sysinfo.h>
 #include "bmc_state_manager.hpp"
+#include "xyz/openbmc_project/Common/error.hpp"
 
 namespace phosphor
 {
@@ -17,6 +19,7 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
 using sdbusplus::exception::SdBusError;
+using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 constexpr auto obmcStandbyTarget = "multi-user.target";
 constexpr auto signalDone = "done";
@@ -120,7 +123,9 @@ void BMC::subscribeToSystemdSignals()
     }
     catch (const SdBusError& e)
     {
-        log<level::INFO>("Error in Subscribe", entry("ERROR=%s", e.what()));
+        log<level::ERR>("Failed to subscribe to systemd signals",
+                        entry("ERR=%s", e.what()));
+        elog<InternalFailure>();
     }
 
     return;
