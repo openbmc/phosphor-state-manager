@@ -36,6 +36,7 @@ namespace osstatus =
 using namespace phosphor::logging;
 namespace fs = std::experimental::filesystem;
 using sdbusplus::exception::SdBusError;
+using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 // host-shutdown notifies host of shutdown and that leads to host-stop being
 // called so initiate a host shutdown with the -shutdown target and consider the
@@ -77,8 +78,16 @@ void Host::subscribeToSystemdSignals()
 {
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE, "Subscribe");
-    this->bus.call_noreply(method);
-
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Failed to subscribe to systemd signals",
+                        entry("ERR=%s", e.what()));
+        elog<InternalFailure>();
+    }
     return;
 }
 
