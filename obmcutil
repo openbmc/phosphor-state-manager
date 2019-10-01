@@ -5,7 +5,7 @@ set -euo pipefail
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status"
 
-USAGE="Usage: obmcutil [-h] [--wait]
+USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
 
 INTERFACE_ROOT=xyz.openbmc_project
@@ -30,6 +30,8 @@ G_QUERY=
 # Wait the set period of time for state transitions to be successful before
 # continuing on with the program or reporting an error if timeout reached.
 G_WAIT=
+# Print the journal to the console
+G_VERBOSE=
 
 print_help ()
 {
@@ -41,6 +43,7 @@ print_help ()
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
     echo "  -w, --wait          block until state transition succeeds or fails"
+    echo "  -v, --verbose       print the journal to stdout if --wait is supplied"
     exit 0
 }
 
@@ -48,6 +51,12 @@ run_timeout ()
 {
     local timeout="$1"; shift
     local cmd="$@"
+    local verbose_child=
+
+    if [ -n $G_VERBOSE ]; then
+        journalctl -f &
+        verbose_child=$!
+    fi
 
     $cmd
 
@@ -59,7 +68,7 @@ run_timeout ()
             sleep 1
         done
     ) &
-    child=$!
+    wait_child=$!
 
     # Could be bad if process is killed before 'timeout' occurs if
     # transition doesn't succeed.
@@ -68,12 +77,16 @@ run_timeout ()
     # Workaround for lack of 'timeout' command.
     (
         sleep $timeout
-        kill $child
+        kill $wait_child
     ) > /dev/null 2>&1 &
 
-    if ! wait $child; then
+    if ! wait $wait_child; then
         echo "Unable to confirm '$G_ORIG_CMD' success" \
         "within timeout period (${timeout}s)"
+    fi
+
+    if [ -n $verbose_child ]; then
+        kill $verbose_child
     fi
 }
 
@@ -228,6 +241,9 @@ for arg in "$@"; do
             ;;
         -h|--help)
             print_help
+            ;;
+        -v|--verbose)
+            G_VERBOSE=y
             ;;
         -*)
             print_usage_err "Unknown option: $arg"
