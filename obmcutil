@@ -53,7 +53,7 @@ run_timeout ()
     local cmd="$@"
     local verbose_child=
 
-    if [ -n $G_VERBOSE ]; then
+    if [ -n "$G_VERBOSE" ]; then
         journalctl -f &
         verbose_child=$!
     fi
