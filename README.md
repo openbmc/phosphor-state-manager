@@ -123,7 +123,7 @@ The host@0-on file is removed when the host is stopped.
 ./configure ${CONFIGURE_FLAGS} && make
 ```
 
-[1]: https://github.com/openbmc/docs/blob/master/openbmc-systemd.md
+[1]: https://github.com/openbmc/docs/blob/master/architecture/openbmc-systemd.md
 [2]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/State/BMC.interface.yaml
 [3]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/State/Chassis.interface.yaml
 [4]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/State/Host.interface.yaml
