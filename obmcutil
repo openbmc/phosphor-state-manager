@@ -3,16 +3,18 @@
 set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
-osstate,power,poweroff,poweron,state,status"
+osstate,power,poweroff,poweron,state,status,rebootoff,rebooton"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
 
 INTERFACE_ROOT=xyz.openbmc_project
 STATE_INTERFACE=$INTERFACE_ROOT.State
+CONTROL_INTERFACE=$INTERFACE_ROOT.Control
 
 OBJECT_ROOT=/xyz/openbmc_project
 STATE_OBJECT=$OBJECT_ROOT/state
+CONTROL_OBJECT=$OBJECT_ROOT/control
 
 ## NOTE: The following global variables are used only in the run_timeout cmd.
 ## By declaring these globally instead of passing them through the
@@ -39,7 +41,12 @@ print_help ()
     echo ""
     echo "positional arguments:"
     echo "  {$OPTS}"
-    echo ""
+	echo ""
+	echo "Examples:"
+	echo ""
+	echo "obmcutil rebootoff    Disable auto reboot from Quiesce state"
+	echo "obmcutil rebooton     Enable auto reboot from Quiesce state"
+	echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
     echo "  -w, --wait          block until state transition succeeds or fails"
@@ -226,6 +233,22 @@ handle_cmd ()
             ;;
         chassiskill)
             /usr/libexec/chassiskill
+            ;;
+        rebootoff)
+            OBJECT=$CONTROL_OBJECT/host0/auto_reboot
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
+            PROPERTY=AutoReboot
+            VALUE=false
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
+            ;;
+        rebooton)
+            OBJECT=$CONTROL_OBJECT/host0/auto_reboot
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
+            PROPERTY=AutoReboot
+            VALUE=true
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
         *)
             print_usage_err "Invalid command '$1'"
