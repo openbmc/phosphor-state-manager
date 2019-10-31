@@ -85,7 +85,7 @@ run_timeout ()
         "within timeout period (${timeout}s)"
     fi
 
-    if [ -n $verbose_child ]; then
+    if [ -n "$verbose_child" ]; then
         kill $verbose_child
     fi
 }
