@@ -16,6 +16,8 @@ OBJECT_ROOT=/xyz/openbmc_project
 STATE_OBJECT=$OBJECT_ROOT/state
 CONTROL_OBJECT=$OBJECT_ROOT/control
 
+HOST_TIMEOUT_TARGET=obmc-host-timeout@0.target
+
 ## NOTE: The following global variables are used only in the run_timeout cmd.
 ## By declaring these globally instead of passing them through the
 ## intermediary functions, which may not be "best practice", the readability
@@ -125,6 +127,18 @@ print_usage_err ()
     echo "ERROR: $1" >&2
     echo "$USAGE"
     exit 1
+}
+
+mask_systemd_target ()
+{
+    target="$@"
+    systemctl mask $target
+}
+
+unmask_systemd_target ()
+{
+    target="$@"
+    systemctl unmask $target
 }
 
 handle_cmd ()
@@ -246,16 +260,12 @@ handle_cmd ()
             set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
         recoveryoff)
-            for query in rebootoff
-            do
-                handle_cmd $query
-            done
+            handle_cmd rebootoff
+            mask_systemd_target $HOST_TIMEOUT_TARGET
             ;;
         recoveryon)
-            for query in rebooton
-            do
-                handle_cmd $query
-            done
+            handle_cmd rebooton
+            unmask_systemd_target $HOST_TIMEOUT_TARGET
             ;;
         *)
             print_usage_err "Invalid command '$1'"
