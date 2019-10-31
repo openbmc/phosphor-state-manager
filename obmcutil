@@ -3,7 +3,7 @@
 set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
-osstate,power,poweroff,poweron,state,status,rebootoff,rebooton"
+osstate,power,poweroff,poweron,state,status,rebootoff,rebooton,recoveryoff,recoveryon"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -15,6 +15,8 @@ CONTROL_INTERFACE=$INTERFACE_ROOT.Control
 OBJECT_ROOT=/xyz/openbmc_project
 STATE_OBJECT=$OBJECT_ROOT/state
 CONTROL_OBJECT=$OBJECT_ROOT/control
+
+HOST_TIMEOUT_TARGET=obmc-host-timeout@0.target
 
 ## NOTE: The following global variables are used only in the run_timeout cmd.
 ## By declaring these globally instead of passing them through the
@@ -46,6 +48,10 @@ print_help ()
 	echo ""
 	echo "obmcutil rebootoff    Disable auto reboot from Quiesce state"
 	echo "obmcutil rebooton     Enable auto reboot from Quiesce state"
+	echo "obmcutil recoveryoff  Disable boot watchdog timeout handling"
+	echo "                      Disable auto reboot from Quiesce state"
+	echo "obmcutil recoveryon   Enable boot watchdog timeout handling"
+	echo "                      Enable auto reboot from Quiesce state"
 	echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -130,6 +136,18 @@ print_usage_err ()
     echo "ERROR: $1" >&2
     echo "$USAGE"
     exit 1
+}
+
+mask_systemd_target ()
+{
+    target="$@"
+    systemctl mask $target
+}
+
+unmask_systemd_target ()
+{
+    target="$@"
+    systemctl unmask $target
 }
 
 handle_cmd ()
@@ -249,6 +267,14 @@ handle_cmd ()
             PROPERTY=AutoReboot
             VALUE=true
             set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
+            ;;
+        recoveryoff)
+            handle_cmd rebootoff
+            mask_systemd_target $HOST_TIMEOUT_TARGET
+            ;;
+        recoveryon)
+            handle_cmd rebooton
+            unmask_systemd_target $HOST_TIMEOUT_TARGET
             ;;
         *)
             print_usage_err "Invalid command '$1'"
