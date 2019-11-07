@@ -30,7 +30,7 @@ class SystemdTargetLogging
                          sdbusplus::bus::bus& bus) :
         targetData(targetData),
         bus(bus),
-        systemdSignals(
+        systemdJobRemovedSignal(
             bus,
             sdbusplus::bus::match::rules::type::signal() +
                 sdbusplus::bus::match::rules::member("JobRemoved") +
@@ -88,8 +88,8 @@ class SystemdTargetLogging
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& bus;
 
-    /** @brief Used to subscribe to dbus systemd signals **/
-    sdbusplus::bus::match_t systemdSignals;
+    /** @brief Used to subscribe to dbus systemd JobRemoved signals **/
+    sdbusplus::bus::match_t systemdJobRemovedSignal;
 };
 
 } // namespace manager
