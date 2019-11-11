@@ -86,6 +86,24 @@ void SystemdTargetLogging::systemdUnitChange(sdbusplus::message::message& msg)
     return;
 }
 
+void SystemdTargetLogging::processNameChangeSignal(
+    sdbusplus::message::message& msg)
+{
+    std::string name;      // well-known
+    std::string old_owner; // unique-name
+    std::string new_owner; // unique-name
+
+    msg.read(name, old_owner, new_owner);
+
+    // Looking for systemd to be on dbus so we can call it
+    if (name == "org.freedesktop.systemd1")
+    {
+        log<level::INFO>("org.freedesktop.systemd1 is now on dbus");
+        subscribeToSystemdSignals();
+    }
+    return;
+}
+
 void SystemdTargetLogging::subscribeToSystemdSignals()
 {
     auto method = this->bus.new_method_call(
@@ -98,10 +116,26 @@ void SystemdTargetLogging::subscribeToSystemdSignals()
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
-        log<level::ERR>("Failed to subscribe to systemd signals",
-                        entry("SDBUSERR=%s", e.what()));
-        elog<InternalFailure>();
+        // If error indicates systemd is not on dbus yet then do nothing.
+        // The systemdNameChangeSignals callback will detect when it is on
+        // dbus and then call this function again
+        const std::string noDbus("org.freedesktop.DBus.Error.ServiceUnknown");
+        if (noDbus == e.name())
+        {
+            log<level::INFO>("org.freedesktop.systemd1 not on dbus yet");
+        }
+        else
+        {
+            log<level::ERR>("Failed to subscribe to systemd signals",
+                            entry("SDBUSERR=%s", e.what()));
+            elog<InternalFailure>();
+        }
+        return;
     }
+
+    // Call destructor on match callback since application is now subscribed to
+    // systemd signals
+    this->systemdNameOwnedChangedSignal.~match();
 
     return;
 }
