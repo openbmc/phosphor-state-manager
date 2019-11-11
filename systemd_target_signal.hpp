@@ -39,7 +39,12 @@ class SystemdTargetLogging
                 sdbusplus::bus::match::rules::interface(
                     "org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&SystemdTargetLogging::systemdUnitChange),
-                      this, std::placeholders::_1))
+                      this, std::placeholders::_1)),
+        systemdNameChangeSignals(
+            bus, sdbusplus::bus::match::rules::nameOwnerChanged(),
+            std::bind(
+                std::mem_fn(&SystemdTargetLogging::processNameChangeSignal),
+                this, std::placeholders::_1))
     {
     }
 
@@ -82,6 +87,16 @@ class SystemdTargetLogging
      */
     void systemdUnitChange(sdbusplus::message::message& msg);
 
+    /** @brief Wait for systemd to show up on dbus
+     *
+     * Once systemd is on dbus, this application can subscribe to systemd
+     * signal changes
+     *
+     * @param[in]  msg       - Data associated with subscribed signal
+     *
+     */
+    void processNameChangeSignal(sdbusplus::message::message& msg);
+
     /** @brief Systemd targets to monitor and error logs to create */
     const TargetErrorData& targetData;
 
@@ -90,6 +105,9 @@ class SystemdTargetLogging
 
     /** @brief Used to subscribe to dbus systemd JobRemoved signals **/
     sdbusplus::bus::match_t systemdJobRemovalSignals;
+
+    /** @brief Used to know when systemd has registered on dbus **/
+    sdbusplus::bus::match_t systemdNameChangeSignals;
 };
 
 } // namespace manager
