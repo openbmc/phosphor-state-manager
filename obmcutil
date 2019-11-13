@@ -3,7 +3,8 @@
 set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
-osstate,power,poweroff,poweron,state,status,rebootoff,rebooton,recoveryoff,recoveryon"
+osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
+bmcrebootoff, bmcrebooton"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -47,13 +48,17 @@ print_help ()
     echo ""
     echo "Examples:"
     echo ""
-    echo "obmcutil rebootoff    Disable auto reboot from Quiesce state"
-    echo "obmcutil rebooton     Enable auto reboot from Quiesce state"
+    echo "obmcutil hostrebootoff Disable auto reboot of Host from Quiesce state"
+    echo "obmcutil hostrebooton  Enable auto reboot of Host from Quiesce state"
     echo ""
-    echo "obmcutil recoveryoff  Disable handling boot watchdog timeout and host crash"
-    echo "                      Also, disable auto reboot from Quiesce state"
-    echo "obmcutil recoveryon   Enable handling boot watchdog timeout and host crash"
-    echo "                      Also, enable auto reboot from Quiesce state"
+    echo "obmcutil bmcrebootoff  Disable reboot of BMC"
+    echo "obmcutil bmcrebooton   Enable reboot of BMC"
+    echo ""
+    echo "obmcutil recoveryoff   Disable handling boot watchdog timeout and host crash"
+    echo "                       Also, disable BMC and Host auto reboots"
+    echo ""
+    echo "obmcutil recoveryon    Enable handling boot watchdog timeout and host crash"
+    echo "                       Also, enable BMC and Host auto reboots"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -150,6 +155,30 @@ unmask_systemd_target ()
 {
     target="$@"
     systemctl unmask $target
+}
+
+disable_bmc_reboot ()
+{
+    dir="/run/systemd/system/"
+    file="reboot-guard.conf"
+    units=("reboot" "poweroff" "halt")
+
+    for unit in "${units[@]}"; do
+        mkdir -p ${dir}${unit}.target.d
+        echo -e "[Unit]\nRefuseManualStart=yes" >> ${dir}${unit}.target.d/${file}
+    done
+}
+
+enable_bmc_reboot ()
+{
+    dir="/run/systemd/system/"
+    file="reboot-guard.conf"
+    units=("reboot" "poweroff" "halt")
+
+    for unit in "${units[@]}"; do
+        rm -rf ${dir}${unit}.target.d/${file}
+        rm -rf ${dir}${unit}.target.d
+    done
 }
 
 handle_cmd ()
@@ -254,7 +283,7 @@ handle_cmd ()
         chassiskill)
             /usr/libexec/chassiskill
             ;;
-        rebootoff)
+        hostrebootoff)
             OBJECT=$CONTROL_OBJECT/host0/auto_reboot
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
@@ -262,7 +291,7 @@ handle_cmd ()
             VALUE=false
             set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
-        rebooton)
+        hostrebooton)
             OBJECT=$CONTROL_OBJECT/host0/auto_reboot
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
@@ -270,13 +299,21 @@ handle_cmd ()
             VALUE=true
             set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
+        bmcrebootoff)
+            disable_bmc_reboot
+            ;;
+        bmcrebooton)
+            enable_bmc_reboot
+            ;;
         recoveryoff)
-            handle_cmd rebootoff
+            handle_cmd hostrebootoff
+            handle_cmd bmcrebootoff
             mask_systemd_target $HOST_TIMEOUT_TARGET
             mask_systemd_target $HOST_CRASH_TARGET
             ;;
         recoveryon)
-            handle_cmd rebooton
+            handle_cmd hostrebooton
+            handle_cmd bmcrebooton
             unmask_systemd_target $HOST_TIMEOUT_TARGET
             unmask_systemd_target $HOST_CRASH_TARGET
             ;;
