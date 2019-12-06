@@ -7,7 +7,7 @@
 #include <sdbusplus/exception.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Control/Host/server.hpp>
-#include <config.h>
+#include "config.h"
 
 using namespace std::literals;
 using namespace phosphor::logging;
@@ -29,6 +29,9 @@ bool hostRunning = false;
 static int hostControlSignal(sd_bus_message* msg, void* userData,
                              sd_bus_error* retError)
 {
+    // retError and userData are not used
+    (void)(retError);
+    (void)(userData);
     std::string cmdCompleted{};
     std::string cmdStatus{};
 
@@ -107,7 +110,7 @@ void sendHeartbeat(sdbusplus::bus::bus& bus)
     return;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     log<level::INFO>("Check if host is running");
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <config.h>
+#include "config.h"
 #include <systemd/sd-bus.h>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>

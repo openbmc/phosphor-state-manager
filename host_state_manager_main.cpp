@@ -6,7 +6,7 @@
 #include "config.h"
 #include "host_state_manager.hpp"
 
-int main(int argc, char *argv[])
+int main()
 {
     namespace fs = std::experimental::filesystem;
 
@@ -18,8 +18,7 @@ int main(int argc, char *argv[])
     // Add sdbusplus ObjectManager.
     sdbusplus::server::manager::manager objManager(bus, objPathInst.c_str());
 
-    phosphor::state::manager::Host manager(bus, HOST_BUSNAME,
-                                           objPathInst.c_str());
+    phosphor::state::manager::Host manager(bus, objPathInst.c_str());
 
     auto dir = fs::path(HOST_STATE_PERSIST_PATH).parent_path();
     fs::create_directories(dir);

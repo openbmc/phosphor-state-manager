@@ -40,13 +40,10 @@ class Chassis : public ChassisInherit
      *       determineInitialState() and set our properties
      *
      * @param[in] bus       - The Dbus bus object
-     * @param[in] instance  - The instance of this object
      * @param[in] objPath   - The Dbus object path
      */
-    Chassis(sdbusplus::bus::bus& bus, const char* busName,
-            const char* objPath) :
-        ChassisInherit(bus, objPath, true),
-        bus(bus),
+    Chassis(sdbusplus::bus::bus& bus, const char* objPath) :
+        ChassisInherit(bus, objPath, true), bus(bus),
         systemdSignals(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
