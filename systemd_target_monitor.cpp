@@ -3,8 +3,8 @@
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
-#include <systemd_target_parser.hpp>
-#include <systemd_target_signal.hpp>
+#include "systemd_target_parser.hpp"
+#include "systemd_target_signal.hpp"
 #include <vector>
 
 using phosphor::logging::level;

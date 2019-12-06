@@ -47,10 +47,9 @@ class Host : public HostInherit
      *       determineInitialState() and set our properties
      *
      * @param[in] bus       - The Dbus bus object
-     * @param[in] busName   - The Dbus name to own
      * @param[in] objPath   - The Dbus object path
      */
-    Host(sdbusplus::bus::bus& bus, const char* busName, const char* objPath) :
+    Host(sdbusplus::bus::bus& bus, const char* objPath) :
         HostInherit(bus, objPath, true), bus(bus),
         systemdSignals(
             bus,
@@ -102,6 +101,8 @@ class Host : public HostInherit
      */
     uint32_t attemptsLeft(uint32_t value) override
     {
+        // value is ignored in this implementation
+        (void)(value);
         log<level::DEBUG>("External request to reset reboot count");
         return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
                     RebootAttempts::attemptsLeft(BOOT_COUNT_MAX_ALLOWED));
@@ -186,6 +187,8 @@ class Host : public HostInherit
     template <class Archive>
     void save(Archive& archive, const std::uint32_t version) const
     {
+        // version is not used currently
+        (void)(version);
         archive(convertForMessage(sdbusplus::xyz::openbmc_project::State::
                                       server::Host::requestedHostTransition()),
                 convertForMessage(sdbusplus::xyz::openbmc_project::State::Boot::
@@ -205,6 +208,8 @@ class Host : public HostInherit
     template <class Archive>
     void load(Archive& archive, const std::uint32_t version)
     {
+        // version is not used currently
+        (void)(version);
         std::string reqTranState;
         std::string bootProgress;
         std::string osState;

@@ -3,7 +3,7 @@
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdbusplus/exception.hpp>
-#include <systemd_target_signal.hpp>
+#include "systemd_target_signal.hpp"
 #include <xyz/openbmc_project/Common/error.hpp>
 
 namespace phosphor
