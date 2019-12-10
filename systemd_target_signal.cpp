@@ -60,7 +60,7 @@ const std::string* SystemdTargetLogging::processError(const std::string& unit,
             return (&targetEntry->second.errorToLog);
         }
     }
-    return {nullptr};
+    return nullptr;
 }
 
 void SystemdTargetLogging::systemdUnitChange(sdbusplus::message::message& msg)
