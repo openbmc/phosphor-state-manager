@@ -115,6 +115,12 @@ systemd_system_unit_dir = systemd.get_pkgconfig_variable(
     define_variable: ['prefix', get_option('prefix')])
 subdir('service_files')
 
+datadir = join_paths(
+    get_option('sysconfdir'),
+    'phosphor-systemd-target-monitor'
+)
+subdir('data')
+
 build_tests = get_option('tests')
 
 # If test coverage of source files within the root directory are wanted,
