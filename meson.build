@@ -109,6 +109,12 @@ executable('phosphor-systemd-target-monitor',
     install: true
 )
 
+systemd = dependency('systemd')
+systemd_system_unit_dir = systemd.get_pkgconfig_variable(
+    'systemdsystemunitdir',
+    define_variable: ['prefix', get_option('prefix')])
+subdir('service_files')
+
 build_tests = get_option('tests')
 
 # If test coverage of source files within the root directory are wanted,
