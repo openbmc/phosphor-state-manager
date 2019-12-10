@@ -9,7 +9,7 @@ else
 endif
 
 systemdsystemunit_DATA = \
-  phosphor-systemd-target-monitor.service
+  ./service_files/phosphor-systemd-target-monitor.service
 
 AM_LIBS = $(CODE_COVERAGE_LIBS)
 AM_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS) -UNDEBUG $(GTEST_CPPFLAGS)
