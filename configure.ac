@@ -190,5 +190,5 @@ AS_IF([test "x$with_systemdsystemunitdir" != "xno"],
 [AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])])
 
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([phosphor-systemd-target-monitor.service])
+AC_CONFIG_FILES([service_files/phosphor-systemd-target-monitor.service])
 AC_OUTPUT
