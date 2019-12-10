@@ -119,8 +119,12 @@ The host@0-on file is removed when the host is stopped.
 
 ## Building the Code
 ```
-./bootstrap.sh
-./configure ${CONFIGURE_FLAGS} && make
+To build this package, do the following steps:
+
+    1. meson build
+    2. ninja -C build
+
+To clean the repository again run `rm -rf build`.
 ```
 
 [1]: https://github.com/openbmc/docs/blob/master/architecture/openbmc-systemd.md
