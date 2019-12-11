@@ -108,3 +108,54 @@ executable('phosphor-systemd-target-monitor',
     implicit_include_directories: true,
     install: true
 )
+
+install_data('obmcutil',
+        install_mode: 'rwxr--r--',
+        install_dir: get_option('bindir')
+)
+
+systemd = dependency('systemd')
+systemd_system_unit_dir = systemd.get_pkgconfig_variable(
+    'systemdsystemunitdir',
+    define_variable: ['prefix', get_option('prefix')])
+subdir('service_files')
+
+datadir = join_paths(
+    get_option('sysconfdir'),
+    'phosphor-systemd-target-monitor'
+)
+subdir('data')
+
+build_tests = get_option('tests')
+
+# If test coverage of source files within the root directory are wanted,
+# need to define and build the tests from here
+if not build_tests.disabled()
+  gtest = dependency('gtest', main: true, disabler: true, required: build_tests)
+
+  test(
+      'test_systemd_parser',
+      executable('test_systemd_parser',
+          './test/systemd_parser.cpp',
+          'systemd_target_parser.cpp',
+          dependencies: [
+              gtest,
+          ],
+          implicit_include_directories: true,
+          include_directories: '../'
+      )
+  )
+
+  test(
+      'test_systemd_signal',
+      executable('test_systemd_signal',
+          './test/systemd_signal.cpp',
+          'systemd_target_signal.cpp',
+          dependencies: [
+              gtest, sdbusplus, sdeventplus, phosphorlogging,
+          ],
+          implicit_include_directories: true,
+          include_directories: '../'
+      )
+  )
+endif
