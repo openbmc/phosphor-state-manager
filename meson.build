@@ -109,6 +109,11 @@ executable('phosphor-systemd-target-monitor',
     install: true
 )
 
+install_data('obmcutil',
+        install_mode: 'rwxr--r--',
+        install_dir: get_option('bindir')
+)
+
 systemd = dependency('systemd')
 systemd_system_unit_dir = systemd.get_pkgconfig_variable(
     'systemdsystemunitdir',
