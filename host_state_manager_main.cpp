@@ -6,7 +6,7 @@
 #include "config.h"
 #include "host_state_manager.hpp"
 
-int main(int argc, char *argv[])
+int main()
 {
     namespace fs = std::experimental::filesystem;
 

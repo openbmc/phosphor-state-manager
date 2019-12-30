@@ -1,0 +1,69 @@
+option('HOST_BUSNAME',
+       type: 'string',
+       value: 'xyz.openbmc_project.State.Host',
+       description: 'The Host Dbus busname to own')
+
+option('HOST_OBJPATH',
+       type: 'string',
+       value: '/xyz/openbmc_project/state/host',
+       description: 'The host state manager Dbus root')
+
+option('CHASSIS_BUSNAME',
+       type: 'string',
+       value: 'xyz.openbmc_project.State.Chassis',
+       description: 'The Chassis DBus busname to own')
+
+option('CHASSIS_OBJPATH',
+       type: 'string',
+       value: '/xyz/openbmc_project/state/chassis',
+       description: 'The chassis state manager Dbus root')
+
+option('BMC_BUSNAME',
+       type: 'string',
+       value: 'xyz.openbmc_project.State.BMC',
+       description: 'The BMC Dbus busname to own')
+
+option('BMC_OBJPATH',
+       type: 'string',
+       value: '/xyz/openbmc_project/state/bmc',
+       description: 'The BMC state manager Dbus root')
+
+option('HOST_RUNNING_FILE',
+       type: 'string',
+       value: '/run/openbmc/host@%d-on',
+       description: 'File to create if host is running')
+
+option('HOST_STATE_PERSIST_PATH',
+       type: 'string',
+       value: '/var/lib/phosphor-state-manager/requestedHostTransition',
+       description: 'Path of file for storing requested host state')
+
+option('POH_COUNTER_PERSIST_PATH',
+       type: 'string',
+       value: '/var/lib/phosphor-state-manager/POHCounter',
+       description: 'Path of file for storing POH counter')
+
+option('CHASSIS_STATE_CHANGE_PERSIST_PATH',
+       type: 'string',
+       value: '/var/lib/phosphor-state-manager/chassisStateChangeTime',
+       description: 'Path of file for storing the state change time')
+
+option('BOOT_COUNT_MAX_ALLOWED',
+       type: 'integer',
+       value: 3,
+       description: 'The maximum allowed reboot count')
+
+option('CLASS_VERSION',
+       type: 'integer',
+       value: 1,
+       description: 'Class version to register with Cereal')
+
+option('tests',
+       type: 'feature',
+       description: 'Build tests')
+
+option('oe-sdk',
+       type: 'feature',
+       description: 'Enable OE SDK')
+      
+

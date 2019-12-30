@@ -5,7 +5,7 @@
 #include "config.h"
 #include "chassis_state_manager.hpp"
 
-int main(int argc, char *argv[])
+int main()
 {
     auto bus = sdbusplus::bus::new_default();
 

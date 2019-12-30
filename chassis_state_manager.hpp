@@ -43,7 +43,7 @@ class Chassis : public ChassisInherit
      * @param[in] instance  - The instance of this object
      * @param[in] objPath   - The Dbus object path
      */
-    Chassis(sdbusplus::bus::bus& bus, const char* busName,
+    Chassis(sdbusplus::bus::bus& bus, const char* /*busName*/,
             const char* objPath) :
         ChassisInherit(bus, objPath, true),
         bus(bus),
