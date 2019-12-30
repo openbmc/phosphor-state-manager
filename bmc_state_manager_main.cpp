@@ -2,7 +2,7 @@
 #include "config.h"
 #include "bmc_state_manager.hpp"
 
-int main(int argc, char**)
+int main()
 {
     auto bus = sdbusplus::bus::new_default();
 

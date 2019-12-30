@@ -26,8 +26,8 @@ bool cmdDone = false;
 bool hostRunning = false;
 
 // Function called on host control signals
-static int hostControlSignal(sd_bus_message* msg, void* userData,
-                             sd_bus_error* retError)
+static int hostControlSignal(sd_bus_message* msg, void* /*userData*/,
+                             sd_bus_error* /*retError*/)
 {
     std::string cmdCompleted{};
     std::string cmdStatus{};
@@ -107,7 +107,7 @@ void sendHeartbeat(sdbusplus::bus::bus& bus)
     return;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     log<level::INFO>("Check if host is running");
 

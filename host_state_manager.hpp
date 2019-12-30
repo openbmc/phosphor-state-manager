@@ -50,8 +50,10 @@ class Host : public HostInherit
      * @param[in] busName   - The Dbus name to own
      * @param[in] objPath   - The Dbus object path
      */
-    Host(sdbusplus::bus::bus& bus, const char* busName, const char* objPath) :
-        HostInherit(bus, objPath, true), bus(bus),
+    Host(sdbusplus::bus::bus& bus, const char* /*busName*/,
+         const char* objPath) :
+        HostInherit(bus, objPath, true),
+        bus(bus),
         systemdSignals(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
@@ -100,7 +102,7 @@ class Host : public HostInherit
      *
      * @return Default number of reboot attempts left
      */
-    uint32_t attemptsLeft(uint32_t value) override
+    uint32_t attemptsLeft(uint32_t /*value*/) override
     {
         log<level::DEBUG>("External request to reset reboot count");
         return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
@@ -184,7 +186,7 @@ class Host : public HostInherit
      *                       a serialized data across code levels
      */
     template <class Archive>
-    void save(Archive& archive, const std::uint32_t version) const
+    void save(Archive& archive, const std::uint32_t /*version*/) const
     {
         archive(convertForMessage(sdbusplus::xyz::openbmc_project::State::
                                       server::Host::requestedHostTransition()),
@@ -203,7 +205,7 @@ class Host : public HostInherit
      *                       a serialized data across code levels
      */
     template <class Archive>
-    void load(Archive& archive, const std::uint32_t version)
+    void load(Archive& archive, const std::uint32_t /*version*/)
     {
         std::string reqTranState;
         std::string bootProgress;
