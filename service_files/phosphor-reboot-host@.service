@@ -2,6 +2,8 @@
 Description=Reboot host%i
 Wants=obmc-host-stop@%i.target
 After=obmc-host-stop@%i.target
+Wants=obmc-host-stopped@%i.target
+After=obmc-host-stopped@%i.target
 
 [Service]
 #ExecStart=/bin/systemctl start obmc-host-start@%i.target
