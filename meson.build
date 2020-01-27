@@ -119,6 +119,7 @@ systemd_system_unit_dir = systemd.get_pkgconfig_variable(
     'systemdsystemunitdir',
     define_variable: ['prefix', get_option('prefix')])
 subdir('service_files')
+subdir('target_files')
 
 datadir = join_paths(
     get_option('sysconfdir'),
