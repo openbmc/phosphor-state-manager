@@ -46,6 +46,10 @@ constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
 constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
 constexpr auto HOST_STATE_POWERON_MIN_TGT = "obmc-host-startmin@0.target";
 constexpr auto HOST_STATE_REBOOT_TGT = "obmc-host-reboot@0.target";
+constexpr auto HOST_STATE_WARM_REBOOT = "obmc-host-warm-reboot@0.target";
+constexpr auto HOST_STATE_FORCE_WARM_REBOOT =
+    "obmc-host-force-warm-reboot@0.target";
+
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
 constexpr auto ACTIVE_STATE = "active";
@@ -55,7 +59,9 @@ constexpr auto ACTIVATING_STATE = "activating";
 const std::map<server::Host::Transition, std::string> SYSTEMD_TARGET_TABLE = {
     {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
     {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
-    {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT}};
+    {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT},
+    {server::Host::Transition::GracefulWarmReboot, HOST_STATE_WARM_REBOOT},
+    {server::Host::Transition::ForceWarmReboot, HOST_STATE_FORCE_WARM_REBOOT}};
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
