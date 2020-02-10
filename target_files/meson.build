@@ -9,6 +9,7 @@ unit_files = [
     'obmc-fan-watchdog-takeover.target',
     'obmc-fans-ready.target',
     'obmc-host-crash@.target',
+    'obmc-host-diagnostic-mode@.target',
     'obmc-host-force-warm-reboot@.target',
     'obmc-host-quiesce@.target',
     'obmc-host-reboot@.target',
