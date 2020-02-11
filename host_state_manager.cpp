@@ -49,6 +49,8 @@ constexpr auto HOST_STATE_REBOOT_TGT = "obmc-host-reboot@0.target";
 constexpr auto HOST_STATE_WARM_REBOOT = "obmc-host-warm-reboot@0.target";
 constexpr auto HOST_STATE_FORCE_WARM_REBOOT =
     "obmc-host-force-warm-reboot@0.target";
+constexpr auto HOST_STATE_DIAGNOSTIC_MODE =
+    "obmc-host-diagnostic-mode@0.target";
 
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
@@ -271,6 +273,23 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
             log<level::INFO>("Maintaining quiesce");
             this->currentHostState(server::Host::HostState::Quiesced);
         }
+    }
+}
+
+void Host::sysStateChangeJobNew(sdbusplus::message::message& msg)
+{
+    uint32_t newStateID{};
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit{};
+    std::string newStateResult{};
+
+    // Read the msg and populate each variable
+    msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    if (newStateUnit == HOST_STATE_DIAGNOSTIC_MODE)
+    {
+        log<level::INFO>("Received signal that host is in diagnostice mode");
+        this->currentHostState(server::Host::HostState::DiagnosticMode);
     }
 }
 
