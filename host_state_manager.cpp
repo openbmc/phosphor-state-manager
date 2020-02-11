@@ -70,12 +70,6 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
-/* Map a system state to the HostState */
-const std::map<std::string, server::Host::HostState> SYS_HOST_STATE_TABLE = {
-    {"HOST_BOOTING", server::Host::HostState::Running},
-    {"HOST_POWERED_OFF", server::Host::HostState::Off},
-    {"HOST_QUIESCED", server::Host::HostState::Quiesced}};
-
 void Host::subscribeToSystemdSignals()
 {
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
