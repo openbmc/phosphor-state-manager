@@ -231,7 +231,7 @@ bool Host::isAutoReboot()
     }
 }
 
-void Host::sysStateChange(sdbusplus::message::message& msg)
+void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
 {
     uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;

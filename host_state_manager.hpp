@@ -51,12 +51,12 @@ class Host : public HostInherit
      */
     Host(sdbusplus::bus::bus& bus, const char* objPath) :
         HostInherit(bus, objPath, true), bus(bus),
-        systemdSignals(
+        systemdSignalJobRemoved(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
                 sdbusRule::path("/org/freedesktop/systemd1") +
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-            std::bind(std::mem_fn(&Host::sysStateChange), this,
+            std::bind(std::mem_fn(&Host::sysStateChangeJobRemoved), this,
                       std::placeholders::_1)),
         settings(bus)
     {
@@ -161,7 +161,7 @@ class Host : public HostInherit
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    void sysStateChange(sdbusplus::message::message& msg);
+    void sysStateChangeJobRemoved(sdbusplus::message::message& msg);
 
     /** @brief Decrement reboot count
      *
@@ -247,8 +247,8 @@ class Host : public HostInherit
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& bus;
 
-    /** @brief Used to subscribe to dbus systemd signals **/
-    sdbusplus::bus::match_t systemdSignals;
+    /** @brief Used to subscribe to dbus systemd JobRemoved signal **/
+    sdbusplus::bus::match_t systemdSignalJobRemoved;
 
     // Settings objects of interest
     settings::Objects settings;
