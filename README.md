@@ -51,9 +51,11 @@ phosphor-dbus-interfaces for each object it supports.
   - RequestedPowerTransition: On, Off
 - [host][4]: The host represents the software running on the system. In most
   cases this is an operating system of some sort. The host can be `Off`,
-  `Running`, or `Quiesced`(error condition)
-  - CurrentHostState: Off, Running, Quiesced
-  - RequestedHostTransition: Off, On, Reboot
+  `Running`, `Quiesced`(error condition), or in `DiagnosticMode`(collecting
+  diagnostic data for a failure)
+  - CurrentHostState: Off, Running, Quiesced, DiagnosticMode
+  - RequestedHostTransition: Off, On, Reboot, GracefulWarmReboot,
+    ForceWarmReboot
 
 As noted above, phosphor-state-manager provides a command line tool,
 [obmcutil][5], which takes a `state` parameter. This will use D-Bus commands to
