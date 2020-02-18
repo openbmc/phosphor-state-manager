@@ -31,6 +31,8 @@ conf.set_quoted(
     'POH_COUNTER_PERSIST_PATH', get_option('poh-counter-persist-path'))
 conf.set_quoted(
     'CHASSIS_STATE_CHANGE_PERSIST_PATH', get_option('chassis-state-change-persist-path'))
+conf.set_quoted(
+    'SCHEDULED_HOST_TRANSITION_BUSNAME', get_option('scheduled-host-transition-busname'))
 conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
 conf.set(
@@ -102,6 +104,16 @@ executable('phosphor-systemd-target-monitor',
             'systemd_target_monitor.cpp',
             'systemd_target_parser.cpp',
             'systemd_target_signal.cpp',
+            dependencies: [
+            sdbusplus, sdeventplus, phosphorlogging
+            ],
+    implicit_include_directories: true,
+    install: true
+)
+
+executable('phosphor-scheduled-host-transition',
+            'scheduled_host_transition_main.cpp',
+            'scheduled_host_transition.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging
             ],
