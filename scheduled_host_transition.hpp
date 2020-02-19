@@ -37,6 +37,13 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
      * @return The updated time for transition since UTC
      **/
     uint64_t scheduledTime(uint64_t value) override;
+
+  private:
+    /** @brief Get current time
+     *
+     *  @return - return current epoch time
+     */
+    std::chrono::seconds getTime();
 };
 } // namespace manager
 } // namespace state
