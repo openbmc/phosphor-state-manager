@@ -4,6 +4,8 @@
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/State/ScheduledHostTransition/server.hpp>
 
+class TestScheduledHostTransition;
+
 namespace phosphor
 {
 namespace state
@@ -31,12 +33,20 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
     ~ScheduledHostTransition() = default;
 
     /**
-     * @brief Set value of transition time
+     * @brief Hanlde with scheduled time
      *
      * @param[in] value - The seconds since UTC
      * @return The updated time for transition since UTC
      **/
     uint64_t scheduledTime(uint64_t value) override;
+
+  private:
+    friend class TestScheduledHostTransition;
+    /** @brief Get current time
+     *
+     *  @return - return current epoch time
+     */
+    std::chrono::seconds getTime();
 };
 } // namespace manager
 } // namespace state

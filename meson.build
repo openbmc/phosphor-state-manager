@@ -147,6 +147,7 @@ build_tests = get_option('tests')
 # need to define and build the tests from here
 if not build_tests.disabled()
 gtest = dependency('gtest', main: true, disabler: true, required: build_tests)
+gmock = dependency('gmock', disabler: true, required: build_tests)
   test(
       'test_systemd_parser',
       executable('test_systemd_parser',
@@ -167,6 +168,19 @@ gtest = dependency('gtest', main: true, disabler: true, required: build_tests)
           'systemd_target_signal.cpp',
           dependencies: [
               gtest, sdbusplus, sdeventplus, phosphorlogging,
+          ],
+          implicit_include_directories: true,
+          include_directories: '../'
+      )
+  )
+  
+  test(
+      'test_scheduled_host_transition',
+      executable('test_scheduled_host_transition',
+          './test/test_scheduled_host_transition.cpp',
+          'scheduled_host_transition.cpp',
+          dependencies: [
+              gtest, gmock, sdbusplus, sdeventplus, phosphorlogging,
           ],
           implicit_include_directories: true,
           include_directories: '../'
