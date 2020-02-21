@@ -7,6 +7,10 @@
 
 int main()
 {
+    // Get a default event loop
+    auto event = sdeventplus::Event::get_default();
+
+    // Get a handle to system dbus
     auto bus = sdbusplus::bus::new_default();
 
     // Add sdbusplus ObjectManager.
@@ -14,14 +18,13 @@ int main()
         bus, SCHEDULED_HOST_TRANSITION_OBJPATH);
 
     phosphor::state::manager::ScheduledHostTransition manager(
-        bus, SCHEDULED_HOST_TRANSITION_OBJPATH);
+        bus, SCHEDULED_HOST_TRANSITION_OBJPATH, event);
 
     bus.request_name(SCHEDULED_HOST_TRANSITION_BUSNAME);
 
-    while (true)
-    {
-        bus.process_discard();
-        bus.wait();
-    }
+    // Attach the bus to sd_event to service user requests
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+    event.loop();
+
     return 0;
 }
