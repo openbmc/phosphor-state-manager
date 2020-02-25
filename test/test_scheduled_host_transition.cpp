@@ -17,6 +17,8 @@ namespace manager
 using namespace std::chrono;
 using InvalidTimeError =
     sdbusplus::xyz::openbmc_project::ScheduledTime::Error::InvalidTime;
+using HostTransition =
+    sdbusplus::xyz::openbmc_project::State::server::ScheduledHostTransition;
 
 class TestScheduledHostTransition : public testing::Test
 {
@@ -47,6 +49,11 @@ class TestScheduledHostTransition : public testing::Test
     {
         return scheduledHostTransition.convertRequestedTransition(trans);
     }
+
+    void bmcTimeChange()
+    {
+        scheduledHostTransition.handleTimeUpdates();
+    }
 };
 
 TEST_F(TestScheduledHostTransition, disableHostTransition)
@@ -75,10 +82,10 @@ TEST_F(TestScheduledHostTransition, validScheduledTime)
 
 TEST_F(TestScheduledHostTransition, hostTransitionStatus)
 {
-    // set requested transition to be on
+    // Set requested transition to be on
     scheduledHostTransition.requestedTransition(Transition::On);
     EXPECT_EQ(scheduledHostTransition.requestedTransition(), Transition::On);
-    // set requested transition to be off
+    // Set requested transition to be off
     scheduledHostTransition.requestedTransition(Transition::Off);
     EXPECT_EQ(scheduledHostTransition.requestedTransition(), Transition::Off);
 }
@@ -94,6 +101,32 @@ TEST_F(TestScheduledHostTransition, validRequestedTransition)
 TEST_F(TestScheduledHostTransition, invalidRequestedTransition)
 {
     EXPECT_EQ(getRequestedTransitionStr(Transition::Reboot), "OutOfRange");
+}
+
+TEST_F(TestScheduledHostTransition, bmcTimeChangeWithDisabledHostTransition)
+{
+    // Disable host transition
+    scheduledHostTransition.scheduledTime(0);
+    bmcTimeChange();
+    // Check timer
+    EXPECT_FALSE(isTimerEnabled());
+    // Check scheduled time
+    EXPECT_EQ(scheduledHostTransition.HostTransition::scheduledTime(), 0);
+}
+
+TEST_F(TestScheduledHostTransition, bmcTimeChangeBackward)
+{
+    // Current time is earlier than scheduled time due to BMC time changing
+    uint64_t schTime =
+        static_cast<uint64_t>((getCurrentTime() + seconds(60)).count());
+    // Set scheduled time, which is the same as bmc time is changed.
+    // But can't use this method to write another case like
+    // bmcTimeChangeForward, because set a scheduled time earlier than current
+    // time will throw an error.
+    scheduledHostTransition.scheduledTime(schTime);
+    bmcTimeChange();
+    // Check timer
+    EXPECT_TRUE(isTimerEnabled());
 }
 
 } // namespace manager
