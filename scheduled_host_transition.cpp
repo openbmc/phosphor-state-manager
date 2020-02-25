@@ -5,6 +5,17 @@
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/ScheduledTime/error.hpp>
 #include <chrono>
+#include <sys/timerfd.h>
+#include <unistd.h>
+
+// Need to do this since its not exported outside of the kernel.
+// Refer : https://gist.github.com/lethean/446cea944b7441228298
+#ifndef TFD_TIMER_CANCEL_ON_SET
+#define TFD_TIMER_CANCEL_ON_SET (1 << 1)
+#endif
+
+// Needed to make sure timerfd does not misfire even though we set CANCEL_ON_SET
+#define TIME_T_MAX (time_t)((1UL << ((sizeof(time_t) << 3) - 1)) - 1)
 
 namespace phosphor
 {
@@ -38,7 +49,8 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
             timer.setEnabled(false);
         }
 
-        log<level::INFO>("The function Scheduled Host Transition is disabled.");
+        log<level::INFO>("scheduledTime: The function Scheduled Host "
+                         "Transition is disabled.");
     }
     else
     {
@@ -200,6 +212,114 @@ void ScheduledHostTransition::callback()
     hostTransition();
     // Set scheduledTime to 0 to disable host transition
     HostTransition::scheduledTime(0);
+}
+
+void ScheduledHostTransition::initialize()
+{
+    // Subscribe time change event
+    // Choose the MAX time that is possible to avoid mis fires.
+    constexpr itimerspec maxTime = {
+        {0, 0},          // it_interval
+        {TIME_T_MAX, 0}, // it_value
+    };
+
+    // Create and operate on a timer that delivers timer expiration
+    // notifications via a file descriptor.
+    timeFd = timerfd_create(CLOCK_REALTIME, 0);
+    if (timeFd == -1)
+    {
+        auto eno = errno;
+        log<level::ERR>("Failed to create timerfd", entry("ERRNO=%d", eno),
+                        entry("RC=%d", timeFd));
+        throw std::system_error(eno, std::system_category());
+    }
+
+    // Starts the timer referred to by the file descriptor fd.
+    // If TFD_TIMER_CANCEL_ON_SET is specified along with TFD_TIMER_ABSTIME
+    // and the clock for this timer is CLOCK_REALTIME, then mark this timer
+    // as cancelable if the real-time clock undergoes a discontinuous change.
+    // In this way, we can monitor whether BMC time is changed or not.
+    auto r = timerfd_settime(
+        timeFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &maxTime, nullptr);
+    if (r != 0)
+    {
+        auto eno = errno;
+        log<level::ERR>("Failed to set timerfd", entry("ERRNO=%d", eno),
+                        entry("RC=%d", r));
+        throw std::system_error(eno, std::system_category());
+    }
+
+    sd_event_source* es;
+    // Add a new I/O event source to an event loop. onTimeChange will be called
+    // when the event source is triggered.
+    r = sd_event_add_io(event.get(), &es, timeFd, EPOLLIN, onTimeChange, this);
+    if (r < 0)
+    {
+        auto eno = errno;
+        log<level::ERR>("Failed to add event", entry("ERRNO=%d", eno),
+                        entry("RC=%d", r));
+        throw std::system_error(eno, std::system_category());
+    }
+    timeChangeEventSource.reset(es);
+}
+
+ScheduledHostTransition::~ScheduledHostTransition()
+{
+    close(timeFd);
+}
+
+void ScheduledHostTransition::handleWithBmcTimeChanged()
+{
+    if (!timer.isEnabled())
+    {
+        return;
+    }
+    // Stop the timer if it's running
+    timer.setEnabled(false);
+
+    // Get scheduled time
+    auto value = HostTransition::scheduledTime();
+
+    if (value == 0)
+    {
+        log<level::INFO>(
+            "handleWithBmcTimeChanged: The function Scheduled Host "
+            "Transition is disabled.");
+        return;
+    }
+
+    auto deltaTime = seconds(value) - getTime();
+    if (deltaTime <= seconds(0))
+    {
+        // When BMC time is changed to be later than scheduled time, check the
+        // state of host transition to decide whether need to do host transition
+        hostTransition();
+        // Set scheduledTime to 0 to disable host transition
+        HostTransition::scheduledTime(0);
+    }
+    else
+    {
+        timer.restart(deltaTime);
+    }
+}
+
+int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
+                                          uint32_t /* revents */,
+                                          void* userdata)
+{
+    auto schedHostTran = static_cast<ScheduledHostTransition*>(userdata);
+
+    std::array<char, 64> time{};
+
+    // We are not interested in the data here.
+    // So read until there is no new data here in the FD
+    while (read(fd, time.data(), time.max_size()) > 0)
+        ;
+
+    log<level::INFO>("BMC system time is changed");
+    schedHostTran->handleWithBmcTimeChanged();
+
+    return 0;
 }
 
 } // namespace manager
