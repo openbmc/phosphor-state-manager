@@ -17,6 +17,8 @@ namespace manager
 using namespace std::chrono;
 using FailedError =
     sdbusplus::xyz::openbmc_project::ScheduledTime::Error::InvalidTime;
+using HostTransition =
+    sdbusplus::xyz::openbmc_project::State::server::ScheduledHostTransition;
 
 class TestScheduledHostTransition : public testing::Test
 {
@@ -41,6 +43,11 @@ class TestScheduledHostTransition : public testing::Test
     bool isTimerEnabled()
     {
         return scheduledHostTransition.timer.isEnabled();
+    }
+
+    void bmcTimeChange()
+    {
+        scheduledHostTransition.onBmcTimeChanged();
     }
 };
 
@@ -73,6 +80,28 @@ TEST_F(TestScheduledHostTransition, hostTransitionStatus)
     // set requested transition to be off
     scheduledHostTransition.requestedTransition(Transition::Off);
     EXPECT_EQ(scheduledHostTransition.requestedTransition(), Transition::Off);
+}
+
+TEST_F(TestScheduledHostTransition, bmcTimeChangeWithDisabledHostTransition)
+{
+    // disable host transition
+    scheduledHostTransition.scheduledTime(0);
+    bmcTimeChange();
+    // check timer
+    EXPECT_FALSE(isTimerEnabled());
+    // check scheduled time
+    EXPECT_EQ(scheduledHostTransition.HostTransition::scheduledTime(), 0);
+}
+
+TEST_F(TestScheduledHostTransition, bmcTimeChangeBackward)
+{
+    // current time is earlier than scheduled time due to BMC time changing
+    uint64_t schTime = (uint64_t)(getCurrentTime() + seconds(60)).count();
+    // set scheduled time, which is the same as bmc time is changed
+    scheduledHostTransition.scheduledTime(schTime);
+    bmcTimeChange();
+    // check timer
+    EXPECT_TRUE(isTimerEnabled());
 }
 
 } // namespace manager
