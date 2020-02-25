@@ -3,9 +3,21 @@
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/ScheduledTime/error.hpp>
 #include <chrono>
 #include <iostream>
+#include <sys/timerfd.h>
+#include <unistd.h>
+
+// Need to do this since its not exported outside of the kernel.
+// Refer : https://gist.github.com/lethean/446cea944b7441228298
+#ifndef TFD_TIMER_CANCEL_ON_SET
+#define TFD_TIMER_CANCEL_ON_SET (1 << 1)
+#endif
+
+// Needed to make sure timerfd does not misfire even though we set CANCEL_ON_SET
+#define TIME_T_MAX (time_t)((1UL << ((sizeof(time_t) << 3) - 1)) - 1)
 
 namespace phosphor
 {
@@ -28,7 +40,19 @@ constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
+/*uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
+{
+    timerHandler(value);
+    return HostTransition::scheduledTime(value);
+}*/
+
+seconds ScheduledHostTransition::getTime()
+{
+    auto now = system_clock::now();
+    return duration_cast<seconds>(now.time_since_epoch());
+}
+
+void ScheduledHostTransition::timerHandler(uint64_t value)
 {
     if (value == 0)
     {
@@ -42,7 +66,6 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         HostTransition::scheduledTime(0);
 
         log<level::INFO>("The function Scheduled Host Transition is disabled.");
-        return value;
     }
     // Can't use operator "-" directly, since value's type is uint64_t
     auto deltaTime = seconds(value) - getTime();
@@ -59,13 +82,6 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
     {
         timer.restart(deltaTime);
     }
-    return HostTransition::scheduledTime(value);
-}
-
-seconds ScheduledHostTransition::getTime()
-{
-    auto now = system_clock::now();
-    return duration_cast<seconds>(now.time_since_epoch());
 }
 
 std::string getService(sdbusplus::bus::bus& bus, std::string path,
@@ -181,6 +197,100 @@ void ScheduledHostTransition::callback()
     timer.setEnabled(false);
     // Set scheduledTime to 0 to disable host transition
     HostTransition::scheduledTime(0);
+}
+
+void ScheduledHostTransition::initialize()
+{
+    using InternalFailure =
+        sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+
+    // Subscribe time change event
+    // Choose the MAX time that is possible to avoid mis fires.
+    constexpr itimerspec maxTime = {
+        {0, 0},          // it_interval
+        {TIME_T_MAX, 0}, // it_value
+    };
+
+    timeFd = timerfd_create(CLOCK_REALTIME, 0);
+    if (timeFd == -1)
+    {
+        log<level::ERR>("Failed to create timerfd", entry("ERRNO=%d", errno),
+                        entry("ERR=%s", strerror(errno)));
+        elog<InternalFailure>();
+    }
+
+    auto r = timerfd_settime(
+        timeFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &maxTime, nullptr);
+    if (r != 0)
+    {
+        log<level::ERR>("Failed to set timerfd", entry("ERRNO=%d", errno),
+                        entry("ERR=%s", strerror(errno)));
+        elog<InternalFailure>();
+    }
+
+    sd_event_source* es;
+    /*r = sd_event_add_io(bus.get_event(), &es, timeFd, EPOLLIN, onTimeChange,
+                        this);*/
+    r = sd_event_add_io(event.get(), &es, timeFd, EPOLLIN, onTimeChange, this);
+    if (r < 0)
+    {
+        log<level::ERR>("Failed to add event", entry("ERRNO=%d", -r),
+                        entry("ERR=%s", strerror(-r)));
+        elog<InternalFailure>();
+    }
+    timeChangeEventSource.reset(es);
+}
+
+ScheduledHostTransition::~ScheduledHostTransition()
+{
+    close(timeFd);
+}
+
+/*void ScheduledHostTransition::setBmcTimeChangeListener(BmcTimeChangeListener*
+listener)
+{
+    timeChangeListener = listener;
+}
+
+void ScheduledHostTransition::notifyBmcTimeChange(const microseconds& time)
+{
+    // Notify listener if it exists
+    if (timeChangeListener)
+    {
+        timeChangeListener->onBmcTimeChanged(time);
+    }
+}*/
+void ScheduledHostTransition::onBmcTimeChanged()
+{
+    // Stop the timer if it's running
+    if (timer.isEnabled())
+    {
+        timer.setEnabled(false);
+    }
+    // Get scheduled time
+    auto scheduledTime = HostTransition::scheduledTime();
+    // Check if a new timer should be restart based on current BMC time
+    timerHandler(scheduledTime);
+}
+
+int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
+                                          uint32_t /* revents */,
+                                          void* userdata)
+{
+    auto bmcEpoch = static_cast<ScheduledHostTransition*>(userdata);
+
+    std::array<char, 64> time{};
+
+    // We are not interested in the data here.
+    // So read until there is no new data here in the FD
+    while (read(fd, time.data(), time.max_size()) > 0)
+        ;
+
+    log<level::INFO>("BMC system time is changed");
+    /*bmcEpoch->notifyBmcTimeChange(bmcEpoch->getTime());*/
+    bmcEpoch->onBmcTimeChanged();
+
+    return 0;
 }
 
 } // namespace manager
