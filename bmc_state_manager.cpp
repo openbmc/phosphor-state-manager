@@ -89,7 +89,7 @@ void BMC::discoverInitialState()
         try
         {
             this->bus.call(method);
-            this->stateSignal.release();
+            this->stateSignalJobRemoved.release();
         }
         catch (const SdBusError& e)
         {
@@ -154,7 +154,7 @@ void BMC::executeTransition(const Transition tranReq)
     return;
 }
 
-int BMC::bmcStateChange(sdbusplus::message::message& msg)
+int BMC::bmcStateChangeJobRemoved(sdbusplus::message::message& msg)
 {
     uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;
@@ -178,7 +178,7 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         try
         {
             this->bus.call(method);
-            this->stateSignal.release();
+            this->stateSignalJobRemoved.release();
         }
         catch (const SdBusError& e)
         {

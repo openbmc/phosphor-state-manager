@@ -31,13 +31,14 @@ class BMC : public BMCInherit
      */
     BMC(sdbusplus::bus::bus& bus, const char* objPath) :
         BMCInherit(bus, objPath, true), bus(bus),
-        stateSignal(std::make_unique<decltype(stateSignal)::element_type>(
-            bus,
-            sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
-                sdbusRule::path("/org/freedesktop/systemd1") +
-                sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-            std::bind(std::mem_fn(&BMC::bmcStateChange), this,
-                      std::placeholders::_1)))
+        stateSignalJobRemoved(
+            std::make_unique<decltype(stateSignalJobRemoved)::element_type>(
+                bus,
+                sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
+                    sdbusRule::path("/org/freedesktop/systemd1") +
+                    sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+                std::bind(std::mem_fn(&BMC::bmcStateChangeJobRemoved), this,
+                          std::placeholders::_1)))
     {
         subscribeToSystemdSignals();
         discoverInitialState();
@@ -85,13 +86,13 @@ class BMC : public BMCInherit
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    int bmcStateChange(sdbusplus::message::message& msg);
+    int bmcStateChangeJobRemoved(sdbusplus::message::message& msg);
 
     /** @brief Persistent sdbusplus DBus bus connection. **/
     sdbusplus::bus::bus& bus;
 
     /** @brief Used to subscribe to dbus system state changes **/
-    std::unique_ptr<sdbusplus::bus::match_t> stateSignal;
+    std::unique_ptr<sdbusplus::bus::match_t> stateSignalJobRemoved;
 };
 
 } // namespace manager
