@@ -1,0 +1,4 @@
+[Unit]
+Description=BMC Quiesce Target
+Wants=multi-user.target
+After=multi-user.target
