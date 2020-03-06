@@ -38,6 +38,14 @@ class BMC : public BMCInherit
                     sdbusRule::path("/org/freedesktop/systemd1") +
                     sdbusRule::interface("org.freedesktop.systemd1.Manager"),
                 std::bind(std::mem_fn(&BMC::bmcStateChangeJobRemoved), this,
+                          std::placeholders::_1))),
+        stateSignalJobNew(
+            std::make_unique<decltype(stateSignalJobNew)::element_type>(
+                bus,
+                sdbusRule::type::signal() + sdbusRule::member("JobNew") +
+                    sdbusRule::path("/org/freedesktop/systemd1") +
+                    sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+                std::bind(std::mem_fn(&BMC::bmcStateChangeJobNew), this,
                           std::placeholders::_1)))
     {
         subscribeToSystemdSignals();
@@ -88,11 +96,26 @@ class BMC : public BMCInherit
      */
     int bmcStateChangeJobRemoved(sdbusplus::message::message& msg);
 
+    /** @brief Check if JobNew systemd signal is relevant to this object
+     *
+     * In certain instances phosphor-bmc-state-manager needs to monitor for the
+     * entry into a systemd target. This function will be used for these cases.
+     *
+     * Instance specific interface to handle the detected systemd state
+     * change
+     *
+     * @param[in]  msg       - Data associated with subscribed signal
+     */
+    int bmcStateChangeJobNew(sdbusplus::message::message& msg);
+
     /** @brief Persistent sdbusplus DBus bus connection. **/
     sdbusplus::bus::bus& bus;
 
     /** @brief Used to subscribe to dbus system state changes **/
     std::unique_ptr<sdbusplus::bus::match_t> stateSignalJobRemoved;
+
+    /** @brief Used to subscribe to dbus systemd JobNew signals **/
+    std::unique_ptr<sdbusplus::bus::match_t> stateSignalJobNew;
 };
 
 } // namespace manager

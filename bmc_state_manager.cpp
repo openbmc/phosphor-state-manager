@@ -21,6 +21,7 @@ using sdbusplus::exception::SdBusError;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 constexpr auto obmcStandbyTarget = "multi-user.target";
+constexpr auto BMC_STATE_QUIESCE_TARGET = "obmc-bmc-quiesce.target";
 constexpr auto signalDone = "done";
 constexpr auto activeState = "active";
 
@@ -82,20 +83,6 @@ void BMC::discoverInitialState()
         log<level::INFO>("Setting the BMCState field",
                          entry("CURRENT_BMC_STATE=%s", "BMC_READY"));
         this->currentBMCState(BMCState::Ready);
-
-        // Unsubscribe so we stop processing all other signals
-        method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                           SYSTEMD_INTERFACE, "Unsubscribe");
-        try
-        {
-            this->bus.call(method);
-            this->stateSignalJobRemoved.release();
-        }
-        catch (const SdBusError& e)
-        {
-            log<level::INFO>("Error in Unsubscribe",
-                             entry("ERROR=%s", e.what()));
-        }
     }
     else
     {
@@ -169,22 +156,32 @@ int BMC::bmcStateChangeJobRemoved(sdbusplus::message::message& msg)
     {
         log<level::INFO>("BMC_READY");
         this->currentBMCState(BMCState::Ready);
+    }
+    else if (newStateUnit == BMC_STATE_QUIESCE_TARGET)
+    {
+        // Exited quiesce so determine what state to move BMC to
+        log<level::INFO>("BMC Exiting Quiesced State");
+        discoverInitialState();
+    }
 
-        // Unsubscribe so we stop processing all other signals
-        auto method =
-            this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                      SYSTEMD_INTERFACE, "Unsubscribe");
+    return 0;
+}
 
-        try
-        {
-            this->bus.call(method);
-            this->stateSignalJobRemoved.release();
-        }
-        catch (const SdBusError& e)
-        {
-            log<level::INFO>("Error in Unsubscribe",
-                             entry("ERROR=%s", e.what()));
-        }
+int BMC::bmcStateChangeJobNew(sdbusplus::message::message& msg)
+{
+    uint32_t newStateID{};
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit{};
+
+    // Read the msg and populate each variable
+    msg.read(newStateID, newStateObjPath, newStateUnit);
+    if (newStateUnit == BMC_STATE_QUIESCE_TARGET)
+    {
+        log<level::INFO>("Received signal that bmc is in quiesce mode");
+        // TODO - Need the following merged, use NotRead for now:
+        // https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-dbus-interfaces/+/30106
+        // this->currentBMCState(BMCState::Quiesced);
+        this->currentBMCState(BMCState::NotReady);
     }
 
     return 0;
