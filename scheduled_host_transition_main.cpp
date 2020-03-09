@@ -1,11 +1,14 @@
 #include <cstdlib>
 #include <exception>
 #include <sdbusplus/bus.hpp>
+#include <filesystem>
 #include "config.h"
 #include "scheduled_host_transition.hpp"
 
 int main()
 {
+    namespace fs = std::filesystem;
+
     // Get a default event loop
     auto event = sdeventplus::Event::get_default();
 
@@ -20,6 +23,12 @@ int main()
 
     phosphor::state::manager::ScheduledHostTransition manager(
         bus, objPathInst.c_str(), event);
+
+    auto dir = fs::path(SCHEDULED_HOST_TRANSITION_PERSIST_PATH).parent_path();
+    if (!fs::exists(dir))
+    {
+        fs::create_directories(dir);
+    }
 
     bus.request_name(SCHEDULED_HOST_TRANSITION_BUSNAME);
 

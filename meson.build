@@ -32,6 +32,8 @@ conf.set_quoted(
 conf.set_quoted(
     'CHASSIS_STATE_CHANGE_PERSIST_PATH', get_option('chassis-state-change-persist-path'))
 conf.set_quoted(
+    'SCHEDULED_HOST_TRANSITION_PERSIST_PATH', get_option('scheduled-host-transition-persist-path'))
+conf.set_quoted(
     'SCHEDULED_HOST_TRANSITION_BUSNAME', get_option('scheduled-host-transition-busname'))
 conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
