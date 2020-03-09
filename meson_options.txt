@@ -61,6 +61,12 @@ option(
 )
 
 option(
+    'scheduled-host-transition-persist-path', type: 'string',
+    value: '/var/lib/phosphor-state-manager/scheduledHostTransition',
+    description: 'Path of file for storing the scheduled time and the requested transition.',
+)
+
+option(
     'boot-count-max-allowed', type: 'integer',
     value: 3,
     description: 'The maximum allowed reboot count.',
