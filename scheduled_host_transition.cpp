@@ -4,7 +4,10 @@
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/ScheduledTime/error.hpp>
+#include <cereal/archives/json.hpp>
 #include <chrono>
+#include <filesystem>
+#include <fstream>
 #include <sys/timerfd.h>
 #include <unistd.h>
 
@@ -23,6 +26,8 @@ namespace state
 {
 namespace manager
 {
+
+namespace fs = std::filesystem;
 
 using namespace std::chrono;
 using namespace phosphor::logging;
@@ -48,10 +53,9 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         if (timer.isEnabled())
         {
             timer.setEnabled(false);
+            log<level::INFO>("scheduledTime: The function Scheduled Host "
+                             "Transition is disabled.");
         }
-
-        log<level::INFO>("scheduledTime: The function Scheduled Host "
-                         "Transition is disabled.");
     }
     else
     {
@@ -71,8 +75,12 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         }
     }
 
-    // Set and return the scheduled time
-    return HostTransition::scheduledTime(value);
+    // Set scheduledTime
+    HostTransition::scheduledTime(value);
+    // Store scheduled values
+    serializeScheduledValues();
+
+    return value;
 }
 
 seconds ScheduledHostTransition::getTime()
@@ -149,8 +157,9 @@ void ScheduledHostTransition::callback()
     // Stop timer, since we need to do host transition once only
     timer.setEnabled(false);
     hostTransition();
-    // Set scheduledTime to 0 to disable host transition
-    HostTransition::scheduledTime(0);
+    // Set scheduledTime to 0 to disable host transition and update scheduled
+    // values
+    scheduledTime(0);
 }
 
 void ScheduledHostTransition::initialize()
@@ -209,12 +218,13 @@ ScheduledHostTransition::~ScheduledHostTransition()
 
 void ScheduledHostTransition::handleTimeUpdates()
 {
-    if (!timer.isEnabled())
+    // Stop the timer if it's running.
+    // Don't return directly when timer is stopped, because the timer is always
+    // disabled after the BMC is rebooted.
+    if (timer.isEnabled())
     {
-        return;
+        timer.setEnabled(false);
     }
-    // Stop the timer if it's running
-    timer.setEnabled(false);
 
     // Get scheduled time
     auto schedTime = HostTransition::scheduledTime();
@@ -229,11 +239,10 @@ void ScheduledHostTransition::handleTimeUpdates()
     auto deltaTime = seconds(schedTime) - getTime();
     if (deltaTime <= seconds(0))
     {
-        // When BMC time is changed to be later than scheduled time, check the
-        // state of host transition to decide whether need to do host transition
         hostTransition();
-        // Set scheduledTime to 0 to disable host transition
-        HostTransition::scheduledTime(0);
+        // Set scheduledTime to 0 to disable host transition and update
+        // scheduled values
+        scheduledTime(0);
     }
     else
     {
@@ -259,6 +268,60 @@ int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
     schedHostTran->handleTimeUpdates();
 
     return 0;
+}
+
+void ScheduledHostTransition::serializeScheduledValues()
+{
+    fs::path path{SCHEDULED_HOST_TRANSITION_PERSIST_PATH};
+    std::ofstream os(path.c_str(), std::ios::binary);
+    cereal::JSONOutputArchive oarchive(os);
+
+    oarchive(HostTransition::scheduledTime(),
+             HostTransition::scheduledTransition());
+}
+
+bool ScheduledHostTransition::deserializeScheduledValues(uint64_t& time,
+                                                         Transition& trans)
+{
+    fs::path path{SCHEDULED_HOST_TRANSITION_PERSIST_PATH};
+
+    try
+    {
+        if (fs::exists(path))
+        {
+            std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
+            cereal::JSONInputArchive iarchive(is);
+            iarchive(time, trans);
+            return true;
+        }
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>(e.what());
+        fs::remove(path);
+    }
+
+    return false;
+}
+
+void ScheduledHostTransition::restoreScheduledValues()
+{
+    uint64_t time;
+    Transition trans;
+    if (!deserializeScheduledValues(time, trans))
+    {
+        // set to default value
+        HostTransition::scheduledTime(0);
+        HostTransition::scheduledTransition(Transition::On);
+    }
+    else
+    {
+        HostTransition::scheduledTime(time);
+        HostTransition::scheduledTransition(trans);
+        // Rebooting BMC is something like the BMC time is changed,
+        // so go on with the same process as BMC time changed.
+        handleTimeUpdates();
+    }
 }
 
 } // namespace manager
