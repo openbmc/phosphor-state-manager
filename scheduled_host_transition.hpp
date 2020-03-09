@@ -31,11 +31,16 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
   public:
     ScheduledHostTransition(sdbusplus::bus::bus& bus, const char* objPath,
                             const sdeventplus::Event& event) :
-        ScheduledHostTransitionInherit(bus, objPath),
+        ScheduledHostTransitionInherit(bus, objPath, true),
         bus(bus), event(event),
         timer(event, std::bind(&ScheduledHostTransition::callback, this))
     {
         initialize();
+
+        restoreScheduledValues();
+
+        // We deferred this until we could get our property correct
+        this->emit_object_added();
     }
 
     ~ScheduledHostTransition();
@@ -111,6 +116,22 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
 
     /** @brief Handle with the process when bmc time is changed*/
     void handleTimeUpdates();
+
+    /** @brief Serialize the scheduled values */
+    void serializeScheduledValues();
+
+    /** @brief Deserialize the scheduled values
+     *
+     *  @param[out] time - Deserialized scheduled time
+     *  @param[out] trans - Deserialized requested transition
+     *
+     *  @return bool - true if successful, false otherwise
+     */
+    bool deserializeScheduledValues(uint64_t& time, Transition& trans);
+
+    /** @brief Restore scheduled time and requested transition from persisted
+     * file */
+    void restoreScheduledValues();
 };
 } // namespace manager
 } // namespace state
