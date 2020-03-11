@@ -8,7 +8,8 @@ unit_files = [
     'phosphor-reset-sensor-states@.service',
     'xyz.openbmc_project.State.BMC.service',
     'xyz.openbmc_project.State.Chassis.service',
-    'xyz.openbmc_project.State.Host.service'
+    'xyz.openbmc_project.State.Host.service',
+    'xyz.openbmc_project.State.ScheduledHostTransition.service'
 ]
 
 foreach u : unit_files
