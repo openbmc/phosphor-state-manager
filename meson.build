@@ -116,6 +116,7 @@ executable('phosphor-systemd-target-monitor',
 executable('phosphor-scheduled-host-transition',
             'scheduled_host_transition_main.cpp',
             'scheduled_host_transition.cpp',
+            'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging
             ],
@@ -179,6 +180,7 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
       executable('test_scheduled_host_transition',
           './test/test_scheduled_host_transition.cpp',
           'scheduled_host_transition.cpp',
+          'utils.cpp',
           dependencies: [
               gtest, gmock, sdbusplus, sdeventplus, phosphorlogging,
           ],
