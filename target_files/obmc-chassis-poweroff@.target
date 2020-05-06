@@ -1,6 +1,5 @@
 [Unit]
 Description=Chassis%i (Power Off)
-Wants=multi-user.target
 After=multi-user.target
 Wants=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
 After=mapper-wait@-xyz-openbmc_project-state-chassis%i.service

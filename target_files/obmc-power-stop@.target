@@ -2,7 +2,7 @@
 Description=Power%i Off
 Wants=obmc-power-stop-pre@%i.target
 After=obmc-power-stop-pre@%i.target
-Wants=multi-user.target
+After=multi-user.target
 Conflicts=obmc-chassis-poweron@%i.target
 Conflicts=fsi-disable.service
 RefuseManualStart=yes
