@@ -2,7 +2,6 @@
 # This will perform a forced restart of the host while keeping the chassis
 # power on
 Description=Force Warm Reboot Host%i
-Wants=multi-user.target
 After=multi-user.target
 Conflicts=obmc-host-startmin@%i.target
 RefuseManualStop=yes
