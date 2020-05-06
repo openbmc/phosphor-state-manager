@@ -3,7 +3,6 @@
 # collecting debug data which can be used to
 # debug a user or self detected error in the host
 Description=Diagnostic Mode Collection for Host%i
-Wants=multi-user.target
 After=multi-user.target
 Conflicts=obmc-host-startmin@%i.target
 RefuseManualStop=yes

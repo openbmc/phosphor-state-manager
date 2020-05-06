@@ -1,6 +1,5 @@
 [Unit]
 Description=Start Host%i Minimum
-Wants=multi-user.target
 After=multi-user.target
 Conflicts=obmc-host-stop@%i.target
 RefuseManualStop=yes

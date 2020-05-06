@@ -1,6 +1,5 @@
 [Unit]
 Description=Stop Host%i
-Wants=multi-user.target
 After=multi-user.target
 After=obmc-chassis-poweroff@%i.target
 Conflicts=obmc-host-startmin@%i.target
