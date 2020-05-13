@@ -173,8 +173,7 @@ bool Host::stateActive(const std::string& target)
         return false;
     }
 
-    const auto& currentStateStr =
-        sdbusplus::message::variant_ns::get<std::string>(currentState);
+    const auto& currentStateStr = std::get<std::string>(currentState);
     return currentStateStr == ACTIVE_STATE ||
            currentStateStr == ACTIVATING_STATE;
 }
@@ -194,7 +193,7 @@ bool Host::isAutoReboot()
 
         sdbusplus::message::variant<bool> result;
         reply.read(result);
-        auto autoReboot = sdbusplus::message::variant_ns::get<bool>(result);
+        auto autoReboot = std::get<bool>(result);
         auto rebootCounterParam = reboot::RebootAttempts::attemptsLeft();
 
         if (autoReboot)

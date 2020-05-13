@@ -75,8 +75,7 @@ void BMC::discoverInitialState()
         return;
     }
 
-    auto currentStateStr =
-        sdbusplus::message::variant_ns::get<std::string>(currentState);
+    auto currentStateStr = std::get<std::string>(currentState);
     if (currentStateStr == activeState)
     {
         log<level::INFO>("Setting the BMCState field",

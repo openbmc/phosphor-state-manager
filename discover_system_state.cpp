@@ -87,14 +87,14 @@ std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
         throw;
     }
 
-    if (sdbusplus::message::variant_ns::get<std::string>(property).empty())
+    if (std::get<std::string>(property).empty())
     {
         log<level::ERR>("Error reading property response",
                         entry("PROPERTY=%s", propertyName.c_str()));
         throw std::runtime_error("Error reading property response");
     }
 
-    return sdbusplus::message::variant_ns::get<std::string>(property);
+    return std::get<std::string>(property);
 }
 
 void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
@@ -170,7 +170,7 @@ int main(int argc, char** argv)
         elog<InternalFailure>();
     }
 
-    auto powerPolicy = sdbusplus::message::variant_ns::get<std::string>(result);
+    auto powerPolicy = std::get<std::string>(result);
 
     log<level::INFO>("Host power is off, checking power policy",
                      entry("POWER_POLICY=%s", powerPolicy.c_str()));
