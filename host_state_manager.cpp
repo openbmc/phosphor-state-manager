@@ -135,7 +135,7 @@ void Host::executeTransition(Transition tranReq)
 
 bool Host::stateActive(const std::string& target)
 {
-    sdbusplus::message::variant<std::string> currentState;
+    std::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
 
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
@@ -191,7 +191,7 @@ bool Host::isAutoReboot()
     {
         auto reply = bus.call(method);
 
-        sdbusplus::message::variant<bool> result;
+        std::variant<bool> result;
         reply.read(result);
         auto autoReboot = std::get<bool>(result);
         auto rebootCounterParam = reboot::RebootAttempts::attemptsLeft();

@@ -71,7 +71,7 @@ void Chassis::subscribeToSystemdSignals()
 //        has read property function
 void Chassis::determineInitialState()
 {
-    sdbusplus::message::variant<int> pgood = -1;
+    std::variant<int> pgood = -1;
     auto method = this->bus.new_method_call(
         "org.openbmc.control.Power", "/org/openbmc/control/power0",
         "org.freedesktop.DBus.Properties", "Get");
@@ -152,7 +152,7 @@ void Chassis::executeTransition(Transition tranReq)
 
 bool Chassis::stateActive(const std::string& target)
 {
-    sdbusplus::message::variant<std::string> currentState;
+    std::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
 
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,

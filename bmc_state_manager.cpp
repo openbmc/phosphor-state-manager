@@ -35,7 +35,7 @@ constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void BMC::discoverInitialState()
 {
-    sdbusplus::message::variant<std::string> currentState;
+    std::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
 
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,

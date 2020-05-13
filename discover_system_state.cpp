@@ -67,7 +67,7 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
 std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
                         std::string interface, std::string propertyName)
 {
-    sdbusplus::message::variant<std::string> property;
+    std::variant<std::string> property;
     std::string service = getService(bus, path, interface);
 
     auto method = bus.new_method_call(service.c_str(), path.c_str(),
@@ -101,7 +101,7 @@ void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
                  const std::string& value)
 {
-    sdbusplus::message::variant<std::string> variantValue = value;
+    std::variant<std::string> variantValue = value;
     std::string service = getService(bus, path, interface);
 
     auto method = bus.new_method_call(service.c_str(), path.c_str(),
@@ -157,7 +157,7 @@ int main(int argc, char** argv)
         "Get");
     method.append(powerRestoreIntf, "PowerRestorePolicy");
 
-    sdbusplus::message::variant<std::string> result;
+    std::variant<std::string> result;
     try
     {
         auto reply = bus.call(method);

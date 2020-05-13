@@ -58,7 +58,7 @@ void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
                  const std::string& value)
 {
-    sdbusplus::message::variant<std::string> variantValue = value;
+    std::variant<std::string> variantValue = value;
     std::string service = getService(bus, path, interface);
 
     auto method = bus.new_method_call(service.c_str(), path.c_str(),
