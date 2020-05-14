@@ -4,7 +4,7 @@ set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton, bootblock listlogs showlog"
+bmcrebootoff, bmcrebooton, bootblock listlogs showlog deletelogs"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -68,6 +68,9 @@ print_help ()
     echo ""
     echo "obmcutil showlog <log> Display details of input log. Format of <log>"
     echo "                       should match listlogs output"
+    echo ""
+    echo "obmcutil deletelogs    Delete all phosphor-logging entries from"
+    echo "                       system"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -272,6 +275,14 @@ show_log()
            GetAll s xyz.openbmc_project.Logging.Entry
 }
 
+# delete all phosphor-logging entries
+delete_logs()
+{
+    busctl call xyz.openbmc_project.Logging \
+           /xyz/openbmc_project/logging \
+           xyz.openbmc_project.Collection.DeleteAll DeleteAll
+}
+
 handle_cmd ()
 {
     case "$1" in
@@ -424,6 +435,9 @@ handle_cmd ()
             ;;
         showlog)
             show_log $2
+            ;;
+        deletelogs)
+            delete_logs
             ;;
         *)
             print_usage_err "Invalid command '$1'"
