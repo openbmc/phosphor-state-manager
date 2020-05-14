@@ -4,7 +4,7 @@ set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton"
+bmcrebootoff, bmcrebooton, bootblock"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -59,6 +59,9 @@ print_help ()
     echo ""
     echo "obmcutil recoveryon    Enable handling boot watchdog timeout and host crash"
     echo "                       Also, enable BMC and Host auto reboots"
+    echo ""
+    echo "obmcutil bootblock     Check for and list any errors blocking the boot"
+    echo "                       of the system"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -178,6 +181,46 @@ enable_bmc_reboot ()
     for unit in "${units[@]}"; do
         rm -rf ${dir}${unit}.target.d/${file}
         rm -rf ${dir}${unit}.target.d
+    done
+}
+
+# will write blocking errors to stdout
+check_boot_block_errors ()
+{
+    # array of boot block objects
+    blockArray=()
+
+    # Look for any objects under logging that implement the
+    # xyz.openbmc_project.Logging.ErrorBlocksTransition
+    subtree="$(busctl call xyz.openbmc_project.ObjectMapper \
+               /xyz/openbmc_project/object_mapper \
+               xyz.openbmc_project.ObjectMapper \
+               GetSubTree sias "/xyz/openbmc_project/logging/" 0 1 \
+               xyz.openbmc_project.Logging.ErrorBlocksTransition)"
+
+    # remove quotation marks
+    subtree="$(echo $subtree | sed 's/\"//g')"
+
+    for entry in $subtree; do
+        if [[ ${entry} =~ "xyz/openbmc_project/logging/block"* ]]; then
+            blockArray+=( $entry )
+        fi
+    done
+
+    # now find associated erorr log for each boot block error
+    for berror in "${blockArray[@]}"; do
+        assocs="$(busctl call xyz.openbmc_project.Logging $berror \
+                  org.freedesktop.DBus.Properties Get \
+                  ss xyz.openbmc_project.Association.Definitions Associations)"
+
+        # remove quotation marks
+        assocs="$(echo $assocs | sed 's/\"//g')"
+
+        for entry in $assocs; do
+            if [[ ${entry} =~ "xyz/openbmc_project/logging/entry"* ]]; then
+                echo "Blocking Error: $entry"
+            fi
+        done
     done
 }
 
@@ -316,6 +359,14 @@ handle_cmd ()
             handle_cmd bmcrebooton
             unmask_systemd_target $HOST_TIMEOUT_TARGET
             unmask_systemd_target $HOST_CRASH_TARGET
+            ;;
+        bootblock)
+            blockingErrors=$(check_boot_block_errors)
+            if [ -z "$blockingErrors" ]; then
+                echo "No blocking errors present"
+            else
+                echo "$blockingErrors"
+            fi
             ;;
         *)
             print_usage_err "Invalid command '$1'"
