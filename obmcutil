@@ -224,6 +224,18 @@ check_boot_block_errors ()
     done
 }
 
+# helper function to check for boot block errors and notify user
+check_and_warn_boot_block()
+{
+    blockingErrors=$(check_boot_block_errors)
+    if ! [ -z "$blockingErrors" ]; then
+        echo !!!!!!!!!!
+        echo "WARNING! System has blocking errors that will prevent boot"
+        echo "$blockingErrors"
+        echo !!!!!!!!!!
+    fi
+}
+
 handle_cmd ()
 {
     case "$1" in
@@ -238,6 +250,7 @@ handle_cmd ()
             set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         chassison)
+            check_and_warn_boot_block
             OBJECT=$STATE_OBJECT/chassis0
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Chassis
@@ -258,6 +271,7 @@ handle_cmd ()
             set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweron)
+            check_and_warn_boot_block
             OBJECT=$STATE_OBJECT/host0
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Host
@@ -300,6 +314,7 @@ handle_cmd ()
             do
                 handle_cmd $query
             done
+            check_and_warn_boot_block
             ;;
         bootprogress)
             OBJECT=$STATE_OBJECT/host0
