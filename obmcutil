@@ -4,7 +4,7 @@ set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton, bootblock"
+bmcrebootoff, bmcrebooton, bootblock listlogs"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -62,6 +62,9 @@ print_help ()
     echo ""
     echo "obmcutil bootblock     Check for and list any errors blocking the boot"
     echo "                       of the system"
+    echo ""
+    echo "obmcutil listlogs      List all phosphor-logging entries on the"
+    echo "                       system"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -236,6 +239,27 @@ check_and_warn_boot_block()
     fi
 }
 
+# list all phosphor-logging entries
+list_logs()
+{
+    # Look for any objects under logging that implement the
+    # xyz.openbmc_project.Logging.Entry
+    subtree="$(busctl call xyz.openbmc_project.ObjectMapper \
+               /xyz/openbmc_project/object_mapper \
+               xyz.openbmc_project.ObjectMapper \
+               GetSubTree sias "/xyz/openbmc_project/logging/" 0 1 \
+               xyz.openbmc_project.Logging.Entry)"
+
+   # remove quotation marks
+   subtree="$(echo $subtree | sed 's/\"//g')"
+
+   for entry in $subtree; do
+       if [[ ${entry} =~ "xyz/openbmc_project/logging/entry"* ]]; then
+           echo $entry
+       fi
+   done
+}
+
 handle_cmd ()
 {
     case "$1" in
@@ -382,6 +406,9 @@ handle_cmd ()
             else
                 echo "$blockingErrors"
             fi
+            ;;
+        listlogs)
+            list_logs
             ;;
         *)
             print_usage_err "Invalid command '$1'"
