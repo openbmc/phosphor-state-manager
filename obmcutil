@@ -4,7 +4,7 @@ set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton, bootblock listlogs"
+bmcrebootoff, bmcrebooton, bootblock listlogs showlog"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -65,6 +65,9 @@ print_help ()
     echo ""
     echo "obmcutil listlogs      List all phosphor-logging entries on the"
     echo "                       system"
+    echo ""
+    echo "obmcutil showlog <log> Display details of input log. Format of <log>"
+    echo "                       should match listlogs output"
     echo ""
     echo "optional arguments:"
     echo "  -h, --help          show this help message and exit"
@@ -260,6 +263,15 @@ list_logs()
    done
 }
 
+# display input log details
+show_log()
+{
+    busctl -j call xyz.openbmc_project.Logging \
+           $1 \
+           org.freedesktop.DBus.Properties \
+           GetAll s xyz.openbmc_project.Logging.Entry
+}
+
 handle_cmd ()
 {
     case "$1" in
@@ -410,6 +422,9 @@ handle_cmd ()
         listlogs)
             list_logs
             ;;
+        showlog)
+            show_log $2
+            ;;
         *)
             print_usage_err "Invalid command '$1'"
             ;;
@@ -433,7 +448,9 @@ for arg in "$@"; do
             ;;
         *)
             G_ORIG_CMD=$arg
-            handle_cmd $arg
+            # pass all arguments to handle_cmd in case command takes additional
+            # parameters
+            handle_cmd "$@"
             break
             ;;
     esac
