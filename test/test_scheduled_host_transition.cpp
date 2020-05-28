@@ -1,11 +1,12 @@
 #include "scheduled_host_transition.hpp"
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <sdeventplus/event.hpp>
 #include <xyz/openbmc_project/ScheduledTime/error.hpp>
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 namespace phosphor
 {

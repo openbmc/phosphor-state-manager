@@ -1,11 +1,12 @@
 #pragma once
 
-#include <sdbusplus/bus.hpp>
+#include "config.h"
+
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
 #include <xyz/openbmc_project/State/ScheduledHostTransition/server.hpp>
-#include "config.h"
 
 class TestScheduledHostTransition;
 

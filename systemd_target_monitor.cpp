@@ -1,10 +1,12 @@
+#include "systemd_target_parser.hpp"
+#include "systemd_target_signal.hpp"
+
 #include <CLI/CLI.hpp>
-#include <iostream>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
-#include "systemd_target_parser.hpp"
-#include "systemd_target_signal.hpp"
+
+#include <iostream>
 #include <vector>
 
 using phosphor::logging::level;

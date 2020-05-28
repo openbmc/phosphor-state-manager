@@ -1,9 +1,10 @@
-#include <phosphor-logging/log.hpp>
+#include "systemd_target_signal.hpp"
+
 #include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/log.hpp>
+#include <sdbusplus/exception.hpp>
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
-#include <sdbusplus/exception.hpp>
-#include "systemd_target_signal.hpp"
 #include <xyz/openbmc_project/Common/error.hpp>
 
 namespace phosphor

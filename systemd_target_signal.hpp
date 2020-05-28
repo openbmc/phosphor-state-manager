@@ -1,8 +1,9 @@
 #pragma once
 
+#include "systemd_target_parser.hpp"
+
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
-#include "systemd_target_parser.hpp"
 
 extern bool gVerbose;
 
@@ -45,8 +46,7 @@ class SystemdTargetLogging
             std::bind(
                 std::mem_fn(&SystemdTargetLogging::processNameChangeSignal),
                 this, std::placeholders::_1))
-    {
-    }
+    {}
 
     /**
      * @brief subscribe to the systemd signals

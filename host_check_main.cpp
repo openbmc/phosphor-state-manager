@@ -1,13 +1,16 @@
-#include <cstdlib>
+#include "config.h"
+
 #include <unistd.h>
-#include <iostream>
-#include <fstream>
-#include <cstdio>
+
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
-#include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Control/Host/server.hpp>
-#include "config.h"
+
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
 
 using namespace std::literals;
 using namespace phosphor::logging;
