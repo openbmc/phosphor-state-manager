@@ -1,10 +1,14 @@
-#include <cassert>
-#include <phosphor-logging/log.hpp>
-#include <phosphor-logging/elog-errors.hpp>
-#include <sdbusplus/exception.hpp>
-#include <sys/sysinfo.h>
 #include "bmc_state_manager.hpp"
+
 #include "xyz/openbmc_project/Common/error.hpp"
+
+#include <sys/sysinfo.h>
+
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/log.hpp>
+#include <sdbusplus/exception.hpp>
+
+#include <cassert>
 
 namespace phosphor
 {

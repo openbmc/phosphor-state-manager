@@ -1,8 +1,10 @@
 #pragma once
 
-#include <functional>
-#include <sdbusplus/bus.hpp>
 #include "xyz/openbmc_project/State/BMC/server.hpp"
+
+#include <sdbusplus/bus.hpp>
+
+#include <functional>
 
 namespace phosphor
 {

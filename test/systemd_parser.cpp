@@ -1,10 +1,11 @@
 #include <systemd_target_parser.hpp>
-#include <gtest/gtest.h>
 
-#include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <iostream>
+
+#include <gtest/gtest.h>
 
 namespace fs = std::filesystem;
 

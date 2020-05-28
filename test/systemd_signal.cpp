@@ -1,9 +1,10 @@
-#include <gtest/gtest.h>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
 #include <systemd_target_signal.hpp>
 
 #include <iostream>
+
+#include <gtest/gtest.h>
 
 // Enable debug by default for debug when needed
 bool gVerbose = true;

@@ -1,10 +1,10 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
+
 #include <map>
 #include <string>
 #include <vector>
-
-#include <nlohmann/json.hpp>
 
 /** @brief Stores the error to log if errors to monitor is found */
 struct targetEntry

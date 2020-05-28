@@ -1,9 +1,12 @@
+#include "config.h"
+
+#include "scheduled_host_transition.hpp"
+
+#include <sdbusplus/bus.hpp>
+
 #include <cstdlib>
 #include <exception>
-#include <sdbusplus/bus.hpp>
 #include <filesystem>
-#include "config.h"
-#include "scheduled_host_transition.hpp"
 
 int main()
 {

@@ -1,18 +1,21 @@
 #pragma once
 
-#include <string>
-#include <functional>
-#include <experimental/filesystem>
+#include "config.h"
+
+#include "settings.hpp"
+#include "xyz/openbmc_project/State/Host/server.hpp"
+
 #include <cereal/access.hpp>
 #include <cereal/cereal.hpp>
-#include <sdbusplus/bus.hpp>
 #include <phosphor-logging/log.hpp>
-#include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
+#include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Control/Boot/RebootAttempts/server.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
-#include "xyz/openbmc_project/State/Host/server.hpp"
-#include "settings.hpp"
-#include "config.h"
+
+#include <experimental/filesystem>
+#include <functional>
+#include <string>
 
 namespace phosphor
 {

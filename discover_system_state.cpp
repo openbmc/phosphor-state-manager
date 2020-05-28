@@ -1,17 +1,21 @@
-#include <getopt.h>
-#include <iostream>
-#include <map>
-#include <string>
 #include "config.h"
-#include <systemd/sd-bus.h>
-#include <sdbusplus/exception.hpp>
-#include <sdbusplus/server.hpp>
-#include <phosphor-logging/log.hpp>
-#include <phosphor-logging/elog-errors.hpp>
+
 #include "host_state_manager.hpp"
 #include "settings.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp"
+
+#include <getopt.h>
+#include <systemd/sd-bus.h>
+
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/log.hpp>
+#include <sdbusplus/exception.hpp>
+#include <sdbusplus/server.hpp>
+
+#include <iostream>
+#include <map>
+#include <string>
 
 namespace phosphor
 {

@@ -1,10 +1,13 @@
-#include <cstdlib>
-#include <iostream>
-#include <exception>
-#include <sdbusplus/bus.hpp>
-#include <experimental/filesystem>
 #include "config.h"
+
 #include "host_state_manager.hpp"
+
+#include <sdbusplus/bus.hpp>
+
+#include <cstdlib>
+#include <exception>
+#include <experimental/filesystem>
+#include <iostream>
 
 int main()
 {

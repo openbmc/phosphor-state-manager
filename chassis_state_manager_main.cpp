@@ -1,9 +1,12 @@
-#include <cstdlib>
-#include <iostream>
-#include <exception>
-#include <sdbusplus/bus.hpp>
 #include "config.h"
+
 #include "chassis_state_manager.hpp"
+
+#include <sdbusplus/bus.hpp>
+
+#include <cstdlib>
+#include <exception>
+#include <iostream>
 
 int main()
 {

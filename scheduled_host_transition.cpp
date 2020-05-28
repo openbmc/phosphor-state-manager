@@ -1,16 +1,19 @@
 #include "scheduled_host_transition.hpp"
+
 #include "utils.hpp"
 
+#include <sys/timerfd.h>
+#include <unistd.h>
+
+#include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/ScheduledTime/error.hpp>
-#include <cereal/archives/json.hpp>
+
 #include <chrono>
 #include <filesystem>
 #include <fstream>
-#include <sys/timerfd.h>
-#include <unistd.h>
 
 // Need to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298

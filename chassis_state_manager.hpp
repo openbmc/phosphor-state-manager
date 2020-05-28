@@ -1,16 +1,19 @@
 #pragma once
 
-#include <chrono>
-#include <functional>
-#include <experimental/filesystem>
+#include "config.h"
+
+#include "xyz/openbmc_project/State/Chassis/server.hpp"
+#include "xyz/openbmc_project/State/PowerOnHours/server.hpp"
+
 #include <cereal/cereal.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/clock.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
-#include "xyz/openbmc_project/State/Chassis/server.hpp"
-#include "xyz/openbmc_project/State/PowerOnHours/server.hpp"
-#include "config.h"
+
+#include <chrono>
+#include <experimental/filesystem>
+#include <functional>
 
 namespace phosphor
 {
