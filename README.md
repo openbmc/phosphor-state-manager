@@ -135,3 +135,5 @@ To clean the repository again run `rm -rf build`.
 [4]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/State/Host.interface.yaml
 [5]: https://github.com/openbmc/phosphor-state-manager/blob/master/obmcutil
 [6]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/xyz/openbmc_project/Control/Power/RestorePolicy.interface.yaml
+
+
