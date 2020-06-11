@@ -436,10 +436,12 @@ handle_cmd ()
     esac
 }
 
+shiftcnt=0
 for arg in "$@"; do
     case $arg in
         -w|--wait)
             G_WAIT=30
+            shiftcnt=$((shiftcnt+1))
             continue
             ;;
         -h|--help)
@@ -447,12 +449,15 @@ for arg in "$@"; do
             ;;
         -v|--verbose)
             G_VERBOSE=y
+            shiftcnt=$((shiftcnt+1))
             ;;
         -*)
             print_usage_err "Unknown option: $arg"
             ;;
         *)
             G_ORIG_CMD=$arg
+            # shift out the optional parameters
+            shift $shiftcnt
             # pass all arguments to handle_cmd in case command takes additional
             # parameters
             handle_cmd "$@"
