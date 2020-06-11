@@ -46,7 +46,8 @@ class SystemdTargetLogging
             std::bind(
                 std::mem_fn(&SystemdTargetLogging::processNameChangeSignal),
                 this, std::placeholders::_1))
-    {}
+    {
+    }
 
     /**
      * @brief subscribe to the systemd signals
