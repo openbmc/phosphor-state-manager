@@ -226,6 +226,13 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that power OFF is complete");
         this->currentPowerState(server::Chassis::PowerState::Off);
+
+        sd_journal_send("MESSAGE=%s", "Chassis state has changed to Off", 
+                        "PRIORITY=%i", LOG_INFO,
+                        "REDFISH_MESSAGE_ID=%s",
+                        "Base.1.3.ChassisStateChanged",
+                        "REDFISH_MESSAGE_ARGS=%s", "Off", NULL);
+
         this->setStateChangeTime();
     }
     else if ((newStateUnit == CHASSIS_STATE_POWERON_TGT) &&
@@ -234,6 +241,13 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that power ON is complete");
         this->currentPowerState(server::Chassis::PowerState::On);
+
+        sd_journal_send("MESSAGE=%s", "Chassis state has changed to Off", 
+                        "PRIORITY=%i", LOG_INFO,
+                        "REDFISH_MESSAGE_ID=%s",
+                        "Base.1.3.ChassisStateChanged",
+                        "REDFISH_MESSAGE_ARGS=%s", "On", NULL);
+
         this->setStateChangeTime();
     }
 
