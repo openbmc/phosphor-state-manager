@@ -165,8 +165,7 @@ bool Host::stateActive(const std::string& target)
 
     method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
 
-    try
-    {
+    try {
         auto result = this->bus.call(method);
         result.read(currentState);
     }
