@@ -66,8 +66,15 @@ const std::map<server::Host::Transition, std::string> SYSTEMD_TARGET_TABLE = {
     {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
     {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
     {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT},
+// Some systems do not support a warm reboot so just map the reboot
+// requests to our normal cold reboot in that case
+#if ENABLE_WARM_REBOOT
     {server::Host::Transition::GracefulWarmReboot, HOST_STATE_WARM_REBOOT},
     {server::Host::Transition::ForceWarmReboot, HOST_STATE_FORCE_WARM_REBOOT}};
+#else
+    {server::Host::Transition::GracefulWarmReboot, HOST_STATE_REBOOT_TGT},
+    {server::Host::Transition::ForceWarmReboot, HOST_STATE_REBOOT_TGT}};
+#endif
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";

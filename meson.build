@@ -42,6 +42,10 @@ conf.set(
 
 configure_file(output: 'config.h', configuration: conf)
 
+if(get_option('warm-reboot').enabled())
+    add_project_arguments('-DENABLE_WARM_REBOOT',language:'cpp')
+endif
+
 sdbusplus = dependency('sdbusplus')
 sdeventplus = dependency('sdeventplus')
 phosphorlogging = dependency('phosphor-logging')
