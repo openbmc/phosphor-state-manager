@@ -131,29 +131,48 @@ void BMC::subscribeToSystemdSignals()
 
 void BMC::executeTransition(const Transition tranReq)
 {
-    // Check to make sure it can be found
-    auto iter = SYSTEMD_TABLE.find(tranReq);
-    if (iter == SYSTEMD_TABLE.end())
-        return;
-
-    const auto& sysdUnit = iter->second;
-
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "StartUnit");
-    // The only valid transition is reboot and that
-    // needs to be irreversible once started
-    method.append(sysdUnit, "replace-irreversibly");
-
-    try
+    // HardReboot does not shutdown any services and immediately transitions
+    // into the reboot process
+    if (server::BMC::Transition::HardReboot == tranReq)
     {
-        this->bus.call(method);
+        auto method = this->bus.new_method_call(
+            SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH, SYSTEMD_INTERFACE, "Reboot");
+        try
+        {
+            this->bus.call(method);
+        }
+        catch (const SdBusError& e)
+        {
+            log<level::INFO>("Error in HardReboot",
+                             entry("ERROR=%s", e.what()));
+        }
     }
-    catch (const SdBusError& e)
+    else
     {
-        log<level::INFO>("Error in StartUnit - replace-irreversibly",
-                         entry("ERROR=%s", e.what()));
-    }
+        // Check to make sure it can be found
+        auto iter = SYSTEMD_TABLE.find(tranReq);
+        if (iter == SYSTEMD_TABLE.end())
+            return;
 
+        const auto& sysdUnit = iter->second;
+
+        auto method = this->bus.new_method_call(
+            SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH, SYSTEMD_INTERFACE, "StartUnit");
+        // The only valid transition is reboot and that
+        // needs to be irreversible once started
+
+        method.append(sysdUnit, "replace-irreversibly");
+
+        try
+        {
+            this->bus.call(method);
+        }
+        catch (const SdBusError& e)
+        {
+            log<level::INFO>("Error in StartUnit - replace-irreversibly",
+                             entry("ERROR=%s", e.what()));
+        }
+    }
     return;
 }
 
