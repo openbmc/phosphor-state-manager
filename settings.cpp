@@ -60,7 +60,20 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
             {
                 if (autoRebootIntf == interface)
                 {
-                    autoReboot = path;
+                    /* There are two implementations of the AutoReboot
+                     * Interface. A persistent user setting and a one-time
+                     * setting which is only valid for one boot of the system.
+                     * The one-time setting will have "one_time" in its
+                     * object path.
+                     */
+                    if (path.find("one_time") != std::string::npos)
+                    {
+                        autoRebootOneTime = path;
+                    }
+                    else
+                    {
+                        autoReboot = path;
+                    }
                 }
                 else if (powerRestoreIntf == interface)
                 {
