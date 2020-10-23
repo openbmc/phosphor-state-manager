@@ -44,8 +44,11 @@ struct Objects
      */
     Service service(const Path& path, const Interface& interface) const;
 
-    /** @brief host auto_reboot settings object */
+    /** @brief host auto_reboot user settings object */
     Path autoReboot;
+
+    /** @brief host auto_reboot one-time settings object */
+    Path autoRebootOneTime;
 
     /** @brief host power_restore_policy settings object */
     Path powerRestorePolicy;
