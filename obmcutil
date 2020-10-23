@@ -49,6 +49,8 @@ print_help ()
     echo "Examples:"
     echo ""
     echo "obmcutil hostrebootoff Disable auto reboot of Host from Quiesce state"
+    echo "obmcutil hostrebootoffonetime Disable auto reboot of Host from"
+    echo "                              Quiesce state for a single boot"
     echo "obmcutil hostrebooton  Enable auto reboot of Host from Quiesce state"
     echo ""
     echo "obmcutil bmcrebootoff  Disable reboot of BMC"
@@ -387,6 +389,14 @@ handle_cmd ()
             VALUE=false
             set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
+        hostrebootoffonetime)
+            OBJECT=$CONTROL_OBJECT/host0/auto_reboot/one_time
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
+            PROPERTY=AutoReboot
+            VALUE=false
+            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
+        ;;
         hostrebooton)
             OBJECT=$CONTROL_OBJECT/host0/auto_reboot
             SERVICE=$(mapper get-service $OBJECT)
