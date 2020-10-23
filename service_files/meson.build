@@ -9,7 +9,8 @@ unit_files = [
     'xyz.openbmc_project.State.BMC.service',
     'xyz.openbmc_project.State.Chassis.service',
     'xyz.openbmc_project.State.Host.service',
-    'xyz.openbmc_project.State.ScheduledHostTransition.service'
+    'xyz.openbmc_project.State.ScheduledHostTransition.service',
+    'phosphor-clear-one-time@.service'
 ]
 
 foreach u : unit_files

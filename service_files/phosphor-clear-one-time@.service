@@ -1,0 +1,12 @@
+[Unit]
+Description=Reset one-time properties on chassis off
+Wants=mapper-wait@-xyz-openbmc_project-control-host%i-auto_reboot-one_time.service
+After=mapper-wait@-xyz-openbmc_project-control-host%i-auto_reboot-one_time.service
+
+[Service]
+Restart=no
+Type=oneshot
+ExecStart=/bin/sh -c "busctl set-property `mapper get-service /xyz/openbmc_project/control/host%i/auto_reboot/one_time` /xyz/openbmc_project/control/host%i/auto_reboot/one_time xyz.openbmc_project.Control.Boot.RebootPolicy AutoReboot b true"
+
+[Install]
+WantedBy=obmc-chassis-poweroff@%i.target
