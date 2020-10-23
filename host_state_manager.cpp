@@ -193,18 +193,41 @@ bool Host::isAutoReboot()
 {
     using namespace settings;
 
-    auto method = bus.new_method_call(
+    /* The logic here is to first check the one-time AutoReboot setting.
+     * If this property is true (the default) then look at the persistent
+     * user setting in the non one-time object, otherwise honor the one-time
+     * setting and do not auto reboot.
+     */
+    auto methodOneTime = bus.new_method_call(
         settings.service(settings.autoReboot, autoRebootIntf).c_str(),
-        settings.autoReboot.c_str(), "org.freedesktop.DBus.Properties", "Get");
-    method.append(autoRebootIntf, "AutoReboot");
+        settings.autoRebootOneTime.c_str(), SYSTEMD_PROPERTY_IFACE, "Get");
+    methodOneTime.append(autoRebootIntf, "AutoReboot");
+
+    auto methodUserSetting = bus.new_method_call(
+        settings.service(settings.autoReboot, autoRebootIntf).c_str(),
+        settings.autoReboot.c_str(), SYSTEMD_PROPERTY_IFACE, "Get");
+    methodUserSetting.append(autoRebootIntf, "AutoReboot");
 
     try
     {
-        auto reply = bus.call(method);
-
+        auto reply = bus.call(methodOneTime);
         std::variant<bool> result;
         reply.read(result);
         auto autoReboot = std::get<bool>(result);
+
+        if (!autoReboot)
+        {
+            log<level::INFO>("Auto reboot (one-time) disabled");
+            return false;
+        }
+        else
+        {
+            // one-time is true so read the user setting
+            reply = bus.call(methodUserSetting);
+            reply.read(result);
+            autoReboot = std::get<bool>(result);
+        }
+
         auto rebootCounterParam = reboot::RebootAttempts::attemptsLeft();
 
         if (autoReboot)
