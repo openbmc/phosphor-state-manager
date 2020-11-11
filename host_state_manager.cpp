@@ -2,6 +2,7 @@
 
 #include "host_state_manager.hpp"
 
+#include <fmt/format.h>
 #include <systemd/sd-bus.h>
 
 #include <cereal/archives/json.hpp>
@@ -366,10 +367,9 @@ bool Host::deserialize(const fs::path& path)
 
 Host::Transition Host::requestedHostTransition(Transition value)
 {
-    log<level::INFO>("Host State transaction request",
-                     entry("REQUESTED_HOST_TRANSITION=%s",
-                           convertForMessage(value).c_str()));
-
+    log<level::INFO>(fmt::format("Host state transition request of {}",
+                                 convertForMessage(value))
+                         .c_str());
     // If this is not a power off request then we need to
     // decrement the reboot counter.  This code should
     // never prevent a power on, it should just decrement
@@ -404,8 +404,8 @@ Host::OSStatus Host::operatingSystemState(OSStatus value)
 Host::HostState Host::currentHostState(HostState value)
 {
     log<level::INFO>(
-        "Change to Host State",
-        entry("CURRENT_HOST_STATE=%s", convertForMessage(value).c_str()));
+        fmt::format("Change to Host State: {}", convertForMessage(value))
+            .c_str());
     return server::Host::currentHostState(value);
 }
 
