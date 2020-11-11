@@ -5,6 +5,8 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 
+#include <fmt/format.h>
+
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
@@ -243,9 +245,9 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
 
-    log<level::INFO>("Change to Chassis Requested Power State",
-                     entry("CHASSIS_REQUESTED_POWER_STATE=%s",
-                           convertForMessage(value).c_str()));
+    log<level::INFO>(fmt::format("Change to Chassis Requested Power State: {}",
+                                 convertForMessage(value))
+                         .c_str());
     executeTransition(value);
     return server::Chassis::requestedPowerTransition(value);
 }
@@ -253,9 +255,9 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 Chassis::PowerState Chassis::currentPowerState(PowerState value)
 {
     PowerState chassisPowerState;
-    log<level::INFO>("Change to Chassis Power State",
-                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                           convertForMessage(value).c_str()));
+    log<level::INFO>(fmt::format("Change to Chassis Power State: {}",
+                                 convertForMessage(value))
+                         .c_str());
 
     chassisPowerState = server::Chassis::currentPowerState(value);
     pOHTimer.setEnabled(chassisPowerState == PowerState::On);
