@@ -10,7 +10,9 @@ unit_files = [
     'xyz.openbmc_project.State.Chassis.service',
     'xyz.openbmc_project.State.Host.service',
     'xyz.openbmc_project.State.ScheduledHostTransition.service',
-    'phosphor-clear-one-time@.service'
+    'phosphor-clear-one-time@.service',
+    'phosphor-set-host-transition-to-off@.service',
+    'phosphor-set-host-transition-to-running@.service'
 ]
 
 foreach u : unit_files
