@@ -1,6 +1,7 @@
 [Unit]
 Description=Power%i (On)
 After=multi-user.target
+Wants=obmc-power-start@%i.target
 After=obmc-power-start@%i.target
 Conflicts=obmc-chassis-poweroff@%i.target
 RefuseManualStart=yes
