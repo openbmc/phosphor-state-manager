@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e13eaf3d_f9b276d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-01-26T15:50:18Z",
+      "side": 1,
+      "message": "There may be services that don\u0027t care about starting services that they have a Before/After dependency on, they just care about the order of when they run if those other services are started at the same time. I can see how these state manager services want to ensure their dependencies are started.",
+      "revId": "964b9fc297815a9bf984e76f9293a7cd7cd92a8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
