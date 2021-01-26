@@ -2,6 +2,9 @@
 Description=Start Host%i Minimum
 After=multi-user.target
 Conflicts=obmc-host-stop@%i.target
+Wants=obmc-host-start-pre@%i.target
+Wants=obmc-host-starting@%i.target
+Wants=obmc-host-started@%i.target
 RefuseManualStop=yes
 OnFailure=obmc-host-quiesce@%i.target
 OnFailureJobMode=flush
