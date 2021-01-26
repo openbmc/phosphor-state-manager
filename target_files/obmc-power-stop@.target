@@ -1,5 +1,5 @@
 [Unit]
-Description=Power%i Off
+Description=Power%i Off (Stopping)
 Wants=obmc-power-stop-pre@%i.target
 After=obmc-power-stop-pre@%i.target
 After=multi-user.target
