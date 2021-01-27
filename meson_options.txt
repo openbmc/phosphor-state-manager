@@ -13,6 +13,18 @@ option(
 )
 
 option(
+    'hypervisor-busname', type: 'string',
+    value: 'xyz.openbmc_project.State.Hypervisor',
+    description: 'The Hypervisor DBus busname to own.',
+)
+
+option(
+    'hypervisor-objpath', type: 'string',
+    value: '/xyz/openbmc_project/state/hypervisor',
+    description: 'The hypervisor state manager Dbus root.',
+)
+
+option(
     'chassis-busname', type: 'string',
     value: 'xyz.openbmc_project.State.Chassis',
     description: 'The Chassis DBus busname to own.',
