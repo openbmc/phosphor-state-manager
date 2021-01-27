@@ -1,0 +1,14 @@
+[Unit]
+Description=Phosphor Hypervisor State Manager
+Before=mapper-wait@-xyz-openbmc_project-state-hypervisor.service
+Wants=obmc-mapper.target
+After=obmc-mapper.target
+
+[Service]
+ExecStart=/usr/bin/phosphor-hypervisor-state-manager
+Restart=always
+Type=dbus
+BusName=xyz.openbmc_project.State.Hypervisor
+
+[Install]
+WantedBy=multi-user.target

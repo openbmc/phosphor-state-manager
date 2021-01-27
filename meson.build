@@ -16,6 +16,10 @@ conf.set_quoted(
 conf.set_quoted(
     'HOST_OBJPATH', get_option('host-objpath'))
 conf.set_quoted(
+    'HYPERVISOR_BUSNAME', get_option('hypervisor-busname'))
+conf.set_quoted(
+    'HYPERVISOR_OBJPATH', get_option('hypervisor-objpath'))
+conf.set_quoted(
     'CHASSIS_BUSNAME', get_option('chassis-busname'))
 conf.set_quoted(
     'CHASSIS_OBJPATH', get_option('chassis-objpath'))
@@ -56,6 +60,18 @@ cppfs = meson.get_compiler('cpp').find_library('stdc++fs')
 executable('phosphor-host-state-manager',
             'host_state_manager.cpp',
             'host_state_manager_main.cpp',
+            'settings.cpp',
+            dependencies: [
+            sdbusplus, sdeventplus, phosphorlogging,
+            phosphordbusinterfaces, cppfs
+            ],
+    implicit_include_directories: true,
+    install: true
+)
+
+executable('phosphor-hypervisor-state-manager',
+            'hypervisor_state_manager.cpp',
+            'hypervisor_state_manager_main.cpp',
             'settings.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
