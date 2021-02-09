@@ -18,6 +18,7 @@ using HypervisorInherit = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::State::server::Host>;
 
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class Host
  *  @brief OpenBMC host state management implementation.
@@ -40,7 +41,14 @@ class Hypervisor : public HypervisorInherit
      * @param[in] objPath   - The Dbus object path
      */
     Hypervisor(sdbusplus::bus::bus& bus, const char* objPath) :
-        HypervisorInherit(bus, objPath, false), bus(bus)
+        HypervisorInherit(bus, objPath, false), bus(bus),
+        bootProgressChangeSignal(
+            bus,
+            sdbusRule::propertiesChanged(
+                "/xyz/openbmc_project/state/host0",
+                "xyz.openbmc_project.State.Boot.Progress"),
+            std::bind(std::mem_fn(&Hypervisor::bootProgressChangeEvent), this,
+                      std::placeholders::_1))
     {}
 
     /** @brief Set value of HostTransition */
@@ -51,9 +59,32 @@ class Hypervisor : public HypervisorInherit
     server::Host::HostState
         currentHostState(server::Host::HostState value) override;
 
+    /** @brief Return value of CurrentHostState */
+    server::Host::HostState currentHostState();
+
+    /** @brief Check if BootProgress change affects hypervisor state
+     *
+     * @param[in]  bootProgress     - BootProgress value to check
+     *
+     */
+    void updateCurrentHostState(std::string& bootProgress);
+
   private:
+    /** @brief Process BootProgress property changes
+     *
+     * Instance specific interface to monitor for changes to the BootProgress
+     * property which may impact Hypervisor state.
+     *
+     * @param[in]  msg              - Data associated with subscribed signal
+     *
+     */
+    void bootProgressChangeEvent(sdbusplus::message::message& msg);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& bus;
+
+    /** @brief Watch BootProgress changes to know hypervisor state **/
+    sdbusplus::bus::match_t bootProgressChangeSignal;
 };
 
 } // namespace manager
