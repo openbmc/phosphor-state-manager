@@ -57,6 +57,40 @@ server::Host::HostState Hypervisor::currentHostState(HostState value)
     return server::Host::currentHostState(value);
 }
 
+void Hypervisor::bootProgressChangeEvent(sdbusplus::message::message& msg)
+{
+    std::string statusInterface;
+    std::map<std::string, std::variant<std::string>> msgData;
+    msg.read(statusInterface, msgData);
+
+    auto propertyMap = msgData.find("BootProgress");
+    if (propertyMap != msgData.end())
+    {
+        // Extract the BootProgress
+        auto& bootProgress = std::get<std::string>(propertyMap->second);
+        log<level::DEBUG>(
+            fmt::format("New BootProgress: {}", bootProgress).c_str());
+
+        if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
+                            "ProgressStages.SystemInitComplete")
+        {
+            // TODO - this needs to be Standby once PDI interface in
+            currentHostState(server::Host::HostState::TransitioningToOff);
+        }
+        else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
+                                 "ProgressStages.OSStart")
+        {
+            currentHostState(server::Host::HostState::TransitioningToRunning);
+        }
+        else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
+                                 "ProgressStages.OSRunning")
+        {
+            currentHostState(server::Host::HostState::Running);
+        }
+    }
+    return;
+}
+
 } // namespace manager
 } // namespace state
 } // namespace phosphor
