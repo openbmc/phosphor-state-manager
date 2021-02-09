@@ -155,47 +155,72 @@ int main(int argc, char** argv)
 
     // This application is only run if chassis power is off
 
-    auto method = bus.new_method_call(
+    /* The logic here is to first check the one-time PowerRestorePolicy setting.
+     * If this property is not the default then look at the persistent
+     * user setting in the non one-time object, otherwise honor the one-time
+     * setting.
+     */
+    auto methodOneTime = bus.new_method_call(
+        settings.service(settings.powerRestorePolicy, powerRestoreIntf).c_str(),
+        settings.powerRestorePolicyOneTime.c_str(),
+        "org.freedesktop.DBus.Properties", "Get");
+    methodOneTime.append(powerRestoreIntf, "PowerRestorePolicy");
+
+    auto methodUserSetting = bus.new_method_call(
         settings.service(settings.powerRestorePolicy, powerRestoreIntf).c_str(),
         settings.powerRestorePolicy.c_str(), "org.freedesktop.DBus.Properties",
         "Get");
-    method.append(powerRestoreIntf, "PowerRestorePolicy");
+    methodUserSetting.append(powerRestoreIntf, "PowerRestorePolicy");
 
     std::variant<std::string> result;
     try
     {
-        auto reply = bus.call(method);
+        auto reply = bus.call(methodOneTime);
         reply.read(result);
+        auto powerPolicy = std::get<std::string>(result);
+
+        // TODO - Once a default "do nothing" is in place, check for that.
+        // For now just see if it's a AlwaysOn which is currently the only
+        // use case for the one_time
+        if (RestorePolicy::Policy::AlwaysOn !=
+            RestorePolicy::convertPolicyFromString(powerPolicy))
+        {
+            // one_time is not set to AlwaysOn so use the customer
+            // setting
+            log<level::INFO>(
+                "One time not set, check user setting of power policy");
+            auto reply = bus.call(methodOneTime);
+            reply.read(result);
+            powerPolicy = std::get<std::string>(result);
+        }
+
+        log<level::INFO>("Host power is off, processing power policy",
+                         entry("POWER_POLICY=%s", powerPolicy.c_str()));
+
+        if (RestorePolicy::Policy::AlwaysOn ==
+            RestorePolicy::convertPolicyFromString(powerPolicy))
+        {
+            log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
+            setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                        convertForMessage(server::Host::Transition::On));
+        }
+        else if (RestorePolicy::Policy::Restore ==
+                 RestorePolicy::convertPolicyFromString(powerPolicy))
+        {
+            log<level::INFO>("power_policy=RESTORE, restoring last state");
+
+            // Read last requested state and re-request it to execute it
+            auto hostReqState = getProperty(bus, hostPath, HOST_BUSNAME,
+                                            "RequestedHostTransition");
+            setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                        hostReqState);
+        }
     }
     catch (const SdBusError& e)
     {
         log<level::ERR>("Error in PowerRestorePolicy Get",
                         entry("ERROR=%s", e.what()));
         elog<InternalFailure>();
-    }
-
-    auto powerPolicy = std::get<std::string>(result);
-
-    log<level::INFO>("Host power is off, checking power policy",
-                     entry("POWER_POLICY=%s", powerPolicy.c_str()));
-
-    if (RestorePolicy::Policy::AlwaysOn ==
-        RestorePolicy::convertPolicyFromString(powerPolicy))
-    {
-        log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
-        setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                    convertForMessage(server::Host::Transition::On));
-    }
-    else if (RestorePolicy::Policy::Restore ==
-             RestorePolicy::convertPolicyFromString(powerPolicy))
-    {
-        log<level::INFO>("power_policy=RESTORE, restoring last state");
-
-        // Read last requested state and re-request it to execute it
-        auto hostReqState =
-            getProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
-        setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                    hostReqState);
     }
 
     return 0;
