@@ -208,4 +208,17 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
           include_directories: '../'
       )
   )
+
+  test(
+      'test_hypervisor_state',
+      executable('test_hypervisor_state',
+          './test/hypervisor_state.cpp',
+          'hypervisor_state_manager.cpp',
+          dependencies: [
+              gtest, sdbusplus, sdeventplus, phosphorlogging,
+          ],
+          implicit_include_directories: true,
+          include_directories: '../'
+      )
+  )
 endif
