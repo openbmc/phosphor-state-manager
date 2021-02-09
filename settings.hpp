@@ -53,6 +53,9 @@ struct Objects
     /** @brief host power_restore_policy settings object */
     Path powerRestorePolicy;
 
+    /** @brief host power_restore_policy one-time settings object */
+    Path powerRestorePolicyOneTime;
+
     /** @brief The Dbus bus object */
     sdbusplus::bus::bus& bus;
 };
