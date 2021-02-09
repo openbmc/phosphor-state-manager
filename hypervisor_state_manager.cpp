@@ -57,6 +57,26 @@ server::Host::HostState Hypervisor::currentHostState(HostState value)
     return server::Host::currentHostState(value);
 }
 
+void Hypervisor::bootProgressChangeEvent(sdbusplus::message::message& msg)
+{
+    std::string statusInterface;
+    std::map<std::string, std::variant<std::string>> msgData;
+    msg.read(statusInterface, msgData);
+
+    auto propertyMap = msgData.find("BootProgress");
+    if (propertyMap != msgData.end())
+    {
+        // Extract the BootProgress
+        auto& bootProgress = std::get<std::string>(propertyMap->second);
+        if (bootProgress)
+        {
+            log<level::INFO>(
+                fmt::format("New BootProgress: {}", bootProgress).c_str());
+        }
+    }
+    return;
+}
+
 } // namespace manager
 } // namespace state
 } // namespace phosphor
