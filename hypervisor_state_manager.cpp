@@ -46,15 +46,61 @@ server::Host::Transition Hypervisor::requestedHostTransition(Transition value)
     return server::Host::requestedHostTransition(value);
 }
 
-// TODO - Monitor BootProgress and update hypervisor state to Running if
-//        OS is started
-
 server::Host::HostState Hypervisor::currentHostState(HostState value)
 {
     log<level::INFO>(
         fmt::format("Change to Hypervisor State: {}", convertForMessage(value))
             .c_str());
     return server::Host::currentHostState(value);
+}
+
+server::Host::HostState Hypervisor::currentHostState()
+{
+    return server::Host::currentHostState();
+}
+
+void Hypervisor::checkBootProgress(std::string& bootProgress)
+{
+    log<level::DEBUG>(
+        fmt::format("New BootProgress: {}", bootProgress).c_str());
+
+    if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
+                        "ProgressStages.SystemInitComplete")
+    {
+        currentHostState(server::Host::HostState::Standby);
+    }
+    else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
+                             "ProgressStages.OSStart")
+    {
+        currentHostState(server::Host::HostState::TransitioningToRunning);
+    }
+    else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
+                             "ProgressStages.OSRunning")
+    {
+        currentHostState(server::Host::HostState::Running);
+    }
+    else
+    {
+        // BootProgress changed and it is not one of the above so
+        // set hypervisor state to off
+        currentHostState(server::Host::HostState::Off);
+    }
+}
+
+void Hypervisor::bootProgressChangeEvent(sdbusplus::message::message& msg)
+{
+    std::string statusInterface;
+    std::map<std::string, std::variant<std::string>> msgData;
+    msg.read(statusInterface, msgData);
+
+    auto propertyMap = msgData.find("BootProgress");
+    if (propertyMap != msgData.end())
+    {
+        // Extract the BootProgress
+        auto& bootProgress = std::get<std::string>(propertyMap->second);
+        checkBootProgress(bootProgress);
+    }
+    return;
 }
 
 } // namespace manager
