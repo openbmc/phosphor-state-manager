@@ -77,7 +77,20 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
                 }
                 else if (powerRestoreIntf == interface)
                 {
-                    powerRestorePolicy = path;
+                    /* There are two implementations of the PowerRestorePolicy
+                     * Interface. A persistent user setting and a one-time
+                     * setting which is only valid for one boot of the system.
+                     * The one-time setting will have "one_time" in its
+                     * object path.
+                     */
+                    if (path.find("one_time") != std::string::npos)
+                    {
+                        powerRestorePolicyOneTime = path;
+                    }
+                    else
+                    {
+                        powerRestorePolicy = path;
+                    }
                 }
             }
         }
