@@ -36,4 +36,9 @@ TEST(updateCurrentHostState, BasicPaths)
                    "ProgressStages.OSRunning";
     hypObj.updateCurrentHostState(bootProgress);
     EXPECT_EQ(hypObj.currentHostState(), server::Host::HostState::Running);
+
+    bootProgress = "xyz.openbmc_project.State.Boot.Progress."
+                   "ProgressStages.Unspecified";
+    hypObj.updateCurrentHostState(bootProgress);
+    EXPECT_EQ(hypObj.currentHostState(), server::Host::HostState::Off);
 }
