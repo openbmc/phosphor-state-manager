@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "3007264a_827e03c8",
+        "filename": "hypervisor_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-02-11T22:59:10Z",
+      "side": 1,
+      "message": "pldm?",
+      "range": {
+        "startLine": 43,
+        "startChar": 38,
+        "endLine": 43,
+        "endChar": 59
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bbe0ee2f_13130bdb",
         "filename": "meson_options.txt",
         "patchSetId": 5
