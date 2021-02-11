@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f873d21_78ac8e1b",
+        "filename": "hypervisor_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-02-11T22:56:28Z",
+      "side": 1,
+      "message": "you didn\u0027t have this on your other void function above.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 11
+      },
+      "revId": "9579f8c3bb92bc29419977d8e354fa46f99e1f2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
