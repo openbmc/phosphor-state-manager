@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a6cfbc89_9f6fb250",
+        "filename": "hypervisor_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-02-12T02:51:18Z",
+      "side": 1,
+      "message": "not a strong opinion on the name of the function, but some people may find it unexpected to call a \u0027check\u0027 interface and have some property being \u0027set\u0027. would something in the lines of \u0027setCurrentHostState\u0027 or \u0027updateCurrentHostState\u0027 make more sense?",
+      "range": {
+        "startLine": 62,
+        "startChar": 17,
+        "endLine": 62,
+        "endChar": 34
+      },
+      "revId": "9579f8c3bb92bc29419977d8e354fa46f99e1f2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4f873d21_78ac8e1b",
         "filename": "hypervisor_state_manager.cpp",
         "patchSetId": 6
