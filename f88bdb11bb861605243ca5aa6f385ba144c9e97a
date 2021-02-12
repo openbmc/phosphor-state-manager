@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5dce9999_01a8a151",
+        "filename": "hypervisor_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-02-12T16:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8622e8f4_13de2e35",
+      "range": {
+        "startLine": 24,
+        "startChar": 25,
+        "endLine": 24,
+        "endChar": 36
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3007264a_827e03c8",
         "filename": "hypervisor_state_manager.cpp",
         "patchSetId": 5
@@ -45,6 +69,30 @@
       "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8c288d9_fd2d357b",
+        "filename": "hypervisor_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-02-12T16:24:57Z",
+      "side": 1,
+      "message": "Yeah, could be anything depending on system implementation but let me add pldm as an example to point people in the right direction",
+      "parentUuid": "3007264a_827e03c8",
+      "range": {
+        "startLine": 43,
+        "startChar": 38,
+        "endLine": 43,
+        "endChar": 59
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "e97d943a_a4952775",
+        "filename": "meson_options.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-02-12T16:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbe0ee2f_13130bdb",
+      "range": {
+        "startLine": 24,
+        "startChar": 22,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a5b70ed5_b7102006",
         "filename": "service_files/xyz.openbmc_project.State.Hypervisor.service",
         "patchSetId": 5
@@ -82,6 +154,30 @@
       "writtenOn": "2021-02-11T22:52:41Z",
       "side": 1,
       "message": "Can you refresh my memory why you\u0027re pointing at your own service here?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 64
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "092ace25_9e45b2ed",
+        "filename": "service_files/xyz.openbmc_project.State.Hypervisor.service",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-02-12T16:24:57Z",
+      "side": 1,
+      "message": "It\u0027s a way to ensure this service doesn\u0027t list itself as started until the D-Bus API has shown up in mapper. It helps if another service puts an After on this and then expects it to be available in mapper. Given our move away from mapper, I could probably revisit all of these in this repo but for now I vote we just stay consistent with the other services.",
+      "parentUuid": "a5b70ed5_b7102006",
       "range": {
         "startLine": 3,
         "startChar": 0,
