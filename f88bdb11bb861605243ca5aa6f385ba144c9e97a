@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "15197ba2_06f80301",
+        "filename": "hypervisor_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-02-12T19:52:37Z",
+      "side": 1,
+      "message": "I was just trying to get a feel for how this was even going to be used.",
+      "parentUuid": "e8c288d9_fd2d357b",
+      "range": {
+        "startLine": 43,
+        "startChar": 38,
+        "endLine": 43,
+        "endChar": 59
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bbe0ee2f_13130bdb",
         "filename": "meson_options.txt",
         "patchSetId": 5
@@ -178,6 +202,30 @@
       "side": 1,
       "message": "It\u0027s a way to ensure this service doesn\u0027t list itself as started until the D-Bus API has shown up in mapper. It helps if another service puts an After on this and then expects it to be available in mapper. Given our move away from mapper, I could probably revisit all of these in this repo but for now I vote we just stay consistent with the other services.",
       "parentUuid": "a5b70ed5_b7102006",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 64
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "712deee2_0e12fecd",
+        "filename": "service_files/xyz.openbmc_project.State.Hypervisor.service",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-02-12T19:52:37Z",
+      "side": 1,
+      "message": "Thanks, I\u0027m not sure I ever even knew about doing it within the same service like this.",
+      "parentUuid": "092ace25_9e45b2ed",
       "range": {
         "startLine": 3,
         "startChar": 0,
