@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "8622e8f4_13de2e35",
+        "filename": "hypervisor_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-02-12T02:41:20Z",
+      "side": 1,
+      "message": "this can be removed, \"reboot\" namespace is not used in this file.",
+      "range": {
+        "startLine": 24,
+        "startChar": 25,
+        "endLine": 24,
+        "endChar": 36
+      },
+      "revId": "f88bdb11bb861605243ca5aa6f385ba144c9e97a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3007264a_827e03c8",
         "filename": "hypervisor_state_manager.cpp",
         "patchSetId": 5
