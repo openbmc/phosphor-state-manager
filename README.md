@@ -52,9 +52,11 @@ phosphor-dbus-interfaces for each object it supports.
   - RequestedPowerTransition: On, Off
 - [host][4]: The host represents the software running on the system. In most
   cases this is an operating system of some sort. The host can be `Off`,
-  `Running`, `Quiesced`(error condition), or in `DiagnosticMode`(collecting
-  diagnostic data for a failure)
-  - CurrentHostState: Off, Running, Quiesced, DiagnosticMode
+  `Running`, `TransitioningToRunning`, `TransitioningToOff`,
+  `Quiesced`(error condition), or in `DiagnosticMode`(collecting diagnostic
+  data for a failure)
+  - CurrentHostState: Off, Running, TransitioningToRunning, TransitioningToOff,
+    Quiesced, DiagnosticMode
   - RequestedHostTransition: Off, On, Reboot, GracefulWarmReboot,
     ForceWarmReboot
 - [hypervisor][4]: The hypervisor is an optional package systems can install
