@@ -1,9 +1,10 @@
 # Phosphor State Manager Documentation
 
 This repository contains the software responsible for tracking and controlling
-the state of different objects within OpenBMC. This currently includes the
-BMC, Chassis, and Host. The most critical feature of phosphor-state-manager
-software is its support for requests to power on and off the system by the user.
+the state of different objects within OpenBMC. This currently includes the BMC,
+Chassis, Host and Hypervisor. The most critical feature of
+phosphor-state-manager software is its support for requests to power on and off
+the system by the user.
 
 This software also enforces any restore policy (i.e. auto power on system after
 a system power event or bmc reset) and ensures its states are updated correctly
@@ -56,6 +57,11 @@ phosphor-dbus-interfaces for each object it supports.
   - CurrentHostState: Off, Running, Quiesced, DiagnosticMode
   - RequestedHostTransition: Off, On, Reboot, GracefulWarmReboot,
     ForceWarmReboot
+- [hypervisor][4]: The hypervisor is an optional package systems can install
+  which tracks the state of the hypervisor on the system. This state manager
+  object implements a limited subset of the host D-Bus interface.
+  - CurrentHostState: Standby, TransitionToRunning, Running, Off, Quiesced
+  - RequestedHostTransition: On
 
 As noted above, phosphor-state-manager provides a command line tool,
 [obmcutil][5], which takes a `state` parameter. This will use D-Bus commands to
