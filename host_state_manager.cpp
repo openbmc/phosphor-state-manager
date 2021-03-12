@@ -3,6 +3,7 @@
 #include "host_state_manager.hpp"
 
 #include <fmt/format.h>
+#include <stdio.h>
 #include <systemd/sd-bus.h>
 
 #include <cereal/archives/json.hpp>
@@ -17,6 +18,7 @@
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
 
+#include <cerrno>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -292,6 +294,28 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
     {
         log<level::INFO>("Received signal that host is running");
         this->currentHostState(server::Host::HostState::Running);
+
+        // Remove temporary file which is utilized for scenarios where the
+        // BMC is rebooted while the host is still up.
+        // This file is used to indicate to host related systemd services
+        // that the host is already running and they should skip running.
+        // Once the host state is back to running we can clear this file.
+        // The file is only created on a reset of the BMC with the host up
+        // so only error out if it's not a "file not found" error.
+        auto size = std::snprintf(nullptr, 0, HOST_RUNNING_FILE, 0);
+        size++; // null
+        std::unique_ptr<char[]> hostFile(new char[size]);
+        std::snprintf(hostFile.get(), size, HOST_RUNNING_FILE, 0);
+        auto rc = remove(hostFile.get());
+        if ((rc) && (errno != ENOENT))
+        {
+            auto eno = errno;
+            log<level::ERR>(
+                fmt::format("Failed to remove file {} with errno {}",
+                            hostFile.get(), eno)
+                    .c_str());
+            throw std::system_error(eno, std::system_category());
+        }
     }
     else if ((newStateUnit == HOST_STATE_QUIESCE_TGT) &&
              (newStateResult == "done") &&
