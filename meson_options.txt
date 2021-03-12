@@ -37,6 +37,12 @@ option(
 )
 
 option(
+    'chassis-on-file', type: 'string',
+    value: '/run/openbmc/chassis@%d-on',
+    description: 'File to create if chassis is on after a BMC reset.',
+)
+
+option(
     'bmc-busname', type: 'string',
     value: 'xyz.openbmc_project.State.BMC',
     description: 'The BMC DBus busname to own.',

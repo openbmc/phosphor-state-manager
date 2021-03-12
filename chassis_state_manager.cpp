@@ -237,6 +237,28 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
         log<level::INFO>("Received signal that power ON is complete");
         this->currentPowerState(server::Chassis::PowerState::On);
         this->setStateChangeTime();
+
+        // Remove temporary file which is utilized for scenarios where the
+        // BMC is rebooted while the chassis power is still on.
+        // This file is used to indicate to chassis related systemd services
+        // that the chassis is already on and they should skip running.
+        // Once the chassis state is back to on we can clear this file.
+        // The file is only created on a reset of the BMC with the chassis
+        // power on so only error out if it's not a "file not found" error.
+        auto size = std::snprintf(nullptr, 0, CHASSIS_ON_FILE, 0);
+        size++; // null
+        std::unique_ptr<char[]> chassisFile(new char[size]);
+        std::snprintf(chassisFile.get(), size, CHASSIS_ON_FILE, 0);
+        auto rc = remove(chassisFile.get());
+        if ((rc) && (errno != ENOENT))
+        {
+            auto eno = errno;
+            log<level::ERR>(
+                fmt::format("Failed to remove file {} with errno {}",
+                            chassisFile.get(), eno)
+                    .c_str());
+            throw std::system_error(eno, std::system_category());
+        }
     }
 
     return 0;

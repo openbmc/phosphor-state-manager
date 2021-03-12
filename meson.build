@@ -24,6 +24,8 @@ conf.set_quoted(
 conf.set_quoted(
     'CHASSIS_OBJPATH', get_option('chassis-objpath'))
 conf.set_quoted(
+    'CHASSIS_ON_FILE', get_option('chassis-on-file'))
+conf.set_quoted(
     'BMC_BUSNAME', get_option('bmc-busname'))
 conf.set_quoted(
     'BMC_OBJPATH', get_option('bmc-objpath'))
