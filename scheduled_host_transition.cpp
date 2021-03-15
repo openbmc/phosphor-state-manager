@@ -52,7 +52,7 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         if (timer.isEnabled())
         {
             timer.setEnabled(false);
-            log<level::INFO>("scheduledTime: The function Scheduled Host "
+            log<level::DEBUG>("scheduledTime: The function Scheduled Host "
                              "Transition is disabled.");
         }
     }
@@ -213,7 +213,7 @@ int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
     while (read(fd, time.data(), time.max_size()) > 0)
         ;
 
-    log<level::INFO>("BMC system time is changed");
+    log<level::DEBUG>("BMC system time is changed");
     schedHostTran->handleTimeUpdates();
 
     return 0;
