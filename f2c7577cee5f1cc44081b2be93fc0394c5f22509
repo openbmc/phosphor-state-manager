@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08c339eb_e1a1348c",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-03-16T15:44:48Z",
+      "side": 1,
+      "message": "No reason to have an option unless the service files are updated to use a variable substitution instead of hard-coding \"/run/openbmc/chassis@%i-on\". In addition, the README specifies the name of the temp file (doesn\u0027t mentioned the option to be configurable), and it\u0027d be hard to add a configure option to any other services that have added the check for these temp files. Probably the option for the host file can be removed too and have both just be a const variable, it can be defined in the meson.build file.",
+      "revId": "f2c7577cee5f1cc44081b2be93fc0394c5f22509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
