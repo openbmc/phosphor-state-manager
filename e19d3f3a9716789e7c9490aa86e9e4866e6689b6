@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe7a8bd7_1cf9b396",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-03-16T13:09:11Z",
+      "side": 1,
+      "message": "Is there a reason you didn\u0027t want to use std::filesystem::exists and std::filesystem::remove?",
+      "revId": "e19d3f3a9716789e7c9490aa86e9e4866e6689b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
