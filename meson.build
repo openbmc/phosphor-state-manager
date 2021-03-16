@@ -28,8 +28,6 @@ conf.set_quoted(
 conf.set_quoted(
     'BMC_OBJPATH', get_option('bmc-objpath'))
 conf.set_quoted(
-    'HOST_RUNNING_FILE', get_option('host-running-file'))
-conf.set_quoted(
     'HOST_STATE_PERSIST_PATH', get_option('host-state-persist-path'))
 conf.set_quoted(
     'POH_COUNTER_PERSIST_PATH', get_option('poh-counter-persist-path'))
@@ -43,6 +41,10 @@ conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
 conf.set(
     'CLASS_VERSION', get_option('class-version'))
+
+# globals shared across applications
+conf.set_quoted(
+    'HOST_RUNNING_FILE', '/run/openbmc/host@%d-on')
 
 configure_file(output: 'config.h', configuration: conf)
 
