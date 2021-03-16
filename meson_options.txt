@@ -49,12 +49,6 @@ option(
 )
 
 option(
-    'host-running-file', type: 'string',
-    value: '/run/openbmc/host@%d-on',
-    description: 'File to create if host is running.',
-)
-
-option(
     'host-state-persist-path', type: 'string',
     value: '/var/lib/phosphor-state-manager/requestedHostTransition',
     description: 'Path of file for storing requested host state.',
