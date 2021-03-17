@@ -16,10 +16,6 @@ conf.set_quoted(
 conf.set_quoted(
     'HOST_OBJPATH', get_option('host-objpath'))
 conf.set_quoted(
-    'HYPERVISOR_BUSNAME', get_option('hypervisor-busname'))
-conf.set_quoted(
-    'HYPERVISOR_OBJPATH', get_option('hypervisor-objpath'))
-conf.set_quoted(
     'CHASSIS_BUSNAME', get_option('chassis-busname'))
 conf.set_quoted(
     'CHASSIS_OBJPATH', get_option('chassis-objpath'))
@@ -39,6 +35,16 @@ conf.set_quoted(
     'SCHEDULED_HOST_TRANSITION_PERSIST_PATH', get_option('scheduled-host-transition-persist-path'))
 conf.set_quoted(
     'SCHEDULED_HOST_TRANSITION_BUSNAME', get_option('scheduled-host-transition-busname'))
+conf.set_quoted(
+    'WATCHDOG_BOOTSTATUS_SYSFS_PATH', get_option('watchdog-bootstatus-sysfs-path'))
+conf.set_quoted(
+    'REBOOT_CAUSE_WATCHDOG', get_option('reboot-cause-watchdog'))
+conf.set_quoted(
+    'REBOOT_CAUSE_POWER_ON_RESET', get_option('reboot-cause-power-on-reset'))
+conf.set(
+    'WDIOF_EXTERN1', get_option('wdiof-extern1'))
+conf.set(
+    'WDIOF_CARDRESET', get_option('wdiof-cardreset'))
 conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
 conf.set(
@@ -60,18 +66,6 @@ cppfs = meson.get_compiler('cpp').find_library('stdc++fs')
 executable('phosphor-host-state-manager',
             'host_state_manager.cpp',
             'host_state_manager_main.cpp',
-            'settings.cpp',
-            dependencies: [
-            sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs
-            ],
-    implicit_include_directories: true,
-    install: true
-)
-
-executable('phosphor-hypervisor-state-manager',
-            'hypervisor_state_manager.cpp',
-            'hypervisor_state_manager_main.cpp',
             'settings.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
@@ -203,19 +197,6 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
           'utils.cpp',
           dependencies: [
               gtest, gmock, sdbusplus, sdeventplus, phosphorlogging,
-          ],
-          implicit_include_directories: true,
-          include_directories: '../'
-      )
-  )
-
-  test(
-      'test_hypervisor_state',
-      executable('test_hypervisor_state',
-          './test/hypervisor_state.cpp',
-          'hypervisor_state_manager.cpp',
-          dependencies: [
-              gtest, sdbusplus, sdeventplus, phosphorlogging,
           ],
           implicit_include_directories: true,
           include_directories: '../'
