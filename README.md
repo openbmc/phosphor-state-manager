@@ -107,7 +107,9 @@ determines that power is on then it will do the following:
     correctly report that the chassis is `On`
 - Start a service to check if the host is on
 
-The chassis@0-on file is removed when power is removed from the chassis.
+The chassis@0-on file is removed once the obmc-chassis-poweron@0.target becomes
+active (i.e. all service have been successfully started which are wanted or
+required by this target).
 
 The logic to check if the host is on sends a command to the host, and if a
 response is received then similar logic to chassis is done:
@@ -117,7 +119,9 @@ response is received then similar logic to chassis is done:
     and their service files implementing a
     "ConditionPathExists=!/run/openbmc/host@0-request"
 
-The host@0-on file is removed when the host is stopped.
+The host@0-on file is removed once the obmc-host-start@0.target and
+obmc-host-startmin@0.target become active (i.e. all service have been
+successfully started which are wanted or required by these targets).
 
 ## Building the Code
 ```
