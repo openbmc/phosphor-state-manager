@@ -24,6 +24,8 @@ conf.set_quoted(
 conf.set_quoted(
     'CHASSIS_OBJPATH', get_option('chassis-objpath'))
 conf.set_quoted(
+    'CHASSIS_ON_FILE', get_option('chassis-on-file'))
+conf.set_quoted(
     'BMC_BUSNAME', get_option('bmc-busname'))
 conf.set_quoted(
     'BMC_OBJPATH', get_option('bmc-objpath'))
@@ -39,6 +41,16 @@ conf.set_quoted(
     'SCHEDULED_HOST_TRANSITION_PERSIST_PATH', get_option('scheduled-host-transition-persist-path'))
 conf.set_quoted(
     'SCHEDULED_HOST_TRANSITION_BUSNAME', get_option('scheduled-host-transition-busname'))
+conf.set_quoted(
+    'WATCHDOG_BOOTSTATUS_SYSFS_PATH', get_option('watchdog-bootstatus-sysfs-path'))
+conf.set_quoted(
+    'REBOOT_CAUSE_WATCHDOG', get_option('reboot-cause-watchdog'))
+conf.set_quoted(
+    'REBOOT_CAUSE_POWER_ON_RESET', get_option('reboot-cause-power-on-reset'))
+conf.set(
+    'WDIOF_EXTERN1', get_option('wdiof-extern1'))
+conf.set(
+    'WDIOF_CARDRESET', get_option('wdiof-cardreset'))
 conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
 conf.set(

@@ -37,6 +37,12 @@ option(
 )
 
 option(
+    'chassis-on-file', type: 'string',
+    value: '/run/openbmc/chassis@%d-on',
+    description: 'File to create if chassis is on after a BMC reset.',
+)
+
+option(
     'bmc-busname', type: 'string',
     value: 'xyz.openbmc_project.State.BMC',
     description: 'The BMC DBus busname to own.',
@@ -94,6 +100,36 @@ option(
     'scheduled-host-transition-busname', type: 'string',
     value: 'xyz.openbmc_project.State.ScheduledHostTransition',
     description: 'The scheduled host transition Dbus busname to own.',
+)
+
+option(
+    'watchdog-bootstatus-sysfs-path', type: 'string',
+    value: '/sys/class/watchdog/watchdog0/bootstatus',
+    description: 'The watchdog bootstatus sysfs path.',
+)
+
+option(
+    'reboot-cause-watchdog', type: 'string',
+    value: 'xyz.openbmc_project.State.BMC.RebootCause.Watchdog',
+    description: 'The last reboot cause is watchdog.',
+)
+
+option(
+    'reboot-cause-power-on-reset', type: 'string',
+    value: 'xyz.openbmc_project.State.BMC.RebootCause.POR',
+    description: 'The last reboot cause is power-on-reset.',
+)
+
+option(
+    'wdiof-extern1', type: 'integer',
+    value: 4,
+    description: 'External monitoring relay/source 1 was triggered.',
+)
+
+option(
+    'wdiof-cardreset', type: 'integer',
+    value: 32,
+    description: 'Watchdog card previously reset the CPU was triggered.',
 )
 
 option('warm-reboot', type : 'feature',
