@@ -49,12 +49,6 @@ option(
 )
 
 option(
-    'host-running-file', type: 'string',
-    value: '/run/openbmc/host@%d-on',
-    description: 'File to create if host is running.',
-)
-
-option(
     'host-state-persist-path', type: 'string',
     value: '/var/lib/phosphor-state-manager/requestedHostTransition',
     description: 'Path of file for storing requested host state.',
@@ -99,4 +93,34 @@ option(
 option('warm-reboot', type : 'feature',
     value : 'enabled',
     description : 'Enable warm reboots of the system',
+)
+
+option(
+    'watchdog-bootstatus-sysfs-path', type: 'string',
+    value: '/sys/class/watchdog/watchdog0/bootstatus',
+    description: 'The watchdog bootstatus sysfs path.',
+)
+
+option(
+    'reboot-cause-watchdog', type: 'string',
+    value: 'xyz.openbmc_project.State.BMC.RebootCause.Watchdog',
+    description: 'The last reboot cause is watchdog.',
+)
+
+option(
+    'reboot-cause-power-on-reset', type: 'string',
+    value: 'xyz.openbmc_project.State.BMC.RebootCause.POR',
+    description: 'The last reboot cause is power-on-reset.',
+)
+
+option(
+    'wdiof-extern1', type: 'integer',
+    value: 4,
+    description: 'External monitoring relay/source 1 was triggered.',
+)
+
+option(
+    'wdiof-cardreset', type: 'integer',
+    value: 32,
+    description: 'Watchdog card previously reset the CPU was triggered.',
 )
