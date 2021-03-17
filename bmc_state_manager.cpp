@@ -9,6 +9,9 @@
 #include <sdbusplus/exception.hpp>
 
 #include <cassert>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 
 namespace phosphor
 {
@@ -231,6 +234,15 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
     return server::BMC::currentBMCState(value);
 }
 
+BMC::RebootCause BMC::lastRebootCause(RebootCause value)
+{
+    log<level::INFO>(
+        "Setting the RebootCause field",
+        entry("LAST_REBOOT_CAUSE=0x%s", convertForMessage(value).c_str()));
+
+    return server::BMC::lastRebootCause(value);
+}
+
 uint64_t BMC::lastRebootTime() const
 {
     using namespace std::chrono;
@@ -244,6 +256,45 @@ uint64_t BMC::lastRebootTime() const
     auto rebootTime = now - seconds(info.uptime);
 
     return duration_cast<milliseconds>(rebootTime.time_since_epoch()).count();
+}
+
+void BMC::discoverLastRebootCause()
+{
+    uint64_t bootReason = 0;
+    std::ifstream file;
+    auto bootstatusPath = "/sys/class/watchdog/watchdog0/bootstatus";
+
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit |
+                    std::ifstream::eofbit);
+
+    try
+    {
+        file.open(bootstatusPath);
+        file >> bootReason;
+    }
+    catch (const std::exception& e)
+    {
+        auto rc = errno;
+        log<level::ERR>((std::string("Failed to read sysfs file "
+                                     "errno=") +
+                         std::to_string(rc) + " FILENAME=" + bootstatusPath)
+                            .c_str());
+    }
+
+    switch (bootReason)
+    {
+        case WDIOF_EXTERN1:
+            this->lastRebootCause(RebootCause::Watchdog);
+            break;
+        case WDIOF_CARDRESET:
+            this->lastRebootCause(RebootCause::POR);
+            break;
+        default:
+            this->lastRebootCause(RebootCause::Unknown);
+            break;
+    }
+
+    return;
 }
 
 } // namespace manager
