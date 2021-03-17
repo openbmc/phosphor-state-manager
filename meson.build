@@ -46,6 +46,17 @@ conf.set(
 conf.set_quoted(
     'HOST_RUNNING_FILE', '/run/openbmc/host@%d-on')
 
+conf.set_quoted(
+    'WATCHDOG_BOOTSTATUS_SYSFS_PATH', get_option('watchdog-bootstatus-sysfs-path'))
+conf.set_quoted(
+    'REBOOT_CAUSE_WATCHDOG', get_option('reboot-cause-watchdog'))
+conf.set_quoted(
+    'REBOOT_CAUSE_POWER_ON_RESET', get_option('reboot-cause-power-on-reset'))
+conf.set(
+    'WDIOF_EXTERN1', get_option('wdiof-extern1'))
+conf.set(
+    'WDIOF_CARDRESET', get_option('wdiof-cardreset'))
+
 configure_file(output: 'config.h', configuration: conf)
 
 if(get_option('warm-reboot').enabled())
