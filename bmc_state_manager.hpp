@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xyz/openbmc_project/State/BMC/server.hpp"
+#include <linux/watchdog.h>
 
 #include <sdbusplus/bus.hpp>
 
@@ -43,6 +44,7 @@ class BMC : public BMCInherit
     {
         subscribeToSystemdSignals();
         discoverInitialState();
+        discoverLastRebootCause();
         this->emit_object_added();
     };
 
@@ -61,6 +63,9 @@ class BMC : public BMCInherit
      *                     last reboot.
      */
     uint64_t lastRebootTime() const override;
+
+    /** @brief Set value of LastRebootCause **/
+    RebootCause lastRebootCause(RebootCause value) override;
 
   private:
     /**
@@ -94,6 +99,11 @@ class BMC : public BMCInherit
 
     /** @brief Used to subscribe to dbus system state changes **/
     std::unique_ptr<sdbusplus::bus::match_t> stateSignal;
+
+    /**
+     * @brief discover the last reboot cause of the bmc
+     **/
+    void discoverLastRebootCause();
 };
 
 } // namespace manager
