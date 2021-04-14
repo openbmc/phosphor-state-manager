@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 set -euo pipefail
 
@@ -84,7 +84,7 @@ print_help ()
 run_timeout ()
 {
     local timeout="$1"; shift
-    local cmd="$@"
+    local cmd="$*"
     local verbose_child=
 
     if [ -n "$G_VERBOSE" ]; then
@@ -98,7 +98,7 @@ run_timeout ()
     # This will be killed if the transition doesn't succeed within
     # a timeout period.
     (
-        while ! grep -q $G_REQUESTED_STATE <<< $(handle_cmd $G_QUERY) ; do
+        while ! grep -q "$G_REQUESTED_STATE" <<< "$(handle_cmd "$G_QUERY")" ; do
             sleep 1
         done
     ) &
@@ -110,7 +110,7 @@ run_timeout ()
 
     # Workaround for lack of 'timeout' command.
     (
-        sleep $timeout
+        sleep "$timeout"
         kill $wait_child
     ) > /dev/null 2>&1 &
 
@@ -126,10 +126,10 @@ run_timeout ()
 
 run_cmd ()
 {
-    local cmd="$@";
+    local cmd="$*";
 
     if [ -n "$G_WAIT" ]; then
-        run_timeout $G_WAIT "$cmd"
+        run_timeout "$G_WAIT" "$cmd"
     else
         $cmd
     fi
@@ -148,8 +148,9 @@ get_property ()
 
 state_query ()
 {
-    local state=$(get_property "$@" | cut -d '"' -f2)
-    printf "%-20s: %s\n" $4 $state
+    local state
+    state=$(get_property "$@" | cut -d '"' -f2)
+    printf "%-20s: %s\n" "$4" "$state"
 }
 
 print_usage_err ()
@@ -161,14 +162,14 @@ print_usage_err ()
 
 mask_systemd_target ()
 {
-    target="$@"
-    systemctl mask $target
+    target="$*"
+    systemctl mask "$target"
 }
 
 unmask_systemd_target ()
 {
-    target="$@"
-    systemctl unmask $target
+    target="$*"
+    systemctl unmask "$target"
 }
 
 disable_bmc_reboot ()
@@ -178,8 +179,8 @@ disable_bmc_reboot ()
     units=("reboot" "poweroff" "halt")
 
     for unit in "${units[@]}"; do
-        mkdir -p ${dir}${unit}.target.d
-        echo -e "[Unit]\nRefuseManualStart=yes" >> ${dir}${unit}.target.d/${file}
+        mkdir -p "${dir}${unit}.target.d"
+        echo -e "[Unit]\nRefuseManualStart=yes" >> "${dir}${unit}.target.d/${file}"
     done
 }
 
@@ -190,8 +191,8 @@ enable_bmc_reboot ()
     units=("reboot" "poweroff" "halt")
 
     for unit in "${units[@]}"; do
-        rm -rf ${dir}${unit}.target.d/${file}
-        rm -rf ${dir}${unit}.target.d
+        rm -rf "${dir}${unit}.target.d/${file}"
+        rm -rf "${dir}${unit}.target.d"
     done
 }
 
@@ -210,22 +211,24 @@ check_boot_block_errors ()
                xyz.openbmc_project.Logging.ErrorBlocksTransition)"
 
     # remove quotation marks
-    subtree="$(echo $subtree | sed 's/\"//g')"
+    # shellcheck disable=SC2001
+    subtree="$(echo "$subtree" | sed 's/\"//g')"
 
     for entry in $subtree; do
         if [[ ${entry} =~ "xyz/openbmc_project/logging/block"* ]]; then
-            blockArray+=( $entry )
+            blockArray+=( "$entry" )
         fi
     done
 
     # now find associated error log for each boot block error
     for berror in "${blockArray[@]}"; do
-        assocs="$(busctl call xyz.openbmc_project.Logging $berror \
+        assocs="$(busctl call xyz.openbmc_project.Logging "$berror" \
                   org.freedesktop.DBus.Properties Get \
                   ss xyz.openbmc_project.Association.Definitions Associations)"
 
         # remove quotation marks
-        assocs="$(echo $assocs | sed 's/\"//g')"
+        # shellcheck disable=SC2001
+        assocs="$(echo "$assocs" | sed 's/\"//g')"
 
         for entry in $assocs; do
             if [[ ${entry} =~ "xyz/openbmc_project/logging/entry"* ]]; then
@@ -239,7 +242,7 @@ check_boot_block_errors ()
 check_and_warn_boot_block()
 {
     blockingErrors=$(check_boot_block_errors)
-    if ! [ -z "$blockingErrors" ]; then
+    if [ -n "$blockingErrors" ]; then
         echo !!!!!!!!!!
         echo "WARNING! System has blocking errors that will prevent boot"
         echo "$blockingErrors"
@@ -263,7 +266,7 @@ list_logs()
 show_log()
 {
     busctl -j call xyz.openbmc_project.Logging \
-           $1 \
+           "$1" \
            org.freedesktop.DBus.Properties \
            GetAll s xyz.openbmc_project.Logging.Entry
 }
@@ -287,7 +290,7 @@ handle_cmd ()
             VALUE=$INTERFACE.Transition.Off
             G_REQUESTED_STATE=$INTERFACE.PowerState.Off
             G_QUERY="chassisstate"
-            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         chassison)
             check_and_warn_boot_block
@@ -298,7 +301,7 @@ handle_cmd ()
             VALUE=$INTERFACE.Transition.On
             G_REQUESTED_STATE=$INTERFACE.PowerState.On
             G_QUERY="chassisstate"
-            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweroff)
             OBJECT=$STATE_OBJECT/host0
@@ -308,7 +311,7 @@ handle_cmd ()
             VALUE=$INTERFACE.Transition.Off
             G_REQUESTED_STATE=$INTERFACE.HostState.Off
             G_QUERY="hoststate"
-            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweron)
             check_and_warn_boot_block
@@ -319,35 +322,35 @@ handle_cmd ()
             VALUE=$INTERFACE.Transition.On
             G_REQUESTED_STATE=$INTERFACE.HostState.Running
             G_QUERY="hoststate"
-            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         bmcstate)
             OBJECT=$STATE_OBJECT/bmc0
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.BMC
             PROPERTY=CurrentBMCState
-            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         chassisstate)
             OBJECT=$STATE_OBJECT/chassis0
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Chassis
             PROPERTY=CurrentPowerState
-            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         hoststate)
             OBJECT=$STATE_OBJECT/host0
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Host
             PROPERTY=CurrentHostState
-            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         osstate)
             OBJECT=$STATE_OBJECT/host0
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.OperatingSystem.Status
             PROPERTY=OperatingSystemState
-            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         state|status)
             for query in bmcstate chassisstate hoststate bootprogress osstate
@@ -361,7 +364,7 @@ handle_cmd ()
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Boot.Progress
             PROPERTY=BootProgress
-            state_query $SERVICE $OBJECT $INTERFACE $PROPERTY
+            state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         power)
             OBJECT=/org/openbmc/control/power0
@@ -373,9 +376,9 @@ handle_cmd ()
                 # different formats of values, so we do the parsing outside
                 # of get_property depending on the query. These queries
                 # return 'i VALUE' formatted strings.
-                STATE=$(get_property $SERVICE $OBJECT $INTERFACE $property \
+                STATE=$(get_property "$SERVICE" $OBJECT $INTERFACE $property \
                     | sed 's/i[ ^I]*//')
-                printf "%s = %s\n" $property $STATE
+                printf "%s = %s\n" $property "$STATE"
             done
             ;;
         chassiskill)
@@ -387,7 +390,7 @@ handle_cmd ()
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
             PROPERTY=AutoReboot
             VALUE=false
-            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
         hostrebootoffonetime)
             OBJECT=$CONTROL_OBJECT/host0/auto_reboot/one_time
@@ -395,7 +398,7 @@ handle_cmd ()
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
             PROPERTY=AutoReboot
             VALUE=false
-            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "b" $VALUE
         ;;
         hostrebooton)
             OBJECT=$CONTROL_OBJECT/host0/auto_reboot
@@ -403,7 +406,7 @@ handle_cmd ()
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
             PROPERTY=AutoReboot
             VALUE=true
-            set_property $SERVICE $OBJECT $INTERFACE $PROPERTY "b" $VALUE
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
         bmcrebootoff)
             disable_bmc_reboot
@@ -435,7 +438,7 @@ handle_cmd ()
             list_logs
             ;;
         showlog)
-            show_log $2
+            show_log "$2"
             ;;
         deletelogs)
             delete_logs
