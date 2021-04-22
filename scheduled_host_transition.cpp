@@ -180,7 +180,7 @@ void ScheduledHostTransition::handleTimeUpdates()
 
     if (schedTime == 0)
     {
-        log<level::INFO>("handleTimeUpdates: The function Scheduled Host "
+        log<level::DEBUG>("handleTimeUpdates: The function Scheduled Host "
                          "Transition is disabled.");
         return;
     }
