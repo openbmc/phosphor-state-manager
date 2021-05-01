@@ -276,25 +276,25 @@ Chassis::PowerState Chassis::currentPowerState(PowerState value)
                          .c_str());
 
     chassisPowerState = server::Chassis::currentPowerState(value);
-    pOHTimer.setEnabled(chassisPowerState == PowerState::On);
+    pohTimer.setEnabled(chassisPowerState == PowerState::On);
     return chassisPowerState;
 }
 
-uint32_t Chassis::pOHCounter(uint32_t value)
+uint32_t Chassis::pohCounter(uint32_t value)
 {
-    if (value != pOHCounter())
+    if (value != pohCounter())
     {
-        ChassisInherit::pOHCounter(value);
+        ChassisInherit::pohCounter(value);
         serializePOH();
     }
-    return pOHCounter();
+    return pohCounter();
 }
 
-void Chassis::pOHCallback()
+void Chassis::pohCallback()
 {
     if (ChassisInherit::currentPowerState() == PowerState::On)
     {
-        pOHCounter(pOHCounter() + 1);
+        pohCounter(pohCounter() + 1);
     }
 }
 
@@ -304,11 +304,11 @@ void Chassis::restorePOHCounter()
     if (!deserializePOH(POH_COUNTER_PERSIST_PATH, counter))
     {
         // set to default value
-        pOHCounter(0);
+        pohCounter(0);
     }
     else
     {
-        pOHCounter(counter);
+        pohCounter(counter);
     }
 }
 
@@ -316,11 +316,11 @@ fs::path Chassis::serializePOH(const fs::path& path)
 {
     std::ofstream os(path.c_str(), std::ios::binary);
     cereal::JSONOutputArchive oarchive(os);
-    oarchive(pOHCounter());
+    oarchive(pohCounter());
     return path;
 }
 
-bool Chassis::deserializePOH(const fs::path& path, uint32_t& pOHCounter)
+bool Chassis::deserializePOH(const fs::path& path, uint32_t& pohCounter)
 {
     try
     {
@@ -328,7 +328,7 @@ bool Chassis::deserializePOH(const fs::path& path, uint32_t& pOHCounter)
         {
             std::ifstream is(path.c_str(), std::ios::in | std::ios::binary);
             cereal::JSONInputArchive iarchive(is);
-            iarchive(pOHCounter);
+            iarchive(pohCounter);
             return true;
         }
         return false;

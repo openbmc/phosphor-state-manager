@@ -15,6 +15,10 @@
 #include <experimental/filesystem>
 #include <functional>
 
+#ifndef SDBUSPP_NEW_CAMELCASE
+#define pohCounter pOHCounter
+#endif
+
 namespace phosphor
 {
 namespace state
@@ -54,8 +58,8 @@ class Chassis : public ChassisInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Chassis::sysStateChange), this,
                       std::placeholders::_1)),
-        pOHTimer(sdeventplus::Event::get_default(),
-                 std::bind(&Chassis::pOHCallback, this), std::chrono::hours{1},
+        pohTimer(sdeventplus::Event::get_default(),
+                 std::bind(&Chassis::pohCallback, this), std::chrono::hours{1},
                  std::chrono::minutes{1})
     {
         subscribeToSystemdSignals();
@@ -77,7 +81,7 @@ class Chassis : public ChassisInherit
     PowerState currentPowerState(PowerState value) override;
 
     /** @brief Get value of POHCounter */
-    using ChassisInherit::pOHCounter;
+    using ChassisInherit::pohCounter;
 
     /** @brief Increment POHCounter if Chassis Power state is ON */
     void startPOHCounter();
@@ -133,10 +137,10 @@ class Chassis : public ChassisInherit
     sdbusplus::bus::match_t systemdSignals;
 
     /** @brief Used to Set value of POHCounter */
-    uint32_t pOHCounter(uint32_t value) override;
+    uint32_t pohCounter(uint32_t value) override;
 
     /** @brief Used by the timer to update the POHCounter */
-    void pOHCallback();
+    void pohCallback();
 
     /** @brief Used to restore POHCounter value from persisted file */
     void restorePOHCounter();
@@ -191,7 +195,7 @@ class Chassis : public ChassisInherit
     void restoreChassisStateChangeTime();
 
     /** @brief Timer used for tracking power on hours */
-    sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> pOHTimer;
+    sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> pohTimer;
 };
 
 } // namespace manager
