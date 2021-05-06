@@ -5,71 +5,40 @@
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
-#include <xyz/openbmc_project/Control/Host/server.hpp>
+#include <xyz/openbmc_project/Condition/HostFirmware/server.hpp>
 
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 using namespace std::literals;
 using namespace phosphor::logging;
-using namespace sdbusplus::xyz::openbmc_project::Control::server;
+using namespace sdbusplus::xyz::openbmc_project::Condition::server;
 using sdbusplus::exception::SdBusError;
 
 // Required strings for sending the msg to check on host
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
-constexpr auto CONTROL_HOST_DEFAULT_SVC = "xyz.openbmc_project.Control.Host";
-constexpr auto CONTROL_HOST_PATH = "/xyz/openbmc_project/control/host0";
-constexpr auto CONTROL_HOST_INTERFACE = "xyz.openbmc_project.Control.Host";
+constexpr auto CONDITION_HOST_INTERFACE =
+    "xyz.openbmc_project.Condition.HostFirmware";
+constexpr auto CONDITION_HOST_PROPERTY = "CurrentFirmwareCondition";
+constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-bool cmdDone = false;
-bool hostRunning = false;
-
-// Function called on host control signals
-static int hostControlSignal(sd_bus_message* msg, void* userData,
-                             sd_bus_error* retError)
+// Find all implementations of Condition interface and check if host is
+// running over it
+bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
 {
-    // retError and userData are not used
-    (void)(retError);
-    (void)(userData);
-    std::string cmdCompleted{};
-    std::string cmdStatus{};
-
-    auto sdPlusMsg = sdbusplus::message::message(msg);
-    sdPlusMsg.read(cmdCompleted, cmdStatus);
-
-    log<level::DEBUG>("Host control signal values",
-                      entry("COMMAND=%s", cmdCompleted.c_str()),
-                      entry("STATUS=%s", cmdStatus.c_str()));
-
-    // Verify it's the command this code is interested in and then check status
-    if (Host::convertCommandFromString(cmdCompleted) ==
-        Host::Command::Heartbeat)
-    {
-        cmdDone = true;
-
-        if (Host::convertResultFromString(cmdStatus) == Host::Result::Success)
-        {
-            hostRunning = true;
-        }
-    }
-
-    return 0;
-}
-
-// Send hearbeat to host to determine if it's running
-void sendHeartbeat(sdbusplus::bus::bus& bus)
-{
+    // Find all implementations of host firmware condition interface
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                      MAPPER_INTERFACE, "GetObject");
+                                      MAPPER_INTERFACE, "GetSubTree");
 
-    mapper.append(CONTROL_HOST_PATH,
-                  std::vector<std::string>({CONTROL_HOST_INTERFACE}));
+    mapper.append("/", 0, std::vector<std::string>({CONDITION_HOST_INTERFACE}));
 
-    std::map<std::string, std::vector<std::string>> mapperResponse;
+    std::map<std::string, std::map<std::string, std::vector<std::string>>>
+        mapperResponse;
 
     try
     {
@@ -78,39 +47,59 @@ void sendHeartbeat(sdbusplus::bus::bus& bus)
     }
     catch (const SdBusError& e)
     {
-        log<level::INFO>("Error in mapper call for control host, use default "
-                         "service",
-                         entry("ERROR=%s", e.what()));
-    }
-
-    std::string host;
-    if (!mapperResponse.empty())
-    {
-        log<level::DEBUG>("Use mapper response");
-        host = mapperResponse.begin()->first;
-    }
-    else
-    {
-        log<level::DEBUG>("Use hard coded host");
-        host = CONTROL_HOST_DEFAULT_SVC;
-    }
-
-    auto method = bus.new_method_call(host.c_str(), CONTROL_HOST_PATH,
-                                      CONTROL_HOST_INTERFACE, "Execute");
-    method.append(convertForMessage(Host::Command::Heartbeat).c_str());
-
-    try
-    {
-        auto reply = bus.call(method);
-    }
-    catch (const SdBusError& e)
-    {
-        log<level::ERR>("Error in call to control host Execute",
-                        entry("ERROR=%s", e.what()));
+        log<level::ERR>(
+            "Error in mapper GetSubTree call for HostFirmware condition",
+            entry("ERROR=%s", e.what()));
         throw;
     }
 
-    return;
+    if (mapperResponse.empty())
+    {
+        log<level::INFO>(
+            "Mapper response for HostFirmware conditions is empty!");
+        return false;
+    }
+
+    // Now read the CurrentFirmwareCondition from all interfaces we found
+    for (const auto& iter : mapperResponse)
+    {
+        const std::string& path = iter.first;
+
+        for (const auto& serviceIter : iter.second)
+        {
+            const std::string& service = serviceIter.first;
+
+            try
+            {
+                auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                                  PROPERTY_INTERFACE, "Get");
+                method.append(CONDITION_HOST_INTERFACE,
+                              CONDITION_HOST_PROPERTY);
+
+                auto response = bus.call(method);
+
+                std::variant<std::string> currentFwCond;
+                response.read(currentFwCond);
+
+                if (std::get<std::string>(currentFwCond) ==
+                    "xyz.openbmc_project.Condition.HostFirmware."
+                    "FirmwareCondition."
+                    "Running")
+                {
+                    return true;
+                }
+            }
+            catch (const SdBusError& e)
+            {
+                log<level::ERR>("Error reading HostFirmware condition",
+                                entry("ERROR=%s", e.what()),
+                                entry("SERVICE=%s", service.c_str()),
+                                entry("PATH=%s", path.c_str()));
+                throw;
+            }
+        }
+    }
+    return false;
 }
 
 int main()
@@ -119,27 +108,7 @@ int main()
 
     auto bus = sdbusplus::bus::new_default();
 
-    std::string s = "type='signal',member='CommandComplete',path='"s +
-                    CONTROL_HOST_PATH + "',interface='" +
-                    CONTROL_HOST_INTERFACE + "'";
-
-    // Setup Signal Handler
-    sdbusplus::bus::match::match hostControlSignals(bus, s.c_str(),
-                                                    hostControlSignal, nullptr);
-
-    sendHeartbeat(bus);
-
-    // Wait for signal
-    while (!cmdDone)
-    {
-        bus.process_discard();
-        if (cmdDone)
-            break;
-        bus.wait();
-    }
-
-    // If host running then create file
-    if (hostRunning)
+    if (checkFirmwareConditionRunning(bus))
     {
         log<level::INFO>("Host is running!");
         // Create file for host instance and create in filesystem to indicate
