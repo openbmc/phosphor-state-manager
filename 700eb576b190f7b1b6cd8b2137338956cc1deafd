@@ -81,6 +81,24 @@
       "revId": "700eb576b190f7b1b6cd8b2137338956cc1deafd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c154962a_75025ffc",
+        "filename": "host_check_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-05-12T21:31:31Z",
+      "side": 1,
+      "message": "It\u0027s pretty new, so the only example I\u0027ve seen is when I did it by passing it through a method call: https://github.com/openbmc/phosphor-fan-presence/blob/master/presence/gpio.cpp#L119\n\nProbably not worth your time to see if it works on a variant.",
+      "parentUuid": "9efc381b_dc8a4a10",
+      "revId": "700eb576b190f7b1b6cd8b2137338956cc1deafd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
