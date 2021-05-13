@@ -1,6 +1,5 @@
 [Unit]
 Description=Check Host%i status on BMC reset
-Wants=phosphor-ipmi-host.service
 After=phosphor-ipmi-host.service
 Wants=obmc-host-reset-running@%i.target
 Before=obmc-host-reset-running@%i.target
