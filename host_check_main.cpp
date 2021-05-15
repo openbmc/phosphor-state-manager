@@ -2,6 +2,7 @@
 
 #include <unistd.h>
 
+#include <boost/range/adaptor/reversed.hpp>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
@@ -11,6 +12,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <thread>
 #include <vector>
 
 using namespace std::literals;
@@ -61,7 +63,16 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
     }
 
     // Now read the CurrentFirmwareCondition from all interfaces we found
-    for (const auto& [path, services] : mapperResponse)
+    // Currently there are two implementations of this interface. One by IPMI
+    // and one by PLDM. The IPMI interface does a realtime check with the host
+    // when the interface is called. This means if the host is not running,
+    // we will have to wait for the timeout (currently set to 3 seconds). The
+    // PLDM interface reads a cached state. The PLDM service does not put itself
+    // on D-Bus until it has checked with the host. Therefore it's most
+    // efficient to call the PLDM interface first. Do that by going in reverse
+    // of the interfaces returned to us (PLDM will be last if available)
+    for (const auto& [path, services] :
+         boost::adaptors::reverse(mapperResponse))
     {
         for (const auto& serviceIter : services)
         {
@@ -106,22 +117,34 @@ int main()
 
     auto bus = sdbusplus::bus::new_default();
 
-    if (checkFirmwareConditionRunning(bus))
+    // This applications systemd service is setup to only run after all other
+    // application that could possibly implement the needed interface have
+    // been started. However, the use of mapper to find those interfaces means
+    // we have a condition where the interface may be on D-Bus but not stored
+    // within mapper yet. Keep it simple and just build one retry into the
+    // check if it's found the host is not up. This service is only called if
+    // chassis power is on when the BMC comes up, so this wont impact most
+    // normal cases where the BMC is rebooted with chassis power off. In
+    // cases where chassis power is on, the host is likely running so we want
+    // to be sure we check all interfaces
+    for (int i = 0; i < 2; i++)
     {
-        log<level::INFO>("Host is running!");
-        // Create file for host instance and create in filesystem to indicate
-        // to services that host is running
-        auto size = std::snprintf(nullptr, 0, HOST_RUNNING_FILE, 0);
-        size++; // null
-        std::unique_ptr<char[]> buf(new char[size]);
-        std::snprintf(buf.get(), size, HOST_RUNNING_FILE, 0);
-        std::ofstream outfile(buf.get());
-        outfile.close();
+        // Give mapper a small window to introspect new objects on bus
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        if (checkFirmwareConditionRunning(bus))
+        {
+            log<level::INFO>("Host is running!");
+            // Create file for host instance and create in filesystem to
+            // indicate to services that host is running
+            auto size = std::snprintf(nullptr, 0, HOST_RUNNING_FILE, 0);
+            size++; // null
+            std::unique_ptr<char[]> buf(new char[size]);
+            std::snprintf(buf.get(), size, HOST_RUNNING_FILE, 0);
+            std::ofstream outfile(buf.get());
+            outfile.close();
+            return 0;
+        }
     }
-    else
-    {
-        log<level::INFO>("Host is not running!");
-    }
-
+    log<level::INFO>("Host is not running!");
     return 0;
 }
