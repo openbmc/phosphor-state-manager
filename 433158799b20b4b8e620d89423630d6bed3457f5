@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a05b27e7_2f078688",
+        "filename": "host_check_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-05-17T20:57:13Z",
+      "side": 1,
+      "message": "not clear if the optimization is to process the ones that have a longer or shorter timeout. Maybe we can add something like \"(which has the shortest/longest timeout as of now at 3s)\". Also not sure if you want to add why the reverse would hit ipmi last, i assume it\u0027s because the other interface is provided by \u0027pldm\u0027, so maybe the comment can be expanded to say as of today, ipmi and pldm implement this interface, go backwards so that ipmi which has the longest/shortest timeout of 3s runs last.",
+      "revId": "433158799b20b4b8e620d89423630d6bed3457f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
