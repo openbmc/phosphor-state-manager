@@ -16,6 +16,24 @@
       "revId": "b9715737171978163015cc10f3307e6fd4035c99",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0788eb31_43f16117",
+        "filename": "service_files/phosphor-reset-host-check@.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-05-17T20:50:44Z",
+      "side": 1,
+      "message": "This seems to be addressed with https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-state-manager/+/43269 .. That happens when you review things out of order :)",
+      "parentUuid": "891fb851_e4d430af",
+      "revId": "b9715737171978163015cc10f3307e6fd4035c99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
