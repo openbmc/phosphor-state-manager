@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cb799e75_4424f2b6",
+        "filename": "host_check_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T19:02:01Z",
+      "side": 1,
+      "message": "Sure, let me add some more details.",
+      "parentUuid": "a05b27e7_2f078688",
+      "revId": "433158799b20b4b8e620d89423630d6bed3457f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fe520d2e_b6bb4b7c",
         "filename": "host_check_main.cpp",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2021-05-18T18:49:07Z",
       "side": 1,
       "message": "I\u0027m impressed that a 1 second wait works!  Must be our new speedy processor.",
+      "revId": "433158799b20b4b8e620d89423630d6bed3457f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d5ddbb0_d6ebf187",
+        "filename": "host_check_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T19:02:01Z",
+      "side": 1,
+      "message": "Yep, that AST2600 is snappy (knocks on wood...)!",
+      "parentUuid": "fe520d2e_b6bb4b7c",
       "revId": "433158799b20b4b8e620d89423630d6bed3457f5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
