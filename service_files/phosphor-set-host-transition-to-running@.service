@@ -4,11 +4,13 @@ Wants=mapper-wait@-xyz-openbmc_project-state-host%i.service
 After=mapper-wait@-xyz-openbmc_project-state-host%i.service
 Wants=obmc-host-start-pre@%i.target
 Before=obmc-host-start-pre@%i.target
+Conflicts=obmc-host-stop@%i.target
 ConditionPathExists=!/run/openbmc/host@%i-on
 
 [Service]
 Restart=no
 Type=oneshot
+RemainAfterExit=yes
 ExecStart=/bin/sh -c "busctl set-property `mapper get-service /xyz/openbmc_project/state/host%i` /xyz/openbmc_project/state/host%i xyz.openbmc_project.State.Host CurrentHostState s xyz.openbmc_project.State.Host.HostState.TransitioningToRunning"
 
 [Install]
