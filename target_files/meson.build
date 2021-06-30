@@ -27,7 +27,6 @@ unit_files = [
     'obmc-host-stopping@.target',
     'obmc-host-timeout@.target',
     'obmc-host-warm-reboot@.target',
-    'obmc-mapper.target',
     'obmc-power-off@.target',
     'obmc-power-on@.target',
     'obmc-power-reset-on@.target',
