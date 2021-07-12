@@ -196,6 +196,15 @@ class Chassis : public ChassisInherit
 
     /** @brief Timer used for tracking power on hours */
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> pohTimer;
+
+    /** @brief Function to check for a standby voltage regulator fault
+     *
+     *  Determine if a standby voltage regulator fault was detected and
+     *  return true or false accordingly.
+     *
+     *  @return true if fault detected, else false
+     */
+    bool standbyVoltageRegulatorFault();
 };
 
 } // namespace manager
