@@ -198,6 +198,14 @@ class Chassis : public ChassisInherit
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> pohTimer;
 };
 
+/** @brief Function to check for a standby voltage regulator fault
+ *
+ *  Read a gpio to determine if a standby voltage regulator fault occurred.
+ *
+ * @return true if fault detected, else false
+ */
+bool standbyVoltageRegulatorFault();
+
 } // namespace manager
 } // namespace state
 } // namespace phosphor
