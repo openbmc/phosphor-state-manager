@@ -6,6 +6,7 @@
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 
 #include <fmt/format.h>
+#include <gpiod.h>
 
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
@@ -31,6 +32,7 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 using sdbusplus::xyz::openbmc_project::State::Shutdown::Power::Error::Blackout;
+using sdbusplus::xyz::openbmc_project::State::Shutdown::Power::Error::Regulator;
 constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT =
     "obmc-chassis-hard-poweroff@0.target";
@@ -110,7 +112,15 @@ void Chassis::determineInitialState()
             {
                 if (lastState == PowerState::On)
                 {
-                    report<Blackout>();
+                    if (true == standbyVoltageRegulatorFault())
+                    {
+                        report<Regulator>();
+                    }
+                    else
+                    {
+                        report<Blackout>();
+                    }
+
                     setStateChangeTime();
                 }
             }
@@ -437,6 +447,44 @@ void Chassis::setStateChangeTime()
 
     ChassisInherit::lastStateChangeTime(now);
     serializeStateChangeTime();
+}
+
+bool Chassis::standbyVoltageRegulatorFault()
+{
+    bool regulatorFault = false;
+
+    // find standby voltage regulator fault via gpio
+    gpiod_line* line = gpiod_line_find("regulator-standby-faulted");
+
+    if (nullptr != line)
+    {
+        // take ownership of gpio
+        if (0 != gpiod_line_request_input(line, "chassis"))
+        {
+            log<level::ERR>(
+                "Failed request for regulator-standby-faulted GPIO");
+        }
+        else
+        {
+            // get gpio value
+            auto gpioval = gpiod_line_get_value(line);
+
+            // release ownership of gpio
+            gpiod_line_close_chip(line);
+
+            if (-1 == gpioval)
+            {
+                log<level::ERR>(
+                    "Failed reading regulator-standby-faulted GPIO");
+            }
+
+            if (1 == gpioval)
+            {
+                regulatorFault = true;
+            }
+        }
+    }
+    return regulatorFault;
 }
 
 } // namespace manager

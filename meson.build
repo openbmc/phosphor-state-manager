@@ -56,6 +56,7 @@ sdbusplus = dependency('sdbusplus')
 sdeventplus = dependency('sdeventplus')
 phosphorlogging = dependency('phosphor-logging')
 phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
+libgpiod = dependency('libgpiod', version : '>=1.4.1')
 
 cppfs = meson.get_compiler('cpp').find_library('stdc++fs')
 
@@ -89,7 +90,7 @@ executable('phosphor-chassis-state-manager',
             'chassis_state_manager_main.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs
+            phosphordbusinterfaces, cppfs, libgpiod
             ],
     implicit_include_directories: true,
     install: true
