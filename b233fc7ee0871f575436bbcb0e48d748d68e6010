@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5163bbcd_ae1c3ddf",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-14T14:41:43Z",
+      "side": 1,
+      "message": "Suggestion:  maybe move this all into a function, so down below you could do:\n\nif (standbyRegulatorFault())\n{\n  report ...\n}",
+      "revId": "b233fc7ee0871f575436bbcb0e48d748d68e6010",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
