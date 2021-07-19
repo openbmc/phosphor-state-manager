@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a4603a7_6e0c3752",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-19T19:45:57Z",
+      "side": 1,
+      "message": "phosphor-state-manager is meant to be non-system specific. If we can get this new gpio name approved and in https://github.com/openbmc/docs/blob/master/designs/device-tree-gpio-naming.md then I\u0027d feel better about pulling this in.",
+      "revId": "3a5fb0275b2203adb8fb24f865783fca4ab345c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "124755bb_1792a886",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-19T19:45:57Z",
+      "side": 1,
+      "message": "I\u0027d just assume make this a part of the Chassis class above vs. it\u0027s own standalone function. We may some day support multiple chassis which could each have their own fault gpio.",
+      "revId": "3a5fb0275b2203adb8fb24f865783fca4ab345c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
