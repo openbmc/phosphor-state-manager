@@ -2,6 +2,8 @@
 
 #include "host_state_manager.hpp"
 
+#include "host_check.hpp"
+
 #include <fmt/format.h>
 #include <stdio.h>
 #include <systemd/sd-bus.h>
@@ -106,7 +108,7 @@ void Host::subscribeToSystemdSignals()
 void Host::determineInitialState()
 {
 
-    if (stateActive(HOST_STATE_POWERON_MIN_TGT))
+    if (stateActive(HOST_STATE_POWERON_MIN_TGT) || isHostRunning())
     {
         log<level::INFO>("Initial Host State will be Running",
                          entry("CURRENT_HOST_STATE=%s",

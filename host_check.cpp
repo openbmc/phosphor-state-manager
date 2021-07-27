@@ -1,5 +1,7 @@
 #include "config.h"
 
+#include "host_check.hpp"
+
 #include <unistd.h>
 
 #include <boost/range/adaptor/reversed.hpp>
@@ -28,6 +30,11 @@ constexpr auto CONDITION_HOST_INTERFACE =
     "xyz.openbmc_project.Condition.HostFirmware";
 constexpr auto CONDITION_HOST_PROPERTY = "CurrentFirmwareCondition";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+
+constexpr auto CHASSIS_STATE_SVC = "xyz.openbmc_project.State.Chassis";
+constexpr auto CHASSIS_STATE_PATH = "/xyz/openbmc_project/state/chassis0";
+constexpr auto CHASSIS_STATE_INTF = "xyz.openbmc_project.State.Chassis";
+constexpr auto CHASSIS_STATE_POWER_PROP = "CurrentPowerState";
 
 // Find all implementations of Condition interface and check if host is
 // running over it
@@ -111,11 +118,50 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
     return false;
 }
 
-int main()
+// Helper function to check if chassis power is on
+bool isChassiPowerOn(sdbusplus::bus::bus& bus)
+{
+    try
+    {
+        auto method = bus.new_method_call(CHASSIS_STATE_SVC, CHASSIS_STATE_PATH,
+                                          PROPERTY_INTERFACE, "Get");
+        method.append(CHASSIS_STATE_INTF, CHASSIS_STATE_POWER_PROP);
+
+        auto response = bus.call(method);
+
+        std::variant<std::string> currentPowerState;
+        response.read(currentPowerState);
+
+        if (std::get<std::string>(currentPowerState) ==
+            "xyz.openbmc_project.State.Chassis.PowerState.On")
+        {
+            return true;
+        }
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error reading Chassis Power State",
+                        entry("ERROR=%s", e.what()),
+                        entry("SERVICE=%s", CHASSIS_STATE_SVC),
+                        entry("PATH=%s", CHASSIS_STATE_PATH));
+
+        throw;
+    }
+    return false;
+}
+
+bool isHostRunning()
 {
     log<level::INFO>("Check if host is running");
 
     auto bus = sdbusplus::bus::new_default();
+
+    // No need to check if chassis power is not on
+    if (!isChassiPowerOn(bus))
+    {
+        log<level::INFO>("Chassis power not on, exit");
+        return false;
+    }
 
     // This applications systemd service is setup to only run after all other
     // application that could possibly implement the needed interface have
@@ -142,9 +188,9 @@ int main()
             std::snprintf(buf.get(), size, HOST_RUNNING_FILE, 0);
             std::ofstream outfile(buf.get());
             outfile.close();
-            return 0;
+            return true;
         }
     }
     log<level::INFO>("Host is not running!");
-    return 0;
+    return false;
 }
