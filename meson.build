@@ -63,6 +63,7 @@ executable('phosphor-host-state-manager',
             'host_state_manager.cpp',
             'host_state_manager_main.cpp',
             'settings.cpp',
+            'host_check.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
             phosphordbusinterfaces, cppfs
@@ -108,15 +109,6 @@ executable('phosphor-bmc-state-manager',
 executable('phosphor-discover-system-state',
             'discover_system_state.cpp',
             'settings.cpp',
-            dependencies: [
-            sdbusplus, phosphorlogging
-            ],
-    implicit_include_directories: true,
-    install: true
-)
-
-executable('phosphor-host-check',
-            'host_check_main.cpp',
             dependencies: [
             sdbusplus, phosphorlogging
             ],
