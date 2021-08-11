@@ -139,6 +139,15 @@ executable('phosphor-scheduled-host-transition',
     install: true
 )
 
+executable('phosphor-host-reset-recovery',
+            'host_reset_recovery.cpp',
+            dependencies: [
+            sdbusplus, phosphorlogging
+            ],
+    implicit_include_directories: true,
+    install: true
+)
+
 install_data('obmcutil',
         install_mode: 'rwxr-xr-x',
         install_dir: get_option('bindir')
