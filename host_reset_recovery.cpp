@@ -1,6 +1,11 @@
+#include <unistd.h>
+
+#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/Logging/Create/server.hpp>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include <cstdlib>
 #include <string>
@@ -10,6 +15,10 @@ constexpr auto HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 constexpr auto BOOT_STATE_INTF = "xyz.openbmc_project.State.Boot.Progress";
 constexpr auto BOOT_PROGRESS_PROP = "BootProgress";
+
+constexpr auto LOGGING_SVC = "xyz.openbmc_project.Logging";
+constexpr auto LOGGING_PATH = "/xyz/openbmc_project/logging";
+constexpr auto LOGGING_CREATE_INTF = "xyz.openbmc_project.Logging.Create";
 
 using namespace phosphor::logging;
 
@@ -51,6 +60,43 @@ bool wasHostBooting(sdbusplus::bus::bus& bus)
     return true;
 }
 
+void createErrorLog(sdbusplus::bus::bus& bus)
+{
+    try
+    {
+        // Create interface requires something for additionalData
+        std::map<std::string, std::string> additionalData;
+        additionalData.emplace("_PID", std::to_string(getpid()));
+
+        static constexpr auto errorMessage =
+            "xyz.openbmc_project.State.Error.HostNotRunning";
+        auto method = bus.new_method_call(LOGGING_SVC, LOGGING_PATH,
+                                          LOGGING_CREATE_INTF, "Create");
+        auto level =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                    Error);
+        method.append(errorMessage, level, additionalData);
+        auto resp = bus.call(method);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        log<level::ERR>("sdbusplus D-Bus call exception",
+                        entry("OBJPATH=%s", LOGGING_PATH),
+                        entry("INTERFACE=%s", LOGGING_CREATE_INTF),
+                        entry("EXCEPTION=%s", e.what()));
+
+        throw std::runtime_error(
+            "Error in invoking D-Bus logging create interface");
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("D-bus call exception",
+                        entry("EXCEPTION=%s", e.what()));
+        throw e;
+    }
+}
+
 int main()
 {
 
@@ -69,7 +115,8 @@ int main()
 
     // Host was booting before the BMC reboot so log an error and go to host
     // quiesce target
-    // TODO Create Error
+    createErrorLog(bus);
+
     // TODO Move to Host Quiesce
 
     return 0;
