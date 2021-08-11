@@ -23,6 +23,11 @@ constexpr auto LOGGING_SVC = "xyz.openbmc_project.Logging";
 constexpr auto LOGGING_PATH = "/xyz/openbmc_project/logging";
 constexpr auto LOGGING_CREATE_INTF = "xyz.openbmc_project.Logging.Create";
 
+constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
+
 using namespace phosphor::logging;
 
 bool wasHostBooting(sdbusplus::bus::bus& bus)
@@ -113,6 +118,28 @@ bool isChassisTargetComplete()
     return !f.good();
 }
 
+void moveToHostQuiesce(sdbusplus::bus::bus& bus)
+{
+    try
+    {
+        auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                          SYSTEMD_INTERFACE, "StartUnit");
+
+        method.append(HOST_STATE_QUIESCE_TGT);
+        method.append("replace");
+
+        bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        log<level::ERR>("sdbusplus call exception starting quiesce target",
+                        entry("EXCEPTION=%s", e.what()));
+
+        throw std::runtime_error(
+            "Error in invoking D-Bus systemd StartUnit method");
+    }
+}
+
 int main()
 {
 
@@ -143,8 +170,7 @@ int main()
     // Host was booting before the BMC reboot so log an error and go to host
     // quiesce target
     createErrorLog(bus);
-
-    // TODO Move to Host Quiesce
+    moveToHostQuiesce(bus);
 
     return 0;
 }
