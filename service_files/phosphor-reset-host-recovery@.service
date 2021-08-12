@@ -1,0 +1,20 @@
+[Unit]
+Description=Recover host%i after bmc reboot
+After=obmc-host-reset@%i.target
+Wants=obmc-host-reset-running@%i.target
+After=obmc-host-reset-running@%i.target
+Wants=mapper-wait@-xyz-openbmc_project-state-host%i.service
+After=mapper-wait@-xyz-openbmc_project-state-host%i.service
+ConditionPathExists=/run/openbmc/chassis@%i-on
+ConditionPathExists=!/run/openbmc/host@%i-on
+Conflicts=obmc-chassis-poweroff@%i.target
+
+[Service]
+Restart=no
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/phosphor-host-reset-recovery
+
+
+[Install]
+WantedBy=obmc-chassis-poweron@%i.target
