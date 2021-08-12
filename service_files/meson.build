@@ -3,6 +3,7 @@ unit_files = [
     'phosphor-discover-system-state@.service',
     'phosphor-reboot-host@.service',
     'phosphor-reset-host-reboot-attempts@.service',
+    'phosphor-reset-host-recovery@.service',
     'phosphor-reset-host-running@.service',
     'phosphor-reset-sensor-states@.service',
     'xyz.openbmc_project.State.BMC.service',
