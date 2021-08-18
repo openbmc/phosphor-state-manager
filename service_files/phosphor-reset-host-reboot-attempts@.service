@@ -3,6 +3,7 @@ Description=Reset host reboot counter
 Wants=mapper-wait@-xyz-openbmc_project-state-host%i.service
 After=mapper-wait@-xyz-openbmc_project-state-host%i.service
 ConditionPathExists=!/run/openbmc/host@%i-on
+Conflicts=obmc-chassis-poweroff@%i.target
 
 [Service]
 Restart=no
