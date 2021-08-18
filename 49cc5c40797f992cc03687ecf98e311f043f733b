@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "56a7df0b_6e4c8ab9",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-18T11:37:25Z",
+      "side": 1,
+      "message": "Is this method and/or values specific to one particular BMC?  How do we know we are on that BMC type?",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a804e40a_b9039a20",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-18T11:37:25Z",
+      "side": 1,
+      "message": "Would this be clearer as a case?",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2c8625b_96acfa33",
+        "filename": "meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-18T11:37:25Z",
+      "side": 1,
+      "message": "I don\u0027t think there is a good reason to make these packageconfig is there?  This seems a little ridiculous.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 53
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6826be6c_197f89f1",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-18T11:37:25Z",
+      "side": 1,
+      "message": "Can this just be a constant in the code?  Is it likely to change?",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb3d600b_b36e350d",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-18T11:37:25Z",
+      "side": 1,
+      "message": "Why would we ever need to change these?",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 1
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
