@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "36bd751c_80795989",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T11:45:57Z",
+      "side": 1,
+      "message": "If this is all \"standard kernel\" stuff, why aren\u0027t we using watchdog.h for the constants?",
+      "parentUuid": "422c2a27_08725fdb",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a804e40a_b9039a20",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 6
@@ -69,6 +87,24 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b503f5b_06e065e9",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T11:45:57Z",
+      "side": 1,
+      "message": "I meant:\n\nswitch(bootstatus) {\n    case WDIOF_EXTERN1:\n...\n    case WDIOF_CARDRESET:\n...\n    default:\n}",
+      "parentUuid": "0adf5363_0a4d68e0",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     },
     {
       "key": {
@@ -119,6 +155,30 @@
     },
     {
       "key": {
+        "uuid": "14acb1f2_01824bb0",
+        "filename": "meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T11:45:57Z",
+      "side": 1,
+      "message": "None of this should be configured though.  We have WAY too many configuration options in this repository as it is.\n\nThese WDIOF_* constants come from the kernel in watchdog.h.  Use that header.  There is zero reason anyone would ever change that.",
+      "parentUuid": "4d48fade_04450570",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 53
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6826be6c_197f89f1",
         "filename": "meson_options.txt",
         "patchSetId": 6
@@ -151,6 +211,24 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "79adc660_19beadf6",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T11:45:57Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we make it a json file then?  Or something picked up from an entity-manager config?",
+      "parentUuid": "de77d17f_390b8f6c",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     },
     {
       "key": {
@@ -198,6 +276,30 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e276a205_ada4e8e3",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T11:45:57Z",
+      "side": 1,
+      "message": "\u003e Those changes are need for updating bmc reboot cause to dbus.\n\nBut is there any value in making them configurable at build time?  This are literals from the dbus schema.\n\n\u003e Also want to make consistence with phosphor-state-manger.\n\nI guess this is up to the maintainer of this repository to decide.  My opinion is there are WAY WAY WAY too many build-configuration options in this repository.  The repository has been around for a while and I don\u0027t think there is a single example of a meta-layer leveraging any of these options.\n\nMeson options should not be turned into a replacement for #define.",
+      "parentUuid": "a12e338c_c5461497",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 1
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
