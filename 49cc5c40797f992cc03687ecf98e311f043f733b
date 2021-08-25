@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "422c2a27_08725fdb",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-08-25T01:31:32Z",
+      "side": 1,
+      "message": "No, this method is leverage by Linux kernel watchdog design. It is a read only file.\nIt contains status of the watchdog device at boot. It is equivalent to\nWDIOC_GETBOOTSTATUS of ioctl interface.",
+      "parentUuid": "56a7df0b_6e4c8ab9",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a804e40a_b9039a20",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 6
@@ -33,6 +51,24 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0adf5363_0a4d68e0",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-08-25T01:31:32Z",
+      "side": 1,
+      "message": "This define WDIOF_EXTERN1 is means External monitoring relay/source 1 was triggered.\nControllers intended for real world applications include external monitoring pins\nthat will trigger a reset. This description is from Linux watchdog-api.\nCustomer know this API definition when they design userspace application.",
+      "parentUuid": "a804e40a_b9039a20",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "4d48fade_04450570",
+        "filename": "meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-08-25T01:31:32Z",
+      "side": 1,
+      "message": "I just want to make consistence of phosphor-state-manager with our modification.",
+      "parentUuid": "d2c8625b_96acfa33",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 53
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6826be6c_197f89f1",
         "filename": "meson_options.txt",
         "patchSetId": 6
@@ -73,6 +133,24 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de77d17f_390b8f6c",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-08-25T01:31:32Z",
+      "side": 1,
+      "message": "It\u0027s could be changed by customer.\nDue to their system might be have one more watchdogs.\nHowever, they might be use watchdog1 or watchdog2 for their BMC system.",
+      "parentUuid": "6826be6c_197f89f1",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -96,6 +174,30 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a12e338c_c5461497",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-08-25T01:31:32Z",
+      "side": 1,
+      "message": "Those changes are need for updating bmc reboot cause to dbus.\nAnd customer can just query this dbus property for their userspace application\nto know the reboot reason. Also want to make consistence with phosphor-state-manger.",
+      "parentUuid": "eb3d600b_b36e350d",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 1
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
