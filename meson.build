@@ -46,6 +46,9 @@ conf.set(
 conf.set_quoted(
     'HOST_RUNNING_FILE', '/run/openbmc/host@%d-on')
 
+conf.set_quoted(
+    'CHASSIS_ON_FILE', '/run/openbmc/chassis@%d-on')
+
 configure_file(output: 'config.h', configuration: conf)
 
 if(get_option('warm-reboot').enabled())
