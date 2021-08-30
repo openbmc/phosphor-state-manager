@@ -53,8 +53,6 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
-constexpr auto CHASSIS_ON_FILE = "/run/openbmc/chassis@%d-on";
-
 void Chassis::subscribeToSystemdSignals()
 {
     try
