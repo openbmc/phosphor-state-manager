@@ -21,7 +21,6 @@ namespace manager
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
-using sdbusplus::exception::SdBusError;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 constexpr auto obmcStandbyTarget = "multi-user.target";
@@ -52,7 +51,7 @@ void BMC::discoverInitialState()
         auto result = this->bus.call(method);
         result.read(unitTargetPath);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in GetUnit call", entry("ERROR=%s", e.what()));
         return;
@@ -72,7 +71,7 @@ void BMC::discoverInitialState()
         // Is obmc-standby.target active or inactive?
         result.read(currentState);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::INFO>("Error in ActiveState Get",
                          entry("ERROR=%s", e.what()));
@@ -94,7 +93,7 @@ void BMC::discoverInitialState()
             this->bus.call(method);
             this->stateSignal.release();
         }
-        catch (const SdBusError& e)
+        catch (const sdbusplus::exception::exception& e)
         {
             log<level::INFO>("Error in Unsubscribe",
                              entry("ERROR=%s", e.what()));
@@ -119,7 +118,7 @@ void BMC::subscribeToSystemdSignals()
     {
         this->bus.call(method);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Failed to subscribe to systemd signals",
                         entry("ERR=%s", e.what()));
@@ -141,7 +140,7 @@ void BMC::executeTransition(const Transition tranReq)
         {
             this->bus.call(method);
         }
-        catch (const SdBusError& e)
+        catch (const sdbusplus::exception::exception& e)
         {
             log<level::INFO>("Error in HardReboot",
                              entry("ERROR=%s", e.what()));
@@ -167,7 +166,7 @@ void BMC::executeTransition(const Transition tranReq)
         {
             this->bus.call(method);
         }
-        catch (const SdBusError& e)
+        catch (const sdbusplus::exception::exception& e)
         {
             log<level::INFO>("Error in StartUnit - replace-irreversibly",
                              entry("ERROR=%s", e.what()));
@@ -202,7 +201,7 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
             this->bus.call(method);
             this->stateSignal.release();
         }
-        catch (const SdBusError& e)
+        catch (const sdbusplus::exception::exception& e)
         {
             log<level::INFO>("Error in Unsubscribe",
                              entry("ERROR=%s", e.what()));

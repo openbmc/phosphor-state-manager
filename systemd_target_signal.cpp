@@ -35,7 +35,7 @@ void SystemdTargetLogging::logError(const std::string& error,
     {
         this->bus.call_noreply(method);
     }
-    catch (const sdbusplus::exception::SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Failed to create systemd target error",
                         entry("ERROR=%s", error.c_str()),
@@ -115,7 +115,7 @@ void SystemdTargetLogging::subscribeToSystemdSignals()
     {
         this->bus.call(method);
     }
-    catch (const sdbusplus::exception::SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         // If error indicates systemd is not on dbus yet then do nothing.
         // The systemdNameChangeSignals callback will detect when it is on

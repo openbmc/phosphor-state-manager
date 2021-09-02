@@ -11,7 +11,6 @@ namespace settings
 
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
-using sdbusplus::exception::SdBusError;
 
 constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
@@ -43,7 +42,7 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
             elog<InternalFailure>();
         }
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in mapper GetSubTree",
                         entry("ERROR=%s", e.what()));
@@ -112,7 +111,7 @@ Service Objects::service(const Path& path, const Interface& interface) const
         auto response = bus.call(mapperCall);
         response.read(result);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in mapper GetObject",
                         entry("ERROR=%s", e.what()));

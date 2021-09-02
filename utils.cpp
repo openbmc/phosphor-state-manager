@@ -12,7 +12,6 @@ namespace utils
 {
 
 using namespace phosphor::logging;
-using sdbusplus::exception::SdBusError;
 
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
@@ -43,7 +42,7 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
             throw std::runtime_error("Error no matching service");
         }
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in mapper call", entry("ERROR=%s", e.what()),
                         entry("PATH=%s", path.c_str()),

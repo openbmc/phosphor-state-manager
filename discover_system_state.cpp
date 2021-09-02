@@ -27,7 +27,6 @@ namespace manager
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 using namespace sdbusplus::xyz::openbmc_project::Control::Power::server;
-using sdbusplus::exception::SdBusError;
 
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
@@ -57,7 +56,7 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
             throw std::runtime_error("Error reading mapper response");
         }
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in mapper call", entry("ERROR=%s", e.what()),
                         entry("PATH=%s", path.c_str()),
@@ -84,7 +83,7 @@ std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
         auto reply = bus.call(method);
         reply.read(property);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in property Get", entry("ERROR=%s", e.what()),
                         entry("PROPERTY=%s", propertyName.c_str()));
@@ -221,7 +220,7 @@ int main(int argc, char** argv)
                         hostReqState);
         }
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in PowerRestorePolicy Get",
                         entry("ERROR=%s", e.what()));

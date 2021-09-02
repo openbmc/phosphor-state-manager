@@ -29,7 +29,6 @@ namespace manager
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
 using namespace phosphor::logging;
-using sdbusplus::exception::SdBusError;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 using sdbusplus::xyz::openbmc_project::State::Shutdown::Power::Error::Blackout;
 constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
@@ -64,7 +63,7 @@ void Chassis::subscribeToSystemdSignals()
             SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH, SYSTEMD_INTERFACE, "Subscribe");
         this->bus.call(method);
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("Failed to subscribe to systemd signals",
                         entry("ERR=%s", ex.what()));
@@ -117,7 +116,7 @@ void Chassis::determineInitialState()
             }
         }
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         // It's acceptable for the pgood state service to not be available
         // since it will notify us of the pgood state when it comes up.
@@ -173,7 +172,7 @@ bool Chassis::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(unitTargetPath);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in GetUnit call", entry("ERROR=%s", e.what()));
         return false;
@@ -191,7 +190,7 @@ bool Chassis::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(currentState);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in ActiveState Get",
                         entry("ERROR=%s", e.what()));
@@ -217,7 +216,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
         uint32_t newStateID{};
         msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in state change - bad encoding",
                         entry("ERROR=%s", e.what()),

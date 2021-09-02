@@ -20,7 +20,6 @@
 using namespace std::literals;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Condition::server;
-using sdbusplus::exception::SdBusError;
 
 // Required strings for sending the msg to check on host
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
@@ -54,7 +53,7 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
         auto mapperResponseMsg = bus.call(mapper);
         mapperResponseMsg.read(mapperResponse);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>(
             "Error in mapper GetSubTree call for HostFirmware condition",
@@ -105,7 +104,7 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
                     return true;
                 }
             }
-            catch (const SdBusError& e)
+            catch (const sdbusplus::exception::exception& e)
             {
                 log<level::ERR>("Error reading HostFirmware condition",
                                 entry("ERROR=%s", e.what()),
@@ -138,7 +137,7 @@ bool isChassiPowerOn(sdbusplus::bus::bus& bus)
             return true;
         }
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error reading Chassis Power State",
                         entry("ERROR=%s", e.what()),

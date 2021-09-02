@@ -44,7 +44,6 @@ namespace osstatus =
     sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
 using namespace phosphor::logging;
 namespace fs = std::experimental::filesystem;
-using sdbusplus::exception::SdBusError;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 // host-shutdown notifies host of shutdown and that leads to host-stop being
@@ -96,7 +95,7 @@ void Host::subscribeToSystemdSignals()
     {
         this->bus.call_noreply(method);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Failed to subscribe to systemd signals",
                         entry("ERR=%s", e.what()));
@@ -164,7 +163,7 @@ bool Host::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(unitTargetPath);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in GetUnit call", entry("ERROR=%s", e.what()));
         return false;
@@ -182,7 +181,7 @@ bool Host::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(currentState);
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in ActiveState Get",
                         entry("ERROR=%s", e.what()));
@@ -264,7 +263,7 @@ bool Host::isAutoReboot()
             return false;
         }
     }
-    catch (const SdBusError& e)
+    catch (const sdbusplus::exception::exception& e)
     {
         log<level::ERR>("Error in AutoReboot Get", entry("ERROR=%s", e.what()));
         return false;

@@ -24,7 +24,6 @@ namespace manager
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
-using sdbusplus::exception::SdBusError;
 
 server::Host::Transition Hypervisor::requestedHostTransition(Transition value)
 {
