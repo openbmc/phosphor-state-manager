@@ -25,6 +25,23 @@
     },
     {
       "key": {
+        "uuid": "404df628_a09d5edb",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-09-02T21:32:59Z",
+      "side": 1,
+      "message": "if the host is already up at runtime, won\u0027t this still be !\u003d Unspecified?  And that\u0027s considered the same as booting in this case?",
+      "revId": "394ad378452f4fc01fa26f7f7e21ed3d2de3a96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "61932a08_be9f7b63",
         "filename": "host_reset_recovery.cpp",
         "patchSetId": 3
