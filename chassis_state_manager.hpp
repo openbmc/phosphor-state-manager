@@ -15,10 +15,6 @@
 #include <experimental/filesystem>
 #include <functional>
 
-#ifndef SDBUSPP_NEW_CAMELCASE
-#define pohCounter pOHCounter
-#endif
-
 namespace phosphor
 {
 namespace state
