@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c93391e1_865a8690",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-07T17:20:08Z",
+      "side": 1,
+      "message": "Thanks. I have changed it as full path.",
+      "parentUuid": "ff905dfb_4540ac1e",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 61
+      },
+      "revId": "52c4abfc282e796b8c8f08a46d0f623ca9fe2025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3cc1d284_d1529236",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 11
@@ -39,6 +63,24 @@
       "revId": "52c4abfc282e796b8c8f08a46d0f623ca9fe2025",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6229aefe_9b890461",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-07T17:20:08Z",
+      "side": 1,
+      "message": "Thanks. I have changed it as const.",
+      "parentUuid": "3cc1d284_d1529236",
+      "revId": "52c4abfc282e796b8c8f08a46d0f623ca9fe2025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
