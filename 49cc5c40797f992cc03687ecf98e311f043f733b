@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "cfb9f342_11c02471",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-07T03:15:23Z",
+      "side": 1,
+      "message": "Yes, you are right. we should use watchdog.h for the constants.",
+      "parentUuid": "36bd751c_80795989",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a804e40a_b9039a20",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 6
@@ -105,6 +123,24 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6169f1ad_8e9a956d",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-07T03:15:23Z",
+      "side": 1,
+      "message": "Yes, switch is more clear and flexible for extend.",
+      "parentUuid": "8b503f5b_06e065e9",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -179,6 +215,30 @@
     },
     {
       "key": {
+        "uuid": "2f599937_1c03fe38",
+        "filename": "meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-07T03:15:23Z",
+      "side": 1,
+      "message": "Thanks for review this. I have removed those option and use watchdog.h for constant.",
+      "parentUuid": "14acb1f2_01824bb0",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 53
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6826be6c_197f89f1",
         "filename": "meson_options.txt",
         "patchSetId": 6
@@ -229,6 +289,24 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ecf4a47_9de3eb95",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-07T03:15:23Z",
+      "side": 1,
+      "message": "Thanks for review this. I have modified this be a constant in the code.",
+      "parentUuid": "79adc660_19beadf6",
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -300,6 +378,30 @@
       "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "988e1d96_6a883fde",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-07T03:15:23Z",
+      "side": 1,
+      "message": "Yes, you are right. We don\u0027t need to change these in meson build. I have removed it. Thanks.",
+      "parentUuid": "e276a205_ada4e8e3",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 1
+      },
+      "revId": "49cc5c40797f992cc03687ecf98e311f043f733b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
