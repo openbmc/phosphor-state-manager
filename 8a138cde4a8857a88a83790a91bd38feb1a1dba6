@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f60c5053_1fa4b533",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-07T20:13:26Z",
+      "side": 1,
+      "message": "Why is this? Does a BMC \"reboot\" command utilize the watchdog? That\u0027s not what we really want here is it? i.e. if someone just types \"reboot\" on the BMC console, I\u0027d prefer to use \"User\" or something like that for the reason. If the BMC hangs, and the watchdog expires and forces a reboot then I\u0027d like to see \"Watchdog\".",
+      "revId": "8a138cde4a8857a88a83790a91bd38feb1a1dba6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c44b5bc_e16506ab",
+        "filename": "meson_options.txt",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-07T20:13:26Z",
+      "side": 1,
+      "message": "Seems like the diff here is un-needed.",
+      "revId": "8a138cde4a8857a88a83790a91bd38feb1a1dba6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
