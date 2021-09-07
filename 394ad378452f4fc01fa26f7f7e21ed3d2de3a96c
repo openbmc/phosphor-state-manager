@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d1e7619b_99eeada4",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-09-07T20:11:41Z",
+      "side": 1,
+      "message": "Yeah Patrick is in the middle of \u0027cleaning\u0027 this out from all the repos :) . Need to use just \"sdbusplus::exception::exception\".\n\nHis commits read:\nSdBusError was intended to be a private error type inside sdbusplus.\nSwitch all catch locations to use the general sdbusplus::exception type.",
+      "parentUuid": "fa808a31_798ae7a9",
+      "range": {
+        "startLine": 15,
+        "startChar": 28,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "394ad378452f4fc01fa26f7f7e21ed3d2de3a96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "404df628_a09d5edb",
         "filename": "host_reset_recovery.cpp",
         "patchSetId": 3
