@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff905dfb_4540ac1e",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-07T12:12:26Z",
+      "side": 1,
+      "message": "Suggest:\n\nauto bootstatusPath \u003d \"/sys/class/watchdog/watchdog0/bootstatus\";\n\nI don\u0027t see a reason to force as a std::string and do concatenation.",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 61
+      },
+      "revId": "52c4abfc282e796b8c8f08a46d0f623ca9fe2025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cc1d284_d1529236",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-07T12:12:26Z",
+      "side": 1,
+      "message": "catch (const std::exception\u0026 e)",
+      "revId": "52c4abfc282e796b8c8f08a46d0f623ca9fe2025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
