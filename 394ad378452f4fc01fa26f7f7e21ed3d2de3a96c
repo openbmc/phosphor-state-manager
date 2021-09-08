@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "2042c027_ebd413d3",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-08T18:23:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1e7619b_99eeada4",
+      "range": {
+        "startLine": 15,
+        "startChar": 28,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "394ad378452f4fc01fa26f7f7e21ed3d2de3a96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "404df628_a09d5edb",
         "filename": "host_reset_recovery.cpp",
         "patchSetId": 3
@@ -66,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "47c3e905_e9b76225",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-08T18:23:33Z",
+      "side": 1,
+      "message": "So this service only runs if the host fails to respond to PLDM and the backup CFAM registers are not set indicating the host is running. So once we get to this code, we have the go ahead to recover the system. So if boot progress is anything but the default, we want to initiate recovery. I\u0027ll update the commit message to be a bit more clear.",
+      "parentUuid": "404df628_a09d5edb",
+      "revId": "394ad378452f4fc01fa26f7f7e21ed3d2de3a96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "61932a08_be9f7b63",
         "filename": "host_reset_recovery.cpp",
         "patchSetId": 3
@@ -77,6 +119,30 @@
       "writtenOn": "2021-09-02T21:28:48Z",
       "side": 1,
       "message": "I think it would be useful to even see this in the main journal message.",
+      "range": {
+        "startLine": 39,
+        "startChar": 25,
+        "endLine": 39,
+        "endChar": 49
+      },
+      "revId": "394ad378452f4fc01fa26f7f7e21ed3d2de3a96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba49abc0_98f9ac33",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-08T18:23:33Z",
+      "side": 1,
+      "message": "Once this gets in, I\u0027m going to refactor all of this repo to use lg2 and will put all entries in the main messages.",
+      "parentUuid": "61932a08_be9f7b63",
       "range": {
         "startLine": 39,
         "startChar": 25,
