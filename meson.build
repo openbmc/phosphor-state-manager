@@ -4,8 +4,9 @@ project(
     default_options: [
         'warning_level=3',
         'werror=true',
-        'cpp_std=c++17'
+        'cpp_std=c++20'
     ],
+    meson_version: '>= 0.57.0',
     license: 'Apache-2.0',
     version: '0.1',
 )
@@ -144,9 +145,8 @@ install_data('obmcutil',
 )
 
 systemd = dependency('systemd')
-systemd_system_unit_dir = systemd.get_pkgconfig_variable(
-    'systemdsystemunitdir',
-    define_variable: ['prefix', get_option('prefix')])
+systemd_system_unit_dir = systemd.get_variable(
+    pkgconfig : 'systemdsystemunitdir')
 subdir('service_files')
 subdir('target_files')
 
