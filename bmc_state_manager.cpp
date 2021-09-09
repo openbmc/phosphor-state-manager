@@ -5,7 +5,7 @@
 #include <sys/sysinfo.h>
 
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 
 #include <cassert>
@@ -16,6 +16,8 @@ namespace state
 {
 namespace manager
 {
+
+PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
@@ -53,7 +55,7 @@ void BMC::discoverInitialState()
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in GetUnit call", entry("ERROR=%s", e.what()));
+        error("Error in GetUnit call: {ERROR}", "ERROR", e);
         return;
     }
 
@@ -73,16 +75,14 @@ void BMC::discoverInitialState()
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::INFO>("Error in ActiveState Get",
-                         entry("ERROR=%s", e.what()));
+        info("Error in ActiveState Get: {ERROR}", "ERROR", e);
         return;
     }
 
     auto currentStateStr = std::get<std::string>(currentState);
     if (currentStateStr == activeState)
     {
-        log<level::INFO>("Setting the BMCState field",
-                         entry("CURRENT_BMC_STATE=%s", "BMC_READY"));
+        info("Setting the BMCState field to BMC_READY");
         this->currentBMCState(BMCState::Ready);
 
         // Unsubscribe so we stop processing all other signals
@@ -95,14 +95,12 @@ void BMC::discoverInitialState()
         }
         catch (const sdbusplus::exception::exception& e)
         {
-            log<level::INFO>("Error in Unsubscribe",
-                             entry("ERROR=%s", e.what()));
+            info("Error in Unsubscribe: {ERROR}", "ERROR", e);
         }
     }
     else
     {
-        log<level::INFO>("Setting the BMCState field",
-                         entry("CURRENT_BMC_STATE=%s", "BMC_NOTREADY"));
+        info("Setting the BMCState field to BMC_NOTREADY");
         this->currentBMCState(BMCState::NotReady);
     }
 
@@ -120,8 +118,7 @@ void BMC::subscribeToSystemdSignals()
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Failed to subscribe to systemd signals",
-                        entry("ERR=%s", e.what()));
+        error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
     }
 
@@ -142,8 +139,7 @@ void BMC::executeTransition(const Transition tranReq)
         }
         catch (const sdbusplus::exception::exception& e)
         {
-            log<level::INFO>("Error in HardReboot",
-                             entry("ERROR=%s", e.what()));
+            info("Error in HardReboot: {ERROR}", "ERROR", e);
         }
     }
     else
@@ -168,8 +164,8 @@ void BMC::executeTransition(const Transition tranReq)
         }
         catch (const sdbusplus::exception::exception& e)
         {
-            log<level::INFO>("Error in StartUnit - replace-irreversibly",
-                             entry("ERROR=%s", e.what()));
+            info("Error in StartUnit - replace-irreversibly: {ERROR}", "ERROR",
+                 e);
         }
     }
     return;
@@ -188,7 +184,7 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
     // Caught the signal that indicates the BMC is now BMC_READY
     if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone))
     {
-        log<level::INFO>("BMC_READY");
+        info("BMC_READY");
         this->currentBMCState(BMCState::Ready);
 
         // Unsubscribe so we stop processing all other signals
@@ -203,8 +199,7 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         }
         catch (const sdbusplus::exception::exception& e)
         {
-            log<level::INFO>("Error in Unsubscribe",
-                             entry("ERROR=%s", e.what()));
+            info("Error in Unsubscribe: {ERROR}", "ERROR", e);
         }
     }
 
@@ -216,6 +211,9 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
     log<level::INFO>("Setting the RequestedBMCTransition field",
                      entry("REQUESTED_BMC_TRANSITION=0x%s",
                            convertForMessage(value).c_str()));
+    info("Setting the RequestedBMCTransition field to "
+         "{REQUESTED_BMC_TRANSITION}",
+         "REQUESTED_BMC_TRANSITION", convertForMessage(value));
 
     executeTransition(value);
     return server::BMC::requestedBMCTransition(value);
@@ -223,9 +221,9 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
 
 BMC::BMCState BMC::currentBMCState(BMCState value)
 {
-    log<level::INFO>(
-        "Setting the BMCState field",
-        entry("CURRENT_BMC_STATE=0x%s", convertForMessage(value).c_str()));
+
+    info("Setting the BMCState field to {CURRENT_BMC_STATE}",
+         "CURRENT_BMC_STATE", convertForMessage(value));
 
     return server::BMC::currentBMCState(value);
 }
