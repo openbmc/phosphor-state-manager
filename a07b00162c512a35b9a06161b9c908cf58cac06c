@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3d49227_0960b3ea",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-10T21:09:40Z",
+      "side": 1,
+      "message": "Missed deleting the old one?",
+      "range": {
+        "startLine": 211,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 62
+      },
+      "revId": "a07b00162c512a35b9a06161b9c908cf58cac06c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15096e1a_9662113f",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-10T21:09:40Z",
+      "side": 1,
+      "message": "Just \u0027value\u0027.  lg2 handles the conversion from sdbusplus-enum to string automatically.",
+      "range": {
+        "startLine": 216,
+        "startChar": 37,
+        "endLine": 216,
+        "endChar": 61
+      },
+      "revId": "a07b00162c512a35b9a06161b9c908cf58cac06c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e32948d_52b89638",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-10T21:09:40Z",
+      "side": 1,
+      "message": "\u0027value\u0027.",
+      "range": {
+        "startLine": 226,
+        "startChar": 30,
+        "endLine": 226,
+        "endChar": 54
+      },
+      "revId": "a07b00162c512a35b9a06161b9c908cf58cac06c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
