@@ -70,6 +70,24 @@
       "revId": "3c0fc1f7bf7a0c67b4095a0576ae08ffdc172d56",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0c417161_33cb01ae",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2021-09-11T14:36:30Z",
+      "side": 1,
+      "message": "No, Tim. I have not implemented anything. Currently I check the SCU_SYS_EXT_RESET_FLAG in u-boot for reset reason and update command line (/proc/cmdline) for reset reason. Then use it to decide if initializing platform GPIOs (when BMC is booted from A/C) and prevent chassis power policy applied when BMC rebooted.\nI think I can replace my current implementation by your approach so I asked you on how can I have /sys/class/watchdog/watchdog0/bootstatus with reset cause information",
+      "parentUuid": "1fdd6f3b_b6ca90f6",
+      "revId": "3c0fc1f7bf7a0c67b4095a0576ae08ffdc172d56",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
