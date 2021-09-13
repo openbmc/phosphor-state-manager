@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c7b8baa7_21ae806d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2021-09-13T04:46:35Z",
+      "side": 1,
+      "message": "Hi Andrew,\nSorry for late to answer your question.\nDue to I trace more detail in kernel then hope can answer it correctly.\nWhen issuing \"reboot\" command on BMC that will call reboot syscall as below.\n\nkernel/reboot.c:\nSYSCALL_DEFINE4(reboot)\n-\u003ecase LINUX_REBOOT_CMD_RESTART:\n  -\u003ekernel_restart(NULL);\n    -\u003emachine_restart()\n      -\u003edo_kernel_restart()\n        -\u003eatomic_notifier_call_chain(\u0026restart_handler_list, reboot_mode, cmd)\n\ndrivers/watchdog/watchdog_core.c:\nxxx_wdt_probe() (xxx platform wdt driver)\n-\u003edevm_watchdog_register_device()\n  -\u003ewatchdog_register_device()\n    -\u003e__watchdog_register_device()\n      -\u003eif (wdd-\u003eops-\u003erestart) {\n            wdd-\u003erestart_nb.notifier_call \u003d watchdog_restart_notifier;\n            ret \u003d register_restart_handler(\u0026wdd-\u003erestart_nb);\n        }\n\nIf your platform had implement your own watchdog driver,\nand watchdog_restart_notifier() will be called with register_restart_handler().\nEventually, your own watchdog reset ops will executed.\nThus, the \"reboot\" command will involve watchdog reset mechanism to achieve it.\n\nBTW, according linux watchdog framework, we can use WDIOC_GETBOOTSTATUS\nto get boot status if your platform have implement watchdog driver\nto monitor status of the watchdog device at boot.\nThat\u0027s why we leverage linux watchdog to implement this feature on BMC.\n\nSincerely,\nTim",
+      "parentUuid": "f60c5053_1fa4b533",
+      "revId": "8a138cde4a8857a88a83790a91bd38feb1a1dba6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c44b5bc_e16506ab",
         "filename": "meson_options.txt",
         "patchSetId": 12
