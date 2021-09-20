@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 namespace phosphor
 {
@@ -11,7 +11,7 @@ namespace manager
 namespace utils
 {
 
-using namespace phosphor::logging;
+PHOSPHOR_LOG2_USING;
 
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
@@ -36,17 +36,17 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
         mapperResponseMsg.read(mapperResponse);
         if (mapperResponse.empty())
         {
-            log<level::ERR>("Error no matching service",
-                            entry("PATH=%s", path.c_str()),
-                            entry("INTERFACE=%s", interface.c_str()));
+            error("Error no matching service with path {PATH} and interface "
+                  "{INTERFACE}",
+                  "PATH", path, "INTERFACE", interface);
             throw std::runtime_error("Error no matching service");
         }
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in mapper call", entry("ERROR=%s", e.what()),
-                        entry("PATH=%s", path.c_str()),
-                        entry("INTERFACE=%s", interface.c_str()));
+        error("Error in mapper call with path {PATH}, interface "
+              "{INTERFACE}, and exception {ERROR}",
+              "PATH", path, "INTERFACE", interface, "ERROR", e);
         throw;
     }
 

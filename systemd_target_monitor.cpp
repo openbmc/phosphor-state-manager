@@ -2,15 +2,14 @@
 #include "systemd_target_signal.hpp"
 
 #include <CLI/CLI.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
 
 #include <iostream>
 #include <vector>
 
-using phosphor::logging::level;
-using phosphor::logging::log;
+PHOSPHOR_LOG2_USING;
 
 bool gVerbose = false;
 
@@ -54,7 +53,7 @@ int main(int argc, char* argv[])
 
     if (filePaths.empty())
     {
-        log<level::ERR>("No input files");
+        error("No input files");
         print_usage();
         exit(-1);
     }
@@ -63,7 +62,7 @@ int main(int argc, char* argv[])
 
     if (targetData.size() == 0)
     {
-        log<level::ERR>("Invalid input files, no targets found");
+        error("Invalid input files, no targets found");
         print_usage();
         exit(-1);
     }
