@@ -5,7 +5,7 @@
 #include <fmt/format.h>
 
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 
@@ -21,6 +21,8 @@ namespace state
 namespace manager
 {
 
+PHOSPHOR_LOG2_USING;
+
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
@@ -34,7 +36,7 @@ server::Host::Transition Hypervisor::requestedHostTransition(Transition value)
     // Only support the transition to On
     if (value != server::Host::Transition::On)
     {
-        log<level::ERR>("Hypervisor state only supports a transition to On");
+        error("Hypervisor state only supports a transition to On");
         // TODO raise appropriate error exception
         return server::Host::Transition::Off;
     }
@@ -47,9 +49,7 @@ server::Host::Transition Hypervisor::requestedHostTransition(Transition value)
 
 server::Host::HostState Hypervisor::currentHostState(HostState value)
 {
-    log<level::INFO>(
-        fmt::format("Change to Hypervisor State: {}", convertForMessage(value))
-            .c_str());
+    info("Change to Hypervisor State: {HYP_STATE}", "HYP_STATE", value);
     return server::Host::currentHostState(value);
 }
 
@@ -60,8 +60,7 @@ server::Host::HostState Hypervisor::currentHostState()
 
 void Hypervisor::updateCurrentHostState(std::string& bootProgress)
 {
-    log<level::DEBUG>(
-        fmt::format("New BootProgress: {}", bootProgress).c_str());
+    debug("New BootProgress: {BOOTPROGRESS}", "BOOTPROGRESS", bootProgress);
 
     if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
                         "ProgressStages.SystemInitComplete")

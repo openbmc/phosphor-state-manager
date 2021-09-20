@@ -9,7 +9,7 @@
 #include <systemd/sd-bus.h>
 
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 
@@ -23,6 +23,8 @@ namespace state
 {
 namespace manager
 {
+
+PHOSPHOR_LOG2_USING;
 
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
@@ -50,17 +52,16 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
         mapperResponseMsg.read(mapperResponse);
         if (mapperResponse.empty())
         {
-            log<level::ERR>("Error reading mapper response",
-                            entry("PATH=%s", path.c_str()),
-                            entry("INTERFACE=%s", interface.c_str()));
+            error("Error reading mapper response from path {PATH} and "
+                  "interface {INTERFACE}",
+                  "PATH", path, "INTERFACE", interface);
             throw std::runtime_error("Error reading mapper response");
         }
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in mapper call", entry("ERROR=%s", e.what()),
-                        entry("PATH=%s", path.c_str()),
-                        entry("INTERFACE=%s", interface.c_str()));
+        error("Error in mapper call for path {PATH} and interface {INTERFACE}",
+              "PATH", path, "INTERFACE", interface);
         throw;
     }
 
@@ -85,15 +86,15 @@ std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in property Get", entry("ERROR=%s", e.what()),
-                        entry("PROPERTY=%s", propertyName.c_str()));
+        error("Error in property Get, error {ERROR}, property {PROPERTY}",
+              "ERROR", e, "PROPERTY", propertyName);
         throw;
     }
 
     if (std::get<std::string>(property).empty())
     {
-        log<level::ERR>("Error reading property response",
-                        entry("PROPERTY=%s", propertyName.c_str()));
+        error("Error reading property response for {PROPERTY}", "PROPERTY",
+              propertyName);
         throw std::runtime_error("Error reading property response");
     }
 
@@ -182,8 +183,7 @@ int main(int argc, char** argv)
             RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             // one_time is set to None so use the customer setting
-            log<level::INFO>(
-                "One time not set, check user setting of power policy");
+            info("One time not set, check user setting of power policy");
             auto reply = bus.call(methodUserSetting);
             reply.read(result);
             powerPolicy = std::get<std::string>(result);
@@ -192,26 +192,26 @@ int main(int argc, char** argv)
         {
             // one_time setting was set so we're going to use it. Reset it
             // to default for next time.
-            log<level::INFO>("One time set, use it and reset to default");
+            info("One time set, use it and reset to default");
             setProperty(bus, settings.powerRestorePolicyOneTime.c_str(),
                         powerRestoreIntf, "PowerRestorePolicy",
                         convertForMessage(RestorePolicy::Policy::None));
         }
 
-        log<level::INFO>("Host power is off, processing power policy",
-                         entry("POWER_POLICY=%s", powerPolicy.c_str()));
+        info("Host power is off, processing power policy {POWER_POLICY}",
+             "POWER_POLICY", powerPolicy);
 
         if (RestorePolicy::Policy::AlwaysOn ==
             RestorePolicy::convertPolicyFromString(powerPolicy))
         {
-            log<level::INFO>("power_policy=ALWAYS_POWER_ON, powering host on");
+            info("power_policy=ALWAYS_POWER_ON, powering host on");
             setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
                         convertForMessage(server::Host::Transition::On));
         }
         else if (RestorePolicy::Policy::Restore ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
-            log<level::INFO>("power_policy=RESTORE, restoring last state");
+            info("power_policy=RESTORE, restoring last state");
 
             // Read last requested state and re-request it to execute it
             auto hostReqState = getProperty(bus, hostPath, HOST_BUSNAME,
@@ -222,8 +222,7 @@ int main(int argc, char** argv)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in PowerRestorePolicy Get",
-                        entry("ERROR=%s", e.what()));
+        error("Error in PowerRestorePolicy Get: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
     }
 
