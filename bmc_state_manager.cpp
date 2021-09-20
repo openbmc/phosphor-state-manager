@@ -230,9 +230,8 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
 
 BMC::RebootCause BMC::lastRebootCause(RebootCause value)
 {
-    log<level::INFO>(
-        "Setting the RebootCause field",
-        entry("LAST_REBOOT_CAUSE=0x%s", convertForMessage(value).c_str()));
+    info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
+         "LAST_REBOOT_CAUSE", value);
 
     return server::BMC::lastRebootCause(value);
 }
@@ -269,10 +268,8 @@ void BMC::discoverLastRebootCause()
     catch (const std::exception& e)
     {
         auto rc = errno;
-        log<level::ERR>((std::string("Failed to read sysfs file "
-                                     "errno=") +
-                         std::to_string(rc) + " FILENAME=" + bootstatusPath)
-                            .c_str());
+        error("Failed to read sysfs file {FILE} with errno {ERRNO}", "FILE",
+              bootstatusPath, "ERRNO", rc);
     }
 
     switch (bootReason)

@@ -8,7 +8,7 @@
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/ScheduledTime/error.hpp>
 
 #include <chrono>
@@ -31,6 +31,8 @@ namespace state
 namespace manager
 {
 
+PHOSPHOR_LOG2_USING;
+
 namespace fs = std::filesystem;
 
 using namespace std::chrono;
@@ -52,8 +54,8 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         if (timer.isEnabled())
         {
             timer.setEnabled(false);
-            log<level::DEBUG>("scheduledTime: The function Scheduled Host "
-                              "Transition is disabled.");
+            debug("scheduledTime: The function Scheduled Host Transition is "
+                  "disabled.");
         }
     }
     else
@@ -61,9 +63,8 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         auto deltaTime = seconds(value) - getTime();
         if (deltaTime < seconds(0))
         {
-            log<level::ERR>(
-                "Scheduled time is earlier than current time. Fail to "
-                "schedule host transition.");
+            error("Scheduled time is earlier than current time. Fail to "
+                  "schedule host transition.");
             elog<InvalidTimeError>(
                 InvalidTime::REASON("Scheduled time is in the past"));
         }
@@ -97,8 +98,8 @@ void ScheduledHostTransition::hostTransition()
     utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_TRANSITION,
                        reqTrans);
 
-    log<level::INFO>("Set requestedTransition",
-                     entry("REQUESTED_TRANSITION=%s", reqTrans.c_str()));
+    info("Set requestedTransition to {REQUESTED_TRANSITION}",
+         "REQUESTED_TRANSITION", reqTrans);
 }
 
 void ScheduledHostTransition::callback()
@@ -126,8 +127,8 @@ void ScheduledHostTransition::initialize()
     if (timeFd == -1)
     {
         auto eno = errno;
-        log<level::ERR>("Failed to create timerfd", entry("ERRNO=%d", eno),
-                        entry("RC=%d", timeFd));
+        error("Failed to create timerfd, errno: {ERRNO}, rc: {RC}", "ERRNO",
+              eno, "RC", timeFd);
         throw std::system_error(eno, std::system_category());
     }
 
@@ -141,8 +142,8 @@ void ScheduledHostTransition::initialize()
     if (r != 0)
     {
         auto eno = errno;
-        log<level::ERR>("Failed to set timerfd", entry("ERRNO=%d", eno),
-                        entry("RC=%d", r));
+        error("Failed to set timerfd, errno: {ERRNO}, rc: {RC}", "ERRNO", eno,
+              "RC", r);
         throw std::system_error(eno, std::system_category());
     }
 
@@ -153,8 +154,8 @@ void ScheduledHostTransition::initialize()
     if (r < 0)
     {
         auto eno = errno;
-        log<level::ERR>("Failed to add event", entry("ERRNO=%d", eno),
-                        entry("RC=%d", r));
+        error("Failed to add event, errno: {ERRNO}, rc: {RC}", "ERRNO", eno,
+              "RC", r);
         throw std::system_error(eno, std::system_category());
     }
     timeChangeEventSource.reset(es);
@@ -180,8 +181,8 @@ void ScheduledHostTransition::handleTimeUpdates()
 
     if (schedTime == 0)
     {
-        log<level::DEBUG>("handleTimeUpdates: The function Scheduled Host "
-                          "Transition is disabled.");
+        debug("handleTimeUpdates: The function Scheduled Host Transition is "
+              "disabled.");
         return;
     }
 
@@ -213,7 +214,7 @@ int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
     while (read(fd, time.data(), time.max_size()) > 0)
         ;
 
-    log<level::DEBUG>("BMC system time is changed");
+    debug("BMC system time is changed");
     schedHostTran->handleTimeUpdates();
 
     return 0;
@@ -246,7 +247,7 @@ bool ScheduledHostTransition::deserializeScheduledValues(uint64_t& time,
     }
     catch (std::exception& e)
     {
-        log<level::ERR>(e.what());
+        error("deserialize exception: {ERROR}", "ERROR", e);
         fs::remove(path);
     }
 

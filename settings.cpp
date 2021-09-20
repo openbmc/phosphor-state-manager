@@ -3,11 +3,13 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 
 namespace settings
 {
+
+PHOSPHOR_LOG2_USING;
 
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
@@ -38,14 +40,13 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
         response.read(result);
         if (result.empty())
         {
-            log<level::ERR>("Invalid response from mapper");
+            error("Invalid response from mapper");
             elog<InternalFailure>();
         }
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in mapper GetSubTree",
-                        entry("ERROR=%s", e.what()));
+        error("Error in mapper GetSubTree: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
     }
 
@@ -113,14 +114,13 @@ Service Objects::service(const Path& path, const Interface& interface) const
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in mapper GetObject",
-                        entry("ERROR=%s", e.what()));
+        error("Error in mapper GetObject: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
     }
 
     if (result.empty())
     {
-        log<level::ERR>("Invalid response from mapper");
+        error("Invalid response from mapper");
         elog<InternalFailure>();
     }
 

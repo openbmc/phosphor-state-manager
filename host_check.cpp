@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 #include <boost/range/adaptor/reversed.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Condition/HostFirmware/server.hpp>
@@ -17,8 +17,16 @@
 #include <thread>
 #include <vector>
 
+namespace phosphor
+{
+namespace state
+{
+namespace manager
+{
+
+PHOSPHOR_LOG2_USING;
+
 using namespace std::literals;
-using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Condition::server;
 
 // Required strings for sending the msg to check on host
@@ -55,16 +63,15 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>(
-            "Error in mapper GetSubTree call for HostFirmware condition",
-            entry("ERROR=%s", e.what()));
+        error("Error in mapper GetSubTree call for HostFirmware condition: "
+              "{ERROR}",
+              "ERROR", e);
         throw;
     }
 
     if (mapperResponse.empty())
     {
-        log<level::INFO>(
-            "Mapper response for HostFirmware conditions is empty!");
+        info("Mapper response for HostFirmware conditions is empty!");
         return false;
     }
 
@@ -106,10 +113,9 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
             }
             catch (const sdbusplus::exception::exception& e)
             {
-                log<level::ERR>("Error reading HostFirmware condition",
-                                entry("ERROR=%s", e.what()),
-                                entry("SERVICE=%s", service.c_str()),
-                                entry("PATH=%s", path.c_str()));
+                error("Error reading HostFirmware condition, error: {ERROR}, "
+                      "service: {SERVICE} path: {PATH}",
+                      "ERROR", e, "SERVICE", service, "PATH", path);
                 throw;
             }
         }
@@ -139,11 +145,10 @@ bool isChassiPowerOn(sdbusplus::bus::bus& bus)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error reading Chassis Power State",
-                        entry("ERROR=%s", e.what()),
-                        entry("SERVICE=%s", CHASSIS_STATE_SVC),
-                        entry("PATH=%s", CHASSIS_STATE_PATH));
-
+        error("Error reading Chassis Power State, error: {ERROR}, "
+              "service: {SERVICE} path: {PATH}",
+              "ERROR", e, "SERVICE", CHASSIS_STATE_SVC, "PATH",
+              CHASSIS_STATE_PATH);
         throw;
     }
     return false;
@@ -151,14 +156,14 @@ bool isChassiPowerOn(sdbusplus::bus::bus& bus)
 
 bool isHostRunning()
 {
-    log<level::INFO>("Check if host is running");
+    info("Check if host is running");
 
     auto bus = sdbusplus::bus::new_default();
 
     // No need to check if chassis power is not on
     if (!isChassiPowerOn(bus))
     {
-        log<level::INFO>("Chassis power not on, exit");
+        info("Chassis power not on, exit");
         return false;
     }
 
@@ -178,7 +183,7 @@ bool isHostRunning()
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         if (checkFirmwareConditionRunning(bus))
         {
-            log<level::INFO>("Host is running!");
+            info("Host is running!");
             // Create file for host instance and create in filesystem to
             // indicate to services that host is running
             auto size = std::snprintf(nullptr, 0, HOST_RUNNING_FILE, 0);
@@ -190,6 +195,10 @@ bool isHostRunning()
             return true;
         }
     }
-    log<level::INFO>("Host is not running!");
+    info("Host is not running!");
     return false;
 }
+
+} // namespace manager
+} // namespace state
+} // namespace phosphor

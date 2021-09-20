@@ -7,7 +7,7 @@
 
 #include <cereal/access.hpp>
 #include <cereal/cereal.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Control/Boot/RebootAttempts/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
@@ -30,7 +30,7 @@ using HostInherit = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Control::Boot::server::RebootAttempts,
     sdbusplus::xyz::openbmc_project::State::OperatingSystem::server::Status>;
 
-using namespace phosphor::logging;
+PHOSPHOR_LOG2_USING;
 
 namespace sdbusRule = sdbusplus::bus::match::rules;
 namespace fs = std::experimental::filesystem;
@@ -113,7 +113,7 @@ class Host : public HostInherit
     {
         // value is ignored in this implementation
         (void)(value);
-        log<level::DEBUG>("External request to reset reboot count");
+        debug("External request to reset reboot count");
         return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
                     RebootAttempts::attemptsLeft(BOOT_COUNT_MAX_ALLOWED));
     }
