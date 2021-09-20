@@ -5,11 +5,9 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 
-#include <fmt/format.h>
-
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdeventplus/event.hpp>
@@ -24,6 +22,8 @@ namespace state
 {
 namespace manager
 {
+
+PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
@@ -61,10 +61,9 @@ void Chassis::subscribeToSystemdSignals()
             SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH, SYSTEMD_INTERFACE, "Subscribe");
         this->bus.call(method);
     }
-    catch (const sdbusplus::exception::exception& ex)
+    catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Failed to subscribe to systemd signals",
-                        entry("ERR=%s", ex.what()));
+        error("Failed to subscribe to systemd signals: {ERR}", "ERR", e);
         elog<InternalFailure>();
     }
 
@@ -89,9 +88,7 @@ void Chassis::determineInitialState()
 
         if (std::get<int>(pgood) == 1)
         {
-            log<level::INFO>("Initial Chassis State will be On",
-                             entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                                   convertForMessage(PowerState::On).c_str()));
+            info("Initial Chassis State will be On");
             server::Chassis::currentPowerState(PowerState::On);
             server::Chassis::requestedPowerTransition(Transition::On);
             return;
@@ -125,15 +122,12 @@ void Chassis::determineInitialState()
         }
 
         // Only log for unexpected error types.
-        log<level::ERR>("Error performing call to get pgood",
-                        entry("ERROR=%s", e.what()));
+        error("Error performing call to get pgood: {ERR}", "ERR", e);
         goto fail;
     }
 
 fail:
-    log<level::INFO>("Initial Chassis State will be Off",
-                     entry("CHASSIS_CURRENT_POWER_STATE=%s",
-                           convertForMessage(PowerState::Off).c_str()));
+    info("Initial Chassis State will be Off");
     server::Chassis::currentPowerState(PowerState::Off);
     server::Chassis::requestedPowerTransition(Transition::Off);
 
@@ -172,7 +166,7 @@ bool Chassis::stateActive(const std::string& target)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in GetUnit call", entry("ERROR=%s", e.what()));
+        error("Error in GetUnit call: {ERR}", "ERR", e);
         return false;
     }
 
@@ -190,8 +184,7 @@ bool Chassis::stateActive(const std::string& target)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in ActiveState Get",
-                        entry("ERROR=%s", e.what()));
+        error("Error in ActiveState Get: {ERR}", "ERR", e);
         return false;
     }
 
@@ -216,16 +209,15 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in state change - bad encoding",
-                        entry("ERROR=%s", e.what()),
-                        entry("REPLY_SIG=%s", msg.get_signature()));
+        error("Error in state change - bad encoding: {ERR} {REPLY_SIG}", "ERR",
+              e, "REPLY_SIG", msg.get_signature());
         return 0;
     }
 
     if ((newStateUnit == CHASSIS_STATE_POWEROFF_TGT) &&
         (newStateResult == "done") && (!stateActive(CHASSIS_STATE_POWERON_TGT)))
     {
-        log<level::INFO>("Received signal that power OFF is complete");
+        info("Received signal that power OFF is complete");
         this->currentPowerState(server::Chassis::PowerState::Off);
         this->setStateChangeTime();
     }
@@ -233,7 +225,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
              (newStateResult == "done") &&
              (stateActive(CHASSIS_STATE_POWERON_TGT)))
     {
-        log<level::INFO>("Received signal that power ON is complete");
+        info("Received signal that power ON is complete");
         this->currentPowerState(server::Chassis::PowerState::On);
         this->setStateChangeTime();
 
@@ -258,9 +250,8 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
 
-    log<level::INFO>(fmt::format("Change to Chassis Requested Power State: {}",
-                                 convertForMessage(value))
-                         .c_str());
+    info("Change to Chassis Requested Power State: {REQ_POWER_TRAN}",
+         "REQ_POWER_TRAN", value);
     executeTransition(value);
     return server::Chassis::requestedPowerTransition(value);
 }
@@ -268,9 +259,8 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 Chassis::PowerState Chassis::currentPowerState(PowerState value)
 {
     PowerState chassisPowerState;
-    log<level::INFO>(fmt::format("Change to Chassis Power State: {}",
-                                 convertForMessage(value))
-                         .c_str());
+    info("Change to Chassis Power State: {CUR_POWER_STATE}", "CUR_POWER_STATE",
+         value);
 
     chassisPowerState = server::Chassis::currentPowerState(value);
     pohTimer.setEnabled(chassisPowerState == PowerState::On);
@@ -357,8 +347,7 @@ void Chassis::startPOHCounter()
     }
     catch (const sdeventplus::SdEventError& e)
     {
-        log<level::ERR>("Error occurred during the sdeventplus loop",
-                        entry("ERROR=%s", e.what()));
+        error("Error occurred during the sdeventplus loop: {ERR}", "ERR", e);
         phosphor::logging::commit<InternalFailure>();
     }
 }
@@ -389,7 +378,7 @@ bool Chassis::deserializeStateChangeTime(uint64_t& time, PowerState& state)
     }
     catch (std::exception& e)
     {
-        log<level::ERR>(e.what());
+        error(e.what());
         fs::remove(path);
     }
 
