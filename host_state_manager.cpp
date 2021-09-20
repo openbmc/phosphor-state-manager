@@ -4,7 +4,6 @@
 
 #include "host_check.hpp"
 
-#include <fmt/format.h>
 #include <stdio.h>
 #include <systemd/sd-bus.h>
 
@@ -14,7 +13,7 @@
 #include <cereal/types/tuple.hpp>
 #include <cereal/types/vector.hpp>
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
@@ -35,6 +34,8 @@ namespace state
 {
 namespace manager
 {
+
+PHOSPHOR_LOG2_USING;
 
 // When you see server:: or reboot:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
@@ -97,8 +98,7 @@ void Host::subscribeToSystemdSignals()
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Failed to subscribe to systemd signals",
-                        entry("ERR=%s", e.what()));
+        error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
     }
     return;
@@ -109,17 +109,13 @@ void Host::determineInitialState()
 
     if (stateActive(HOST_STATE_POWERON_MIN_TGT) || isHostRunning())
     {
-        log<level::INFO>("Initial Host State will be Running",
-                         entry("CURRENT_HOST_STATE=%s",
-                               convertForMessage(HostState::Running).c_str()));
+        info("Initial Host State will be Running");
         server::Host::currentHostState(HostState::Running);
         server::Host::requestedHostTransition(Transition::On);
     }
     else
     {
-        log<level::INFO>("Initial Host State will be Off",
-                         entry("CURRENT_HOST_STATE=%s",
-                               convertForMessage(HostState::Off).c_str()));
+        info("Initial Host State will be Off");
         server::Host::currentHostState(HostState::Off);
         server::Host::requestedHostTransition(Transition::Off);
     }
@@ -165,7 +161,7 @@ bool Host::stateActive(const std::string& target)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in GetUnit call", entry("ERROR=%s", e.what()));
+        error("Error in GetUnit call: {ERROR}", "ERROR", e);
         return false;
     }
 
@@ -183,8 +179,7 @@ bool Host::stateActive(const std::string& target)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in ActiveState Get",
-                        entry("ERROR=%s", e.what()));
+        error("Error in ActiveState Get: {ERROR}", "ERROR", e);
         return false;
     }
 
@@ -221,7 +216,7 @@ bool Host::isAutoReboot()
 
         if (!autoReboot)
         {
-            log<level::INFO>("Auto reboot (one-time) disabled");
+            info("Auto reboot (one-time) disabled");
             return false;
         }
         else
@@ -239,33 +234,34 @@ bool Host::isAutoReboot()
             if (rebootCounterParam > 0)
             {
                 // Reduce BOOTCOUNT by 1
-                log<level::INFO>("Auto reboot enabled, rebooting");
+                info("Auto reboot enabled and boot count at {BOOTCOUNT}, "
+                     "rebooting",
+                     "BOOTCOUNT", rebootCounterParam);
                 return true;
             }
             else if (rebootCounterParam == 0)
             {
                 // Reset reboot counter and go to quiesce state
-                log<level::INFO>("Auto reboot enabled. "
-                                 "HOST BOOTCOUNT already set to 0.");
+                info("Auto reboot enabled but HOST BOOTCOUNT already set to 0");
                 attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
                 return false;
             }
             else
             {
-                log<level::INFO>("Auto reboot enabled. "
-                                 "HOST BOOTCOUNT has an invalid value.");
+                info("Auto reboot enabled but HOST BOOTCOUNT has an invalid "
+                     "value");
                 return false;
             }
         }
         else
         {
-            log<level::INFO>("Auto reboot disabled.");
+            info("Auto reboot disabled.");
             return false;
         }
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error in AutoReboot Get", entry("ERROR=%s", e.what()));
+        error("Error in AutoReboot Get, {ERROR}", "ERROR", e);
         return false;
     }
 }
@@ -284,7 +280,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
         (newStateResult == "done") &&
         (!stateActive(HOST_STATE_POWERON_MIN_TGT)))
     {
-        log<level::INFO>("Received signal that host is off");
+        info("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
         this->bootProgress(bootprogress::Progress::ProgressStages::Unspecified);
         this->operatingSystemState(osstatus::Status::OSStatus::Inactive);
@@ -293,7 +289,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
              (newStateResult == "done") &&
              (stateActive(HOST_STATE_POWERON_MIN_TGT)))
     {
-        log<level::INFO>("Received signal that host is running");
+        info("Received signal that host is running");
         this->currentHostState(server::Host::HostState::Running);
 
         // Remove temporary file which is utilized for scenarios where the
@@ -316,12 +312,12 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
     {
         if (Host::isAutoReboot())
         {
-            log<level::INFO>("Beginning reboot...");
+            info("Beginning reboot...");
             Host::requestedHostTransition(server::Host::Transition::Reboot);
         }
         else
         {
-            log<level::INFO>("Maintaining quiesce");
+            info("Maintaining quiesce");
             this->currentHostState(server::Host::HostState::Quiesced);
         }
     }
@@ -338,7 +334,7 @@ void Host::sysStateChangeJobNew(sdbusplus::message::message& msg)
 
     if (newStateUnit == HOST_STATE_DIAGNOSTIC_MODE)
     {
-        log<level::INFO>("Received signal that host is in diagnostice mode");
+        info("Received signal that host is in diagnostice mode");
         this->currentHostState(server::Host::HostState::DiagnosticMode);
     }
 }
@@ -376,7 +372,7 @@ bool Host::deserialize(const fs::path& path)
     }
     catch (cereal::Exception& e)
     {
-        log<level::ERR>(e.what());
+        error("deserialize exception: {ERROR}", "ERROR", e);
         fs::remove(path);
         return false;
     }
@@ -384,9 +380,7 @@ bool Host::deserialize(const fs::path& path)
 
 Host::Transition Host::requestedHostTransition(Transition value)
 {
-    log<level::INFO>(fmt::format("Host state transition request of {}",
-                                 convertForMessage(value))
-                         .c_str());
+    info("Host state transition request of {REQ}", "REQ", value);
     // If this is not a power off request then we need to
     // decrement the reboot counter.  This code should
     // never prevent a power on, it should just decrement
@@ -420,9 +414,7 @@ Host::OSStatus Host::operatingSystemState(OSStatus value)
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    log<level::INFO>(
-        fmt::format("Change to Host State: {}", convertForMessage(value))
-            .c_str());
+    info("Change to Host State: {STATE}", "STATE", value);
     return server::Host::currentHostState(value);
 }
 

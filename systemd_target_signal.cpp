@@ -1,7 +1,7 @@
 #include "systemd_target_signal.hpp"
 
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
@@ -15,19 +15,18 @@ namespace manager
 {
 
 using phosphor::logging::elog;
-using phosphor::logging::entry;
-using phosphor::logging::level;
-using phosphor::logging::log;
+PHOSPHOR_LOG2_USING;
+
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
-void SystemdTargetLogging::logError(const std::string& error,
+void SystemdTargetLogging::logError(const std::string& errorLog,
                                     const std::string& result)
 {
     auto method = this->bus.new_method_call(
         "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
         "xyz.openbmc_project.Logging.Create", "Create");
     // Signature is ssa{ss}
-    method.append(error);
+    method.append(errorLog);
     method.append("xyz.openbmc_project.Logging.Entry.Level.Critical");
     method.append(std::array<std::pair<std::string, std::string>, 1>(
         {std::pair<std::string, std::string>({"SYSTEMD_RESULT", result})}));
@@ -37,10 +36,9 @@ void SystemdTargetLogging::logError(const std::string& error,
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Failed to create systemd target error",
-                        entry("ERROR=%s", error.c_str()),
-                        entry("RESULT=%s", result.c_str()),
-                        entry("SDBUSERR=%s", e.what()));
+        error("Failed to create systemd target error, error:{ERROR}, "
+              "result:{RESULT}, exception:{EXCEPTION}",
+              "ERROR", errorLog, "RESULT", result, "EXCEPTION", e);
     }
 }
 
@@ -55,9 +53,9 @@ const std::string* SystemdTargetLogging::processError(const std::string& unit,
                       targetEntry->second.errorsToMonitor.end(),
                       result) != targetEntry->second.errorsToMonitor.end())
         {
-            log<level::INFO>("Monitored systemd unit has hit an error",
-                             entry("UNIT=%s", unit.c_str()),
-                             entry("RESULT=%s", result.c_str()));
+            info("Monitored systemd unit has hit an error, unit:{UNIT}, "
+                 "result:{RESULT}",
+                 "UNIT", unit, "RESULT", result);
             return (&targetEntry->second.errorToLog);
         }
     }
@@ -99,7 +97,7 @@ void SystemdTargetLogging::processNameChangeSignal(
     // Looking for systemd to be on dbus so we can call it
     if (name == "org.freedesktop.systemd1")
     {
-        log<level::INFO>("org.freedesktop.systemd1 is now on dbus");
+        info("org.freedesktop.systemd1 is now on dbus");
         subscribeToSystemdSignals();
     }
     return;
@@ -123,12 +121,11 @@ void SystemdTargetLogging::subscribeToSystemdSignals()
         const std::string noDbus("org.freedesktop.DBus.Error.ServiceUnknown");
         if (noDbus == e.name())
         {
-            log<level::INFO>("org.freedesktop.systemd1 not on dbus yet");
+            info("org.freedesktop.systemd1 not on dbus yet");
         }
         else
         {
-            log<level::ERR>("Failed to subscribe to systemd signals",
-                            entry("SDBUSERR=%s", e.what()));
+            error("Failed to subscribe to systemd signals: {ERROR}", "ERR", e);
             elog<InternalFailure>();
         }
         return;

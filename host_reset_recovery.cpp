@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 #include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
@@ -12,6 +12,15 @@
 #include <cstdlib>
 #include <fstream>
 #include <string>
+
+namespace phosphor
+{
+namespace state
+{
+namespace manager
+{
+
+PHOSPHOR_LOG2_USING;
 
 constexpr auto HOST_STATE_SVC = "xyz.openbmc_project.State.Host";
 constexpr auto HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
@@ -27,8 +36,6 @@ constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
-
-using namespace phosphor::logging;
 
 bool wasHostBooting(sdbusplus::bus::bus& bus)
 {
@@ -47,20 +54,18 @@ bool wasHostBooting(sdbusplus::bus::bus& bus)
             "xyz.openbmc_project.State.Boot.Progress.ProgressStages."
             "Unspecified")
         {
-            log<level::INFO>("Host was not booting before BMC reboot");
+            info("Host was not booting before BMC reboot");
             return false;
         }
 
-        log<level::INFO>("Host was booting before BMC reboot",
-                         entry("BOOTPROGRESS=%s",
-                               std::get<std::string>(bootProgress).c_str()));
+        info("Host was booting before BMC reboot: {BOOTPROGRESS}",
+             "BOOTPROGRESS", std::get<std::string>(bootProgress));
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("Error reading BootProgress",
-                        entry("ERROR=%s", e.what()),
-                        entry("SERVICE=%s", HOST_STATE_SVC),
-                        entry("PATH=%s", HOST_STATE_PATH));
+        error("Error reading BootProgress, error {ERROR}, service {SERVICE}, "
+              "path {PATH}",
+              "ERROR", e, "SERVICE", HOST_STATE_SVC, "PATH", HOST_STATE_PATH);
 
         throw;
     }
@@ -89,18 +94,18 @@ void createErrorLog(sdbusplus::bus::bus& bus)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("sdbusplus D-Bus call exception",
-                        entry("OBJPATH=%s", LOGGING_PATH),
-                        entry("INTERFACE=%s", LOGGING_CREATE_INTF),
-                        entry("EXCEPTION=%s", e.what()));
+        error(
+            "sdbusplus D-Bus call exception, error {ERROR}, objpath {OBJPATH}, "
+            "interface {INTERFACE}",
+            "ERROR", e, "OBJPATH", LOGGING_PATH, "INTERFACE",
+            LOGGING_CREATE_INTF);
 
         throw std::runtime_error(
             "Error in invoking D-Bus logging create interface");
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("D-bus call exception",
-                        entry("EXCEPTION=%s", e.what()));
+        error("D-bus call exception: {ERROR}", "ERROR", e);
         throw e;
     }
 }
@@ -132,16 +137,22 @@ void moveToHostQuiesce(sdbusplus::bus::bus& bus)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        log<level::ERR>("sdbusplus call exception starting quiesce target",
-                        entry("EXCEPTION=%s", e.what()));
+        error("sdbusplus call exception starting quiesce target: {ERROR}",
+              "ERROR", e);
 
         throw std::runtime_error(
             "Error in invoking D-Bus systemd StartUnit method");
     }
 }
 
+} // namespace manager
+} // namespace state
+} // namespace phosphor
+
 int main()
 {
+    using namespace phosphor::state::manager;
+    PHOSPHOR_LOG2_USING;
 
     auto bus = sdbusplus::bus::new_default();
 
@@ -150,15 +161,15 @@ int main()
     // another systemd target transition (i.e. Quiesce->Reboot)
     while (!isChassisTargetComplete())
     {
-        log<level::DEBUG>("Waiting for chassis on target to complete");
+        debug("Waiting for chassis on target to complete");
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // There is no timeout here, wait until it happens or until system
         // is powered off and this service is stopped
     }
 
-    log<level::INFO>("Chassis power on has completed, checking if host is "
-                     "still running after the BMC reboot");
+    info("Chassis power on has completed, checking if host is "
+         "still running after the BMC reboot");
 
     // Check the last BootProgeress to see if the host was booting before
     // the BMC reboot occurred
