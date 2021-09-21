@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "35a0e275_1b302cec",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-21T20:58:27Z",
+      "side": 1,
+      "message": "Use ERROR for exceptions to stay consistent",
+      "range": {
+        "startLine": 39,
+        "startChar": 61,
+        "endLine": 39,
+        "endChar": 66
+      },
+      "revId": "34c51840f4ea682b3c68839863e3ff822e42b13f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cd48ee55_6fa9e6d5",
         "filename": "systemd_target_signal.cpp",
         "patchSetId": 4
@@ -16,6 +39,24 @@
       "revId": "34c51840f4ea682b3c68839863e3ff822e42b13f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74e899ce_631f0ce2",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-21T20:58:27Z",
+      "side": 1,
+      "message": "oops",
+      "parentUuid": "cd48ee55_6fa9e6d5",
+      "revId": "34c51840f4ea682b3c68839863e3ff822e42b13f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
