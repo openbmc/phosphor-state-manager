@@ -36,9 +36,9 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
         mapperResponseMsg.read(mapperResponse);
         if (mapperResponse.empty())
         {
-            error("Error no matching service with path {PATH} and interface "
-                  "{INTERFACE}",
-                  "PATH", path, "INTERFACE", interface);
+            error(
+                "Error no matching service with path {PATH} and interface {INTERFACE}",
+                "PATH", path, "INTERFACE", interface);
             throw std::runtime_error("Error no matching service");
         }
     }
