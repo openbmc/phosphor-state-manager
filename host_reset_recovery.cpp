@@ -94,10 +94,11 @@ void createErrorLog(sdbusplus::bus::bus& bus)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        error("sdbusplus D-Bus call exception, error {ERROR}, objpath {OBJPATH}, "
-              "interface {INTERFACE}",
-              "ERROR", e, "OBJPATH", LOGGING_PATH, "INTERFACE",
-              LOGGING_CREATE_INTF);
+        error(
+            "sdbusplus D-Bus call exception, error {ERROR}, objpath {OBJPATH}, "
+            "interface {INTERFACE}",
+            "ERROR", e, "OBJPATH", LOGGING_PATH, "INTERFACE",
+            LOGGING_CREATE_INTF);
 
         throw std::runtime_error(
             "Error in invoking D-Bus logging create interface");
@@ -136,8 +137,8 @@ void moveToHostQuiesce(sdbusplus::bus::bus& bus)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        error("sdbusplus call exception starting quiesce target: {ERROR}", "ERROR",
-              e);
+        error("sdbusplus call exception starting quiesce target: {ERROR}",
+              "ERROR", e);
 
         throw std::runtime_error(
             "Error in invoking D-Bus systemd StartUnit method");

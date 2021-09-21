@@ -54,8 +54,8 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         if (timer.isEnabled())
         {
             timer.setEnabled(false);
-            debug("scheduledTime: The function Scheduled Host Transition is "
-                  "disabled.");
+            debug(
+                "scheduledTime: The function Scheduled Host Transition is disabled.");
         }
     }
     else
@@ -63,8 +63,8 @@ uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
         auto deltaTime = seconds(value) - getTime();
         if (deltaTime < seconds(0))
         {
-            error("Scheduled time is earlier than current time. Fail to "
-                  "schedule host transition.");
+            error(
+                "Scheduled time is earlier than current time. Fail to schedule host transition.");
             elog<InvalidTimeError>(
                 InvalidTime::REASON("Scheduled time is in the past"));
         }
@@ -181,8 +181,8 @@ void ScheduledHostTransition::handleTimeUpdates()
 
     if (schedTime == 0)
     {
-        debug("handleTimeUpdates: The function Scheduled Host Transition is "
-              "disabled.");
+        debug(
+            "handleTimeUpdates: The function Scheduled Host Transition is disabled.");
         return;
     }
 

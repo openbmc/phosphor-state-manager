@@ -63,9 +63,9 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        error("Error in mapper GetSubTree call for HostFirmware condition: "
-              "{ERROR}",
-              "ERROR", e);
+        error(
+            "Error in mapper GetSubTree call for HostFirmware condition: {ERROR}",
+            "ERROR", e);
         throw;
     }
 

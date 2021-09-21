@@ -234,9 +234,9 @@ bool Host::isAutoReboot()
             if (rebootCounterParam > 0)
             {
                 // Reduce BOOTCOUNT by 1
-                info("Auto reboot enabled and boot count at {BOOTCOUNT}, "
-                     "rebooting",
-                     "BOOTCOUNT", rebootCounterParam);
+                info(
+                    "Auto reboot enabled and boot count at {BOOTCOUNT}, rebooting",
+                    "BOOTCOUNT", rebootCounterParam);
                 return true;
             }
             else if (rebootCounterParam == 0)
@@ -248,8 +248,8 @@ bool Host::isAutoReboot()
             }
             else
             {
-                info("Auto reboot enabled but HOST BOOTCOUNT has an invalid "
-                     "value");
+                info(
+                    "Auto reboot enabled but HOST BOOTCOUNT has an invalid value");
                 return false;
             }
         }
