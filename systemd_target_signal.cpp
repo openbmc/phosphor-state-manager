@@ -53,9 +53,9 @@ const std::string* SystemdTargetLogging::processError(const std::string& unit,
                       targetEntry->second.errorsToMonitor.end(),
                       result) != targetEntry->second.errorsToMonitor.end())
         {
-            info("Monitored systemd unit has hit an error, unit:{UNIT}, "
-                 "result:{RESULT}",
-                 "UNIT", unit, "RESULT", result);
+            info(
+                "Monitored systemd unit has hit an error, unit:{UNIT}, result:{RESULT}",
+                "UNIT", unit, "RESULT", result);
             return (&targetEntry->second.errorToLog);
         }
     }
