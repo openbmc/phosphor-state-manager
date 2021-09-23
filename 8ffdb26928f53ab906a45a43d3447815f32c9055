@@ -22,6 +22,30 @@
       "revId": "8ffdb26928f53ab906a45a43d3447815f32c9055",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4175188d_d31b1d6d",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-23T15:39:11Z",
+      "side": 1,
+      "message": "Good point, I put a commit on top of this chain to fix with https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-state-manager/+/47156/1",
+      "parentUuid": "6763777e_b47f1428",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 13
+      },
+      "revId": "8ffdb26928f53ab906a45a43d3447815f32c9055",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
