@@ -40,6 +40,7 @@ constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
+constexpr auto OBMC_BMC_SERVICE_FAILURE_TGT = "obmc-bmc-service-failure.target";
 
 void BMC::discoverInitialState()
 {
@@ -184,9 +185,17 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
     // Read the msg and populate each variable
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
-    // Caught the signal that indicates the BMC is now BMC_READY
-    if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone))
+    // First check if it's the service failure target
+    if ((newStateUnit == OBMC_BMC_SERVICE_FAILURE_TGT) &&
+        (newStateResult == signalDone))
     {
+        info("A BMC service has entered the fail state");
+        // TODO this->currentBMCState(BMCState::Quiesced);
+    }
+    else if ((newStateUnit == obmcStandbyTarget) &&
+             (newStateResult == signalDone))
+    {
+        // Caught the signal that indicates the BMC is now BMC_READY
         info("BMC_READY");
         this->currentBMCState(BMCState::Ready);
 
