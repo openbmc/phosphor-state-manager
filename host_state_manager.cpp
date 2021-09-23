@@ -239,17 +239,11 @@ bool Host::isAutoReboot()
                     "BOOTCOUNT", rebootCounterParam);
                 return true;
             }
-            else if (rebootCounterParam == 0)
-            {
-                // Reset reboot counter and go to quiesce state
-                info("Auto reboot enabled but HOST BOOTCOUNT already set to 0");
-                attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
-                return false;
-            }
             else
             {
-                info(
-                    "Auto reboot enabled but HOST BOOTCOUNT has an invalid value");
+                // We are at 0 so reset reboot counter and go to quiesce state
+                info("Auto reboot enabled but HOST BOOTCOUNT already set to 0");
+                attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
                 return false;
             }
         }
