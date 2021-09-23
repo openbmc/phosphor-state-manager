@@ -4,7 +4,8 @@ set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs"
+bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs, \
+usbstate, usbenable, usbdisable"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -331,6 +332,33 @@ handle_cmd ()
             PROPERTY=CurrentBMCState
             state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
+        usbstate)
+            OBJECT=$STATE_OBJECT/bmc0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.BMC
+            PROPERTY=CurrentUSBState
+            state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
+            ;;
+        usbdisable)
+            OBJECT=$STATE_OBJECT/bmc0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.BMC
+            PROPERTY=RequestedBMCTransition
+            VALUE=$INTERFACE.Transition.DisableUsb
+            G_REQUESTED_STATE=$INTERFACE.USBState.UsbDisabled
+            G_QUERY="usbstate"
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            ;;
+        usbenable)
+            OBJECT=$STATE_OBJECT/bmc0
+            SERVICE=$(mapper get-service $OBJECT)
+            INTERFACE=$STATE_INTERFACE.BMC
+            PROPERTY=RequestedBMCTransition
+            VALUE=$INTERFACE.Transition.EnableUsb
+            G_REQUESTED_STATE=$INTERFACE.USBState.UsbEnabled
+            G_QUERY="usbstate"
+            set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "s" $VALUE
+            ;;
         chassisstate)
             OBJECT=$STATE_OBJECT/chassis0
             SERVICE=$(mapper get-service $OBJECT)
@@ -353,7 +381,7 @@ handle_cmd ()
             state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         state|status)
-            for query in bmcstate chassisstate hoststate bootprogress osstate
+            for query in bmcstate usbstate chassisstate hoststate bootprogress osstate
             do
                 handle_cmd $query
             done
