@@ -1,4 +1,5 @@
 unit_files = [
+    'obmc-bmc-service-failure.target',
     'obmc-chassis-hard-poweroff@.target',
     'obmc-chassis-powered-off@.target',
     'obmc-chassis-poweroff@.target',
