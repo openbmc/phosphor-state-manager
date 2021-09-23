@@ -230,6 +230,15 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
     return server::BMC::currentBMCState(value);
 }
 
+BMC::USBState BMC::currentUSBState(USBState value)
+{
+    log<level::INFO>(
+        "Setting the USBState field",
+        entry("CURRENT_USB_STATE=0x%s", convertForMessage(value).c_str()));
+
+    return server::BMC::currentUSBState(value);
+}
+
 uint64_t BMC::lastRebootTime() const
 {
     using namespace std::chrono;

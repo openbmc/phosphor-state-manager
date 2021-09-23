@@ -52,6 +52,9 @@ class BMC : public BMCInherit
     /** @brief Set value of CurrentBMCState **/
     BMCState currentBMCState(BMCState value) override;
 
+    /** @brief Set value of CurrentUSBState **/
+    USBState currentUSBState(USBState value) override;
+
     /** @brief Returns the last time the BMC was rebooted
      *
      *  @details Uses uptime information to determine when
