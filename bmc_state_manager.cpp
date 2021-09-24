@@ -228,6 +228,15 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
     return server::BMC::currentBMCState(value);
 }
 
+BMC::USBState BMC::currentUSBState(USBState value)
+{
+
+    info("Setting the USBState field to {CURRENT_USB_STATE}",
+         "CURRENT_USB_STATE", value);
+
+    return server::BMC::currentUSBState(value);
+}
+
 BMC::RebootCause BMC::lastRebootCause(RebootCause value)
 {
     info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
