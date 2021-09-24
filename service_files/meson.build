@@ -1,4 +1,5 @@
 unit_files = [
+    'phosphor-bmc-service-fail.service',
     'phosphor-systemd-target-monitor.service',
     'phosphor-discover-system-state@.service',
     'phosphor-reboot-host@.service',

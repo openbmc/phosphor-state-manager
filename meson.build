@@ -151,6 +151,15 @@ executable('phosphor-host-reset-recovery',
     install: true
 )
 
+executable('phosphor-bmc-service-failure',
+            'bmc_service_fail.cpp',
+            dependencies: [
+            sdbusplus, phosphorlogging
+            ],
+    implicit_include_directories: true,
+    install: true
+)
+
 install_data('obmcutil',
         install_mode: 'rwxr-xr-x',
         install_dir: get_option('bindir')

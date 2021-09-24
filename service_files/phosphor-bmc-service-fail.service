@@ -1,0 +1,14 @@
+[Unit]
+Description=Log error due to BMC service failure
+Wants=mapper-wait@-xyz-openbmc_project-logging.service
+After=mapper-wait@-xyz-openbmc_project-logging.service
+
+[Service]
+Restart=no
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/phosphor-bmc-service-failure
+
+
+[Install]
+WantedBy=obmc-bmc-service-failure.target
