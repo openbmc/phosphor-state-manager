@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df9ff812_fda77720",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-09-26T02:38:24Z",
+      "side": 1,
+      "message": "why is the first line seperated by comma, the second mostly by comma space and some by space?\n\nIt looks like this is used in both USAGE and the help message.",
+      "revId": "b07be1077ffd2111b8de73a53a5f9dff6e53af3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfdbb12b_21d8e1fd",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-09-26T02:38:24Z",
+      "side": 1,
+      "message": "missing help for new options",
+      "revId": "b07be1077ffd2111b8de73a53a5f9dff6e53af3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
