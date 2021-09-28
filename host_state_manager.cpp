@@ -402,6 +402,11 @@ Host::ProgressStages Host::bootProgress(ProgressStages value)
 {
     auto retVal = bootprogress::Progress::bootProgress(value);
     serialize();
+    if (value == bootprogress::Progress::ProgressStages::SystemInitComplete)
+    {
+        info("Host has reached SystemInitComplete, reset reboot count");
+        attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
+    }
     return retVal;
 }
 
