@@ -22,6 +22,40 @@
       "revId": "6cced71f32c678b79bfeb06889c13be9ab7f1535",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea4780d4_880646b7",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-29T19:29:36Z",
+      "side": 1,
+      "message": "Yeah, sorry, phosphor-state-manager was moved over to lg2. Please replace these with \"error(\"Failed ...\")\"",
+      "revId": "6cced71f32c678b79bfeb06889c13be9ab7f1535",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdca2a7b_990948d3",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-09-29T19:29:36Z",
+      "side": 1,
+      "message": "An \"info(\"detected retulator fault\")\" log would be appreciated here.",
+      "revId": "6cced71f32c678b79bfeb06889c13be9ab7f1535",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
