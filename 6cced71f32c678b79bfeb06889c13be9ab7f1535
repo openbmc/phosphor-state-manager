@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1918dee1_fa93617d",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-10-04T20:24:44Z",
+      "side": 1,
+      "message": "Done - removed.",
+      "parentUuid": "4f257c3c_a8b593bb",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 23
+      },
+      "revId": "6cced71f32c678b79bfeb06889c13be9ab7f1535",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ea4780d4_880646b7",
         "filename": "chassis_state_manager.cpp",
         "patchSetId": 5
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "df223212_3771e3b0",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-10-04T20:24:44Z",
+      "side": 1,
+      "message": "Done, replaced.",
+      "parentUuid": "ea4780d4_880646b7",
+      "revId": "6cced71f32c678b79bfeb06889c13be9ab7f1535",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fdca2a7b_990948d3",
         "filename": "chassis_state_manager.cpp",
         "patchSetId": 5
@@ -53,6 +95,24 @@
       "writtenOn": "2021-09-29T19:29:36Z",
       "side": 1,
       "message": "An \"info(\"detected retulator fault\")\" log would be appreciated here.",
+      "revId": "6cced71f32c678b79bfeb06889c13be9ab7f1535",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1f93880_026fd31a",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-10-04T20:24:44Z",
+      "side": 1,
+      "message": "Done, added.",
+      "parentUuid": "fdca2a7b_990948d3",
       "revId": "6cced71f32c678b79bfeb06889c13be9ab7f1535",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
