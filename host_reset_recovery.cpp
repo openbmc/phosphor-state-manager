@@ -103,7 +103,7 @@ void createErrorLog(sdbusplus::bus::bus& bus)
         throw std::runtime_error(
             "Error in invoking D-Bus logging create interface");
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         error("D-bus call exception: {ERROR}", "ERROR", e);
         throw e;
