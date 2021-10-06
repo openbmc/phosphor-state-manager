@@ -16,6 +16,24 @@
       "revId": "367efd3dc61068ceab592d75b281ab38b60d3c3c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5f39194_98956430",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000369
+      },
+      "writtenOn": "2021-10-06T14:34:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7709cb4_278ecfc2",
+      "revId": "367efd3dc61068ceab592d75b281ab38b60d3c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
