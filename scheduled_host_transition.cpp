@@ -245,7 +245,7 @@ bool ScheduledHostTransition::deserializeScheduledValues(uint64_t& time,
             return true;
         }
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         error("deserialize exception: {ERROR}", "ERROR", e);
         fs::remove(path);

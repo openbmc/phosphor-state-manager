@@ -364,7 +364,7 @@ bool Host::deserialize(const fs::path& path)
         }
         return false;
     }
-    catch (cereal::Exception& e)
+    catch (const cereal::Exception& e)
     {
         error("deserialize exception: {ERROR}", "ERROR", e);
         fs::remove(path);

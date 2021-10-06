@@ -331,7 +331,7 @@ bool Chassis::deserializePOH(const fs::path& path, uint32_t& pohCounter)
         }
         return false;
     }
-    catch (cereal::Exception& e)
+    catch (const cereal::Exception& e)
     {
         error("deserialize exception: {ERROR}", "ERROR", e);
         fs::remove(path);
@@ -388,7 +388,7 @@ bool Chassis::deserializeStateChangeTime(uint64_t& time, PowerState& state)
             return true;
         }
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         error("deserialize exception: {ERROR}", "ERROR", e);
         fs::remove(path);
