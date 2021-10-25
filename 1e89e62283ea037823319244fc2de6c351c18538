@@ -1,0 +1,9 @@
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Mon, 25 Oct 2021 21:57:28 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-state-manager/+/48135
+Project: openbmc/phosphor-state-manager
+Branch: refs/heads/master
