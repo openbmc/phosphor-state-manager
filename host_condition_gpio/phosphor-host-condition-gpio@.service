@@ -1,0 +1,11 @@
+[Unit]
+Description=Phosphor host condition gpios check for HOST %i
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/phosphor-host-condition-gpio %i
+Type=dbus
+BusName=xyz.openbmc_project.State.HostCondition.Gpio
+
+[Install]
+WantedBy=multi-user.target
