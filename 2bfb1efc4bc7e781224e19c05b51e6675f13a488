@@ -16,6 +16,24 @@
       "revId": "2bfb1efc4bc7e781224e19c05b51e6675f13a488",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dabd1727_a0d622d5",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-10-26T11:06:07Z",
+      "side": 1,
+      "message": "Commenting on already merged patch sets is not particularly useful, especially when the code has been merged for over a month.  If you feel supporting WDIOF_EXTERN2 is important, just add a commit to support it.",
+      "parentUuid": "11737853_7475ec25",
+      "revId": "2bfb1efc4bc7e781224e19c05b51e6675f13a488",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
