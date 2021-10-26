@@ -116,7 +116,7 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
                 error("Error reading HostFirmware condition, error: {ERROR}, "
                       "service: {SERVICE} path: {PATH}",
                       "ERROR", e, "SERVICE", service, "PATH", path);
-                throw;
+                continue;
             }
         }
     }
