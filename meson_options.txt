@@ -94,3 +94,19 @@ option('warm-reboot', type : 'feature',
     value : 'enabled',
     description : 'Enable warm reboots of the system',
 )
+
+option('host-gpios', type : 'feature',
+    value : 'disabled',
+    description : 'Enable gpio mechanism to check host state.',
+)
+
+option('host-gpios-busname', type : 'string',
+    value : 'xyz.openbmc_project.State.HostCondition.Gpio',
+    description : 'The host gpios Dbus busname to own.',
+)
+
+option('host-gpios-objpath', type : 'string',
+    value : '/xyz/openbmc_project/Gpios',
+    description : 'The host gpios Dbus root.',
+)
+
