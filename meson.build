@@ -11,6 +11,8 @@ project(
     version: '0.1',
 )
 
+build_host_gpios = get_option('host-gpios')
+
 conf = configuration_data()
 conf.set_quoted(
     'HOST_BUSNAME', get_option('host-busname'))
@@ -42,6 +44,12 @@ conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
 conf.set(
     'CLASS_VERSION', get_option('class-version'))
+if build_host_gpios.enabled()
+    conf.set_quoted(
+        'HOST_GPIOS_BUSNAME', get_option('host-gpios-busname'))
+    conf.set_quoted(
+        'HOST_GPIOS_OBJPATH', get_option('host-gpios-objpath'))
+endif
 
 # globals shared across applications
 conf.set_quoted(
@@ -162,6 +170,10 @@ systemd_system_unit_dir = systemd.get_variable(
     pkgconfig : 'systemdsystemunitdir')
 subdir('service_files')
 subdir('target_files')
+
+if build_host_gpios.enabled()
+    subdir('host_condition')
+endif
 
 datadir = join_paths(
     get_option('sysconfdir'),
