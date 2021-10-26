@@ -1,0 +1,10 @@
+[Unit]
+Description=Phosphor host condition gpios check
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/phosphor-host-condition
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
