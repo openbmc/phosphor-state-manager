@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "b4a2968d_4387086a",
+        "filename": "host_check.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "I read the whole file when seeing the diff comment.  Regardless of the change below this comment is becoming out of date.  In addition to documenting a hack.    \n\nI expect reading the gpio should be fast but could be an i2c transaction for a remote gpio.   \n\nStill faster than a round trip to the host.\n\nUpdate: Not so fast patch set 7 searches for the line 2-3 times per poll in addition to the request and release of the line.",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72011363_c9c57b09",
         "filename": "host_check.cpp",
         "patchSetId": 7
@@ -13,6 +30,142 @@
       "writtenOn": "2021-10-27T02:47:39Z",
       "side": 1,
       "message": "Why do we need this change?",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce05c754_72539127",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "So this code calls find line then throw it away and then call it again?\n\nFind ends up enumerating each gpio controller asking for the name of every gpio then checking for a match.\n\nInstead assign the result of find to the auto lineName",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "346c6344_2738312f",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "If lineName false do the +\u003d \"-n\" and assign is active high, and assign result to new find",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56d35462_f9ba6d82",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "I\u0027m okay with the request every time, but is there a reason to repeatedly search for the line each time?   Only if we expect to hotplug the gpio controller (which I suppose could be an i2c gpio but we could restart when that happens).  \n\nInstead I\u0027d suggest the find should be done in the class startup and there\u0027s no reason to register if no gpio is found vs always returning unknown but since it\u0027s a configurable package that might look for more than one in the future I won\u0027t insist on this.",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97136aba_238e8a17",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "Just if lineName",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bda78d24_bc100544",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "Is this the right value for the gpio request failing?\n\nI\u0027ll note the other user just checks against running which is the conservative correct response here.",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbfae96e_0a488612",
+        "filename": "host_condition/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "The package dir is host condition as is the c source.   But the executable and service are phosphor host condition.   I didn\u0027t bother to figure out which meson package name evaluates.",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2e10d85_3a7c200d",
+        "filename": "meson_options.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "Whitespace change confirm?",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87f95f24_2ec55d29",
+        "filename": "meson_options.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-10-27T05:22:21Z",
+      "side": 1,
+      "message": "Missing new line at end of file",
       "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
