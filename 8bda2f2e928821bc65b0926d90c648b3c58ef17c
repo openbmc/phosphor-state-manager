@@ -36,6 +36,23 @@
     },
     {
       "key": {
+        "uuid": "28a384d2_eaccb13b",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-10-27T20:58:51Z",
+      "side": 1,
+      "message": "I\u0027d like to see these under a host_condition_gpio/ directory to make it clear they are an implementation of the host-condition utilizing a GPIO.",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ce05c754_72539127",
         "filename": "host_condition/host_condition.cpp",
         "patchSetId": 7
@@ -121,6 +138,23 @@
     },
     {
       "key": {
+        "uuid": "0bd0b3a4_0542be1d",
+        "filename": "host_condition/host_condition_main.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-10-27T20:58:51Z",
+      "side": 1,
+      "message": "Unless there\u0027s a good reason, I\u0027d prefer we stay consistent in phosphor-state-manager and utilize auto bus \u003d sdbusplus::bus::new_default(); (i.e. https://github.com/openbmc/phosphor-state-manager/blob/master/host_state_manager_main.cpp)",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dbfae96e_0a488612",
         "filename": "host_condition/meson.build",
         "patchSetId": 7
@@ -138,6 +172,52 @@
     },
     {
       "key": {
+        "uuid": "dc850c9a_6213d60a",
+        "filename": "host_condition/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-10-27T20:58:51Z",
+      "side": 1,
+      "message": "phosphor-host-condition-gpio",
+      "range": {
+        "startLine": 17,
+        "startChar": 5,
+        "endLine": 17,
+        "endChar": 28
+      },
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f39eeeb9_ec41313d",
+        "filename": "host_condition/phosphor-host-condition.service",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-10-27T20:58:51Z",
+      "side": 1,
+      "message": "This is hosting a D-Bus interface so lets make it a d-bus service:\nType\u003ddbus\nBusName\u003dxyz.openbmc_project.State.HostCondition.Gpio (?)",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f2e10d85_3a7c200d",
         "filename": "meson_options.txt",
         "patchSetId": 7
@@ -149,6 +229,23 @@
       "writtenOn": "2021-10-27T05:22:21Z",
       "side": 1,
       "message": "Whitespace change confirm?",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cab16ff0_4d469032",
+        "filename": "meson_options.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-10-27T20:58:51Z",
+      "side": 1,
+      "message": "Lets put a default in here. Be nice to default to enabled for CI purposes but then people already using this repo would have to add a disable. Hmm, guess we\u0027ll have to default to disabled.",
       "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
