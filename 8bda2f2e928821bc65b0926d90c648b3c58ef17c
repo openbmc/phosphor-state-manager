@@ -89,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "f4a46fcb_b14b105b",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:57:27Z",
+      "side": 1,
+      "message": "I updated the name of direction to host_condition_gpio",
+      "parentUuid": "28a384d2_eaccb13b",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ce05c754_72539127",
         "filename": "host_condition/host_condition.cpp",
         "patchSetId": 7
@@ -281,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "151ca879_82a0aa97",
+        "filename": "host_condition/host_condition_main.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:57:27Z",
+      "side": 1,
+      "message": "I updated it to sdbusplus::bus::new_default()",
+      "parentUuid": "0bd0b3a4_0542be1d",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dbfae96e_0a488612",
         "filename": "host_condition/meson.build",
         "patchSetId": 7
@@ -374,6 +410,30 @@
       "writtenOn": "2021-10-27T20:58:51Z",
       "side": 1,
       "message": "This is hosting a D-Bus interface so lets make it a d-bus service:\nType\u003ddbus\nBusName\u003dxyz.openbmc_project.State.HostCondition.Gpio (?)",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9589b438_616d5161",
+        "filename": "host_condition/phosphor-host-condition.service",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:57:27Z",
+      "side": 1,
+      "message": "I added your suggestion to .service file",
+      "parentUuid": "f39eeeb9_ec41313d",
       "range": {
         "startLine": 7,
         "startChar": 0,
