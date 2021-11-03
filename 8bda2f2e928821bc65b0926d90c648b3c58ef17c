@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6f017a49_9f254c6c",
+        "filename": "host_check.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "In case of the firmware has more methods to verify the status of Host, I think it is better if BMC can call other methods if the previous method fails.\n\nBut I remove this change in this commit, I will move it to another one.",
+      "parentUuid": "b4a2968d_4387086a",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72011363_c9c57b09",
         "filename": "host_check.cpp",
         "patchSetId": 7
@@ -30,6 +48,24 @@
       "writtenOn": "2021-10-27T02:47:39Z",
       "side": 1,
       "message": "Why do we need this change?",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "771561e3_5c8f6bb9",
+        "filename": "host_check.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "In case of the firmware has more methods to verify the status of Host, I think it is better if BMC can call other methods if the previous method fails.\n\nBut I remove this change in this commit, I will move it to another one.",
+      "parentUuid": "72011363_c9c57b09",
       "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "94901d21_83c4c6aa",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I moved the finding gpio name to the constructor function. So this task shall be executed only 1 time.",
+      "parentUuid": "ce05c754_72539127",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "346c6344_2738312f",
         "filename": "host_condition/host_condition.cpp",
         "patchSetId": 7
@@ -81,6 +135,24 @@
       "writtenOn": "2021-10-27T05:22:21Z",
       "side": 1,
       "message": "If lineName false do the +\u003d \"-n\" and assign is active high, and assign result to new find",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e11126b_954484ee",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I moved the finding gpio name to the constructor function. So this task shall be executed only 1 time.",
+      "parentUuid": "346c6344_2738312f",
       "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -104,6 +176,24 @@
     },
     {
       "key": {
+        "uuid": "43863c6d_3fc960b3",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I moved the finding gpio name to the constructor function. So this task shall be executed only 1 time.",
+      "parentUuid": "56d35462_f9ba6d82",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "97136aba_238e8a17",
         "filename": "host_condition/host_condition.cpp",
         "patchSetId": 7
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "233c1c3f_2c4be8c6",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I updated this point to if (!lineName.empty())",
+      "parentUuid": "97136aba_238e8a17",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bda78d24_bc100544",
         "filename": "host_condition/host_condition.cpp",
         "patchSetId": 7
@@ -132,6 +240,24 @@
       "writtenOn": "2021-10-27T05:22:21Z",
       "side": 1,
       "message": "Is this the right value for the gpio request failing?\n\nI\u0027ll note the other user just checks against running which is the conservative correct response here.",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66b97622_9146be86",
+        "filename": "host_condition/host_condition.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I add try-catch to cover the reading gpio pin fails.",
+      "parentUuid": "bda78d24_bc100544",
       "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -172,6 +298,24 @@
     },
     {
       "key": {
+        "uuid": "ae0eb321_bfde7e38",
+        "filename": "host_condition/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I removed those redundant code",
+      "parentUuid": "dbfae96e_0a488612",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dc850c9a_6213d60a",
         "filename": "host_condition/meson.build",
         "patchSetId": 7
@@ -183,6 +327,30 @@
       "writtenOn": "2021-10-27T20:58:51Z",
       "side": 1,
       "message": "phosphor-host-condition-gpio",
+      "range": {
+        "startLine": 17,
+        "startChar": 5,
+        "endLine": 17,
+        "endChar": 28
+      },
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "960772aa_adfe6db3",
+        "filename": "host_condition/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I updated it to phosphor-host-condition-gpio",
+      "parentUuid": "dc850c9a_6213d60a",
       "range": {
         "startLine": 17,
         "startChar": 5,
@@ -229,6 +397,24 @@
       "writtenOn": "2021-10-27T05:22:21Z",
       "side": 1,
       "message": "Whitespace change confirm?",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90b36ea3_36a5e827",
+        "filename": "meson_options.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I added the new line to the end of this file",
+      "parentUuid": "f2e10d85_3a7c200d",
       "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -288,6 +474,24 @@
     },
     {
       "key": {
+        "uuid": "c4c72eb7_4deaad72",
+        "filename": "meson_options.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I added the default value \"disabled\" of this option",
+      "parentUuid": "dbbe7442_b3aa2d8c",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "87f95f24_2ec55d29",
         "filename": "meson_options.txt",
         "patchSetId": 7
@@ -299,6 +503,24 @@
       "writtenOn": "2021-10-27T05:22:21Z",
       "side": 1,
       "message": "Missing new line at end of file",
+      "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a9abc78_0950451f",
+        "filename": "meson_options.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-11-03T09:06:52Z",
+      "side": 1,
+      "message": "I added the new line to the end of this file",
+      "parentUuid": "87f95f24_2ec55d29",
       "revId": "8bda2f2e928821bc65b0926d90c648b3c58ef17c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
