@@ -206,6 +206,9 @@ int main(int argc, char** argv)
             RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info("power_policy=ALWAYS_POWER_ON, powering host on");
+            setProperty(bus, hostPath, HOST_BUSNAME, "RestartCause",
+                        convertForMessage(
+                            server::Host::RestartCause::PowerPolicyAlwaysOn));
             setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
                         convertForMessage(server::Host::Transition::On));
         }
@@ -213,7 +216,10 @@ int main(int argc, char** argv)
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info("power_policy=RESTORE, restoring last state");
-
+            setProperty(
+                bus, hostPath, HOST_BUSNAME, "RestartCause",
+                convertForMessage(
+                    server::Host::RestartCause::PowerPolicyPreviousState));
             // Read last requested state and re-request it to execute it
             auto hostReqState = getProperty(bus, hostPath, HOST_BUSNAME,
                                             "RequestedHostTransition");
