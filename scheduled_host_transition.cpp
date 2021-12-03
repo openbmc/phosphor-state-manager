@@ -1,6 +1,7 @@
 #include "scheduled_host_transition.hpp"
 
 #include "utils.hpp"
+#include "xyz/openbmc_project/State/Host/server.hpp"
 
 #include <sys/timerfd.h>
 #include <unistd.h>
@@ -42,8 +43,10 @@ using InvalidTimeError =
     sdbusplus::xyz::openbmc_project::ScheduledTime::Error::InvalidTime;
 using HostTransition =
     sdbusplus::xyz::openbmc_project::State::server::ScheduledHostTransition;
+using HostState = sdbusplus::xyz::openbmc_project::State::server::Host;
 
 constexpr auto PROPERTY_TRANSITION = "RequestedHostTransition";
+constexpr auto PROPERTY_RESTART_CAUSE = "RestartCause";
 
 uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
 {
@@ -93,6 +96,16 @@ void ScheduledHostTransition::hostTransition()
 {
     auto hostPath = std::string{HOST_OBJPATH} + '0';
 
+    // Set RestartCause to indicate this transition is occurring due to a
+    // scheduled host transition as long as it's not an off request
+    if (HostTransition::scheduledTransition() != HostState::Transition::Off)
+    {
+        info("Set RestartCause to scheduled power on reason");
+        auto resCause =
+            convertForMessage(HostState::RestartCause::ScheduledPowerOn);
+        utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_RESTART_CAUSE,
+                           resCause);
+    }
     auto reqTrans = convertForMessage(HostTransition::scheduledTransition());
 
     utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_TRANSITION,
