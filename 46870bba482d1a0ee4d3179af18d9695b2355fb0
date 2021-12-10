@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d701c28_4e942296",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-10T21:10:09Z",
+      "side": 1,
+      "message": "Please include a \"Tested\" statement documenting what you\u0027ve tested.",
+      "revId": "46870bba482d1a0ee4d3179af18d9695b2355fb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13b999fd_e18a2630",
+        "filename": "host_condition_gpio/host_condition.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-10T21:10:09Z",
+      "side": 1,
+      "message": "Should we pass the instance in as a parameter? phosphor-state-manager is designed to be instance based (bmc,chassis,host) but it\u0027s never really supported more then a single instance. I\u0027m ok either way.",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 31
+      },
+      "revId": "46870bba482d1a0ee4d3179af18d9695b2355fb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
