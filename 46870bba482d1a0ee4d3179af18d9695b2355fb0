@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3f911b35_9723e812",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-12-17T15:30:18Z",
+      "side": 1,
+      "message": "I added the \"Tested\" to this commit. Please review this one",
+      "parentUuid": "1d701c28_4e942296",
+      "revId": "46870bba482d1a0ee4d3179af18d9695b2355fb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "13b999fd_e18a2630",
         "filename": "host_condition_gpio/host_condition.cpp",
         "patchSetId": 8
@@ -39,6 +57,30 @@
       "revId": "46870bba482d1a0ee4d3179af18d9695b2355fb0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "053ab003_c592c140",
+        "filename": "host_condition_gpio/host_condition.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2021-12-17T15:30:18Z",
+      "side": 1,
+      "message": "I updated the source code to help users can pass the parameter which indicates host ID. \nPlease review it again.",
+      "parentUuid": "13b999fd_e18a2630",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 31
+      },
+      "revId": "46870bba482d1a0ee4d3179af18d9695b2355fb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
