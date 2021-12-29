@@ -10,12 +10,12 @@
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Condition/HostFirmware/server.hpp>
 
-#include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <thread>
 #include <vector>
+#include <cstdio>
+#include <thread>
 
 namespace phosphor
 {
