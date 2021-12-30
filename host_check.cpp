@@ -12,10 +12,10 @@
 
 #include <cstdlib>
 #include <fstream>
-#include <iostream>
 #include <vector>
-#include <cstdio>
 #include <thread>
+#include <iostream>
+#include <cstdio>
 
 namespace phosphor
 {
