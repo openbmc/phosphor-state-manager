@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "567ee92d_28e24204",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-01-04T16:33:20Z",
+      "side": 1,
+      "message": "Looks good to me Thang, is there anyone else from you company that could weigh in with a +1 before we merge?",
+      "revId": "52dabaaa3669979d4a866024ad6aafa19c8bdc28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
