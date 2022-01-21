@@ -2,10 +2,9 @@
 
 #include "chassis_state_manager.hpp"
 
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
-
-#include <gpiod.h>
 
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
@@ -442,36 +441,22 @@ bool Chassis::standbyVoltageRegulatorFault()
 {
     bool regulatorFault = false;
 
-    // find standby voltage regulator fault via gpio
-    gpiod_line* line = gpiod_line_find("regulator-standby-faulted");
+    // find standby voltage regulator fault via gpiog
 
-    if (nullptr != line)
+    auto gpioval = phosphor::state::manager::utils::getGpioValue(
+        "regulator-standby-faulted");
+
+    if (-1 == gpioval)
     {
-        // take ownership of gpio
-        if (0 != gpiod_line_request_input(line, "chassis"))
-        {
-            error("Failed request for regulator-standby-faulted GPIO");
-        }
-        else
-        {
-            // get gpio value
-            auto gpioval = gpiod_line_get_value(line);
-
-            // release ownership of gpio
-            gpiod_line_close_chip(line);
-
-            if (-1 == gpioval)
-            {
-                error("Failed reading regulator-standby-faulted GPIO");
-            }
-
-            if (1 == gpioval)
-            {
-                info("Detected standby voltage regulator fault");
-                regulatorFault = true;
-            }
-        }
+        error("Failed reading regulator-standby-faulted GPIO");
     }
+
+    if (1 == gpioval)
+    {
+        info("Detected standby voltage regulator fault");
+        regulatorFault = true;
+    }
+
     return regulatorFault;
 }
 
