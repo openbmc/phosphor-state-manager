@@ -34,6 +34,14 @@ void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
                  const std::string& value);
 
+/** @brief Return the value of the input GPIO
+ *
+ * @param[in] gpioName          - The name of the GPIO to read
+ *
+ *  * @return The value of the gpio (0 or 1) or -1 on error
+ */
+int getGpioValue(const std::string& gpioName);
+
 } // namespace utils
 } // namespace manager
 } // namespace state

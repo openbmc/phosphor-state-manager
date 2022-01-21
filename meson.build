@@ -100,6 +100,7 @@ executable('phosphor-hypervisor-state-manager',
 executable('phosphor-chassis-state-manager',
             'chassis_state_manager.cpp',
             'chassis_state_manager_main.cpp',
+            'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
             phosphordbusinterfaces, cppfs, libgpiod
@@ -145,7 +146,7 @@ executable('phosphor-scheduled-host-transition',
             'scheduled_host_transition.cpp',
             'utils.cpp',
             dependencies: [
-            sdbusplus, sdeventplus, phosphorlogging
+            sdbusplus, sdeventplus, phosphorlogging, libgpiod
             ],
     implicit_include_directories: true,
     install: true
@@ -221,7 +222,7 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
           'scheduled_host_transition.cpp',
           'utils.cpp',
           dependencies: [
-              gtest, gmock, sdbusplus, sdeventplus, phosphorlogging,
+              gtest, gmock, sdbusplus, sdeventplus, phosphorlogging, libgpiod
           ],
           implicit_include_directories: true,
           include_directories: '../'
