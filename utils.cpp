@@ -1,5 +1,7 @@
 #include "utils.hpp"
 
+#include <gpiod.h>
+
 #include <phosphor-logging/lg2.hpp>
 
 namespace phosphor
@@ -67,6 +69,31 @@ void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
     bus.call_noreply(method);
 
     return;
+}
+
+int getGpioValue(const std::string& gpioName)
+{
+
+    int gpioval = -1;
+    gpiod_line* line = gpiod_line_find(gpioName.c_str());
+
+    if (nullptr != line)
+    {
+        // take ownership of gpio
+        if (0 != gpiod_line_request_input(line, "state-manager"))
+        {
+            error("Failed request for {GPIO_NAME} GPIO", "GPIO_NAME", gpioName);
+        }
+        else
+        {
+            // get gpio value
+            gpioval = gpiod_line_get_value(line);
+
+            // release ownership of gpio
+            gpiod_line_close_chip(line);
+        }
+    }
+    return gpioval;
 }
 
 } // namespace utils
