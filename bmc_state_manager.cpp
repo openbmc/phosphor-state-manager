@@ -1,7 +1,9 @@
 #include "bmc_state_manager.hpp"
 
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
+#include <gpiod.h>
 #include <sys/sysinfo.h>
 
 #include <phosphor-logging/elog-errors.hpp>
@@ -276,13 +278,26 @@ void BMC::discoverLastRebootCause()
     {
         case WDIOF_EXTERN1:
             this->lastRebootCause(RebootCause::Watchdog);
-            break;
+            return;
         case WDIOF_CARDRESET:
             this->lastRebootCause(RebootCause::POR);
-            break;
+            return;
         default:
             this->lastRebootCause(RebootCause::Unknown);
+            // Continue below to see if more details can be found
+            // on reason for reboot
             break;
+    }
+
+    // If the above code could not detect a reason, look for a the
+    // reset-cause-pinhole gpio to see if it is the reason for the reboot
+    auto gpioval =
+        phosphor::state::manager::utils::getGpioValue("reset-cause-pinhole");
+
+    if (1 == gpioval)
+    {
+        info("The BMC reset was caused by a pinhole reset");
+        this->lastRebootCause(RebootCause::PinholeReset);
     }
 
     return;

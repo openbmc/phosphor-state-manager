@@ -112,9 +112,10 @@ executable('phosphor-chassis-state-manager',
 executable('phosphor-bmc-state-manager',
             'bmc_state_manager.cpp',
             'bmc_state_manager_main.cpp',
+            'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs
+            phosphordbusinterfaces, cppfs, libgpiod
             ],
     implicit_include_directories: true,
     install: true
