@@ -105,18 +105,26 @@ void Chassis::determineInitialState()
 
             if (deserializeStateChangeTime(lastTime, lastState))
             {
+                // If power was on before the BMC reboot and the reboot reason
+                // was not a pinhole reset, log an error
                 if (lastState == PowerState::On)
                 {
-                    if (standbyVoltageRegulatorFault())
-                    {
-                        report<Regulator>();
-                    }
-                    else
-                    {
-                        report<Blackout>();
-                    }
-
+                    info(
+                        "Chassis power was on before the BMC reboot and it is off now");
                     setStateChangeTime();
+
+                    if (phosphor::state::manager::utils::getGpioValue(
+                            "reset-cause-pinhole") != 1)
+                    {
+                        if (standbyVoltageRegulatorFault())
+                        {
+                            report<Regulator>();
+                        }
+                        else
+                        {
+                            report<Blackout>();
+                        }
+                    }
                 }
             }
         }
