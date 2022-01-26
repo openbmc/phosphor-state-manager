@@ -55,6 +55,39 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
     return mapperResponse.begin()->first;
 }
 
+std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
+                        std::string interface, std::string propertyName)
+{
+    std::variant<std::string> property;
+    std::string service = getService(bus, path, interface);
+
+    auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                      PROPERTY_INTERFACE, "Get");
+
+    method.append(interface, propertyName);
+
+    try
+    {
+        auto reply = bus.call(method);
+        reply.read(property);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("Error in property Get, error {ERROR}, property {PROPERTY}",
+              "ERROR", e, "PROPERTY", propertyName);
+        throw;
+    }
+
+    if (std::get<std::string>(property).empty())
+    {
+        error("Error reading property response for {PROPERTY}", "PROPERTY",
+              propertyName);
+        throw std::runtime_error("Error reading property response");
+    }
+
+    return std::get<std::string>(property);
+}
+
 void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
                  const std::string& value)
