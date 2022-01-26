@@ -23,6 +23,19 @@ namespace utils
 std::string getService(sdbusplus::bus::bus& bus, std::string path,
                        std::string interface);
 
+/** @brief Get the value of input property
+ *
+ * @param[in] bus          - The Dbus bus object
+ * @param[in] path         - The Dbus object path
+ * @param[in] interface    - The Dbus interface
+ * @param[in] property     - The property name to get
+ *
+ * @return The value of the property
+ */
+std::string getProperty(sdbusplus::bus::bus& bus, const std::string& path,
+                        const std::string& interface,
+                        const std::string& propertyName);
+
 /** @brief Set the value of property
  *
  * @param[in] bus          - The Dbus bus object
