@@ -124,8 +124,9 @@ executable('phosphor-bmc-state-manager',
 executable('phosphor-discover-system-state',
             'discover_system_state.cpp',
             'settings.cpp',
+            'utils.cpp',
             dependencies: [
-            sdbusplus, phosphorlogging
+            sdbusplus, phosphorlogging, libgpiod
             ],
     implicit_include_directories: true,
     install: true

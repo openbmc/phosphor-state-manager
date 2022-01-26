@@ -2,6 +2,7 @@
 
 #include "host_state_manager.hpp"
 #include "settings.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp"
 
@@ -29,94 +30,6 @@ PHOSPHOR_LOG2_USING;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 using namespace sdbusplus::xyz::openbmc_project::Control::Power::server;
-
-constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
-constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
-
-constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
-
-std::string getService(sdbusplus::bus::bus& bus, std::string path,
-                       std::string interface)
-{
-    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                      MAPPER_INTERFACE, "GetObject");
-
-    mapper.append(path, std::vector<std::string>({interface}));
-
-    std::map<std::string, std::vector<std::string>> mapperResponse;
-    try
-    {
-        auto mapperResponseMsg = bus.call(mapper);
-
-        mapperResponseMsg.read(mapperResponse);
-        if (mapperResponse.empty())
-        {
-            error("Mapper response empty, does not have path {PATH} and "
-                  "interface {INTERFACE}",
-                  "PATH", path, "INTERFACE", interface);
-            throw std::runtime_error("Error reading mapper response");
-        }
-    }
-    catch (const sdbusplus::exception::exception& e)
-    {
-        error("Error in mapper call for path {PATH} and interface {INTERFACE} "
-              "with error {ERROR}",
-              "PATH", path, "INTERFACE", interface, "ERROR", e);
-        throw;
-    }
-
-    return mapperResponse.begin()->first;
-}
-
-std::string getProperty(sdbusplus::bus::bus& bus, std::string path,
-                        std::string interface, std::string propertyName)
-{
-    std::variant<std::string> property;
-    std::string service = getService(bus, path, interface);
-
-    auto method = bus.new_method_call(service.c_str(), path.c_str(),
-                                      PROPERTY_INTERFACE, "Get");
-
-    method.append(interface, propertyName);
-
-    try
-    {
-        auto reply = bus.call(method);
-        reply.read(property);
-    }
-    catch (const sdbusplus::exception::exception& e)
-    {
-        error("Error in property Get, error {ERROR}, property {PROPERTY}",
-              "ERROR", e, "PROPERTY", propertyName);
-        throw;
-    }
-
-    if (std::get<std::string>(property).empty())
-    {
-        error("Error reading property response for {PROPERTY}", "PROPERTY",
-              propertyName);
-        throw std::runtime_error("Error reading property response");
-    }
-
-    return std::get<std::string>(property);
-}
-
-void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
-                 const std::string& interface, const std::string& property,
-                 const std::string& value)
-{
-    std::variant<std::string> variantValue = value;
-    std::string service = getService(bus, path, interface);
-
-    auto method = bus.new_method_call(service.c_str(), path.c_str(),
-                                      PROPERTY_INTERFACE, "Set");
-
-    method.append(interface, property, variantValue);
-    bus.call_noreply(method);
-
-    return;
-}
 
 } // namespace manager
 } // namespace state
@@ -194,9 +107,10 @@ int main(int argc, char** argv)
             // one_time setting was set so we're going to use it. Reset it
             // to default for next time.
             info("One time set, use it and reset to default");
-            setProperty(bus, settings.powerRestorePolicyOneTime.c_str(),
-                        powerRestoreIntf, "PowerRestorePolicy",
-                        convertForMessage(RestorePolicy::Policy::None));
+            phosphor::state::manager::utils::setProperty(
+                bus, settings.powerRestorePolicyOneTime.c_str(),
+                powerRestoreIntf, "PowerRestorePolicy",
+                convertForMessage(RestorePolicy::Policy::None));
         }
 
         info("Host power is off, processing power policy {POWER_POLICY}",
@@ -206,11 +120,13 @@ int main(int argc, char** argv)
             RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info("power_policy=ALWAYS_POWER_ON, powering host on");
-            setProperty(bus, hostPath, HOST_BUSNAME, "RestartCause",
-                        convertForMessage(
-                            server::Host::RestartCause::PowerPolicyAlwaysOn));
-            setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                        convertForMessage(server::Host::Transition::On));
+            phosphor::state::manager::utils::setProperty(
+                bus, hostPath, HOST_BUSNAME, "RestartCause",
+                convertForMessage(
+                    server::Host::RestartCause::PowerPolicyAlwaysOn));
+            phosphor::state::manager::utils::setProperty(
+                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                convertForMessage(server::Host::Transition::On));
         }
         else if (RestorePolicy::Policy::AlwaysOff ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
@@ -223,15 +139,16 @@ int main(int argc, char** argv)
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info("power_policy=RESTORE, restoring last state");
-            setProperty(
+            phosphor::state::manager::utils::setProperty(
                 bus, hostPath, HOST_BUSNAME, "RestartCause",
                 convertForMessage(
                     server::Host::RestartCause::PowerPolicyPreviousState));
             // Read last requested state and re-request it to execute it
-            auto hostReqState = getProperty(bus, hostPath, HOST_BUSNAME,
-                                            "RequestedHostTransition");
-            setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                        hostReqState);
+            auto hostReqState = phosphor::state::manager::utils::getProperty(
+                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
+            phosphor::state::manager::utils::setProperty(
+                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                hostReqState);
         }
     }
     catch (const sdbusplus::exception::exception& e)
