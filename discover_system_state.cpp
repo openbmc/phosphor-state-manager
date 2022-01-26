@@ -69,6 +69,18 @@ int main(int argc, char** argv)
 
     // This application is only run if chassis power is off
 
+    // If the BMC was rebooted due to a user initiated pinhole reset, do not
+    // implement any power restore policies
+    auto bmcRebootCause = phosphor::state::manager::utils::getProperty(
+        bus, "/xyz/openbmc_project/state/bmc0", BMC_BUSNAME, "LastRebootCause");
+    if (bmcRebootCause ==
+        "xyz.openbmc_project.State.BMC.RebootCause.PinholeReset")
+    {
+        info(
+            "BMC was reset due to pinhole reset, no power restore policy will be run");
+        return 0;
+    }
+
     /* The logic here is to first check the one-time PowerRestorePolicy setting.
      * If this property is not the default then look at the persistent
      * user setting in the non one-time object, otherwise honor the one-time
