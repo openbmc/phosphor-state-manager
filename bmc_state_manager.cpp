@@ -298,6 +298,13 @@ void BMC::discoverLastRebootCause()
     {
         info("The BMC reset was caused by a pinhole reset");
         this->lastRebootCause(RebootCause::PinholeReset);
+
+        // Generate log telling user a pinhole reset has occurred
+        const std::string errorMsg = "xyz.openbmc_project.State.PinholeReset";
+        phosphor::state::manager::utils::createError(
+            this->bus, errorMsg,
+            sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                Notice);
     }
 
     return;
