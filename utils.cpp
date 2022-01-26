@@ -96,6 +96,40 @@ int getGpioValue(const std::string& gpioName)
     return gpioval;
 }
 
+void createError(
+    sdbusplus::bus::bus& bus, const std::string& errorMsg,
+    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel)
+{
+
+    try
+    {
+        // Create interface requires something for additionalData
+        std::map<std::string, std::string> additionalData;
+        additionalData.emplace("_PID", std::to_string(getpid()));
+
+        auto method = bus.new_method_call(
+            "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
+            "xyz.openbmc_project.Logging.Create", "Create");
+
+        method.append(errorMsg, errLevel, additionalData);
+        auto resp = bus.call(method);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("sdbusplus D-Bus call exception, error {ERROR} trying to create "
+              "an error with {ERROR_MSG}",
+              "ERROR", e, "ERROR_MSG", errorMsg);
+
+        throw std::runtime_error(
+            "Error in invoking D-Bus logging create interface");
+    }
+    catch (const std::exception& e)
+    {
+        error("D-bus call exception: {ERROR}", "ERROR", e);
+        throw e;
+    }
+}
+
 } // namespace utils
 } // namespace manager
 } // namespace state

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 namespace phosphor
 {
@@ -41,6 +42,16 @@ void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
  *  * @return The value of the gpio (0 or 1) or -1 on error
  */
 int getGpioValue(const std::string& gpioName);
+
+/** @brief Create an error log
+ *
+ * @param[in] bus          - The Dbus bus object
+ * @param[in] errorMsg     - The error message
+ * @param[in] errLevel     - The error level
+ */
+void createError(
+    sdbusplus::bus::bus& bus, const std::string& errorMsg,
+    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel);
 
 } // namespace utils
 } // namespace manager
