@@ -86,6 +86,9 @@ class Chassis : public ChassisInherit
     /** @brief Determine initial chassis state and set internally */
     void determineInitialState();
 
+    /** @brief Determine status of power into system */
+    void determineStatusOfPower();
+
     /**
      * @brief subscribe to the systemd signals
      *

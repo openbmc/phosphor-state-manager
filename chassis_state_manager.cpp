@@ -55,6 +55,12 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
+constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+constexpr auto UPOWER_INTERFACE = "org.freedesktop.UPower.Device";
+constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+
 void Chassis::subscribeToSystemdSignals()
 {
     try
@@ -77,6 +83,8 @@ void Chassis::subscribeToSystemdSignals()
 //        has read property function
 void Chassis::determineInitialState()
 {
+    determineStatusOfPower();
+
     std::variant<int> pgood = -1;
     auto method = this->bus.new_method_call(
         "org.openbmc.control.Power", "/org/openbmc/control/power0",
@@ -149,6 +157,140 @@ fail:
     server::Chassis::currentPowerState(PowerState::Off);
     server::Chassis::requestedPowerTransition(Transition::Off);
 
+    return;
+}
+
+void Chassis::determineStatusOfPower()
+{
+
+    // Details at https://upower.freedesktop.org/docs/Device.html
+    constexpr uint TYPE_UPS = 3;
+    constexpr uint STATE_FULLY_CHARGED = 4;
+    constexpr uint BATTERY_LVL_FULL = 8;
+
+    // Default PowerStatus to good
+    server::Chassis::currentPowerStatus(PowerStatus::Good);
+
+    // Find all implementations of the UPower interface
+    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                      MAPPER_INTERFACE, "GetSubTree");
+
+    mapper.append("/", 0, std::vector<std::string>({UPOWER_INTERFACE}));
+
+    std::map<std::string, std::map<std::string, std::vector<std::string>>>
+        mapperResponse;
+
+    try
+    {
+        auto mapperResponseMsg = bus.call(mapper);
+        mapperResponseMsg.read(mapperResponse);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("Error in mapper GetSubTree call for UPS: {ERROR}", "ERROR", e);
+        throw;
+    }
+
+    if (mapperResponse.empty())
+    {
+        info("No UPower devices found in system");
+        return;
+    }
+
+    // Iterate through all returned Upower interfaces and look for UPS's
+    for (const auto& [path, services] : mapperResponse)
+    {
+        for (const auto& serviceIter : services)
+        {
+            const std::string& service = serviceIter.first;
+
+            try
+            {
+                auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                                  PROPERTY_INTERFACE, "Get");
+                method.append(UPOWER_INTERFACE, "IsPresent");
+
+                auto response = bus.call(method);
+
+                std::variant<bool> isPresent;
+                response.read(isPresent);
+
+                if (std::get<bool>(isPresent) != true)
+                {
+                    info("UPower device {OBJ_PATH} is not present", "OBJ_PATH",
+                         path);
+                    continue;
+                }
+
+                method = bus.new_method_call(service.c_str(), path.c_str(),
+                                             PROPERTY_INTERFACE, "Get");
+                method.append(UPOWER_INTERFACE, "Type");
+
+                response = bus.call(method);
+
+                std::variant<uint> uType;
+                response.read(uType);
+
+                if (std::get<uint>(uType) != TYPE_UPS)
+                {
+                    info("UPower device {OBJ_PATH} is not a UPS device",
+                         "OBJ_PATH", path);
+                    continue;
+                }
+
+                method = bus.new_method_call(service.c_str(), path.c_str(),
+                                             PROPERTY_INTERFACE, "Get");
+                method.append(UPOWER_INTERFACE, "State");
+
+                response = bus.call(method);
+
+                std::variant<uint> uState;
+                response.read(uState);
+
+                if (std::get<uint>(uState) == STATE_FULLY_CHARGED)
+                {
+                    info("UPS is fully charged");
+                }
+                else
+                {
+                    info("UPS is not fully charged: {UPS_STATE}", "UPS_STATE",
+                         std::get<uint>(uState));
+                    server::Chassis::currentPowerStatus(
+                        PowerStatus::UninterruptiblePowerSupply);
+                    return;
+                }
+
+                method = bus.new_method_call(service.c_str(), path.c_str(),
+                                             PROPERTY_INTERFACE, "Get");
+                method.append(UPOWER_INTERFACE, "BatteryLevel");
+
+                response = bus.call(method);
+
+                std::variant<uint> batteryLevel;
+                response.read(batteryLevel);
+
+                if (std::get<uint>(batteryLevel) == BATTERY_LVL_FULL)
+                {
+                    info("UPS Battery Level is Full");
+                }
+                else
+                {
+                    info("UPS Battery Level is Low: {UPS_BAT_LEVEL}",
+                         "UPS_BAT_LEVEL", std::get<uint>(batteryLevel));
+                    server::Chassis::currentPowerStatus(
+                        PowerStatus::UninterruptiblePowerSupply);
+                    return;
+                }
+            }
+            catch (const sdbusplus::exception::exception& e)
+            {
+                error("Error reading UPS property, error: {ERROR}, "
+                      "service: {SERVICE} path: {PATH}",
+                      "ERROR", e, "SERVICE", service, "PATH", path);
+                throw;
+            }
+        }
+    }
     return;
 }
 
