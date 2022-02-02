@@ -135,6 +135,9 @@ class Chassis : public ChassisInherit
     /** @brief Used to subscribe to dbus systemd signals **/
     sdbusplus::bus::match_t systemdSignals;
 
+    /** @brief Watch for any changes to UPS properties  **/
+    std::unique_ptr<sdbusplus::bus::match_t> uPowerPropChangeSignal;
+
     /** @brief Used to Set value of POHCounter */
     uint32_t pohCounter(uint32_t value) override;
 
@@ -204,6 +207,16 @@ class Chassis : public ChassisInherit
      *  @return true if fault detected, else false
      */
     bool standbyVoltageRegulatorFault();
+
+    /** @brief Process UPS property changes
+     *
+     * Instance specific interface to monitor for changes to the UPS
+     * properties which may impact CurrentPowerStatus
+     *
+     * @param[in]  msg              - Data associated with subscribed signal
+     *
+     */
+    void uPowerChangeEvent(sdbusplus::message::message& msg);
 };
 
 } // namespace manager
