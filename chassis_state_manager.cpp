@@ -41,6 +41,11 @@ constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-chassis-poweron@0.target";
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
+// Details at https://upower.freedesktop.org/docs/Device.html
+constexpr uint TYPE_UPS = 3;
+constexpr uint STATE_FULLY_CHARGED = 4;
+constexpr uint BATTERY_LVL_FULL = 8;
+
 /* Map a transition to it's systemd target */
 const std::map<server::Chassis::Transition, std::string> SYSTEMD_TARGET_TABLE =
     {
@@ -83,6 +88,14 @@ void Chassis::subscribeToSystemdSignals()
 //        has read property function
 void Chassis::determineInitialState()
 {
+
+    // Monitor for any properties changed signals on UPower device path
+    uPowerPropChangeSignal = std::make_unique<sdbusplus::bus::match_t>(
+        bus,
+        sdbusplus::bus::match::rules::propertiesChangedNamespace(
+            "/org/freedesktop/UPower", UPOWER_INTERFACE),
+        [this](auto& msg) { this->uPowerChangeEvent(msg); });
+
     determineStatusOfPower();
 
     std::variant<int> pgood = -1;
@@ -162,12 +175,6 @@ fail:
 
 void Chassis::determineStatusOfPower()
 {
-
-    // Details at https://upower.freedesktop.org/docs/Device.html
-    constexpr uint TYPE_UPS = 3;
-    constexpr uint STATE_FULLY_CHARGED = 4;
-    constexpr uint BATTERY_LVL_FULL = 8;
-
     // Default PowerStatus to good
     server::Chassis::currentPowerStatus(PowerStatus::Good);
 
@@ -194,7 +201,6 @@ void Chassis::determineStatusOfPower()
     if (mapperResponse.empty())
     {
         debug("No UPower devices found in system");
-        return;
     }
 
     // Iterate through all returned Upower interfaces and look for UPS's
@@ -217,17 +223,19 @@ void Chassis::determineStatusOfPower()
                 PropertyMap properties;
                 response.read(properties);
 
-                if (std::get<bool>(properties["IsPresent"]) != true)
-                {
-                    info("UPower device {OBJ_PATH} is not present", "OBJ_PATH",
-                         path);
-                    continue;
-                }
-
                 if (std::get<uint>(properties["Type"]) != TYPE_UPS)
                 {
                     info("UPower device {OBJ_PATH} is not a UPS device",
                          "OBJ_PATH", path);
+                    continue;
+                }
+
+                if (std::get<bool>(properties["IsPresent"]) != true)
+                {
+                    // There is a UPS detected but it is not officially
+                    // "present" yet. Monitor it for state change.
+                    info("UPower device {OBJ_PATH} is not present", "OBJ_PATH",
+                         path);
                     continue;
                 }
 
@@ -248,6 +256,9 @@ void Chassis::determineStatusOfPower()
                     BATTERY_LVL_FULL)
                 {
                     info("UPS Battery Level is Full");
+                    // Only one UPS per system, we've found it and it's all
+                    // good so exit function
+                    return;
                 }
                 else
                 {
@@ -267,6 +278,49 @@ void Chassis::determineStatusOfPower()
                 throw;
             }
         }
+    }
+    return;
+}
+
+void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
+{
+    debug("UPS Property Change Event Triggered");
+    std::string statusInterface;
+    std::map<std::string, std::variant<uint, bool>> msgData;
+    msg.read(statusInterface, msgData);
+
+    // If the change is to any of the three properties we are interested in
+    // then call determineStatusOfPower() to see if a power status change
+    // is needed
+    auto propertyMap = msgData.find("IsPresent");
+    if (propertyMap != msgData.end())
+    {
+        auto& uPresence = std::get<bool>(propertyMap->second);
+        info("UPS presence changed to {UPS_PRES_INFO}", "UPS_PRES_INFO",
+             uPresence);
+        if (uPresence)
+        {
+            determineStatusOfPower();
+        }
+        return;
+    }
+
+    propertyMap = msgData.find("State");
+    if (propertyMap != msgData.end())
+    {
+        info("UPS State changed to {UPS_STATE}", "UPS_STATE",
+             std::get<uint>(propertyMap->second));
+        determineStatusOfPower();
+        return;
+    }
+
+    propertyMap = msgData.find("BatteryLevel");
+    if (propertyMap != msgData.end())
+    {
+        info("UPS BatteryLevel changed to {UPS_BAT_LEVEL}", "UPS_BAT_LEVEL",
+             std::get<uint>(propertyMap->second));
+        determineStatusOfPower();
+        return;
     }
     return;
 }
