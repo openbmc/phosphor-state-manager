@@ -109,6 +109,17 @@ executable('phosphor-chassis-state-manager',
     install: true
 )
 
+executable('phosphor-chassis-check-power-status',
+            'chassis_check_power_status.cpp',
+            'utils.cpp',
+            dependencies: [
+            sdbusplus, phosphorlogging,
+            phosphordbusinterfaces, cppfs, libgpiod
+            ],
+    implicit_include_directories: true,
+    install: true
+)
+
 executable('phosphor-bmc-state-manager',
             'bmc_state_manager.cpp',
             'bmc_state_manager_main.cpp',
