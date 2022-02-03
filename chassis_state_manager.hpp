@@ -54,9 +54,15 @@ class Chassis : public ChassisInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Chassis::sysStateChange), this,
                       std::placeholders::_1)),
+        uPowerInterfaceAdded(
+            bus,
+            sdbusplus::bus::match::rules::interfacesAdded() +
+                sdbusplus::bus::match::rules::path("/org/freedesktop/UPower"),
+            [this](auto& msg) { this->uPowerChangeEvent(msg); }),
         pohTimer(sdeventplus::Event::get_default(),
                  std::bind(&Chassis::pohCallback, this), std::chrono::hours{1},
                  std::chrono::minutes{1})
+
     {
         subscribeToSystemdSignals();
 
@@ -88,8 +94,8 @@ class Chassis : public ChassisInherit
 
     /** @brief Determine status of power into system
      *
-     *  @return The UPS d-dbus object path if one is found, an empty std::string
-     *          otherwise
+     *  @return The UPS d-dbus object path if one is found, an empty
+     * std::string otherwise
      */
     std::string determineStatusOfPower();
 
@@ -139,6 +145,9 @@ class Chassis : public ChassisInherit
     /** @brief Used to subscribe to dbus systemd signals **/
     sdbusplus::bus::match_t systemdSignals;
 
+    /** @brief Used to look for new uPower interfaces **/
+    sdbusplus::bus::match_t uPowerInterfaceAdded;
+
     /** @brief Watch for any changes to UPS properties  **/
     std::unique_ptr<sdbusplus::bus::match_t> uPowerPropChangeSignal;
 
@@ -153,8 +162,8 @@ class Chassis : public ChassisInherit
 
     /** @brief Serialize and persist requested POH counter.
      *
-     *  @param[in] dir - pathname of file where the serialized POH counter will
-     *                   be placed.
+     *  @param[in] dir - pathname of file where the serialized POH counter
+     * will be placed.
      *
      *  @return fs::path - pathname of persisted requested POH counter.
      */
