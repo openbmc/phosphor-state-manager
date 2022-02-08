@@ -16,6 +16,23 @@
       "message": "Hi all, Please help me to review this commit.",
       "revId": "1fc48456ac9d156e5a6bbc5c65c89b6e3987d17f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23bdd1e6_7610daaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-08T19:30:11Z",
+      "side": 1,
+      "message": "I can see this both ways. Currently, the last customer requested state is what the power policy honors. With this commit, you\u0027re treating the power policy as the last customer requested state. Is that correct? I\u0027m not sure. Be interested to see if other out there have thoughts on this.\n\nAlthough, you can argue that when the policy is to always power on, we treat that like a customer set state, so your commit here just makes it consistent with the always power off policy.",
+      "revId": "1fc48456ac9d156e5a6bbc5c65c89b6e3987d17f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
