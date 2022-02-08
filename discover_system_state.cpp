@@ -212,6 +212,13 @@ int main(int argc, char** argv)
             setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
                         convertForMessage(server::Host::Transition::On));
         }
+        else if (RestorePolicy::Policy::AlwaysOff ==
+                 RestorePolicy::convertPolicyFromString(powerPolicy))        
+        {
+            info("power_policy=ALWAYS_POWER_OFF, set requested state to off");
+            setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                        convertForMessage(server::Host::Transition::Off));
+        }
         else if (RestorePolicy::Policy::Restore ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
