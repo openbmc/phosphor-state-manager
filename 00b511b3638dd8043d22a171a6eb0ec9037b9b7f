@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45f9a9f3_819640b9",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-09T22:34:50Z",
+      "side": 1,
+      "message": "After discussion with Shawn, I should also watch for the presence property in case it takes the service a bit to determine the UPS is present. So if we find a UPS device, but it\u0027s not present, monitor for it to be come present.",
+      "revId": "00b511b3638dd8043d22a171a6eb0ec9037b9b7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
