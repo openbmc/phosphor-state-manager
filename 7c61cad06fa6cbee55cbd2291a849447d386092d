@@ -24,6 +24,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e10989c_b10fad13",
+        "filename": "utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-09T22:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb7618a0_0a384b85",
+      "range": {
+        "startLine": 83,
+        "startChar": 7,
+        "endLine": 83,
+        "endChar": 51
+      },
+      "revId": "7c61cad06fa6cbee55cbd2291a849447d386092d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75d0294b_7a601dd9",
+        "filename": "utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-09T22:34:50Z",
+      "side": 1,
+      "message": "Yeah, for this repo, the expectation is that it\u0027s never empty so instead of having everyone that calls this in the repo do the check, just going to do it here.",
+      "parentUuid": "eb7618a0_0a384b85",
+      "range": {
+        "startLine": 83,
+        "startChar": 7,
+        "endLine": 83,
+        "endChar": 51
+      },
+      "revId": "7c61cad06fa6cbee55cbd2291a849447d386092d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2714590a_7179230b",
@@ -37,6 +85,30 @@
       "writtenOn": "2022-02-08T17:46:37Z",
       "side": 1,
       "message": "should preferably be const std::string\u0026",
+      "range": {
+        "startLine": 35,
+        "startChar": 50,
+        "endLine": 35,
+        "endChar": 62
+      },
+      "revId": "7c61cad06fa6cbee55cbd2291a849447d386092d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f48b131b_d0abde72",
+        "filename": "utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-09T22:34:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2714590a_7179230b",
       "range": {
         "startLine": 35,
         "startChar": 50,
