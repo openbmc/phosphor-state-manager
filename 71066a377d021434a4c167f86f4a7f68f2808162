@@ -22,6 +22,30 @@
       },
       "revId": "71066a377d021434a4c167f86f4a7f68f2808162",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42d46e17_4ba14cd8",
+        "filename": "service_files/phosphor-chassis-check-power-status@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-09T22:34:50Z",
+      "side": 1,
+      "message": "Ahh yep thanks, didn\u0027t catch in testing because it\u0027s the bitbake recipe that actually installs the templated services.",
+      "parentUuid": "5d1a97e1_ce79030c",
+      "range": {
+        "startLine": 18,
+        "startChar": 15,
+        "endLine": 18,
+        "endChar": 24
+      },
+      "revId": "71066a377d021434a4c167f86f4a7f68f2808162",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
