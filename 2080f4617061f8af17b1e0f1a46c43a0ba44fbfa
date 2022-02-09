@@ -22,6 +22,30 @@
       },
       "revId": "2080f4617061f8af17b1e0f1a46c43a0ba44fbfa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92f8d0c5_f7171578",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-09T22:34:50Z",
+      "side": 1,
+      "message": "Yeah, good point, if we found a device, just grab all of the properties. A more data then we need but a single d-bus transaction is better.",
+      "parentUuid": "4d8fbc53_e7765c2a",
+      "range": {
+        "startLine": 210,
+        "startChar": 71,
+        "endLine": 210,
+        "endChar": 75
+      },
+      "revId": "2080f4617061f8af17b1e0f1a46c43a0ba44fbfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
