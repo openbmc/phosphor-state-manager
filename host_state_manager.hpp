@@ -52,7 +52,7 @@ class Host : public HostInherit
      * @param[in] bus       - The Dbus bus object
      * @param[in] objPath   - The Dbus object path
      */
-    Host(sdbusplus::bus::bus& bus, const char* objPath) :
+    Host(sdbusplus::bus::bus& bus, const char* objPath, const std::string& hostId) :
         HostInherit(bus, objPath, true), bus(bus),
         systemdSignalJobRemoved(
             bus,
@@ -68,10 +68,13 @@ class Host : public HostInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Host::sysStateChangeJobNew), this,
                       std::placeholders::_1)),
-        settings(bus)
+        settings(bus),
+        hostId(hostId)
     {
         // Enable systemd signals
         subscribeToSystemdSignals();
+
+        createSystemdTargets();
 
         // Will throw exception on fail
         determineInitialState();
@@ -134,6 +137,11 @@ class Host : public HostInherit
      * @return Will throw exceptions on failure
      **/
     void determineInitialState();
+
+    /**
+     * create systemd target instance names and mapping table
+     **/
+    void createSystemdTargets();
 
     /** @brief Execute the transition request
      *
@@ -278,6 +286,8 @@ class Host : public HostInherit
 
     // Settings objects of interest
     settings::Objects settings;
+
+    std::string hostId;
 };
 
 } // namespace manager
