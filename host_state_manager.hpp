@@ -51,8 +51,9 @@ class Host : public HostInherit
      *
      * @param[in] bus       - The Dbus bus object
      * @param[in] objPath   - The Dbus object path
+     * @param[in] id        - The Host id
      */
-    Host(sdbusplus::bus::bus& bus, const char* objPath) :
+    Host(sdbusplus::bus::bus& bus, const char* objPath, size_t id) :
         HostInherit(bus, objPath, true), bus(bus),
         systemdSignalJobRemoved(
             bus,
@@ -68,10 +69,13 @@ class Host : public HostInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Host::sysStateChangeJobNew), this,
                       std::placeholders::_1)),
-        settings(bus)
+        settings(bus), id(id)
     {
         // Enable systemd signals
         subscribeToSystemdSignals();
+
+        // create map of target name base on host id
+        createSystemdTargetMaps();
 
         // Will throw exception on fail
         determineInitialState();
@@ -134,6 +138,11 @@ class Host : public HostInherit
      * @return Will throw exceptions on failure
      **/
     void determineInitialState();
+
+    /**
+     * create systemd target instance names and mapping table
+     **/
+    void createSystemdTargetMaps();
 
     /** @brief Execute the transition request
      *
@@ -267,6 +276,24 @@ class Host : public HostInherit
      */
     bool deserialize(const fs::path& path);
 
+    /**
+     * @brief Get target name of a HostState
+     *
+     * @param[in] state      -  The state of the host
+     *
+     * @return srting - systemd target name of the state
+     */
+    const std::string& getTarget(HostState state);
+
+    /**
+     * @brief Get target name of a TransitionRequest
+     *
+     * @param[in] tranReq      -  Transition requested
+     *
+     * @return srting - systemd target name of Requested transition
+     */
+    const std::string& getTarget(Transition tranReq);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& bus;
 
@@ -278,6 +305,15 @@ class Host : public HostInherit
 
     // Settings objects of interest
     settings::Objects settings;
+
+    /** @brief Host id. **/
+    const size_t id;
+
+    /** @brief HostState to systemd target maaping table. **/
+    std::map<HostState, std::string> stateTargetTable;
+
+    /** @brief Requested Transition to systemd target maaping table. **/
+    std::map<Transition, std::string> transitionTargetTable;
 };
 
 } // namespace manager
