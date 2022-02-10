@@ -69,6 +69,7 @@ sdeventplus = dependency('sdeventplus')
 phosphorlogging = dependency('phosphor-logging')
 phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
 libgpiod = dependency('libgpiod', version : '>=1.4.1')
+fmt = dependency('fmt')
 
 cppfs = meson.get_compiler('cpp').find_library('stdc++fs')
 
@@ -79,7 +80,7 @@ executable('phosphor-host-state-manager',
             'host_check.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs
+            phosphordbusinterfaces, cppfs, fmt
             ],
     implicit_include_directories: true,
     install: true
