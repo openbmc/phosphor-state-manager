@@ -51,8 +51,9 @@ class Host : public HostInherit
      *
      * @param[in] bus       - The Dbus bus object
      * @param[in] objPath   - The Dbus object path
+     * @param[in] id        - The Host id
      */
-    Host(sdbusplus::bus::bus& bus, const char* objPath) :
+    Host(sdbusplus::bus::bus& bus, const char* objPath, size_t id) :
         HostInherit(bus, objPath, true), bus(bus),
         systemdSignalJobRemoved(
             bus,
@@ -68,10 +69,13 @@ class Host : public HostInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Host::sysStateChangeJobNew), this,
                       std::placeholders::_1)),
-        settings(bus)
+        settings(bus), id(id)
     {
         // Enable systemd signals
         subscribeToSystemdSignals();
+
+        // create map of target name base on host id
+        createSystemdTargetMaps();
 
         // Will throw exception on fail
         determineInitialState();
@@ -134,6 +138,11 @@ class Host : public HostInherit
      * @return Will throw exceptions on failure
      **/
     void determineInitialState();
+
+    /**
+     * create systemd target instance names and mapping table
+     **/
+    void createSystemdTargetMaps();
 
     /** @brief Execute the transition request
      *
@@ -267,6 +276,12 @@ class Host : public HostInherit
      */
     bool deserialize(const fs::path& path);
 
+    // Get target name of a HostState
+    const std::string& getTarget(HostState state);
+
+    // Get target name of a TransitionRequest
+    const std::string& getTarget(Transition tranReq);
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& bus;
 
@@ -278,6 +293,14 @@ class Host : public HostInherit
 
     // Settings objects of interest
     settings::Objects settings;
+
+    size_t id;
+
+    /* Map a state to it's systemd target */
+    std::map<HostState, std::string> stateTargetTable;
+
+    /* Map a transition to it's systemd target */
+    std::map<Transition, std::string> transitionTargetTable;
 };
 
 } // namespace manager
