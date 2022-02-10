@@ -144,6 +144,7 @@ executable('phosphor-discover-system-state',
 )
 
 executable('phosphor-systemd-target-monitor',
+            'systemd_service_parser.cpp',
             'systemd_target_monitor.cpp',
             'systemd_target_parser.cpp',
             'systemd_target_signal.cpp',
