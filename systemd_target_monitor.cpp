@@ -85,7 +85,8 @@ int main(int argc, char* argv[])
         dump_targets(targetData);
     }
 
-    phosphor::state::manager::SystemdTargetLogging targetMon(targetData, bus);
+    phosphor::state::manager::SystemdTargetLogging targetMon(targetData,
+                                                             serviceData, bus);
 
     // Subscribe to systemd D-bus signals indicating target completions
     targetMon.subscribeToSystemdSignals();

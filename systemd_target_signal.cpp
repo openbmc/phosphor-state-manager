@@ -42,8 +42,8 @@ void SystemdTargetLogging::logError(const std::string& errorLog,
     }
 }
 
-const std::string* SystemdTargetLogging::processError(const std::string& unit,
-                                                      const std::string& result)
+const std::string SystemdTargetLogging::processError(const std::string& unit,
+                                                     const std::string& result)
 {
     auto targetEntry = this->targetData.find(unit);
     if (targetEntry != this->targetData.end())
@@ -56,10 +56,25 @@ const std::string* SystemdTargetLogging::processError(const std::string& unit,
             info(
                 "Monitored systemd unit has hit an error, unit:{UNIT}, result:{RESULT}",
                 "UNIT", unit, "RESULT", result);
-            return (&targetEntry->second.errorToLog);
+            return (targetEntry->second.errorToLog);
         }
     }
-    return nullptr;
+
+    // Check if it's in our list of services to monitor
+    if (std::find(this->serviceData.begin(), this->serviceData.end(), unit) !=
+        this->serviceData.end())
+    {
+        if (result == "failed")
+        {
+            info(
+                "Monitored systemd service has hit an error, unit:{UNIT}, result:{RESULT}",
+                "UNIT", unit, "RESULT", result);
+            return (std::string{
+                "xyz.openbmc_project.State.Error.CriticalServiceFailure"});
+        }
+    }
+
+    return (std::string{});
 }
 
 void SystemdTargetLogging::systemdUnitChange(sdbusplus::message::message& msg)
@@ -74,12 +89,12 @@ void SystemdTargetLogging::systemdUnitChange(sdbusplus::message::message& msg)
     // In most cases it will just be success, in which case just return
     if (result != "done")
     {
-        const std::string* error = processError(unit, result);
+        const std::string error = processError(unit, result);
 
         // If this is a monitored error then log it
-        if (error)
+        if (!error.empty())
         {
-            logError(*error, result);
+            logError(error, result);
         }
     }
     return;
