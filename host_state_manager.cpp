@@ -50,36 +50,22 @@ using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 // host-shutdown notifies host of shutdown and that leads to host-stop being
 // called so initiate a host shutdown with the -shutdown target and consider the
 // host shut down when the -stop target is complete
-constexpr auto HOST_STATE_SOFT_POWEROFF_TGT = "obmc-host-shutdown@0.target";
-constexpr auto HOST_STATE_POWEROFF_TGT = "obmc-host-stop@0.target";
-constexpr auto HOST_STATE_POWERON_TGT = "obmc-host-start@0.target";
-constexpr auto HOST_STATE_POWERON_MIN_TGT = "obmc-host-startmin@0.target";
-constexpr auto HOST_STATE_REBOOT_TGT = "obmc-host-reboot@0.target";
-constexpr auto HOST_STATE_WARM_REBOOT = "obmc-host-warm-reboot@0.target";
-constexpr auto HOST_STATE_FORCE_WARM_REBOOT =
-    "obmc-host-force-warm-reboot@0.target";
-constexpr auto HOST_STATE_DIAGNOSTIC_MODE =
-    "obmc-host-diagnostic-mode@0.target";
+std::string HOST_STATE_SOFT_POWEROFF_TGT;
+std::string HOST_STATE_POWEROFF_TGT;
+std::string HOST_STATE_POWERON_TGT;
+std::string HOST_STATE_POWERON_MIN_TGT;
+std::string HOST_STATE_REBOOT_TGT;
+std::string HOST_STATE_WARM_REBOOT;
+std::string HOST_STATE_FORCE_WARM_REBOOT;
+std::string HOST_STATE_DIAGNOSTIC_MODE;
 
-constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
+std::string HOST_STATE_QUIESCE_TGT;
 
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
 /* Map a transition to it's systemd target */
-const std::map<server::Host::Transition, std::string> SYSTEMD_TARGET_TABLE = {
-    {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
-    {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
-    {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT},
-// Some systems do not support a warm reboot so just map the reboot
-// requests to our normal cold reboot in that case
-#if ENABLE_WARM_REBOOT
-    {server::Host::Transition::GracefulWarmReboot, HOST_STATE_WARM_REBOOT},
-    {server::Host::Transition::ForceWarmReboot, HOST_STATE_FORCE_WARM_REBOOT}};
-#else
-    {server::Host::Transition::GracefulWarmReboot, HOST_STATE_REBOOT_TGT},
-    {server::Host::Transition::ForceWarmReboot, HOST_STATE_REBOOT_TGT}};
-#endif
+std::map<server::Host::Transition, std::string> SYSTEMD_TARGET_TABLE;
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
@@ -127,6 +113,40 @@ void Host::determineInitialState()
     }
 
     return;
+}
+
+void Host::createSystemdTargets()
+{
+    HOST_STATE_SOFT_POWEROFF_TGT = "obmc-host-shutdown@" + hostId + ".target";
+    HOST_STATE_POWEROFF_TGT = "obmc-host-stop@" + hostId + ".target";
+    HOST_STATE_POWERON_TGT = "obmc-host-start@" + hostId + ".target";
+    HOST_STATE_POWERON_MIN_TGT = "obmc-host-startmin@" + hostId + ".target";
+    HOST_STATE_REBOOT_TGT = "obmc-host-reboot@" + hostId + ".target";
+    HOST_STATE_WARM_REBOOT = "obmc-host-warm-reboot@" + hostId + ".target";
+    HOST_STATE_FORCE_WARM_REBOOT =
+        "obmc-host-force-warm-reboot@" + hostId + ".target";
+    HOST_STATE_DIAGNOSTIC_MODE =
+        "obmc-host-diagnostic-mode@" + hostId + ".target";
+
+    HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@" + hostId + ".target";
+
+    /* Map a transition to it's systemd target */
+    SYSTEMD_TARGET_TABLE = {
+        {server::Host::Transition::Off, HOST_STATE_SOFT_POWEROFF_TGT},
+        {server::Host::Transition::On, HOST_STATE_POWERON_TGT},
+        {server::Host::Transition::Reboot, HOST_STATE_REBOOT_TGT},
+// Some systems do not support a warm reboot so just map the reboot
+// requests to our normal cold reboot in that case
+#if ENABLE_WARM_REBOOT
+        {server::Host::Transition::GracefulWarmReboot, HOST_STATE_WARM_REBOOT},
+        {server::Host::Transition::ForceWarmReboot,
+         HOST_STATE_FORCE_WARM_REBOOT}
+    };
+#else
+        {server::Host::Transition::GracefulWarmReboot, HOST_STATE_REBOOT_TGT},
+        {server::Host::Transition::ForceWarmReboot, HOST_STATE_REBOOT_TGT}
+    };
+#endif
 }
 
 void Host::executeTransition(Transition tranReq)
