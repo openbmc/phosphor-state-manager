@@ -16,6 +16,7 @@
 #include <experimental/filesystem>
 #include <functional>
 #include <string>
+#include <fmt/format.h>
 
 namespace phosphor
 {
@@ -51,9 +52,12 @@ class Host : public HostInherit
      *
      * @param[in] bus       - The Dbus bus object
      * @param[in] objPath   - The Dbus object path
+     * @param[in] id        - The Host id
      */
-    Host(sdbusplus::bus::bus& bus, const char* objPath) :
-        HostInherit(bus, objPath, true), bus(bus),
+    Host(sdbusplus::bus::bus& bus, const char* objPath,
+         const std::size_t id) :
+        HostInherit(bus, objPath, true),
+        bus(bus),
         systemdSignalJobRemoved(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
@@ -68,10 +72,13 @@ class Host : public HostInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Host::sysStateChangeJobNew), this,
                       std::placeholders::_1)),
-        settings(bus)
+        settings(bus), id(std::to_string(id))
     {
         // Enable systemd signals
         subscribeToSystemdSignals();
+
+        // create map of target name base on host id
+        createSystemdTargetMaps();
 
         // Will throw exception on fail
         determineInitialState();
@@ -134,6 +141,11 @@ class Host : public HostInherit
      * @return Will throw exceptions on failure
      **/
     void determineInitialState();
+
+    /**
+     * create systemd target instance names and mapping table
+     **/
+    void createSystemdTargets();
 
     /** @brief Execute the transition request
      *
@@ -267,6 +279,13 @@ class Host : public HostInherit
      */
     bool deserialize(const fs::path& path);
 
+    //Get target name of a HostState
+    std::string& getTarget(HostState state);
+
+    //Get target name of a TransitionRequest
+    std::string& getTarget(Transition tranReq);
+
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus::bus& bus;
 
@@ -278,6 +297,14 @@ class Host : public HostInherit
 
     // Settings objects of interest
     settings::Objects settings;
+
+    std::string id;
+
+    /* Map a state to it's systemd target */
+    std::map<HostState, std::string> stateTargetTable;
+
+    /* Map a transition to it's systemd target */
+    std::map<Transition, std::string> transitionTargetTable;
 };
 
 } // namespace manager
