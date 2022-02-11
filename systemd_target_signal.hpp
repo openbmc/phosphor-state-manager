@@ -72,6 +72,9 @@ class SystemdTargetLogging
                                    const std::string& result);
 
   private:
+    /** @brief Call phosphor-dump-manager to create BMC dump */
+    void createBmcDump();
+
     /** @brief Call phosphor-logging to create error
      *
      * @param[in]  error      - The error to log

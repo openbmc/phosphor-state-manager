@@ -19,6 +19,26 @@ PHOSPHOR_LOG2_USING;
 
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
+void SystemdTargetLogging::createBmcDump()
+{
+    auto method = this->bus.new_method_call(
+        "xyz.openbmc_project.Dump.Manager", "/xyz/openbmc_project/dump/bmc",
+        "xyz.openbmc_project.Dump.Create", "CreateDump");
+    method.append(
+        std::vector<
+            std::pair<std::string, std::variant<std::string, uint64_t>>>());
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("Failed to create BMC dump, exception:{ERROR}", "ERROR", e);
+        // just continue, this is error path anyway so we're just collecting
+        // what we can
+    }
+}
+
 void SystemdTargetLogging::logError(const std::string& errorLog,
                                     const std::string& result,
                                     const std::string& unit)
@@ -71,6 +91,9 @@ const std::string SystemdTargetLogging::processError(const std::string& unit,
             info(
                 "Monitored systemd service has hit an error, unit:{UNIT}, result:{RESULT}",
                 "UNIT", unit, "RESULT", result);
+
+            // Generate a BMC dump when a critical service fails
+            createBmcDump();
             return (std::string{
                 "xyz.openbmc_project.State.Error.CriticalServiceFailure"});
         }
