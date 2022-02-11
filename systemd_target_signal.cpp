@@ -20,7 +20,8 @@ PHOSPHOR_LOG2_USING;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 void SystemdTargetLogging::logError(const std::string& errorLog,
-                                    const std::string& result)
+                                    const std::string& result,
+                                    const std::string& unit)
 {
     auto method = this->bus.new_method_call(
         "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
@@ -28,8 +29,9 @@ void SystemdTargetLogging::logError(const std::string& errorLog,
     // Signature is ssa{ss}
     method.append(errorLog);
     method.append("xyz.openbmc_project.Logging.Entry.Level.Critical");
-    method.append(std::array<std::pair<std::string, std::string>, 1>(
-        {std::pair<std::string, std::string>({"SYSTEMD_RESULT", result})}));
+    method.append(std::array<std::pair<std::string, std::string>, 2>(
+        {std::pair<std::string, std::string>({"SYSTEMD_RESULT", result}),
+         std::pair<std::string, std::string>({"SYSTEMD_UNIT", unit})}));
     try
     {
         this->bus.call_noreply(method);
@@ -94,7 +96,7 @@ void SystemdTargetLogging::systemdUnitChange(sdbusplus::message::message& msg)
         // If this is a monitored error then log it
         if (!error.empty())
         {
-            logError(error, result);
+            logError(error, result, unit);
         }
     }
     return;
