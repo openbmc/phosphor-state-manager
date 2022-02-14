@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a45f47b_fdf3c4eb",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-02-14T21:54:19Z",
+      "side": 1,
+      "message": "Should this msg be \"debug()\"? doesn\u0027t seem it\u0027d be relevant to log it every time the bmc starts up.\nSame with the msgs below, do we need to log every time the battery is full for example?",
+      "revId": "ca1f7d4e50a869839d4100231766e51ac870ac8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
