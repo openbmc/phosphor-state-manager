@@ -16,6 +16,24 @@
       "message": "There\u0027s a small window between the GetAllProperties call and creating this match were you could theoretically miss the propertiesChanged signal.  You could close it by using a propertiesChangedNames match where you don\u0027t need the full path.\n\n(not sure if it\u0027s a big enough window to worry about...)",
       "revId": "7f641084eadbb152f00e69dc4a39764cc3f9df95",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92bb1a16_90f7da3e",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-02-14T23:15:11Z",
+      "side": 1,
+      "message": "sorry, i meant propertiesChangedNamespace",
+      "parentUuid": "7e9aeb7a_087f567d",
+      "revId": "7f641084eadbb152f00e69dc4a39764cc3f9df95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
