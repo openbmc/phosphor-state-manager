@@ -39,6 +39,30 @@ void SystemdTargetLogging::createBmcDump()
     }
 }
 
+void SystemdTargetLogging::startBmcQuiesceTarget()
+{
+    auto method = this->bus.new_method_call(
+        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
+        "org.freedesktop.systemd1.Manager", "StartUnit");
+
+    // TODO: Enhance when needed to support multiple-bmc instance systems
+    method.append("obmc-bmc-service-quiesce@0.target");
+    method.append("replace");
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("Failed to start BMC quiesce target, exception:{ERROR}", "ERROR",
+              e);
+        // just continue, this is error path anyway so we're just doing what
+        // we can
+    }
+
+    return;
+}
+
 void SystemdTargetLogging::logError(const std::string& errorLog,
                                     const std::string& result,
                                     const std::string& unit)
@@ -94,6 +118,8 @@ const std::string SystemdTargetLogging::processError(const std::string& unit,
 
             // Generate a BMC dump when a critical service fails
             createBmcDump();
+            // Enter BMC Quiesce when a critical service fails
+            startBmcQuiesceTarget();
             return (std::string{
                 "xyz.openbmc_project.State.Error.CriticalServiceFailure"});
         }

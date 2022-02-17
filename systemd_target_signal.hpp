@@ -75,6 +75,9 @@ class SystemdTargetLogging
     /** @brief Call phosphor-dump-manager to create BMC dump */
     void createBmcDump();
 
+    /** @brief Start BMC Quiesce Target to indicate critical service failure */
+    void startBmcQuiesceTarget();
+
     /** @brief Call phosphor-logging to create error
      *
      * @param[in]  error      - The error to log
