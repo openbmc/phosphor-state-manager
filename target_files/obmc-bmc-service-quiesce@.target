@@ -1,0 +1,3 @@
+[Unit]
+Description=BMC Quiesce Target
+RefuseManualStop=yes
