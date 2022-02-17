@@ -70,6 +70,10 @@ class BMC : public BMCInherit
 
   private:
     /**
+     * @brief Retrieve input systemd unit state
+     **/
+    std::string getUnitState(const std::string& unitToCheck);
+    /**
      * @brief discover the state of the bmc
      **/
     void discoverInitialState();
