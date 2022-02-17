@@ -41,7 +41,7 @@ constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
-void BMC::discoverInitialState()
+std::string BMC::getUnitState(const std::string& unitToCheck)
 {
     std::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
@@ -49,7 +49,7 @@ void BMC::discoverInitialState()
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE, "GetUnit");
 
-    method.append(obmcStandbyTarget);
+    method.append(unitToCheck);
 
     try
     {
@@ -59,7 +59,7 @@ void BMC::discoverInitialState()
     catch (const sdbusplus::exception::exception& e)
     {
         error("Error in GetUnit call: {ERROR}", "ERROR", e);
-        return;
+        return std::string{};
     }
 
     method = this->bus.new_method_call(
@@ -79,18 +79,23 @@ void BMC::discoverInitialState()
     catch (const sdbusplus::exception::exception& e)
     {
         info("Error in ActiveState Get: {ERROR}", "ERROR", e);
-        return;
+        return std::string{};
     }
+    return (std::get<std::string>(currentState));
+}
 
-    auto currentStateStr = std::get<std::string>(currentState);
+void BMC::discoverInitialState()
+{
+    auto currentStateStr = getUnitState(obmcStandbyTarget);
     if (currentStateStr == activeState)
     {
         info("Setting the BMCState field to BMC_READY");
         this->currentBMCState(BMCState::Ready);
 
         // Unsubscribe so we stop processing all other signals
-        method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                           SYSTEMD_INTERFACE, "Unsubscribe");
+        auto method =
+            this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                      SYSTEMD_INTERFACE, "Unsubscribe");
         try
         {
             this->bus.call(method);
