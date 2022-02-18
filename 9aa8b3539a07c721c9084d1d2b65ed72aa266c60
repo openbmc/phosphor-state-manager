@@ -16,6 +16,24 @@
       "message": "if presence changes to false because somebody unplugged the UPS, isn\u0027t it possible you\u0027d need to update the currentPowerStatus property?  Or is that not possible anyway?",
       "revId": "9aa8b3539a07c721c9084d1d2b65ed72aa266c60",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be58dc89_a5eac9dd",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-18T16:40:34Z",
+      "side": 1,
+      "message": "Yeah, good point. I don\u0027t think it\u0027s possible but it certainly doesn\u0027t hurt to just call the generic function to set everything up correctly again.",
+      "parentUuid": "492185ec_95e218bf",
+      "revId": "9aa8b3539a07c721c9084d1d2b65ed72aa266c60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
