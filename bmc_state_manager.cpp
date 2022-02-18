@@ -28,6 +28,7 @@ namespace server = sdbusplus::xyz::openbmc_project::State::server;
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
+constexpr auto obmcQuiesceTarget = "obmc-bmc-service-quiesce@0.target";
 constexpr auto obmcStandbyTarget = "multi-user.target";
 constexpr auto signalDone = "done";
 constexpr auto activeState = "active";
@@ -86,25 +87,22 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
 
 void BMC::discoverInitialState()
 {
-    auto currentStateStr = getUnitState(obmcStandbyTarget);
+
+    // First look to see if the BMC quiesce target is active
+    auto currentStateStr = getUnitState(obmcQuiesceTarget);
+    if (currentStateStr == activeState)
+    {
+        info("Setting the BMCState field to BMC_QUIESCED");
+        this->currentBMCState(BMCState::Quiesced);
+        return;
+    }
+
+    // If not quiesced, then check standby target
+    currentStateStr = getUnitState(obmcStandbyTarget);
     if (currentStateStr == activeState)
     {
         info("Setting the BMCState field to BMC_READY");
         this->currentBMCState(BMCState::Ready);
-
-        // Unsubscribe so we stop processing all other signals
-        auto method =
-            this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                      SYSTEMD_INTERFACE, "Unsubscribe");
-        try
-        {
-            this->bus.call(method);
-            this->stateSignal.release();
-        }
-        catch (const sdbusplus::exception::exception& e)
-        {
-            info("Error in Unsubscribe: {ERROR}", "ERROR", e);
-        }
     }
     else
     {
@@ -189,13 +187,13 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
     // Read the msg and populate each variable
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
-    // Caught the signal that indicates the BMC is now BMC_READY
-    if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone))
+    if ((newStateUnit == obmcQuiesceTarget) && (newStateResult == signalDone))
     {
-        info("BMC_READY");
-        this->currentBMCState(BMCState::Ready);
+        error("BMC has entered BMC_QUIESCED state");
+        this->currentBMCState(BMCState::Quiesced);
 
-        // Unsubscribe so we stop processing all other signals
+        // There is no getting out of Quiesced once entered (other then BMC
+        // reboot) so stop watching for signals
         auto method =
             this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                       SYSTEMD_INTERFACE, "Unsubscribe");
@@ -209,6 +207,15 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         {
             info("Error in Unsubscribe: {ERROR}", "ERROR", e);
         }
+
+        return 0;
+    }
+
+    // Caught the signal that indicates the BMC is now BMC_READY
+    if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone))
+    {
+        info("BMC_READY");
+        this->currentBMCState(BMCState::Ready);
     }
 
     return 0;
