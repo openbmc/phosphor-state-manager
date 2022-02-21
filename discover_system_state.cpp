@@ -144,8 +144,9 @@ int main(int argc, char** argv)
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info("power_policy=ALWAYS_POWER_OFF, set requested state to off");
-            setProperty(bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                        convertForMessage(server::Host::Transition::Off));
+            phosphor::state::manager::utils::setProperty(
+                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                convertForMessage(server::Host::Transition::Off));
         }
         else if (RestorePolicy::Policy::Restore ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
