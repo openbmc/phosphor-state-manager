@@ -79,6 +79,12 @@ int main(int argc, char** argv)
         info(
             "BMC was reset due to pinhole reset, no power restore policy will be run");
         return 0;
+    else if (bmcRebootCause ==
+        "xyz.openbmc_project.State.BMC.RebootCause.Watchdog")
+    {
+        info(
+            "BMC was reset due to cold reset, no power restore policy will be run");
+        return 0;
     }
 
     /* The logic here is to first check the one-time PowerRestorePolicy setting.
