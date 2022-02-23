@@ -6,4 +6,3 @@ After=multi-user.target
 Conflicts=obmc-chassis-poweron@%i.target
 Conflicts=fsi-disable.service
 RefuseManualStart=yes
-RefuseManualStop=yes

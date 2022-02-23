@@ -6,4 +6,3 @@ After=obmc-host-stopping@%i.target
 Before=obmc-power-stop-pre@%i.target
 Conflicts=obmc-host-startmin@%i.target
 RefuseManualStart=yes
-RefuseManualStop=yes

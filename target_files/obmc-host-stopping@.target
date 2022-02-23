@@ -8,4 +8,3 @@ Before=obmc-host-stopped@%i.target
 Conflicts=obmc-host-startmin@%i.target
 Conflicts=obmc-host-starting@%i.target
 RefuseManualStart=yes
-RefuseManualStop=yes

@@ -2,4 +2,3 @@
 Description=Host%i running after reset
 Conflicts=obmc-host-stop@%i.target
 RefuseManualStart=yes
-RefuseManualStop=yes
