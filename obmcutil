@@ -4,7 +4,7 @@ set -euo pipefail
 
 OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs"
+bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs, stopofftargets"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
                 {$OPTS}"
@@ -51,28 +51,30 @@ print_help ()
     echo "obmcutil hostrebootoff Disable auto reboot of Host from Quiesce state"
     echo "obmcutil hostrebootoffonetime Disable auto reboot of Host from"
     echo "                              Quiesce state for a single boot"
-    echo "obmcutil hostrebooton  Enable auto reboot of Host from Quiesce state"
+    echo "obmcutil hostrebooton   Enable auto reboot of Host from Quiesce state"
     echo ""
-    echo "obmcutil bmcrebootoff  Disable reboot of BMC"
-    echo "obmcutil bmcrebooton   Enable reboot of BMC"
+    echo "obmcutil bmcrebootoff   Disable reboot of BMC"
+    echo "obmcutil bmcrebooton    Enable reboot of BMC"
     echo ""
-    echo "obmcutil recoveryoff   Disable handling boot watchdog timeout and host crash"
-    echo "                       Also, disable BMC and Host auto reboots"
+    echo "obmcutil recoveryoff    Disable handling boot watchdog timeout and host crash"
+    echo "                        Also, disable BMC and Host auto reboots"
     echo ""
-    echo "obmcutil recoveryon    Enable handling boot watchdog timeout and host crash"
-    echo "                       Also, enable BMC and Host auto reboots"
+    echo "obmcutil recoveryon     Enable handling boot watchdog timeout and host crash"
+    echo "                        Also, enable BMC and Host auto reboots"
     echo ""
-    echo "obmcutil listbootblock Check for and list any errors blocking the boot"
-    echo "                       of the system"
+    echo "obmcutil listbootblock  Check for and list any errors blocking the boot"
+    echo "                        of the system"
     echo ""
-    echo "obmcutil listlogs      List all phosphor-logging entries on the"
-    echo "                       system"
+    echo "obmcutil listlogs       List all phosphor-logging entries on the"
+    echo "                        system"
     echo ""
-    echo "obmcutil showlog <log> Display details of input log. Format of <log>"
-    echo "                       should match listlogs output"
+    echo "obmcutil showlog <log>  Display details of input log. Format of <log>"
+    echo "                        should match listlogs output"
     echo ""
-    echo "obmcutil deletelogs    Delete all phosphor-logging entries from"
-    echo "                       system"
+    echo "obmcutil deletelogs     Delete all phosphor-logging entries from"
+    echo "                        system"
+    echo "obmcutil stopofftargets Manually stop all obmc targets in power off"
+    echo "                        path"
     echo ""
     echo "optional arguments (must precede the positional options above):"
     echo "  -h, --help          show this help message and exit"
@@ -279,6 +281,19 @@ delete_logs()
            xyz.openbmc_project.Collection.DeleteAll DeleteAll
 }
 
+# stop all targets associated with powering off a system
+stop_off_targets()
+{
+    systemctl stop \
+        obmc-chassis-powered-off@0.target \
+        obmc-host-stop-pre@0.target \
+        obmc-host-stopped@0.target \
+        obmc-host-stopping@0.target \
+        obmc-power-off@0.target \
+        obmc-power-stop-pre@0.target \
+        obmc-power-stop@0.target
+}
+
 handle_cmd ()
 {
     case "$1" in
@@ -442,6 +457,9 @@ handle_cmd ()
             ;;
         deletelogs)
             delete_logs
+            ;;
+        stopofftargets)
+            stop_off_targets
             ;;
         *)
             print_usage_err "Invalid command '$1'"
