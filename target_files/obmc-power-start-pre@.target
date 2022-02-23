@@ -7,4 +7,3 @@ After=mapper-subtree-remove@-xyz-openbmc\x5fproject-software\x3Axyz.openbmc_proj
 Wants=mapper-subtree-remove@-xyz-openbmc\x5fproject-logging\x3Axyz.openbmc_project.Logging.ErrorBlocksTransition.service
 After=mapper-subtree-remove@-xyz-openbmc\x5fproject-logging\x3Axyz.openbmc_project.Logging.ErrorBlocksTransition.service
 RefuseManualStart=yes
-RefuseManualStop=yes

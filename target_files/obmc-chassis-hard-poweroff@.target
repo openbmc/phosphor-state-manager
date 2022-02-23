@@ -8,4 +8,3 @@ Conflicts=obmc-chassis-powerreset@%i.target
 Conflicts=obmc-host-shutdown@%i.target
 Conflicts=xyz.openbmc_project.Ipmi.Internal.SoftPowerOff.service
 Conflicts=pldmSoftPowerOff.service
-RefuseManualStop=yes

@@ -2,6 +2,5 @@
 Description=Reboot Host%i
 After=multi-user.target
 Conflicts=obmc-host-startmin@%i.target
-RefuseManualStop=yes
 OnFailure=obmc-chassis-poweroff@%i.target
 OnFailureJobMode=flush

@@ -5,4 +5,3 @@ Wants=obmc-power-stop@%i.target
 After=obmc-power-stop@%i.target
 Conflicts=obmc-chassis-poweron@%i.target
 RefuseManualStart=yes
-RefuseManualStop=yes
