@@ -5,4 +5,3 @@ Wants=obmc-host-starting@%i.target
 After=obmc-host-starting@%i.target
 Conflicts=obmc-host-stop@%i.target
 RefuseManualStart=yes
-RefuseManualStop=yes

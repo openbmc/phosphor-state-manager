@@ -6,6 +6,5 @@ Conflicts=obmc-host-startmin@%i.target
 Wants=obmc-host-stop-pre@%i.target
 Wants=obmc-host-stopping@%i.target
 Wants=obmc-host-stopped@%i.target
-RefuseManualStop=yes
 OnFailure=obmc-chassis-poweroff@%i.target
 OnFailureJobMode=flush
