@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "204b3ad1_ddd50592",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-02-24T20:32:05Z",
+      "side": 1,
+      "message": "The commit at the end says that the intention is to be able to stop the targets, so perhaps just the commit title is incorrect, and there\u0027s no need to remove the \"RefuseManualStart\" from the target files, but let\u0027s see what Andrew replies.",
+      "parentUuid": "b46204e0_f76b204d",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "1f70517ff45d67bdaaec41ec19b4606c6d84d3bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6276163d_406e24e0",
