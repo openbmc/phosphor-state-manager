@@ -244,6 +244,16 @@ executable('phosphor-host-reset-recovery',
     install: true
 )
 
+executable('phosphor-secure-boot-check',
+            'secure_boot_check.cpp',
+            'utils.cpp',
+            dependencies: [
+            sdbusplus, phosphorlogging, libgpiod
+            ],
+    implicit_include_directories: true,
+    install: true
+)
+
 install_data('obmcutil',
         install_mode: 'rwxr-xr-x',
         install_dir: get_option('bindir')
