@@ -16,6 +16,24 @@
       "message": "Wonder if there\u0027s a case where multiple services fail due to some bug or dependency etc and we trigger multiple dump requests overwhelming the bmc, but perhaps adding some kind of timer in case there are multiple requests is too much work here, and the dump manager should be able to serialize the requests.",
       "revId": "b03789e4030c3c0aa45c17a5015f698c409306ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7761d437_adaf12a5",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-02-24T21:20:39Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s a good point, we\u0027ve seen that in the past when we\u0027ve had issues with a common interface like mapper failing. I think in the end though, it\u0027s gotta be up to dump to serialize things. The good news is that we don\u0027t call this until the service has already restarted it\u0027s 3 times and is officially dead (and not starting back up).",
+      "parentUuid": "e2a9c7b3_ea8d6927",
+      "revId": "b03789e4030c3c0aa45c17a5015f698c409306ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
