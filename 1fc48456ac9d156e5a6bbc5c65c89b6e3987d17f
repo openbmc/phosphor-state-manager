@@ -102,6 +102,24 @@
       "message": "Hmm, some downstream testing of this patch has shown a bit of unnecessary processing after BMC reboots due to this. If system is already off, this just ends up kicking off all of the power off services (even though they do not need to run) which takes time and puts a lot of unnecessary journal logs in the journal. It would be a bit more code but what if we read the RequestedHostTransition and only set it if it\u0027s not already Off?",
       "revId": "1fc48456ac9d156e5a6bbc5c65c89b6e3987d17f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e517114_d477ed57",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2022-02-24T01:30:09Z",
+      "side": 1,
+      "message": "It is a good idea. We can avoid unnecessary processing in case the requested state is already Off.",
+      "parentUuid": "d8da9105_37a37170",
+      "revId": "1fc48456ac9d156e5a6bbc5c65c89b6e3987d17f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
