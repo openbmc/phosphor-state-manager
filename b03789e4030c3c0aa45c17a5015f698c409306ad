@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a9c7b3_ea8d6927",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-02-24T21:12:21Z",
+      "side": 1,
+      "message": "Wonder if there\u0027s a case where multiple services fail due to some bug or dependency etc and we trigger multiple dump requests overwhelming the bmc, but perhaps adding some kind of timer in case there are multiple requests is too much work here, and the dump manager should be able to serialize the requests.",
+      "revId": "b03789e4030c3c0aa45c17a5015f698c409306ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
