@@ -144,24 +144,33 @@ int main(int argc, char** argv)
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info("power_policy=ALWAYS_POWER_OFF, set requested state to off");
-            phosphor::state::manager::utils::setProperty(
-                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                convertForMessage(server::Host::Transition::Off));
+            // Read last requested state and re-request it to execute it
+            auto hostReqState = phosphor::state::manager::utils::getProperty(
+                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
+            if (hostReqState == convertForMessage(server::Host::Transition::On))
+            {
+                phosphor::state::manager::utils::setProperty(
+                    bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                    convertForMessage(server::Host::Transition::Off));
+            }
         }
         else if (RestorePolicy::Policy::Restore ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info("power_policy=RESTORE, restoring last state");
-            phosphor::state::manager::utils::setProperty(
-                bus, hostPath, HOST_BUSNAME, "RestartCause",
-                convertForMessage(
-                    server::Host::RestartCause::PowerPolicyPreviousState));
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
-            phosphor::state::manager::utils::setProperty(
-                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                hostReqState);
+            if (hostReqState == convertForMessage(server::Host::Transition::On))
+            {
+                phosphor::state::manager::utils::setProperty(
+                    bus, hostPath, HOST_BUSNAME, "RestartCause",
+                    convertForMessage(
+                        server::Host::RestartCause::PowerPolicyPreviousState));
+                phosphor::state::manager::utils::setProperty(
+                    bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                    hostReqState);
+            }
         }
     }
     catch (const sdbusplus::exception::exception& e)
