@@ -37,6 +37,8 @@ constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT =
     "obmc-chassis-hard-poweroff@0.target";
 constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-chassis-poweron@0.target";
+constexpr auto RESET_HOST_SENSORS_SVC =
+    "phosphor-reset-sensor-states@0.service";
 
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
@@ -132,6 +134,10 @@ void Chassis::determineInitialState()
                 {
                     info(
                         "Chassis power was on before the BMC reboot and it is off now");
+
+                    // Reset host sensors since system is off now
+                    startUnit(RESET_HOST_SENSORS_SVC);
+
                     setStateChangeTime();
 
                     if (phosphor::state::manager::utils::getGpioValue(
@@ -321,14 +327,12 @@ void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
     return;
 }
 
-void Chassis::executeTransition(Transition tranReq)
+void Chassis::startUnit(const std::string& sysdUnit)
 {
-    auto sysdTarget = SYSTEMD_TARGET_TABLE.find(tranReq)->second;
-
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE, "StartUnit");
 
-    method.append(sysdTarget);
+    method.append(sysdUnit);
     method.append("replace");
 
     this->bus.call_noreply(method);
@@ -439,7 +443,7 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 
     info("Change to Chassis Requested Power State: {REQ_POWER_TRAN}",
          "REQ_POWER_TRAN", value);
-    executeTransition(value);
+    startUnit(SYSTEMD_TARGET_TABLE.find(value)->second);
     return server::Chassis::requestedPowerTransition(value);
 }
 
