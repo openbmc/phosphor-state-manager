@@ -98,14 +98,13 @@ class Chassis : public ChassisInherit
      **/
     void subscribeToSystemdSignals();
 
-    /** @brief Execute the transition request
+    /** @brief Start the systemd unit requested
      *
-     * This function calls the appropriate systemd target for the input
-     * transition.
+     * This function calls `StartUnit` on the systemd unit given.
      *
-     * @param[in] tranReq    - Transition requested
+     * @param[in] sysdUnit    - Systemd unit
      */
-    void executeTransition(Transition tranReq);
+    void startUnit(const std::string& sysdUnit);
 
     /**
      * @brief Determine if target is active
