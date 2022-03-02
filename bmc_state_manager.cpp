@@ -306,7 +306,8 @@ void BMC::discoverLastRebootCause()
     auto gpioval =
         phosphor::state::manager::utils::getGpioValue("reset-cause-pinhole");
 
-    if (1 == gpioval)
+    // A 0 indicates a pinhole reset occurred
+    if (0 == gpioval)
     {
         info("The BMC reset was caused by a pinhole reset");
         this->lastRebootCause(RebootCause::PinholeReset);
