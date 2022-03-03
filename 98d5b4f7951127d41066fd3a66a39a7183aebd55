@@ -1,0 +1,169 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c84c5426_e0f32598",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "This is a good start, but I think there are still some details to be worked through to make things consistent for single-host and multi-host systems.",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97099673_5f24c9ac",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "Rather than do all this modification, I would suggest that we set the strings to something like:\n\n    \"obmc-host-shutdown@{}.target\"\n\nWhereever we are currently interacting with the map, we can add a utility function where we pass the instance-id and replace the {} with the instance ID.\n\nauto getTarget(size_t /* or const std::string\u0026 */ instance, server::Host::Transition state)",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 71
+      },
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfee123b_021cae39",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "This is a global but you are modifying it with local (instance) values?  This means you cannot have two Host instances in the class.  Why doesn\u0027t this variable become a class member?",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c523f01_c8e58e87",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "Please add hostId parameter here too.",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e40f476e_208a4187",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "I would suggest passing this as a integer (size_t).  The fact that it is convenient to have it as a string is an internal detail to this class.  If you want to store it as a string in the class that is fine.\n\nI would also either recommend it be the first parameter or defaulted to 0.  You can just name it \u0027id\u0027.  Host is redundant since this is a Host class.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 34
+      },
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b38f792_a2d951b1",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "In the case where -h isn\u0027t given, doesn\u0027t this BUSNAME not contain \u00270\u0027?  I think we need to fix that.",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd4d8dbd_0edaf36e",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "I guess I see now why you\u0027ve used std::string in the constructor; to minimize parsing.  Do we at least want to do some format checking to ensure that this contains only digits?",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "714e4233_863b6746",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "What happens if someone calls like this?\n\n    executable --host\u003d5 --host\u003d3 --host\u003d2\n\nDoesn\u0027t the hostbusname become \"...532\"?",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97ace5ab_8f8442e9",
+        "filename": "service_files/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-03T15:30:17Z",
+      "side": 1,
+      "message": "We should not supply both Host services.  If it is now templated, it should be templated for @0 also.",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
