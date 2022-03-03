@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "427e2b24_91a446db",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-03T09:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c51bea9_3119dbf8",
+      "revId": "d72e456bdbb746321be3f4493a35dcaa325286a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4b38947_4f397911",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-02-24T21:17:38Z",
       "side": 1,
       "message": "Please add a \"%i\" in the Description somewhere so we know which instance it\u0027s running for in the journal.",
+      "revId": "d72e456bdbb746321be3f4493a35dcaa325286a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a313ef2_b1318832",
+        "filename": "service_files/xyz.openbmc_project.State.Host@.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-03T09:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4b38947_4f397911",
       "revId": "d72e456bdbb746321be3f4493a35dcaa325286a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +94,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de399f07_b0ad4d3e",
+        "filename": "service_files/xyz.openbmc_project.State.Host@.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-03T09:41:48Z",
+      "side": 1,
+      "message": "I had checked this object, its created by phosphor-settingsd, \nit can change to %i ,but note that it must add those objects into phosphor-settingsd by *.override.yml else service can\u0027t start because it is waiting  /xyz/openbmc_project/control/host\u003cN\u003e/auto_reboot forever...\n\nExample:add settings objects into our platform:\nhttps://gerrit.openbmc-project.xyz/c/openbmc/openbmc/+/51703\n\nAlso, settings.hpp/cpp will need some change to parse correct setting object path,but I still work on this, maybe do another commit in future.",
+      "parentUuid": "1ecdcf50_1e6fcb12",
+      "range": {
+        "startLine": 3,
+        "startChar": 47,
+        "endLine": 3,
+        "endChar": 52
+      },
+      "revId": "d72e456bdbb746321be3f4493a35dcaa325286a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88848106_3b68c2e8",
@@ -75,6 +135,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3618fd7_4b96f7c2",
+        "filename": "service_files/xyz.openbmc_project.State.Host@.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-03T09:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88848106_3b68c2e8",
+      "revId": "d72e456bdbb746321be3f4493a35dcaa325286a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5ffcd0b_36609794",
@@ -88,6 +166,24 @@
       "writtenOn": "2022-02-24T21:17:38Z",
       "side": 1,
       "message": "Note that since this is now a instance based service, it will need to be explicitly installed in the phosphor-state-manager-systemd-links.inc recipe.",
+      "revId": "d72e456bdbb746321be3f4493a35dcaa325286a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdee7bd2_5f25b18b",
+        "filename": "service_files/xyz.openbmc_project.State.Host@.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-03T09:41:48Z",
+      "side": 1,
+      "message": "Thanks, I create a commit to install instances,\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/openbmc/+/51704",
+      "parentUuid": "c5ffcd0b_36609794",
       "revId": "d72e456bdbb746321be3f4493a35dcaa325286a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
