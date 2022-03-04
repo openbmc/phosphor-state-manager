@@ -110,3 +110,12 @@ option('host-gpios-objpath', type : 'string',
     description : 'The host gpios Dbus root.',
 )
 
+option('sysfs-secure-boot-path', type : 'string',
+    value : '/sys/kernel/debug/aspeed/sbc/secure_boot',
+    description : 'The sysfs path to the secure boot value.',
+)
+
+option('sysfs-abr-image-path', type : 'string',
+    value : '/sys/kernel/debug/aspeed/sbc/abr_image',
+    description : 'The sysfs path to the abr image value.',
+)
