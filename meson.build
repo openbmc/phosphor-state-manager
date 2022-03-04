@@ -44,6 +44,10 @@ conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
 conf.set(
     'CLASS_VERSION', get_option('class-version'))
+conf.set_quoted(
+    'SYSFS_SECURE_BOOT_PATH', get_option('sysfs-secure-boot-path'))
+conf.set_quoted(
+    'SYSFS_ABR_IMAGE_PATH', get_option('sysfs-abr-image-path'))
 if build_host_gpios.enabled()
     conf.set_quoted(
         'HOST_GPIOS_BUSNAME', get_option('host-gpios-busname'))
