@@ -13,6 +13,42 @@ constexpr auto SYSFS_OTP_PROTECTED_PATH =
     "/sys/kernel/debug/aspeed/otp_protected";
 constexpr auto SYSFS_ABR_IMAGE_PATH = "/sys/kernel/debug/aspeed/abr_image";
 
+constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+
+// Utilize the QuiesceOnHwError setting as an indication that the system
+// is operating in an environment where the user should be notified of
+// security settings (i.e. "Manufacturing")
+bool isMfgModeEnabled()
+{
+    auto bus = sdbusplus::bus::new_default();
+    std::string path = "/xyz/openbmc_project/logging/settings";
+    std::string interface = "xyz.openbmc_project.Logging.Settings";
+    std::string propertyName = "QuiesceOnHwError";
+    std::variant<bool> mfgModeEnabled;
+
+    std::string service =
+        phosphor::state::manager::utils::getService(bus, path, interface);
+
+    auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                      PROPERTY_INTERFACE, "Get");
+
+    method.append(interface, propertyName);
+
+    try
+    {
+        auto reply = bus.call(method);
+        reply.read(mfgModeEnabled);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("Error in property Get, error {ERROR}, property {PROPERTY}",
+              "ERROR", e, "PROPERTY", propertyName);
+        throw;
+    }
+
+    return std::get<bool>(mfgModeEnabled);
+}
+
 int main()
 {
     // Read the secure boot gpio
@@ -80,11 +116,14 @@ int main()
         info("sysfs file abr_image not present");
     }
 
-    if ((secureBootGpio != 1) || (secureBootVal != 1) || (otpProtected != 1) ||
-        (abrImage != 0))
+    if (isMfgModeEnabled())
     {
-        // TODO - Generate Error when in mfg mode
-        error("The system is not secure");
+        if ((secureBootGpio != 1) || (secureBootVal != 1) ||
+            (otpProtected != 1) || (abrImage != 0))
+        {
+            // TODO - Generate Error when in mfg mode
+            error("The system is not secure");
+        }
     }
 
     return 0;
