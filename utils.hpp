@@ -58,13 +58,15 @@ int getGpioValue(const std::string& gpioName);
 
 /** @brief Create an error log
  *
- * @param[in] bus          - The Dbus bus object
- * @param[in] errorMsg     - The error message
- * @param[in] errLevel     - The error level
+ * @param[in] bus           - The Dbus bus object
+ * @param[in] errorMsg      - The error message
+ * @param[in] errLevel      - The error level
+ * parampin] additionalData - Optional extra data to add to the log
  */
 void createError(
     sdbusplus::bus::bus& bus, const std::string& errorMsg,
-    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel);
+    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel,
+    std::map<std::string, std::string> additionalData = {});
 
 } // namespace utils
 } // namespace manager
