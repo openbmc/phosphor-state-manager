@@ -132,13 +132,13 @@ int getGpioValue(const std::string& gpioName)
 
 void createError(
     sdbusplus::bus::bus& bus, const std::string& errorMsg,
-    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel)
+    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel,
+    std::map<std::string, std::string> additionalData)
 {
 
     try
     {
-        // Create interface requires something for additionalData
-        std::map<std::string, std::string> additionalData;
+        // Always add the _PID on for some extra logging debug
         additionalData.emplace("_PID", std::to_string(getpid()));
 
         auto method = bus.new_method_call(
