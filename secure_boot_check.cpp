@@ -122,8 +122,21 @@ int main()
     {
         if ((secureBootGpio != 1) || (secureBootVal != 1) || (abrImage != 0))
         {
-            // TODO - Generate Error when in mfg mode
             error("The system is not secure");
+            std::map<std::string, std::string> additionalData;
+            additionalData.emplace("SECURE_BOOT_GPIO",
+                                   std::to_string(secureBootGpio));
+            additionalData.emplace("SYSFS_SECURE_BOOT_VAL",
+                                   std::to_string(secureBootVal));
+            additionalData.emplace("SYSFS_ABR_IMAGE_VAL",
+                                   std::to_string(abrImage));
+
+            auto bus = sdbusplus::bus::new_default();
+            phosphor::state::manager::utils::createError(
+                bus, "xyz.openbmc_project.State.Error.SecurityCheckFail",
+                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                    Warning,
+                additionalData);
         }
     }
 
