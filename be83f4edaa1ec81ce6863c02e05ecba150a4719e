@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f6eeb27_c166eb52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-09T17:34:59Z",
+      "side": 1,
+      "message": "I have dbus watches on a few of the state properties to keep how many reads I have to do at the time of PEL creation at a minimum.\n\nI wouldn\u0027t suppose you could doublecheck\na) a PEL created before state manager is running, and \nb) a PEL created after state manager is running,\n\nto make sure the userdata sections still get made ok?",
+      "revId": "be83f4edaa1ec81ce6863c02e05ecba150a4719e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
