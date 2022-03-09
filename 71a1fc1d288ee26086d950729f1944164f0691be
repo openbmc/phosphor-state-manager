@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4032f5dc_56c73bd3",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-09T16:05:11Z",
+      "side": 1,
+      "message": "I\u0027m concerned that we have a BMC-hardware-specific path now (i.e. aspeed). This probably is not going to be something we can merge until we find a way to make this generic or at least a config option passed in. Thoughts appreciated. Reviews still appreciated too.",
+      "range": {
+        "startLine": 11,
+        "startChar": 59,
+        "endLine": 11,
+        "endChar": 65
+      },
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
