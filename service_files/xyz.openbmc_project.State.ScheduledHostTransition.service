@@ -5,6 +5,8 @@ Wants=obmc-mapper.target
 After=obmc-mapper.target
 Wants=xyz.openbmc_project.State.Host.service
 After=xyz.openbmc_project.State.Host.service
+Wants=xyz.openbmc_project.Logging.service
+After=xyz.openbmc_project.Logging.service
 
 [Service]
 ExecStart=/usr/bin/phosphor-scheduled-host-transition
