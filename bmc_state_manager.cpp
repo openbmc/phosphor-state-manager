@@ -61,7 +61,9 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        error("Error in GetUnit call: {ERROR}", "ERROR", e);
+        // Not all input units will have been loaded yet so just return an
+        // empty string if an exception is caught in this path
+        info("Unit {UNIT} not found: {ERROR}", "UNIT", unitToCheck, "ERROR", e);
         return std::string{};
     }
 
@@ -76,7 +78,7 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
     {
         auto result = this->bus.call(method);
 
-        // Is obmc-standby.target active or inactive?
+        // Is input target active or inactive?
         result.read(currentState);
     }
     catch (const sdbusplus::exception::exception& e)
