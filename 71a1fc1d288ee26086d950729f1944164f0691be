@@ -22,6 +22,47 @@
       },
       "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2099f5d6_1e676486",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-03-10T21:57:14Z",
+      "side": 1,
+      "message": "yeah these can be a meson config option and default to the aspeed paths.",
+      "parentUuid": "4032f5dc_56c73bd3",
+      "range": {
+        "startLine": 11,
+        "startChar": 59,
+        "endLine": 11,
+        "endChar": 65
+      },
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c54d483_af2627e7",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-03-10T21:57:14Z",
+      "side": 1,
+      "message": "Seems that all sysfs files need to exist to deem the system secure, is it worth trying to read all the sysfs if one doesn\u0027t exist since the check is going to fail in line 83? perhaps instead of creating an info log they should each call to create the error?:\n\nvalue \u003d -1;\nif (std::filesystem::exists(sysfsFile_1))\n{\n    read value;\n}\nif value !\u003d 1\n{\n    createError();\n    return;\n}",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
