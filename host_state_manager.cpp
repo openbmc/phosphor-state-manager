@@ -3,6 +3,7 @@
 #include "host_state_manager.hpp"
 
 #include "host_check.hpp"
+#include "utils.hpp"
 
 #include <stdio.h>
 #include <systemd/sd-bus.h>
@@ -244,6 +245,13 @@ bool Host::isAutoReboot()
                 // We are at 0 so reset reboot counter and go to quiesce state
                 info("Auto reboot enabled but HOST BOOTCOUNT already set to 0");
                 attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
+
+                // Generate log since we will now be sitting in Quiesce
+                const std::string errorMsg =
+                    "xyz.openbmc_project.State.Error.HostQuiesce";
+                utils::createError(this->bus, errorMsg,
+                                   sdbusplus::xyz::openbmc_project::Logging::
+                                       server::Entry::Level::Critical);
                 return false;
             }
         }

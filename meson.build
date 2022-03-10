@@ -77,9 +77,10 @@ executable('phosphor-host-state-manager',
             'host_state_manager_main.cpp',
             'settings.cpp',
             'host_check.cpp',
+            'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs
+            phosphordbusinterfaces, cppfs, libgpiod
             ],
     implicit_include_directories: true,
     install: true
