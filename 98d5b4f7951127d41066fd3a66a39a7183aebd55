@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1745f759_a0c82a0e",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "I think it doesn\u0027t need to perform format string every time? so I add maps as class member and format those target name strings by host id at constructor.",
+      "parentUuid": "97099673_5f24c9ac",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 71
+      },
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfee123b_021cae39",
@@ -58,6 +82,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5b7a28a_ed88f516",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfee123b_021cae39",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c523f01_c8e58e87",
@@ -71,6 +113,24 @@
       "writtenOn": "2022-03-03T15:30:17Z",
       "side": 1,
       "message": "Please add hostId parameter here too.",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88f3c194_e61353bc",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c523f01_c8e58e87",
       "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +158,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a613577_88040a9d",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e40f476e_208a4187",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 34
+      },
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b38f792_a2d951b1",
@@ -111,6 +195,24 @@
       "writtenOn": "2022-03-03T15:30:17Z",
       "side": 1,
       "message": "In the case where -h isn\u0027t given, doesn\u0027t this BUSNAME not contain \u00270\u0027?  I think we need to fix that.",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08fba8b0_a12c9f93",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b38f792_a2d951b1",
       "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -132,6 +234,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "960af79a_e07a56a3",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "I just convert string to int and catch exception to check if input only digits, is there a better way？",
+      "parentUuid": "fd4d8dbd_0edaf36e",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "714e4233_863b6746",
@@ -149,6 +269,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89c30ca2_65595592",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "714e4233_863b6746",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97ace5ab_8f8442e9",
@@ -162,6 +300,24 @@
       "writtenOn": "2022-03-03T15:30:17Z",
       "side": 1,
       "message": "We should not supply both Host services.  If it is now templated, it should be templated for @0 also.",
+      "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19a94a0f_7365c15c",
+        "filename": "service_files/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-11T13:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97ace5ab_8f8442e9",
       "revId": "98d5b4f7951127d41066fd3a66a39a7183aebd55",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
