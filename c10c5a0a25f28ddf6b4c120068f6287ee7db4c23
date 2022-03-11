@@ -16,6 +16,24 @@
       "message": "this is probably worth of having a .Error. segment in the name.  I guess I missed this on some of the other state manager errors.",
       "revId": "c10c5a0a25f28ddf6b4c120068f6287ee7db4c23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d69c77f_c0b173ec",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-11T16:11:56Z",
+      "side": 1,
+      "message": "Yeah, good point. Good to be consistent.",
+      "parentUuid": "85780c70_d54490b9",
+      "revId": "c10c5a0a25f28ddf6b4c120068f6287ee7db4c23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
