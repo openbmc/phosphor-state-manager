@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c2ac7c6_75519239",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-12T00:18:31Z",
+      "side": 1,
+      "message": "You could simply `method.append(getTarget(tranReq))`.  The way you have it you end up with an unneeded string copy.  You could also avoid the string copy by setting 143 to `auto\u0026`.",
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d743c7f2_c6160dd3",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-12T00:18:31Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like you\u0027re using `fmt/format.h` here, so just put it in the cpp part.",
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18d34f17_3e060fd8",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-12T00:18:31Z",
+      "side": 1,
+      "message": "small POD values should not ever have const on them.  It isn\u0027t part of the C++ name mangling so it is just noise in the code.\n\nGenerally we use `size_t` instead of `std::size_t`.  Does this not compile?  You might need `#include \u003ccstddef\u003e`.",
+      "range": {
+        "startLine": 58,
+        "startChar": 56,
+        "endLine": 58,
+        "endChar": 61
+      },
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01eb7c6a_378d2347",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-12T00:18:31Z",
+      "side": 1,
+      "message": "These should both be `const std::string\u0026` so the caller can\u0027t modify your tables.",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 47
+      },
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4621db0d_ce1df84d",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-12T00:18:31Z",
+      "side": 1,
+      "message": "prefer plain `size_t` here.",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 15
+      },
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a19e493_418a1e66",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-12T00:18:31Z",
+      "side": 1,
+      "message": "There is also std::out_of_range possible here.  I don\u0027t think you really need to catch this though.  Just let the top-level std::terminate trigger.  The silent failure you\u0027re doing is actually worse than the exception message printed by std::terminate.",
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
