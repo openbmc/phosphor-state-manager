@@ -58,6 +58,9 @@ conf.set_quoted(
 conf.set_quoted(
     'CHASSIS_ON_FILE', '/run/openbmc/chassis@%d-on')
 
+conf.set_quoted(
+    'CHASSIS_LOST_POWER_FILE', '/run/openbmc/chassis@%d-lost-power')
+
 configure_file(output: 'config.h', configuration: conf)
 
 if(get_option('warm-reboot').enabled())
@@ -138,7 +141,7 @@ executable('phosphor-discover-system-state',
             'settings.cpp',
             'utils.cpp',
             dependencies: [
-            sdbusplus, phosphorlogging, libgpiod
+            sdbusplus, phosphorlogging, libgpiod, cppfs
             ],
     implicit_include_directories: true,
     install: true

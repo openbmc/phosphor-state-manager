@@ -140,6 +140,15 @@ void Chassis::determineInitialState()
 
                     setStateChangeTime();
 
+                    // Generate file indicating AC loss occurred
+                    auto size =
+                        std::snprintf(nullptr, 0, CHASSIS_LOST_POWER_FILE, 0);
+                    size++; // null
+                    std::unique_ptr<char[]> buf(new char[size]);
+                    std::snprintf(buf.get(), size, CHASSIS_LOST_POWER_FILE, 0);
+                    std::ofstream outfile(buf.get());
+                    outfile.close();
+
                     if (phosphor::state::manager::utils::getGpioValue(
                             "reset-cause-pinhole") != 1)
                     {
