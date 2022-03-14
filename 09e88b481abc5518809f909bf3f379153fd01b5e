@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c23d4b20_9aa5158f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-14T21:30:33Z",
+      "side": 1,
+      "message": "Maybe I\u0027m confusing myself a bit but when I look at https://redfish.dmtf.org/schemas/v1/ComputerSystem.v1_17_0.json, it says:\n\"description\": \"The desired power state of the system when power is restored after a power loss.\"\n\nSo maybe what we really are supposed to do here is only apply the policy when the entire system loses power (vs. when chassis power was on prior). I don\u0027t think we have a way to determine if the reason for a BMC reboot was a power loss or not though?",
+      "revId": "09e88b481abc5518809f909bf3f379153fd01b5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
