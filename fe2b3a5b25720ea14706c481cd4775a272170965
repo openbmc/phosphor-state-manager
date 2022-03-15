@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "620c5de1_b5dd1a9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:39:01Z",
+      "side": 1,
+      "message": "Just a minor nit on the default initialization.  Otherwise looks good to go to my eyes.  Thanks Allen!",
+      "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c571157b_47f29da8",
@@ -31,6 +48,24 @@
       "writtenOn": "2022-03-15T11:14:13Z",
       "side": 1,
       "message": "it seems id won\u0027t change, could we make it const?",
+      "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66337714_9cf1a20e",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:39:01Z",
+      "side": 1,
+      "message": "Also prefer default initialization on it: `size_t id \u003d 0`.\n\nI\u0027m not too concerned on the constness but you\u0027re welcome to make that change.",
+      "parentUuid": "c571157b_47f29da8",
       "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
