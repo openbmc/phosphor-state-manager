@@ -463,7 +463,10 @@ Chassis::PowerState Chassis::currentPowerState(PowerState value)
          value);
 
     chassisPowerState = server::Chassis::currentPowerState(value);
-    pohTimer.setEnabled(chassisPowerState == PowerState::On);
+    if (chassisPowerState == PowerState::On)
+    {
+        pohTimer.resetRemaining();
+    }
     return chassisPowerState;
 }
 
