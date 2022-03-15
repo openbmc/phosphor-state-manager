@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66f2f7fc_d231c583",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-15T09:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c2ac7c6_75519239",
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d743c7f2_c6160dd3",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93084988_7b883fbc",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-15T09:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d743c7f2_c6160dd3",
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18d34f17_3e060fd8",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-03-12T00:18:31Z",
       "side": 1,
       "message": "small POD values should not ever have const on them.  It isn\u0027t part of the C++ name mangling so it is just noise in the code.\n\nGenerally we use `size_t` instead of `std::size_t`.  Does this not compile?  You might need `#include \u003ccstddef\u003e`.",
+      "range": {
+        "startLine": 58,
+        "startChar": 56,
+        "endLine": 58,
+        "endChar": 61
+      },
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a414635_5c68cc89",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-15T09:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18d34f17_3e060fd8",
       "range": {
         "startLine": 58,
         "startChar": 56,
@@ -81,6 +141,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0f8fa18_786a0f43",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-15T09:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01eb7c6a_378d2347",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 47
+      },
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4621db0d_ce1df84d",
@@ -104,6 +188,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f79c9a90_6bd2b365",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-15T09:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4621db0d_ce1df84d",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 15
+      },
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a19e493_418a1e66",
@@ -117,6 +225,24 @@
       "writtenOn": "2022-03-12T00:18:31Z",
       "side": 1,
       "message": "There is also std::out_of_range possible here.  I don\u0027t think you really need to catch this though.  Just let the top-level std::terminate trigger.  The silent failure you\u0027re doing is actually worse than the exception message printed by std::terminate.",
+      "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6872bc8e_c6525c41",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-15T09:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a19e493_418a1e66",
       "revId": "25fbfd5ecb4900a610f514458ee2a6552545e844",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

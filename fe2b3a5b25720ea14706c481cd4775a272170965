@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ab89c30_e3f47b22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-15T09:58:35Z",
+      "side": 1,
+      "message": "PLEASE DO NOT MERGE this patchset:\n\nThis patch will change HOST0 busname to \"xyz.openbmc_project.State.Host0\",\nhowever we noticed there are many services/packages hardcoding host busname to \"xyz.openbmc_project.State.Host\", we are afraid of some single-host platform will broken.\n\nBecause its too hard to modify everywhere hardcode busname for now...,we\u0027d like to keep the bus name of HOST0 to original \"xyz.openbmc_project.State.Host\" instead of change to \"xyz.openbmc_project.State.Host0\" at next patchset, how will you suggest for this?",
+      "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
