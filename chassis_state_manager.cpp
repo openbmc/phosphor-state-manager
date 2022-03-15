@@ -150,7 +150,7 @@ void Chassis::determineInitialState()
                         }
                         else
                         {
-                            report<Blackout>();
+                            report<Blackout>(Entry::Level::Critical);
                         }
                     }
                     else
