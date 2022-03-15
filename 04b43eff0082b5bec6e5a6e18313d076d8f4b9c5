@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "45fca92e_612e84ba",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T16:08:38Z",
+      "side": 1,
+      "message": "id will be assigned a value at constructor, do I still need a default value here?",
+      "parentUuid": "6e608094_44789f58",
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00d8fa89_39269ad3",
         "filename": "chassis_state_manager_main.cpp",
         "patchSetId": 2
@@ -54,6 +72,24 @@
       "writtenOn": "2022-03-15T12:35:50Z",
       "side": 1,
       "message": "Suggest adding a small condition here:\n\nif (0 \u003d\u003d chassisId) {\n    bus.request_name(CHASSIS_BUSNAME);\n}\n\nThis will allow us to facilitate backwards compatibility for a time until we can get all the services that are hardcoding State.Chassis fixed.",
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b9c6e4_fca57237",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T16:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00d8fa89_39269ad3",
       "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +107,30 @@
       "writtenOn": "2022-03-15T12:35:50Z",
       "side": 1,
       "message": "drop const",
+      "range": {
+        "startLine": 127,
+        "startChar": 47,
+        "endLine": 127,
+        "endChar": 52
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3c8de65_ee405444",
+        "filename": "host_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T16:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a43d4011_0112b5df",
       "range": {
         "startLine": 127,
         "startChar": 47,
@@ -104,6 +164,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "194386b0_719efc9a",
+        "filename": "host_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T16:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7f52486_426ddca1",
+      "range": {
+        "startLine": 158,
+        "startChar": 19,
+        "endLine": 158,
+        "endChar": 24
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9788a4dc_0da856b1",
@@ -127,6 +211,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28b31cc3_2aa47994",
+        "filename": "host_check.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T16:08:38Z",
+      "side": 1,
+      "message": "Agreed, Done",
+      "parentUuid": "9788a4dc_0da856b1",
+      "range": {
+        "startLine": 16,
+        "startChar": 19,
+        "endLine": 16,
+        "endChar": 24
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1f9d04f_85e57524",
@@ -140,6 +248,24 @@
       "writtenOn": "2022-03-15T12:35:50Z",
       "side": 1,
       "message": "Isn\u0027t there an old file you started from on this?  Please do a \u0027git rm\u0027 on the old file so we can see the diffs.",
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa58b5a_ce06f2d4",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T16:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1f9d04f_85e57524",
       "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
