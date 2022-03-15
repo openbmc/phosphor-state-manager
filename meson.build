@@ -105,7 +105,7 @@ executable('phosphor-chassis-state-manager',
             'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs, libgpiod
+            phosphordbusinterfaces, cppfs, libgpiod, fmt
             ],
     implicit_include_directories: true,
     install: true
