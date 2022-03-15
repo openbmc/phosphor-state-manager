@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e608094_44789f58",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:35:50Z",
+      "side": 1,
+      "message": "Prefer an explicit default initialization:\n\n`size_t id \u003d 0;`",
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00d8fa89_39269ad3",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:35:50Z",
+      "side": 1,
+      "message": "Suggest adding a small condition here:\n\nif (0 \u003d\u003d chassisId) {\n    bus.request_name(CHASSIS_BUSNAME);\n}\n\nThis will allow us to facilitate backwards compatibility for a time until we can get all the services that are hardcoding State.Chassis fixed.",
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a43d4011_0112b5df",
+        "filename": "host_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:35:50Z",
+      "side": 1,
+      "message": "drop const",
+      "range": {
+        "startLine": 127,
+        "startChar": 47,
+        "endLine": 127,
+        "endChar": 52
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7f52486_426ddca1",
+        "filename": "host_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:35:50Z",
+      "side": 1,
+      "message": "drop const",
+      "range": {
+        "startLine": 158,
+        "startChar": 19,
+        "endLine": 158,
+        "endChar": 24
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9788a4dc_0da856b1",
+        "filename": "host_check.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:35:50Z",
+      "side": 1,
+      "message": "Drop the const here.  There is no need for a const on a pass-by-value POD type (like integers, pointers, etc) and it doesn\u0027t even change the C++ name mangling.  It is just noise in the code.",
+      "range": {
+        "startLine": 16,
+        "startChar": 19,
+        "endLine": 16,
+        "endChar": 24
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1f9d04f_85e57524",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:35:50Z",
+      "side": 1,
+      "message": "Isn\u0027t there an old file you started from on this?  Please do a \u0027git rm\u0027 on the old file so we can see the diffs.",
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d76e97b_5835971f",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-15T12:35:50Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be @%i?",
+      "range": {
+        "startLine": 6,
+        "startChar": 32,
+        "endLine": 6,
+        "endChar": 33
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
