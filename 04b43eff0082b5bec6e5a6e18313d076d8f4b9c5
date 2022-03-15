@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f632421_83cea95b",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-15T19:50:38Z",
+      "side": 1,
+      "message": "This is still hosted out in our skeleton repo - https://grok.openbmc.org/xref/openbmc/skeleton/op-pwrctl/power_control_obj.c?r\u003dc0c74e7c.\n\nWe\u0027re going to need to update that to support pgood on multiple chassis or we\u0027re going to have to work with phosphor-power to get this out of skeleton and into a real repo.",
+      "parentUuid": "b571a9dc_58cc2259",
+      "range": {
+        "startLine": 108,
+        "startChar": 8,
+        "endLine": 108,
+        "endChar": 67
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e608094_44789f58",
         "filename": "chassis_state_manager.hpp",
         "patchSetId": 2

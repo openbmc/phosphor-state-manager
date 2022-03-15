@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5ed59dc_032b075c",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-15T19:50:38Z",
+      "side": 1,
+      "message": "Please provide a @brief doxygen tag for each new variable. Also, I\u0027d prefer we keep the variables together so move these up to line 149.",
+      "revId": "aa5f8f1ff0652f18a918e2e2a5bb4a35dde6bfda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "817b5134_f16b98b2",
         "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
         "patchSetId": 3
