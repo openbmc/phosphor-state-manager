@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b571a9dc_58cc2259",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T14:29:13Z",
+      "side": 1,
+      "message": "Does this need to be modified?\n\nSERVICE --\u003e \"org.openbmc.control.PowerX\"\nOBJECT --\u003e \"/org/openbmc/control/powerX\"\n\nAnd X should be the chassis id?",
+      "range": {
+        "startLine": 108,
+        "startChar": 8,
+        "endLine": 108,
+        "endChar": 67
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e608094_44789f58",
         "filename": "chassis_state_manager.hpp",
         "patchSetId": 2
@@ -134,6 +157,30 @@
       "writtenOn": "2022-03-15T12:35:50Z",
       "side": 1,
       "message": "Shouldn\u0027t this be @%i?",
+      "range": {
+        "startLine": 6,
+        "startChar": 32,
+        "endLine": 6,
+        "endChar": 33
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fbfbc6f_5e7c6b2f",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-15T14:29:13Z",
+      "side": 1,
+      "message": "Sure, I will replace with %i.\nI am not fully understand this service, that\u0027s the reason I left it as it is.\nAlso, there is another place hardcode with \"org.openbmc.control.Power\" \u0026  \"/org/openbmc/control/power0\" (chassis_state_manager.cpp), could you add comment there?",
+      "parentUuid": "6d76e97b_5835971f",
       "range": {
         "startLine": 6,
         "startChar": 32,
