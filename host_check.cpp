@@ -39,7 +39,7 @@ constexpr auto CONDITION_HOST_PROPERTY = "CurrentFirmwareCondition";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 constexpr auto CHASSIS_STATE_SVC = "xyz.openbmc_project.State.Chassis";
-constexpr auto CHASSIS_STATE_PATH = "/xyz/openbmc_project/state/chassis0";
+constexpr auto CHASSIS_STATE_PATH = "/xyz/openbmc_project/state/chassis";
 constexpr auto CHASSIS_STATE_INTF = "xyz.openbmc_project.State.Chassis";
 constexpr auto CHASSIS_STATE_POWER_PROP = "CurrentPowerState";
 
@@ -124,11 +124,13 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
 }
 
 // Helper function to check if chassis power is on
-bool isChassiPowerOn(sdbusplus::bus::bus& bus)
+bool isChassiPowerOn(sdbusplus::bus::bus& bus, const size_t id)
 {
+    auto svcname = CHASSIS_STATE_SVC + std::to_string(id);
+    auto objpath = CHASSIS_STATE_PATH + std::to_string(id);
     try
     {
-        auto method = bus.new_method_call(CHASSIS_STATE_SVC, CHASSIS_STATE_PATH,
+        auto method = bus.new_method_call(svcname.c_str(), objpath.c_str(),
                                           PROPERTY_INTERFACE, "Get");
         method.append(CHASSIS_STATE_INTF, CHASSIS_STATE_POWER_PROP);
 
@@ -147,21 +149,20 @@ bool isChassiPowerOn(sdbusplus::bus::bus& bus)
     {
         error("Error reading Chassis Power State, error: {ERROR}, "
               "service: {SERVICE} path: {PATH}",
-              "ERROR", e, "SERVICE", CHASSIS_STATE_SVC, "PATH",
-              CHASSIS_STATE_PATH);
+              "ERROR", e, "SERVICE", svcname.c_str(), "PATH", objpath.c_str());
         throw;
     }
     return false;
 }
 
-bool isHostRunning()
+bool isHostRunning(const size_t id)
 {
     info("Check if host is running");
 
     auto bus = sdbusplus::bus::new_default();
 
     // No need to check if chassis power is not on
-    if (!isChassiPowerOn(bus))
+    if (!isChassiPowerOn(bus, id))
     {
         info("Chassis power not on, exit");
         return false;

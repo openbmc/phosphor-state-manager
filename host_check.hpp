@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 namespace phosphor
 {
 namespace state
@@ -11,7 +13,7 @@ namespace manager
  *
  * @return True if host running, False otherwise
  */
-bool isHostRunning();
+bool isHostRunning(const size_t hostId = 0);
 
 } // namespace manager
 } // namespace state
