@@ -44,8 +44,9 @@ class Chassis : public ChassisInherit
      *
      * @param[in] bus       - The Dbus bus object
      * @param[in] objPath   - The Dbus object path
+     * @param[in] id        - Chassis id
      */
-    Chassis(sdbusplus::bus::bus& bus, const char* objPath) :
+    Chassis(sdbusplus::bus::bus& bus, const char* objPath, size_t id) :
         ChassisInherit(bus, objPath, true), bus(bus),
         systemdSignals(
             bus,
@@ -54,11 +55,15 @@ class Chassis : public ChassisInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Chassis::sysStateChange), this,
                       std::placeholders::_1)),
+        id(id),
         pohTimer(sdeventplus::Event::get_default(),
                  std::bind(&Chassis::pohCallback, this), std::chrono::hours{1},
                  std::chrono::minutes{1})
+
     {
         subscribeToSystemdSignals();
+
+        createSystemdTargetTable();
 
         restoreChassisStateChangeTime();
 
@@ -83,6 +88,9 @@ class Chassis : public ChassisInherit
     void startPOHCounter();
 
   private:
+    /** @brief Create systemd target instance names and mapping table */
+    void createSystemdTargetTable();
+
     /** @brief Determine initial chassis state and set internally */
     void determineInitialState();
 
@@ -136,6 +144,12 @@ class Chassis : public ChassisInherit
 
     /** @brief Watch for any changes to UPS properties  **/
     std::unique_ptr<sdbusplus::bus::match_t> uPowerPropChangeSignal;
+
+    /** @brief Chassis id. **/
+    const size_t id = 0;
+
+    /** @brief Transition state to systemd target mapping table. **/
+    std::map<Transition, std::string> systemdTargetTable;
 
     /** @brief Used to Set value of POHCounter */
     uint32_t pohCounter(uint32_t value) override;

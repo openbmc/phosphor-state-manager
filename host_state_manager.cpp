@@ -79,7 +79,7 @@ void Host::determineInitialState()
 {
 
     if (stateActive(getTarget(server::Host::HostState::Running)) ||
-        isHostRunning())
+        isHostRunning(id))
     {
         info("Initial Host State will be Running");
         server::Host::currentHostState(HostState::Running);
