@@ -6,6 +6,8 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 
+#include <fmt/format.h>
+
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
@@ -33,13 +35,13 @@ using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 using sdbusplus::xyz::openbmc_project::State::Shutdown::Power::Error::Blackout;
 using sdbusplus::xyz::openbmc_project::State::Shutdown::Power::Error::Regulator;
-constexpr auto CHASSIS_STATE_POWEROFF_TGT = "obmc-chassis-poweroff@0.target";
-constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT =
-    "obmc-chassis-hard-poweroff@0.target";
-constexpr auto CHASSIS_STATE_POWERON_TGT = "obmc-chassis-poweron@0.target";
-constexpr auto RESET_HOST_SENSORS_SVC =
-    "phosphor-reset-sensor-states@0.service";
-
+constexpr auto CHASSIS_STATE_POWEROFF_TGT_FMT =
+    "obmc-chassis-poweroff@{}.target";
+constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT_FMT =
+    "obmc-chassis-hard-poweroff@{}.target";
+constexpr auto CHASSIS_STATE_POWERON_TGT_FMT = "obmc-chassis-poweron@{}.target";
+constexpr auto RESET_HOST_SENSORS_SVC_FMT =
+    "phosphor-reset-sensor-states@{}.service";
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
@@ -47,13 +49,6 @@ constexpr auto ACTIVATING_STATE = "activating";
 constexpr uint TYPE_UPS = 3;
 constexpr uint STATE_FULLY_CHARGED = 4;
 constexpr uint BATTERY_LVL_FULL = 8;
-
-/* Map a transition to it's systemd target */
-const std::map<server::Chassis::Transition, std::string> SYSTEMD_TARGET_TABLE =
-    {
-        // Use the hard off target to ensure we shutdown immediately
-        {server::Chassis::Transition::Off, CHASSIS_STATE_HARD_POWEROFF_TGT},
-        {server::Chassis::Transition::On, CHASSIS_STATE_POWERON_TGT}};
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
@@ -83,6 +78,14 @@ void Chassis::subscribeToSystemdSignals()
     }
 
     return;
+}
+
+void Chassis::createSystemdTargetTable()
+{
+    systemdTargetTable = {
+        // Use the hard off target to ensure we shutdown immediately
+        {Transition::Off, fmt::format(CHASSIS_STATE_HARD_POWEROFF_TGT_FMT, id)},
+        {Transition::On, fmt::format(CHASSIS_STATE_POWERON_TGT_FMT, id)}};
 }
 
 // TODO - Will be rewritten once sdbusplus client bindings are in place
@@ -136,7 +139,7 @@ void Chassis::determineInitialState()
                         "Chassis power was on before the BMC reboot and it is off now");
 
                     // Reset host sensors since system is off now
-                    startUnit(RESET_HOST_SENSORS_SVC);
+                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
 
                     setStateChangeTime();
 
@@ -405,16 +408,17 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
         return 0;
     }
 
-    if ((newStateUnit == CHASSIS_STATE_POWEROFF_TGT) &&
-        (newStateResult == "done") && (!stateActive(CHASSIS_STATE_POWERON_TGT)))
+    if ((newStateUnit == systemdTargetTable[Transition::Off]) &&
+        (newStateResult == "done") &&
+        (!stateActive(systemdTargetTable[Transition::On])))
     {
         info("Received signal that power OFF is complete");
         this->currentPowerState(server::Chassis::PowerState::Off);
         this->setStateChangeTime();
     }
-    else if ((newStateUnit == CHASSIS_STATE_POWERON_TGT) &&
+    else if ((newStateUnit == systemdTargetTable[Transition::On]) &&
              (newStateResult == "done") &&
-             (stateActive(CHASSIS_STATE_POWERON_TGT)))
+             (stateActive(systemdTargetTable[Transition::On])))
     {
         info("Received signal that power ON is complete");
         this->currentPowerState(server::Chassis::PowerState::On);
@@ -443,7 +447,7 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 
     info("Change to Chassis Requested Power State: {REQ_POWER_TRAN}",
          "REQ_POWER_TRAN", value);
-    startUnit(SYSTEMD_TARGET_TABLE.find(value)->second);
+    startUnit(systemdTargetTable.find(value)->second);
     return server::Chassis::requestedPowerTransition(value);
 }
 

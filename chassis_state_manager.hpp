@@ -44,8 +44,9 @@ class Chassis : public ChassisInherit
      *
      * @param[in] bus       - The Dbus bus object
      * @param[in] objPath   - The Dbus object path
+     * @param[in] id        - Chassis id
      */
-    Chassis(sdbusplus::bus::bus& bus, const char* objPath) :
+    Chassis(sdbusplus::bus::bus& bus, const char* objPath, size_t id) :
         ChassisInherit(bus, objPath, true), bus(bus),
         systemdSignals(
             bus,
@@ -56,9 +57,12 @@ class Chassis : public ChassisInherit
                       std::placeholders::_1)),
         pohTimer(sdeventplus::Event::get_default(),
                  std::bind(&Chassis::pohCallback, this), std::chrono::hours{1},
-                 std::chrono::minutes{1})
+                 std::chrono::minutes{1}),
+        id(id)
     {
         subscribeToSystemdSignals();
+
+        createSystemdTargetTable();
 
         restoreChassisStateChangeTime();
 
@@ -83,6 +87,9 @@ class Chassis : public ChassisInherit
     void startPOHCounter();
 
   private:
+    /** @brief Create systemd target instance names and mapping table */
+    void createSystemdTargetTable();
+
     /** @brief Determine initial chassis state and set internally */
     void determineInitialState();
 
@@ -216,6 +223,9 @@ class Chassis : public ChassisInherit
      *
      */
     void uPowerChangeEvent(sdbusplus::message::message& msg);
+
+    const size_t id;
+    std::map<Transition, std::string> systemdTargetTable;
 };
 
 } // namespace manager
