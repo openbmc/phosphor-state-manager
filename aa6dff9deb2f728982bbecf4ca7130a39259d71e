@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "759cfb93_c44f539d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001082
+      },
+      "writtenOn": "2022-03-15T20:16:57Z",
+      "side": 1,
+      "message": "currently untested, therefore status set as WIP until combined testing occurs with message_registry change (from separate repo)",
+      "revId": "aa6dff9deb2f728982bbecf4ca7130a39259d71e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
