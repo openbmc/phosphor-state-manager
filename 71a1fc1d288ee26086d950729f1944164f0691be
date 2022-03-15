@@ -50,6 +50,57 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92720276_9d003af1",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000013
+      },
+      "writtenOn": "2022-03-15T05:57:00Z",
+      "side": 1,
+      "message": "The paths have been updated to /sys/kernel/debug/aspeed/sbc/ as of the latest version of the patch.",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89b8c732_5303af35",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000013
+      },
+      "writtenOn": "2022-03-15T05:57:00Z",
+      "side": 1,
+      "message": "This one is not behaving the way we expect it to. We\u0027re waiting on clarification from aspeed, but for now I think we should drop it.\n\nChris said on slack:\n\n\u003e The main concerns we had were to verify secure_boot and the abr image",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "873e8b58_55b9ba8b",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000013
+      },
+      "writtenOn": "2022-03-15T05:57:00Z",
+      "side": 1,
+      "message": "Do you want to handle being unable to open the file? (a file you don\u0027t have permission to open)",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c54d483_af2627e7",
         "filename": "secure_boot_check.cpp",
         "patchSetId": 2
@@ -61,6 +112,23 @@
       "writtenOn": "2022-03-10T21:57:14Z",
       "side": 1,
       "message": "Seems that all sysfs files need to exist to deem the system secure, is it worth trying to read all the sysfs if one doesn\u0027t exist since the check is going to fail in line 83? perhaps instead of creating an info log they should each call to create the error?:\n\nvalue \u003d -1;\nif (std::filesystem::exists(sysfsFile_1))\n{\n    read value;\n}\nif value !\u003d 1\n{\n    createError();\n    return;\n}",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42537428_1d4840e7",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000013
+      },
+      "writtenOn": "2022-03-15T05:57:00Z",
+      "side": 1,
+      "message": "abrImage!\u003d1 an important error to know about outside of manufacturing. It will only be set if the first u-boot copy is corrupt. (It\u0027s not an A/B side thing like on Witherspoon).\n\nShould we test it separately and raise it\u0027s own error (even outside of manufacturing mode?)",
       "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
