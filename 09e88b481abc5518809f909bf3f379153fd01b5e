@@ -33,6 +33,40 @@
       "message": "Per our discussion we need to determine if \"AlwaysOn\" takes precedence over the IBM APR rules, but at any rate this is fine from an APR perspective, thanks.",
       "revId": "09e88b481abc5518809f909bf3f379153fd01b5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98abe5e3_8121f8ef",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-15T21:30:02Z",
+      "side": 1,
+      "message": "can you refresh my memory why you get the filename this way and not just use a std::string?",
+      "revId": "09e88b481abc5518809f909bf3f379153fd01b5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96dacf3d_25beb492",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-03-15T21:30:02Z",
+      "side": 1,
+      "message": "does the file need to be removed after you read it here, or maybe at some other point?  or does it stay until the next reboot?",
+      "revId": "09e88b481abc5518809f909bf3f379153fd01b5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
