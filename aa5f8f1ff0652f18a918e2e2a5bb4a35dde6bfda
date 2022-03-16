@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e04e60ac_df313b33",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-16T03:01:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5ed59dc_032b075c",
+      "revId": "aa5f8f1ff0652f18a918e2e2a5bb4a35dde6bfda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "817b5134_f16b98b2",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-15T16:19:39Z",
       "side": 1,
       "message": "Because we keep bus name \"xyz.openbmc_project.State.Chassis\" for id 0, it need a way to set BusName with %i for id 0.",
+      "range": {
+        "startLine": 14,
+        "startChar": 41,
+        "endLine": 14,
+        "endChar": 43
+      },
+      "revId": "aa5f8f1ff0652f18a918e2e2a5bb4a35dde6bfda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d42c1e_904646b0",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-16T03:01:32Z",
+      "side": 1,
+      "message": "this issue resolved by request both \"xyz.openbmc_project.State.Chassis\" \u0026 \"xyz.openbmc_project.State.Chassis0\" when chassis id is 0.",
+      "parentUuid": "817b5134_f16b98b2",
       "range": {
         "startLine": 14,
         "startChar": 41,
