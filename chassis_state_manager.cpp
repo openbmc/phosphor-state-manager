@@ -140,8 +140,9 @@ void Chassis::determineInitialState()
 
                     setStateChangeTime();
 
+                    // 0 indicates pinhole reset. 1 is NOT pinhole reset
                     if (phosphor::state::manager::utils::getGpioValue(
-                            "reset-cause-pinhole") != 1)
+                            "reset-cause-pinhole") != 0)
                     {
                         if (standbyVoltageRegulatorFault())
                         {
@@ -151,6 +152,10 @@ void Chassis::determineInitialState()
                         {
                             report<Blackout>();
                         }
+                    }
+                    else
+                    {
+                        info("Pinhole reset");
                     }
                 }
             }
