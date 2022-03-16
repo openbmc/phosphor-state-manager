@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5cfb280_33f2ddb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2022-03-16T03:50:11Z",
+      "side": 1,
+      "message": "Okay, had some odd build issues, but did confirm it works on Rainier 2S4U.",
+      "revId": "4fe860f50b9477b48c909705e7aa5ac63172a9df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
