@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17de20ec_5cec2355",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-16T07:22:16Z",
+      "side": 1,
+      "message": "Thanks for your helpful suggestions!",
+      "parentUuid": "620c5de1_b5dd1a9b",
+      "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c571157b_47f29da8",
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Also prefer default initialization on it: `size_t id \u003d 0`.\n\nI\u0027m not too concerned on the constness but you\u0027re welcome to make that change.",
       "parentUuid": "c571157b_47f29da8",
+      "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5d003e0_4c8142b9",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-16T07:22:16Z",
+      "side": 1,
+      "message": "Same as Potin replies at chassis state manager ,I thought member initializer list will initialize this variable, or should we add default value to constructor parameter at line 56?\n\nHost(sdbusplus::bus::bus\u0026 bus, const char* objPath, size_t id \u003d 0) :",
+      "parentUuid": "66337714_9cf1a20e",
       "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
