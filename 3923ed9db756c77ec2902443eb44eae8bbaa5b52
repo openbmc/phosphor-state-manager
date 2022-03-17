@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ca84831_855b7245",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-17T16:05:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfa98fc2_936569b8",
+      "range": {
+        "startLine": 9,
+        "startChar": 55,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "3923ed9db756c77ec2902443eb44eae8bbaa5b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15ea2f3f_3e1ae3de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-17T16:05:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d53990b_d5d5a83e",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 74
+      },
+      "revId": "3923ed9db756c77ec2902443eb44eae8bbaa5b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f97e729_0b50c938",
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ef67d60_c3ec8dc8",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-17T16:05:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f97e729_0b50c938",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 42
+      },
+      "revId": "3923ed9db756c77ec2902443eb44eae8bbaa5b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8137efda_06ba9cc6",
@@ -83,6 +155,24 @@
       "writtenOn": "2022-03-17T01:45:06Z",
       "side": 1,
       "message": "I was suggesting this one to %i even though the code doesn\u0027t support it internally yet because otherwise it is likely to be forgotten.  We don\u0027t support the org.openbmc.control.Power service for multi-node configs, so there is work to do, but this seems like a really easy thing to miss so I was just trying to save us future time.  I don\u0027t suspect that the %i will hurt anything because it is all broken anyhow until the feature is done.",
+      "revId": "3923ed9db756c77ec2902443eb44eae8bbaa5b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7819b73a_e3ebc8e6",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-17T16:05:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8137efda_06ba9cc6",
       "revId": "3923ed9db756c77ec2902443eb44eae8bbaa5b52",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

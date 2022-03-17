@@ -101,6 +101,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6df526bb_2e4c877d",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-17T16:05:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "325cc217_7f606091",
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00d8fa89_39269ad3",
@@ -367,6 +385,30 @@
       "side": 1,
       "message": "Sure, I will replace with %i.\nI am not fully understand this service, that\u0027s the reason I left it as it is.\nAlso, there is another place hardcode with \"org.openbmc.control.Power\" \u0026  \"/org/openbmc/control/power0\" (chassis_state_manager.cpp), could you add comment there?",
       "parentUuid": "6d76e97b_5835971f",
+      "range": {
+        "startLine": 6,
+        "startChar": 32,
+        "endLine": 6,
+        "endChar": 33
+      },
+      "revId": "04b43eff0082b5bec6e5a6e18313d076d8f4b9c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24f70098_5e040572",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-17T16:05:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fbfbc6f_5e7c6b2f",
       "range": {
         "startLine": 6,
         "startChar": 32,
