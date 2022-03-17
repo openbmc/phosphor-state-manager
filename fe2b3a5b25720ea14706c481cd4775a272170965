@@ -140,6 +140,24 @@
       "parentUuid": "3713440b_876755c7",
       "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b31749a5_a2011497",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-17T09:34:59Z",
+      "side": 1,
+      "message": "\u003e I understand it, to set default value at definition ,user can add constructor without id parameter. (like the old one or some single host specific feature?)\n\nYes.\n\nThis suggestion isn\u0027t necessarily about this particular class, but a general principle that should be followed in C++ code.  Modern C++ should have a default value for every member, if possible.",
+      "parentUuid": "47a38076_28ecf2bd",
+      "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
