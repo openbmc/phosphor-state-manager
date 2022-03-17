@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6653a6c7_fe7bbd9c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-17T16:29:22Z",
+      "side": 1,
+      "message": "Hi Shamim, thanks for the commit. Please look over https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#formatting-commit-messages for some direction on commit messages. You shouldn\u0027t have a \"Commit message:\" in the actual commit message. And try and stick to the 50/72 char rule for the main subject and body of the commit message.",
+      "revId": "daca6dd048a8355f7e3ea0f8efa15b7b2734b9d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36ffb2e1_6f4d7716",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-17T16:29:22Z",
+      "side": 1,
+      "message": "I think we still need to call \"pohTimer.setEnabled();\" in here to be sure it\u0027s enabled on the first power on?",
+      "revId": "daca6dd048a8355f7e3ea0f8efa15b7b2734b9d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
