@@ -104,6 +104,24 @@
       "parentUuid": "66337714_9cf1a20e",
       "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3713440b_876755c7",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-17T01:39:20Z",
+      "side": 1,
+      "message": "It can be an optional constructor parameter.  That is separate.\n\nYou should initialize it in the constructor when you have the value (ie. the constructor variant that has `id` as a parameter).  It is also good practice to add a sane default at the definition site.  This is good for maintainability if someone adds a new constructor and doesn\u0027t need to manipulate `id` for their constructor variant; the class will already have code to handle this because you\u0027ve specified the default.",
+      "parentUuid": "f5d003e0_4c8142b9",
+      "revId": "fe2b3a5b25720ea14706c481cd4775a272170965",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

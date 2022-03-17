@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63c57ba3_6ab59d9e",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-17T01:39:20Z",
+      "side": 1,
+      "message": "string (spelling).",
+      "range": {
+        "startLine": 284,
+        "startChar": 15,
+        "endLine": 284,
+        "endChar": 21
+      },
+      "revId": "33e5add5a16606949f9ded7eeb19b0b02d77e2bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18425048_76866372",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-17T01:39:20Z",
+      "side": 1,
+      "message": "string (spelling)",
+      "range": {
+        "startLine": 293,
+        "startChar": 15,
+        "endLine": 293,
+        "endChar": 21
+      },
+      "revId": "33e5add5a16606949f9ded7eeb19b0b02d77e2bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8e4b05a_4599afcc",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-17T01:39:20Z",
+      "side": 1,
+      "message": "mapping (spelling)",
+      "range": {
+        "startLine": 312,
+        "startChar": 43,
+        "endLine": 312,
+        "endChar": 50
+      },
+      "revId": "33e5add5a16606949f9ded7eeb19b0b02d77e2bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0dedbcf_17086ec2",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-17T01:39:20Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 315,
+        "startChar": 54,
+        "endLine": 315,
+        "endChar": 61
+      },
+      "revId": "33e5add5a16606949f9ded7eeb19b0b02d77e2bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
