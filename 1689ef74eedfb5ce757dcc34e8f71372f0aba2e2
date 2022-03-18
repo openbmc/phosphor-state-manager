@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3a89125_92e2b6c7",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-18T07:54:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07048a4e_0e1a9954",
+      "revId": "1689ef74eedfb5ce757dcc34e8f71372f0aba2e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a241500e_831163fb",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-03-17T17:38:39Z",
       "side": 1,
       "message": "Delete the old service file? Or come back and do that once we have this new one running?",
+      "revId": "1689ef74eedfb5ce757dcc34e8f71372f0aba2e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cd18989_2d8a2bcf",
+        "filename": "service_files/xyz.openbmc_project.State.Host@.service",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-18T07:54:04Z",
+      "side": 1,
+      "message": "Yes, old file should be delete.\n\nBTW ,I have a question about change this service file, to build obmc-phosphor-image also need modify .bb file, but the commit CI build will failed without this patch, those two patches in different repository, how to solve dependency issue like this?\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/openbmc/+/51704/2/meta-phosphor/recipes-phosphor/state/phosphor-state-manager_git.bb#65",
+      "parentUuid": "a241500e_831163fb",
       "revId": "1689ef74eedfb5ce757dcc34e8f71372f0aba2e2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
