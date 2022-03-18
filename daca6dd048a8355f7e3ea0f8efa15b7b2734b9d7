@@ -69,6 +69,24 @@
       "parentUuid": "36ffb2e1_6f4d7716",
       "revId": "daca6dd048a8355f7e3ea0f8efa15b7b2734b9d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49469175_6d8c1001",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1001156
+      },
+      "writtenOn": "2022-03-18T09:50:17Z",
+      "side": 1,
+      "message": "\u003e The timer is getting enabled by default if passed an interval. please find the below linka for refrence.\n\u003e https://github.com/openbmc/sdeventplus/blob/master/src/sdeventplus/utility/timer.hpp#L48\nhttps://github.com/openbmc/phosphor-state-manager/blob/master/chassis_state_manager.hpp#L58",
+      "parentUuid": "0b745d21_a2527358",
+      "revId": "daca6dd048a8355f7e3ea0f8efa15b7b2734b9d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
