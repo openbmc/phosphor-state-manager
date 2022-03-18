@@ -65,6 +65,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27059140_d895e4e2",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-18T19:01:36Z",
+      "side": 1,
+      "message": "ok, I made config values",
+      "parentUuid": "2099f5d6_1e676486",
+      "range": {
+        "startLine": 11,
+        "startChar": 59,
+        "endLine": 11,
+        "endChar": 65
+      },
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7e22e54_da9df3d3",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-18T19:01:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92720276_9d003af1",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89b8c732_5303af35",
@@ -78,6 +120,24 @@
       "writtenOn": "2022-03-15T05:57:00Z",
       "side": 1,
       "message": "This one is not behaving the way we expect it to. We\u0027re waiting on clarification from aspeed, but for now I think we should drop it.\n\nChris said on slack:\n\n\u003e The main concerns we had were to verify secure_boot and the abr image",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3c1d945_95a2c32d",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-18T19:01:36Z",
+      "side": 1,
+      "message": "ok, I\u0027ll take this one out.",
+      "parentUuid": "89b8c732_5303af35",
       "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -99,6 +159,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a1004d3_ade4ced4",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-18T19:01:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "873e8b58_55b9ba8b",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c54d483_af2627e7",
@@ -116,6 +194,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99d3d543_c22548a9",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-18T19:01:36Z",
+      "side": 1,
+      "message": "For debug purposes, Joel had requested in the github issue we read them all and log them to the journal so I figured I\u0027d just read them all and do the logic at the end with a single log if in mfg mode.",
+      "parentUuid": "8c54d483_af2627e7",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42537428_1d4840e7",
@@ -129,6 +225,24 @@
       "writtenOn": "2022-03-15T05:57:00Z",
       "side": 1,
       "message": "abrImage!\u003d1 an important error to know about outside of manufacturing. It will only be set if the first u-boot copy is corrupt. (It\u0027s not an A/B side thing like on Witherspoon).\n\nShould we test it separately and raise it\u0027s own error (even outside of manufacturing mode?)",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9faf1390_af9622d0",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-18T19:01:36Z",
+      "side": 1,
+      "message": "Joel, from https://github.com/ibm-openbmc/dev/issues/3462#issuecomment-1056063496, you said \"abr_image is a per-boot setting. It should always be 0. Raise an error if set to 1.\". So just to be sure, you\u0027re saying that has changed and we should log an error if it\u0027s !\u003d1?\n\nFor the question on whether we should always check this, that would be a change in the initial requirements, which is ok if we think it makes sense but having this all wrapped around a manufacturing mode check gives us some lee-way in testing and error paths. Would Chris E. be the one to make the decision on this question?",
+      "parentUuid": "42537428_1d4840e7",
       "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
