@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df567f95_e39685c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001156
+      },
+      "writtenOn": "2022-03-18T07:16:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6653a6c7_fe7bbd9c",
+      "revId": "daca6dd048a8355f7e3ea0f8efa15b7b2734b9d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36ffb2e1_6f4d7716",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-17T16:29:22Z",
       "side": 1,
       "message": "I think we still need to call \"pohTimer.setEnabled();\" in here to be sure it\u0027s enabled on the first power on?",
+      "revId": "daca6dd048a8355f7e3ea0f8efa15b7b2734b9d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b745d21_a2527358",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1001156
+      },
+      "writtenOn": "2022-03-18T07:16:38Z",
+      "side": 1,
+      "message": "The timer is getting enabled by default if passed an interval. please find the below link for refrence.\nhttps://github.com/openbmc/sdeventplus/blob/master/src/sdeventplus/utility/timer.hpp#L48",
+      "parentUuid": "36ffb2e1_6f4d7716",
       "revId": "daca6dd048a8355f7e3ea0f8efa15b7b2734b9d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
