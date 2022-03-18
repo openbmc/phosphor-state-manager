@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "080efe4c_2f0a095f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-18T14:10:03Z",
+      "side": 1,
+      "message": "Commit is looking better. Still have an issue though with these two lines. I\u0027d recommend squashing these down to something like this:\n\npower-on-hours: ensure not incremented when system off",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 41
+      },
+      "revId": "b4e2223817566906d29af5ac9cc9bfa1bc4f53b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
