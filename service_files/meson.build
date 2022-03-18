@@ -14,7 +14,8 @@ unit_files = [
     'phosphor-clear-one-time@.service',
     'phosphor-set-host-transition-to-off@.service',
     'phosphor-set-host-transition-to-running@.service',
-    'phosphor-chassis-check-power-status@.service'
+    'phosphor-chassis-check-power-status@.service',
+    'phosphor-bmc-security-check.service'
 ]
 
 foreach u : unit_files
