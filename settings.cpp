@@ -18,14 +18,15 @@ constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 
-Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
+Objects::Objects(sdbusplus::bus::bus& bus, size_t hostId) :
+    bus(bus), hostId(hostId)
 {
     std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
     auto depth = 0;
 
     auto mapperCall = bus.new_method_call(mapperService, mapperPath, mapperIntf,
                                           "GetSubTree");
-    mapperCall.append(root);
+    mapperCall.append(root + std::to_string(hostId));
     mapperCall.append(depth);
     mapperCall.append(settingsIntfs);
 

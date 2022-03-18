@@ -11,7 +11,7 @@ using Path = std::string;
 using Service = std::string;
 using Interface = std::string;
 
-constexpr auto root = "/";
+constexpr auto root = "/xyz/openbmc_project/control/host";
 constexpr auto autoRebootIntf = "xyz.openbmc_project.Control.Boot.RebootPolicy";
 constexpr auto powerRestoreIntf =
     "xyz.openbmc_project.Control.Power.RestorePolicy";
@@ -26,7 +26,7 @@ struct Objects
      *
      * @param[in] bus - The Dbus bus object
      */
-    explicit Objects(sdbusplus::bus::bus& bus);
+    explicit Objects(sdbusplus::bus::bus& bus, size_t hostId);
     Objects(const Objects&) = delete;
     Objects& operator=(const Objects&) = delete;
     Objects(Objects&&) = delete;
@@ -58,6 +58,9 @@ struct Objects
 
     /** @brief The Dbus bus object */
     sdbusplus::bus::bus& bus;
+
+    /** @brief Host Id */
+    const size_t hostId = 0;
 };
 
 } // namespace settings

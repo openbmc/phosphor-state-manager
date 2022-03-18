@@ -69,7 +69,7 @@ class Host : public HostInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             std::bind(std::mem_fn(&Host::sysStateChangeJobNew), this,
                       std::placeholders::_1)),
-        settings(bus), id(id)
+        settings(bus, id), id(id)
     {
         // Enable systemd signals
         subscribeToSystemdSignals();
