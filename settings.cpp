@@ -18,7 +18,7 @@ constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 
-Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
+Objects::Objects(sdbusplus::bus::bus& bus, const Path& root) : bus(bus)
 {
     std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
     auto depth = 0;
@@ -126,5 +126,9 @@ Service Objects::service(const Path& path, const Interface& interface) const
 
     return result.begin()->first;
 }
+
+HostObjects::HostObjects(sdbusplus::bus::bus& bus, size_t id) :
+    Objects(bus, Path("/xyz/openbmc_project/control/host") + std::to_string(id))
+{}
 
 } // namespace settings

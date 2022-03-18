@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 {
     using namespace phosphor::logging;
 
+    size_t hostId = 0;
     std::string hostPath = "/xyz/openbmc_project/state/host0";
     int arg;
     int optIndex = 0;
@@ -51,6 +52,7 @@ int main(int argc, char** argv)
         switch (arg)
         {
             case 'h':
+                hostId = std::stoul(optarg);
                 hostPath =
                     std::string("/xyz/openbmc_project/state/host") + optarg;
                 break;
@@ -62,7 +64,7 @@ int main(int argc, char** argv)
     auto bus = sdbusplus::bus::new_default();
 
     using namespace settings;
-    Objects settings(bus);
+    HostObjects settings(bus, hostId);
 
     using namespace phosphor::state::manager;
     namespace server = sdbusplus::xyz::openbmc_project::State::server;
