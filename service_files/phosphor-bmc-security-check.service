@@ -1,0 +1,15 @@
+[Unit]
+Description=Phosphor BMC Security Check
+Wants=obmc-mapper.target
+After=obmc-mapper.target
+Wants=xyz.openbmc_project.Settings.service
+After=xyz.openbmc_project.Settings.service
+
+
+[Service]
+ExecStart=/usr/bin/phosphor-secure-boot-check
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
