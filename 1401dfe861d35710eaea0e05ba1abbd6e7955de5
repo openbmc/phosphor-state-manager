@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10c44b3c_022efa50",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-18T05:48:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b2b38cc_d1abb101",
+      "revId": "1401dfe861d35710eaea0e05ba1abbd6e7955de5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f78853a7_33364a67",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-17T17:48:07Z",
       "side": 1,
       "message": "A comment on why we\u0027re doing this (i.e. backwards compatibility) would be good here.",
+      "revId": "1401dfe861d35710eaea0e05ba1abbd6e7955de5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3cf1ad_52513325",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-18T05:48:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f78853a7_33364a67",
       "revId": "1401dfe861d35710eaea0e05ba1abbd6e7955de5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
