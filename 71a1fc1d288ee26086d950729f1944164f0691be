@@ -245,6 +245,24 @@
       "parentUuid": "42537428_1d4840e7",
       "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2ac1fb_39607ef5",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000452
+      },
+      "writtenOn": "2022-03-19T20:42:13Z",
+      "side": 1,
+      "message": "interesting questions.  I could see some sort of predictive failure being logged or maybe an attempt to sync the secondary onto the primary and boot again from primary (for some number of attempts).  Think this should be included in discussions we have on how we handle updates to the secondary uboot image which at this point we said are not GA1",
+      "parentUuid": "9faf1390_af9622d0",
+      "revId": "71a1fc1d288ee26086d950729f1944164f0691be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
