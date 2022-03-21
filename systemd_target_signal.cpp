@@ -102,6 +102,9 @@ const std::string SystemdTargetLogging::processError(const std::string& unit,
             info(
                 "Monitored systemd unit has hit an error, unit:{UNIT}, result:{RESULT}",
                 "UNIT", unit, "RESULT", result);
+
+            // Generate a BMC dump when a monitored target fails
+            createBmcDump();
             return (targetEntry->second.errorToLog);
         }
     }
