@@ -212,6 +212,9 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
             info("Error in Unsubscribe: {ERROR}", "ERROR", e);
         }
 
+        // disable the system state change object as well
+        stateSignal.reset();
+
         return 0;
     }
 
