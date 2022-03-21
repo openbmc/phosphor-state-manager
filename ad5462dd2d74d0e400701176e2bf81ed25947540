@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "638b0f0e_5ae0b43a",
+        "filename": "settings.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-21T13:22:27Z",
+      "side": 1,
+      "message": "My only concern is that this class was generic in that you could get any setting, and now we\u0027ve restricted it to this specific object path. But...that\u0027s also been our only use case so I\u0027m good if you can just add a note.\n\nCould you add something like this to the class now:\n@note  IMPORTANT: This class only supports settings under the /xyz/openbmc_project/control/hostX object paths\"",
+      "revId": "ad5462dd2d74d0e400701176e2bf81ed25947540",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
