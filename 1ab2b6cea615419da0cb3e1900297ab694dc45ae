@@ -16,6 +16,24 @@
       "message": "This old code would also disable the timer (i.e. pass false to setEnabled) when the PowerState was not equal to On. Don\u0027t we still want to turn it off when the power goes off?",
       "revId": "1ab2b6cea615419da0cb3e1900297ab694dc45ae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "077e9d94_f8c33c8c",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1001156
+      },
+      "writtenOn": "2022-03-22T13:27:03Z",
+      "side": 0,
+      "message": "no, actually this is not the case, I think i didn\u0027t explain cclearly in commit msg, \nlet me explain with example.\n\nIn old code, the poh counter gets increment when the power state is on and timer gets expire after 1 hour.\n\nsuppose we have to power off the chassis at 50th minute, the remaining time for the counter gets expire is 10 minutes, if u make the chassis power on for these 10 minutes the counter gets incremented by 1 in 10 minutes instead by 1 hour.\n\nFYI.\nwe are already having checking in pohCallback to increment the counter when the chassis is power on and timer expires, but poh  counter will not gets increment when the chassis is power off and timer expires.\n\nplease find the below reference links for more info:\nhttps://github.com/openbmc/sdeventplus/blob/master/src/sdeventplus/utility/timer.hpp#L134\n\nhttps://github.com/openbmc/phosphor-state-manager/blob/master/chassis_state_manager.cpp#L482",
+      "parentUuid": "498c7a65_9e36dee8",
+      "revId": "1ab2b6cea615419da0cb3e1900297ab694dc45ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
