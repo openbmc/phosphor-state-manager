@@ -140,8 +140,11 @@ class Chassis : public ChassisInherit
     /** @brief Used to subscribe to dbus systemd signals **/
     sdbusplus::bus::match_t systemdSignals;
 
-    /** @brief Watch for any changes to UPS properties  **/
+    /** @brief Watch for any changes to UPS properties **/
     std::unique_ptr<sdbusplus::bus::match_t> uPowerPropChangeSignal;
+
+    /** @brief Watch for any changes to PowerSystemInputs properties **/
+    std::unique_ptr<sdbusplus::bus::match_t> powerSysInputsPropChangeSignal;
 
     /** @brief Chassis id. **/
     const size_t id = 0;
@@ -228,6 +231,16 @@ class Chassis : public ChassisInherit
      *
      */
     void uPowerChangeEvent(sdbusplus::message::message& msg);
+
+    /** @brief Process PowerSystemInputs property changes
+     *
+     * Instance specific interface to monitor for changes to the
+     * PowerSystemInputs properties which may impact CurrentPowerStatus
+     *
+     * @param[in]  msg              - Data associated with subscribed signal
+     *
+     */
+    void powerSysInputsChangeEvent(sdbusplus::message::message& msg);
 };
 
 } // namespace manager

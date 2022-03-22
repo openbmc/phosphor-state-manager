@@ -61,6 +61,8 @@ constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto UPOWER_INTERFACE = "org.freedesktop.UPower.Device";
+constexpr auto POWERSYSINPUTS_INTERFACE =
+    "xyz.openbmc_project.State.Decorator.PowerSystemInputs";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void Chassis::subscribeToSystemdSignals()
@@ -100,6 +102,14 @@ void Chassis::determineInitialState()
         sdbusplus::bus::match::rules::propertiesChangedNamespace(
             "/org/freedesktop/UPower", UPOWER_INTERFACE),
         [this](auto& msg) { this->uPowerChangeEvent(msg); });
+
+    // Monitor for any properties changed signals on PowerSystemInputs
+    powerSysInputsPropChangeSignal = std::make_unique<sdbusplus::bus::match_t>(
+        bus,
+        sdbusplus::bus::match::rules::propertiesChangedNamespace(
+            "/xyz/openbmc_project/power/power_supplies/chassis0/psus",
+            POWERSYSINPUTS_INTERFACE),
+        [this](auto& msg) { this->powerSysInputsChangeEvent(msg); });
 
     determineStatusOfPower();
 
@@ -192,11 +202,13 @@ void Chassis::determineStatusOfPower()
     // Default PowerStatus to good
     server::Chassis::currentPowerStatus(PowerStatus::Good);
 
-    // Find all implementations of the UPower interface
+    // Find all implementations of the UPower and PowerSystemInputs interfaces
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
                                       MAPPER_INTERFACE, "GetSubTree");
 
-    mapper.append("/", 0, std::vector<std::string>({UPOWER_INTERFACE}));
+    mapper.append(
+        "/", 0,
+        std::vector<std::string>({UPOWER_INTERFACE, POWERSYSINPUTS_INTERFACE}));
 
     std::map<std::string, std::map<std::string, std::vector<std::string>>>
         mapperResponse;
@@ -208,88 +220,128 @@ void Chassis::determineStatusOfPower()
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        error("Error in mapper GetSubTree call for UPS: {ERROR}", "ERROR", e);
+        error("Error in mapper GetSubTree call for Power Status: {ERROR}",
+              "ERROR", e);
         throw;
     }
 
     if (mapperResponse.empty())
     {
-        debug("No UPower devices found in system");
+        debug("No Power Status devices found in system");
     }
 
-    // Iterate through all returned Upower interfaces and look for UPS's
-    for (const auto& [path, services] : mapperResponse)
+    // Iterate through all returned Power Status interfaces
+    for (const auto& [path, object] : mapperResponse)
     {
-        for (const auto& serviceIter : services)
+        for (const auto& [service, interfaces] : object)
         {
-            const std::string& service = serviceIter.first;
-
-            try
+            if (std::find(interfaces.begin(), interfaces.end(),
+                          POWERSYSINPUTS_INTERFACE) != interfaces.end())
             {
-                auto method = bus.new_method_call(service.c_str(), path.c_str(),
-                                                  PROPERTY_INTERFACE, "GetAll");
-                method.append(UPOWER_INTERFACE);
+                try
+                {
+                    auto method =
+                        bus.new_method_call(service.c_str(), path.c_str(),
+                                            PROPERTY_INTERFACE, "GetAll");
+                    method.append(POWERSYSINPUTS_INTERFACE);
 
-                auto response = bus.call(method);
-                using Property = std::string;
-                using Value = std::variant<bool, uint>;
-                using PropertyMap = std::map<Property, Value>;
-                PropertyMap properties;
-                response.read(properties);
+                    auto response = bus.call(method);
+                    using Property = std::string;
+                    using Value = std::variant<std::string>;
+                    using PropertyMap = std::map<Property, Value>;
+                    PropertyMap properties;
+                    response.read(properties);
 
-                if (std::get<uint>(properties["Type"]) != TYPE_UPS)
-                {
-                    info("UPower device {OBJ_PATH} is not a UPS device",
-                         "OBJ_PATH", path);
-                    continue;
+                    if (std::get<std::string>(properties["Status"]) !=
+                        "xyz.openbmc_project.State.Decorator.PowerSystemInputs.Status.Good")
+                    {
+                        info("Power System Inputs status is not in Good state");
+                        server::Chassis::currentPowerStatus(
+                            PowerStatus::BrownOut);
+                        return;
+                    }
                 }
-
-                if (std::get<bool>(properties["IsPresent"]) != true)
+                catch (const sdbusplus::exception::exception& e)
                 {
-                    // There is a UPS detected but it is not officially
-                    // "present" yet. Monitor it for state change.
-                    info("UPower device {OBJ_PATH} is not present", "OBJ_PATH",
-                         path);
-                    continue;
-                }
-
-                if (std::get<uint>(properties["State"]) == STATE_FULLY_CHARGED)
-                {
-                    info("UPS is fully charged");
-                }
-                else
-                {
-                    info("UPS is not fully charged: {UPS_STATE}", "UPS_STATE",
-                         std::get<uint>(properties["State"]));
-                    server::Chassis::currentPowerStatus(
-                        PowerStatus::UninterruptiblePowerSupply);
-                    return;
-                }
-
-                if (std::get<uint>(properties["BatteryLevel"]) ==
-                    BATTERY_LVL_FULL)
-                {
-                    info("UPS Battery Level is Full");
-                    // Only one UPS per system, we've found it and it's all
-                    // good so exit function
-                    return;
-                }
-                else
-                {
-                    info("UPS Battery Level is Low: {UPS_BAT_LEVEL}",
-                         "UPS_BAT_LEVEL",
-                         std::get<uint>(properties["BatteryLevel"]));
-                    server::Chassis::currentPowerStatus(
-                        PowerStatus::UninterruptiblePowerSupply);
-                    return;
+                    error(
+                        "Error reading Power System Inputs property, error: {ERROR}, "
+                        "service: {SERVICE} path: {PATH}",
+                        "ERROR", e, "SERVICE", service, "PATH", path);
+                    throw;
                 }
             }
-            catch (const sdbusplus::exception::exception& e)
+            else if (std::find(interfaces.begin(), interfaces.end(),
+                               UPOWER_INTERFACE) != interfaces.end())
             {
-                error("Error reading UPS property, error: {ERROR}, "
-                      "service: {SERVICE} path: {PATH}",
-                      "ERROR", e, "SERVICE", service, "PATH", path);
-                throw;
+                try
+                {
+                    auto method =
+                        bus.new_method_call(service.c_str(), path.c_str(),
+                                            PROPERTY_INTERFACE, "GetAll");
+                    method.append(UPOWER_INTERFACE);
+
+                    auto response = bus.call(method);
+                    using Property = std::string;
+                    using Value = std::variant<bool, uint>;
+                    using PropertyMap = std::map<Property, Value>;
+                    PropertyMap properties;
+                    response.read(properties);
+
+                    if (std::get<uint>(properties["Type"]) != TYPE_UPS)
+                    {
+                        info("UPower device {OBJ_PATH} is not a UPS device",
+                             "OBJ_PATH", path);
+                        continue;
+                    }
+
+                    if (std::get<bool>(properties["IsPresent"]) != true)
+                    {
+                        // There is a UPS detected but it is not officially
+                        // "present" yet. Monitor it for state change.
+                        info("UPower device {OBJ_PATH} is not present",
+                             "OBJ_PATH", path);
+                        continue;
+                    }
+
+                    if (std::get<uint>(properties["State"]) ==
+                        STATE_FULLY_CHARGED)
+                    {
+                        info("UPS is fully charged");
+                    }
+                    else
+                    {
+                        info("UPS is not fully charged: {UPS_STATE}",
+                             "UPS_STATE", std::get<uint>(properties["State"]));
+                        server::Chassis::currentPowerStatus(
+                            PowerStatus::UninterruptiblePowerSupply);
+                        return;
+                    }
+
+                    if (std::get<uint>(properties["BatteryLevel"]) ==
+                        BATTERY_LVL_FULL)
+                    {
+                        info("UPS Battery Level is Full");
+                        // Only one UPS per system, we've found it and it's all
+                        // good so exit function
+                        return;
+                    }
+                    else
+                    {
+                        info("UPS Battery Level is Low: {UPS_BAT_LEVEL}",
+                             "UPS_BAT_LEVEL",
+                             std::get<uint>(properties["BatteryLevel"]));
+                        server::Chassis::currentPowerStatus(
+                            PowerStatus::UninterruptiblePowerSupply);
+                        return;
+                    }
+                }
+                catch (const sdbusplus::exception::exception& e)
+                {
+                    error("Error reading UPS property, error: {ERROR}, "
+                          "service: {SERVICE} path: {PATH}",
+                          "ERROR", e, "SERVICE", service, "PATH", path);
+                    throw;
+                }
             }
         }
     }
@@ -329,6 +381,25 @@ void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
     {
         info("UPS BatteryLevel changed to {UPS_BAT_LEVEL}", "UPS_BAT_LEVEL",
              std::get<uint>(propertyMap->second));
+        determineStatusOfPower();
+        return;
+    }
+    return;
+}
+
+void Chassis::powerSysInputsChangeEvent(sdbusplus::message::message& msg)
+{
+    debug("Power System Inputs Property Change Event Triggered");
+    std::string statusInterface;
+    std::map<std::string, std::variant<std::string>> msgData;
+    msg.read(statusInterface, msgData);
+
+    auto propertyMap = msgData.find("Status");
+    if (propertyMap != msgData.end())
+    {
+        info("Power System Inputs status changed to {POWER_SYS_INPUT_STATUS}",
+             "POWER_SYS_INPUT_STATUS",
+             std::get<std::string>(propertyMap->second));
         determineStatusOfPower();
         return;
     }
