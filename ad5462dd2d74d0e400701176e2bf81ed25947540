@@ -16,6 +16,24 @@
       "message": "My only concern is that this class was generic in that you could get any setting, and now we\u0027ve restricted it to this specific object path. But...that\u0027s also been our only use case so I\u0027m good if you can just add a note.\n\nCould you add something like this to the class now:\n@note  IMPORTANT: This class only supports settings under the /xyz/openbmc_project/control/hostX object paths\"",
       "revId": "ad5462dd2d74d0e400701176e2bf81ed25947540",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1d685dd_36df8e3a",
+        "filename": "settings.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2022-03-22T07:24:32Z",
+      "side": 1,
+      "message": "Hi Andrew, I am thinking add new class called HostObjects which inheritance from settings::Objects, so that Objects can keep generic.\n\n```\n// Objects constructor\nObjects(sdbusplus::bus::bus\u0026 bus, const Path\u0026 path \u003d \"/\");\n\n//HostObjects constructor\nHostObjects(sdbusplus::bus::bus\u0026 bus, size_t id): \n  Objects(bus,\n          std::string(\"/xyz/openbmc_project/control/host\") + std::to_string(id))\n{}\n```\n\n\nIs this method looks OK for you? or you prefer just adding comments?",
+      "parentUuid": "638b0f0e_5ae0b43a",
+      "revId": "ad5462dd2d74d0e400701176e2bf81ed25947540",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
