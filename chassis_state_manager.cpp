@@ -15,6 +15,7 @@
 #include <sdbusplus/exception.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/exception.hpp>
+#include <xyz/openbmc_project/State/Decorator/PowerSystemInputs/server.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -30,6 +31,8 @@ PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace decoratorServer =
+    sdbusplus::xyz::openbmc_project::State::Decorator::server;
 
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
@@ -61,6 +64,8 @@ constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto UPOWER_INTERFACE = "org.freedesktop.UPower.Device";
+constexpr auto POWERSYSINPUTS_INTERFACE =
+    "xyz.openbmc_project.State.Decorator.PowerSystemInputs";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void Chassis::subscribeToSystemdSignals()
@@ -100,6 +105,15 @@ void Chassis::determineInitialState()
         sdbusplus::bus::match::rules::propertiesChangedNamespace(
             "/org/freedesktop/UPower", UPOWER_INTERFACE),
         [this](auto& msg) { this->uPowerChangeEvent(msg); });
+
+    // Monitor for any properties changed signals on PowerSystemInputs
+    powerSysInputsPropChangeSignal = std::make_unique<sdbusplus::bus::match_t>(
+        bus,
+        sdbusplus::bus::match::rules::propertiesChangedNamespace(
+            fmt::format(
+                "/xyz/openbmc_project/power/power_supplies/chassis{}/psus", id),
+            POWERSYSINPUTS_INTERFACE),
+        [this](auto& msg) { this->powerSysInputsChangeEvent(msg); });
 
     determineStatusOfPower();
 
@@ -192,6 +206,17 @@ void Chassis::determineStatusOfPower()
     // Default PowerStatus to good
     server::Chassis::currentPowerStatus(PowerStatus::Good);
 
+    determineStatusOfUPSPower();
+    if (server::Chassis::currentPowerStatus() != PowerStatus::Good)
+    {
+        return;
+    }
+
+    determineStatusOfPSUPower();
+}
+
+void Chassis::determineStatusOfUPSPower()
+{
     // Find all implementations of the UPower interface
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
                                       MAPPER_INTERFACE, "GetSubTree");
@@ -296,6 +321,73 @@ void Chassis::determineStatusOfPower()
     return;
 }
 
+void Chassis::determineStatusOfPSUPower()
+{
+    // Find all implementations of the PowerSystemInputs interface
+    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                      MAPPER_INTERFACE, "GetSubTree");
+
+    mapper.append("/", 0, std::vector<std::string>({POWERSYSINPUTS_INTERFACE}));
+
+    std::map<std::string, std::map<std::string, std::vector<std::string>>>
+        mapperResponse;
+
+    try
+    {
+        auto mapperResponseMsg = bus.call(mapper);
+        mapperResponseMsg.read(mapperResponse);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("Error in mapper GetSubTree call for PowerSystemInputs: {ERROR}",
+              "ERROR", e);
+        throw;
+    }
+
+    for (const auto& [path, services] : mapperResponse)
+    {
+        for (const auto& serviceIter : services)
+        {
+            const std::string& service = serviceIter.first;
+
+            try
+            {
+                auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                                  PROPERTY_INTERFACE, "GetAll");
+                method.append(POWERSYSINPUTS_INTERFACE);
+
+                auto response = bus.call(method);
+                using Property = std::string;
+                using Value = std::variant<std::string>;
+                using PropertyMap = std::map<Property, Value>;
+                PropertyMap properties;
+                response.read(properties);
+
+                auto statusStr = std::get<std::string>(properties["Status"]);
+                auto status =
+                    decoratorServer::PowerSystemInputs::convertStatusFromString(
+                        statusStr);
+
+                if (status == decoratorServer::PowerSystemInputs::Status::Fault)
+                {
+                    info("Power System Inputs status is in Fault state");
+                    server::Chassis::currentPowerStatus(PowerStatus::BrownOut);
+                    return;
+                }
+            }
+            catch (const sdbusplus::exception::exception& e)
+            {
+                error(
+                    "Error reading Power System Inputs property, error: {ERROR}, "
+                    "service: {SERVICE} path: {PATH}",
+                    "ERROR", e, "SERVICE", service, "PATH", path);
+                throw;
+            }
+        }
+    }
+    return;
+}
+
 void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
 {
     debug("UPS Property Change Event Triggered");
@@ -303,9 +395,9 @@ void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
     std::map<std::string, std::variant<uint, bool>> msgData;
     msg.read(statusInterface, msgData);
 
-    // If the change is to any of the three properties we are interested in
-    // then call determineStatusOfPower() to see if a power status change
-    // is needed
+    // If the change is to any of the properties we are interested in, then call
+    // determineStatusOfPower(), which looks at all the power-related
+    // interfaces, to see if a power status change is needed
     auto propertyMap = msgData.find("IsPresent");
     if (propertyMap != msgData.end())
     {
@@ -329,6 +421,28 @@ void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
     {
         info("UPS BatteryLevel changed to {UPS_BAT_LEVEL}", "UPS_BAT_LEVEL",
              std::get<uint>(propertyMap->second));
+        determineStatusOfPower();
+        return;
+    }
+    return;
+}
+
+void Chassis::powerSysInputsChangeEvent(sdbusplus::message::message& msg)
+{
+    debug("Power System Inputs Property Change Event Triggered");
+    std::string statusInterface;
+    std::map<std::string, std::variant<std::string>> msgData;
+    msg.read(statusInterface, msgData);
+
+    // If the change is to any of the properties we are interested in, then call
+    // determineStatusOfPower(), which looks at all the power-related
+    // interfaces, to see if a power status change is needed
+    auto propertyMap = msgData.find("Status");
+    if (propertyMap != msgData.end())
+    {
+        info("Power System Inputs status changed to {POWER_SYS_INPUT_STATUS}",
+             "POWER_SYS_INPUT_STATUS",
+             std::get<std::string>(propertyMap->second));
         determineStatusOfPower();
         return;
     }
