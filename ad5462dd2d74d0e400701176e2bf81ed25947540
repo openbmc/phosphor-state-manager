@@ -34,6 +34,24 @@
       "parentUuid": "638b0f0e_5ae0b43a",
       "revId": "ad5462dd2d74d0e400701176e2bf81ed25947540",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05c6b6b6_dd3af0b1",
+        "filename": "settings.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-23T13:24:10Z",
+      "side": 1,
+      "message": "Yeah that works too. Whichever option you prefer Potin (either the extra comment in the doc or this inherited object).",
+      "parentUuid": "a1d685dd_36df8e3a",
+      "revId": "ad5462dd2d74d0e400701176e2bf81ed25947540",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
