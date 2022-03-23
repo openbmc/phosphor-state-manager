@@ -92,7 +92,7 @@ void Host::determineInitialState()
         server::Host::requestedHostTransition(Transition::Off);
     }
 
-    if (!deserialize(HOST_STATE_PERSIST_PATH))
+    if (!deserialize(fmt::format(HOST_STATE_PERSIST_PATH, id)))
     {
         // set to default value.
         server::Host::requestedHostTransition(Transition::Off);
@@ -406,21 +406,22 @@ Host::Transition Host::requestedHostTransition(Transition value)
     executeTransition(value);
 
     auto retVal = server::Host::requestedHostTransition(value);
-    serialize();
+
+    serialize(fmt::format(HOST_STATE_PERSIST_PATH, id));
     return retVal;
 }
 
 Host::ProgressStages Host::bootProgress(ProgressStages value)
 {
     auto retVal = bootprogress::Progress::bootProgress(value);
-    serialize();
+    serialize(fmt::format(HOST_STATE_PERSIST_PATH, id));
     return retVal;
 }
 
 Host::OSStatus Host::operatingSystemState(OSStatus value)
 {
     auto retVal = osstatus::Status::operatingSystemState(value);
-    serialize();
+    serialize(fmt::format(HOST_STATE_PERSIST_PATH, id));
     return retVal;
 }
 

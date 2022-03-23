@@ -472,7 +472,7 @@ uint32_t Chassis::pohCounter(uint32_t value)
     if (value != pohCounter())
     {
         ChassisInherit::pohCounter(value);
-        serializePOH();
+        serializePOH(fmt::format(POH_COUNTER_PERSIST_PATH, id));
     }
     return pohCounter();
 }
@@ -488,7 +488,7 @@ void Chassis::pohCallback()
 void Chassis::restorePOHCounter()
 {
     uint32_t counter;
-    if (!deserializePOH(POH_COUNTER_PERSIST_PATH, counter))
+    if (!deserializePOH(fmt::format(POH_COUNTER_PERSIST_PATH, id), counter))
     {
         // set to default value
         pohCounter(0);
@@ -555,7 +555,7 @@ void Chassis::startPOHCounter()
 
 void Chassis::serializeStateChangeTime()
 {
-    fs::path path{CHASSIS_STATE_CHANGE_PERSIST_PATH};
+    fs::path path{fmt::format(CHASSIS_STATE_CHANGE_PERSIST_PATH, id)};
     std::ofstream os(path.c_str(), std::ios::binary);
     cereal::JSONOutputArchive oarchive(os);
 
@@ -565,7 +565,7 @@ void Chassis::serializeStateChangeTime()
 
 bool Chassis::deserializeStateChangeTime(uint64_t& time, PowerState& state)
 {
-    fs::path path{CHASSIS_STATE_CHANGE_PERSIST_PATH};
+    fs::path path{fmt::format(CHASSIS_STATE_CHANGE_PERSIST_PATH, id)};
 
     try
     {

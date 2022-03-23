@@ -50,19 +50,19 @@ option(
 
 option(
     'host-state-persist-path', type: 'string',
-    value: '/var/lib/phosphor-state-manager/requestedHostTransition',
-    description: 'Path of file for storing requested host state.',
+    value: '/var/lib/phosphor-state-manager/host{}-PersistData',
+    description: 'Path of file for storing requested HostState,boot progress and os status.',
 )
 
 option(
     'poh-counter-persist-path', type: 'string',
-    value: '/var/lib/phosphor-state-manager/POHCounter',
+    value: '/var/lib/phosphor-state-manager/chassis{}-POHCounter',
     description: 'Path of file for storing POH counter.',
 )
 
 option(
     'chassis-state-change-persist-path', type: 'string',
-    value: '/var/lib/phosphor-state-manager/chassisStateChangeTime',
+    value: '/var/lib/phosphor-state-manager/chassis{}-StateChangeTime',
     description: 'Path of file for storing the state change time.',
 )
 
