@@ -176,23 +176,18 @@ class Chassis : public ChassisInherit
 
     /** @brief Serialize and persist requested POH counter.
      *
-     *  @param[in] dir - pathname of file where the serialized POH counter will
-     *                   be placed.
-     *
      *  @return fs::path - pathname of persisted requested POH counter.
      */
-    fs::path
-        serializePOH(const fs::path& dir = fs::path(POH_COUNTER_PERSIST_PATH));
+    fs::path serializePOH();
 
     /** @brief Deserialize a persisted requested POH counter.
      *
-     *  @param[in] path - pathname of persisted POH counter file
      *  @param[in] retCounter - deserialized POH counter value
      *
      *  @return bool - true if the deserialization was successful, false
      *                 otherwise.
      */
-    bool deserializePOH(const fs::path& path, uint32_t& retCounter);
+    bool deserializePOH(uint32_t& retCounter);
 
     /** @brief Sets the LastStateChangeTime property and persists it. */
     void setStateChangeTime();
