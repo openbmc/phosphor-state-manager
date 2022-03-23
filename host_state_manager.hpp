@@ -260,12 +260,9 @@ class Host : public HostInherit
 
     /** @brief Serialize and persist requested host state
      *
-     *  @param[in] dir - pathname of file where the serialized host state will
-     *                   be placed.
-     *
      *  @return fs::path - pathname of persisted requested host state.
      */
-    fs::path serialize(const fs::path& dir = fs::path(HOST_STATE_PERSIST_PATH));
+    fs::path serialize();
 
     /** @brief Deserialze a persisted requested host state.
      *
@@ -274,7 +271,7 @@ class Host : public HostInherit
      *  @return bool - true if the deserialization was successful, false
      *                 otherwise.
      */
-    bool deserialize(const fs::path& path);
+    bool deserialize();
 
     /**
      * @brief Get target name of a HostState

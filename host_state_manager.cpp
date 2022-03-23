@@ -92,7 +92,7 @@ void Host::determineInitialState()
         server::Host::requestedHostTransition(Transition::Off);
     }
 
-    if (!deserialize(HOST_STATE_PERSIST_PATH))
+    if (!deserialize())
     {
         // set to default value.
         server::Host::requestedHostTransition(Transition::Off);
@@ -361,16 +361,18 @@ uint32_t Host::decrementRebootCount()
     return rebootCount;
 }
 
-fs::path Host::serialize(const fs::path& dir)
+fs::path Host::serialize()
 {
-    std::ofstream os(dir.c_str(), std::ios::binary);
+    fs::path path{fmt::format(HOST_STATE_PERSIST_PATH, id)};
+    std::ofstream os(path.c_str(), std::ios::binary);
     cereal::JSONOutputArchive oarchive(os);
     oarchive(*this);
-    return dir;
+    return path;
 }
 
-bool Host::deserialize(const fs::path& path)
+bool Host::deserialize()
 {
+    fs::path path{fmt::format(HOST_STATE_PERSIST_PATH, id)};
     try
     {
         if (fs::exists(path))
@@ -406,6 +408,7 @@ Host::Transition Host::requestedHostTransition(Transition value)
     executeTransition(value);
 
     auto retVal = server::Host::requestedHostTransition(value);
+
     serialize();
     return retVal;
 }
