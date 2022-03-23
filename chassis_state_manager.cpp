@@ -413,7 +413,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
         return 0;
     }
 
-    if ((newStateUnit == systemdTargetTable[Transition::Off]) &&
+    if ((newStateUnit == fmt::format(CHASSIS_STATE_POWEROFF_TGT_FMT, id)) &&
         (newStateResult == "done") &&
         (!stateActive(systemdTargetTable[Transition::On])))
     {
