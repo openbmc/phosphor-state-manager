@@ -45,6 +45,57 @@
       },
       "revId": "df98cce38488bea4b3145976158271f5e56933eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f985fc56_57518b09",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-24T15:52:13Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the serializePOH/deserializePOH code handle this new detail?  It seems leaky to have every caller know that they need to replace the `id` when those functions can get access to the member just as easily.\n\nYou changed the StateChangeTime functions in this same file so it seems inconsistent.",
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "149f401b_523bd1fc",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-24T15:52:13Z",
+      "side": 1,
+      "message": "Seems like serialize should handle this detail too here, but currently those functions take a fully formed path and I\u0027m not really certain why.\n\nAndrew, do you have opinions?  It seems like we\u0027re bleeding this id construct all over instead of having it focused in the serialize functions.",
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3708c058_e247b5a8",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-24T15:52:13Z",
+      "side": 1,
+      "message": "We might want to reword this slightly to be clear that it is a pattern and not a literal anymore.  ie. {} is replaced with the instance-id.  (Same comment for the other meson-option changes here.)",
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
