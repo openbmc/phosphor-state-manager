@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00eb0687_95b34769",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-03-24T19:34:34Z",
+      "side": 1,
+      "message": "Done. Added here: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-power/+/51685/",
+      "parentUuid": "6da0c7ea_73e2aac1",
+      "revId": "cfd203ddda7eb95090cc67437fb5a89fee429105",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e63f29bd_ff0f6910",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-24T15:23:26Z",
       "side": 1,
       "message": "I assume we\u0027ll most likely never have a single service host both a UPS and Power interface?",
+      "revId": "cfd203ddda7eb95090cc67437fb5a89fee429105",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18657fb6_b2c4b821",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-03-24T19:34:34Z",
+      "side": 1,
+      "message": "Right, the only reason i added the check for both is to save a call to getsubtree when the chassis starts up, but we can have 2 different functions, and call:\ndetermineStatusOfPower_foruPower(); \u003c- existing\ndetermineStatusOfPower_forPowrSystemInput(); \u003c- new",
+      "parentUuid": "e63f29bd_ff0f6910",
       "revId": "cfd203ddda7eb95090cc67437fb5a89fee429105",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
