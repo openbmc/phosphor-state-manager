@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da0c7ea_73e2aac1",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-24T15:23:26Z",
+      "side": 1,
+      "message": "One thing that Shawn did was add this to the ibm-ups.service to ensure the UPS service was up and running before chassis-state looked for it. Can we do the same with whichever service provides this power status?:\n\nBefore\u003dxyz.openbmc_project.State.Chassis.service",
+      "revId": "cfd203ddda7eb95090cc67437fb5a89fee429105",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e63f29bd_ff0f6910",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-24T15:23:26Z",
+      "side": 1,
+      "message": "I assume we\u0027ll most likely never have a single service host both a UPS and Power interface?",
+      "revId": "cfd203ddda7eb95090cc67437fb5a89fee429105",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
