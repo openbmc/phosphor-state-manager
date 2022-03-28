@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1316dcab_00946b2e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-28T10:02:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a93e930f_f91bc958",
+      "range": {
+        "startLine": 11,
+        "startChar": 55,
+        "endLine": 11,
+        "endChar": 79
+      },
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "941e857a_2d1d7916",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-24T15:09:38Z",
       "side": 1,
       "message": "nit: from",
+      "range": {
+        "startLine": 12,
+        "startChar": 21,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96b5e802_c398daea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-28T10:02:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "941e857a_2d1d7916",
       "range": {
         "startLine": 12,
         "startChar": 21,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbb20108_28f793a5",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-28T10:02:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f985fc56_57518b09",
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "149f401b_523bd1fc",
@@ -81,6 +147,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84aa6120_6ca77902",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-28T10:02:22Z",
+      "side": 1,
+      "message": "I updated Patchset3 which modify all serialize/deserialize related functions to remove path parameter and do format file path in function like serialize/deserializeStateChangeTime does,this will keep function behavior consistent and no need to do format at every caller, but this also makes caller can not change the path, will you concern about that?",
+      "parentUuid": "149f401b_523bd1fc",
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3708c058_e247b5a8",
@@ -94,6 +178,24 @@
       "writtenOn": "2022-03-24T15:52:13Z",
       "side": 1,
       "message": "We might want to reword this slightly to be clear that it is a pattern and not a literal anymore.  ie. {} is replaced with the instance-id.  (Same comment for the other meson-option changes here.)",
+      "revId": "df98cce38488bea4b3145976158271f5e56933eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbcd5aab_599d54f7",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-28T10:02:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3708c058_e247b5a8",
       "revId": "df98cce38488bea4b3145976158271f5e56933eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
