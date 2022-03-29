@@ -126,14 +126,8 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
 // Helper function to check if chassis power is on
 bool isChassiPowerOn(sdbusplus::bus::bus& bus, size_t id)
 {
-    auto svcname = std::string{CHASSIS_STATE_SVC};
-    auto objpath = std::string{CHASSIS_STATE_PATH};
-
-    if (id != 0)
-    {
-        svcname += std::to_string(id);
-        objpath += std::to_string(id);
-    }
+    auto svcname = std::string{CHASSIS_STATE_SVC} + std::to_string(id);
+    auto objpath = std::string{CHASSIS_STATE_PATH} + std::to_string(id);
 
     try
     {
