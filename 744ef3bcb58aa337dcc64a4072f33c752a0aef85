@@ -16,6 +16,24 @@
       "message": "I think in both of these functions we need to call determineStatusOfPower() so we check both UPS and PSU. For example, if UPS was bad and PSU was bad, but PSU went good (event), we\u0027d still want to be sure we report overall bad.",
       "revId": "744ef3bcb58aa337dcc64a4072f33c752a0aef85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "738e3026_1783d64e",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-03-30T15:30:04Z",
+      "side": 1,
+      "message": "Done. Ah yes makes sense, now i understand why we check all the properties on a property changed signal instead of taking action on just the one property that changed.",
+      "parentUuid": "711b0ef6_8488b51b",
+      "revId": "744ef3bcb58aa337dcc64a4072f33c752a0aef85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
