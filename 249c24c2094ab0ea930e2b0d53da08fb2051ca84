@@ -46,6 +46,30 @@
       },
       "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b8540ff_33aac6f5",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-30T00:29:37Z",
+      "side": 1,
+      "message": "Good point. This does bring up another good point in that we\u0027re breaking backwards compatibility in general here (not just with the name change but with the instance concept). I think that\u0027s ok. If someone were to have shipped a system with the previous level of code, moving to this would cause some of the function that relies on the persisted values, to not work. I\u0027ll have to think about that for our products. If we wanted to be fancy we could have some migration built in (look for old file, if found, move to new file). But I\u0027m not going to say that\u0027s required.",
+      "parentUuid": "f3780874_0ee3a192",
+      "range": {
+        "startLine": 53,
+        "startChar": 51,
+        "endLine": 53,
+        "endChar": 62
+      },
+      "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
