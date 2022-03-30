@@ -94,6 +94,30 @@
       },
       "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34f60e38_bf3c64a1",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-30T15:10:20Z",
+      "side": 1,
+      "message": "@Andrew, do we have any generic way to do migrations already?  I looked briefly at Yocto and they have `pkg_postinst_ontarget` but in my quick testing it seems like that doesn\u0027t apply on the rootfs but only when using `opkg` to install the package.",
+      "parentUuid": "5b8897dd_738f5c1b",
+      "range": {
+        "startLine": 53,
+        "startChar": 51,
+        "endLine": 53,
+        "endChar": 62
+      },
+      "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
