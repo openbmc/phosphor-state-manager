@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "711b0ef6_8488b51b",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-30T12:49:50Z",
+      "side": 1,
+      "message": "I think in both of these functions we need to call determineStatusOfPower() so we check both UPS and PSU. For example, if UPS was bad and PSU was bad, but PSU went good (event), we\u0027d still want to be sure we report overall bad.",
+      "revId": "744ef3bcb58aa337dcc64a4072f33c752a0aef85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
