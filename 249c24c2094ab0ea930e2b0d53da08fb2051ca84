@@ -70,6 +70,30 @@
       },
       "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b8897dd_738f5c1b",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001266
+      },
+      "writtenOn": "2022-03-30T01:25:53Z",
+      "side": 1,
+      "message": "Oh,I understand, the persist values will disappear after upgrade BMC image on a running machine,I was not notice that but it is really a problem.\nThe previous code only support single-host,so I think I must consider how to sync persist value from old file to new file of instance \u00270\u0027.",
+      "parentUuid": "7b8540ff_33aac6f5",
+      "range": {
+        "startLine": 53,
+        "startChar": 51,
+        "endLine": 53,
+        "endChar": 62
+      },
+      "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
