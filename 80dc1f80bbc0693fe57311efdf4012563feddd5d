@@ -16,6 +16,24 @@
       "message": "I\u0027m still struggling a bit with what we\u0027re fixing here. The old code:\npohTimer.setEnabled(chassisPowerState \u003d\u003d PowerState::On);\nWould pass a false to setEnabled when power was off, so we would stop the timer when chassis power was off.\n\nBut I do see from your other comment, that pohTimer will start incrementing when this object is created. So when we first boot up the BMC, the counter will be running and when we power on, that time would have been counted. Is that what you\u0027re trying to fix here?",
       "revId": "80dc1f80bbc0693fe57311efdf4012563feddd5d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71786e8d_726ae603",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1001156
+      },
+      "writtenOn": "2022-03-31T07:15:12Z",
+      "side": 1,
+      "message": "The timer will never stop when the chassis is off,so passing false to old code is of no use, this is exactly the issue and counter increments in next power on  within \"remaining expire time\".\nSo in new code resetRemainig() will clear the previous \"remaining expire time\" and the counter will increment after exactly one hour in power on state.",
+      "parentUuid": "0a542793_621ab935",
+      "revId": "80dc1f80bbc0693fe57311efdf4012563feddd5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
