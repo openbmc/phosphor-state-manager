@@ -118,6 +118,30 @@
       },
       "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "273db78f_b2c6ec6e",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-31T20:24:21Z",
+      "side": 1,
+      "message": "No, I know of no way to do this generically. As a community we\u0027ve seemed to go back and forth a bit on whether we have to support situations like this. In some cases I\u0027ve heard, it\u0027s master and you can break things like this there. In some cases, I\u0027ve heard you need logic to handle it. Seems to depend on the severity of the issue that results in not supporting it. I don\u0027t see anything to severe here. I guess we\u0027d lose the POHcounter info, which isn\u0027t ideal.",
+      "parentUuid": "34f60e38_bf3c64a1",
+      "range": {
+        "startLine": 53,
+        "startChar": 51,
+        "endLine": 53,
+        "endChar": 62
+      },
+      "revId": "249c24c2094ab0ea930e2b0d53da08fb2051ca84",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
