@@ -33,6 +33,24 @@
       "message": "Nit: Not necessary",
       "revId": "7035f7ccd7ce47d04b763c437847ff31312c5791",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5487243d_78c0e06f",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-03-31T13:25:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09ecf0f5_f7df0c90",
+      "revId": "7035f7ccd7ce47d04b763c437847ff31312c5791",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
