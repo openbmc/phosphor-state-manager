@@ -71,8 +71,6 @@ phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
 libgpiod = dependency('libgpiod', version : '>=1.4.1')
 fmt = dependency('fmt')
 
-cppfs = meson.get_compiler('cpp').find_library('stdc++fs')
-
 executable('phosphor-host-state-manager',
             'host_state_manager.cpp',
             'host_state_manager_main.cpp',
@@ -81,7 +79,7 @@ executable('phosphor-host-state-manager',
             'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs, libgpiod, fmt
+            phosphordbusinterfaces, libgpiod, fmt
             ],
     implicit_include_directories: true,
     install: true
@@ -93,7 +91,7 @@ executable('phosphor-hypervisor-state-manager',
             'settings.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs
+            phosphordbusinterfaces,
             ],
     implicit_include_directories: true,
     install: true
@@ -105,7 +103,7 @@ executable('phosphor-chassis-state-manager',
             'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs, libgpiod, fmt
+            phosphordbusinterfaces, libgpiod, fmt
             ],
     implicit_include_directories: true,
     install: true
@@ -116,7 +114,7 @@ executable('phosphor-chassis-check-power-status',
             'utils.cpp',
             dependencies: [
             sdbusplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs, libgpiod
+            phosphordbusinterfaces, libgpiod
             ],
     implicit_include_directories: true,
     install: true
@@ -128,7 +126,7 @@ executable('phosphor-bmc-state-manager',
             'utils.cpp',
             dependencies: [
             sdbusplus, sdeventplus, phosphorlogging,
-            phosphordbusinterfaces, cppfs, libgpiod
+            phosphordbusinterfaces, libgpiod
             ],
     implicit_include_directories: true,
     install: true
