@@ -31,7 +31,8 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
   public:
     ScheduledHostTransition(sdbusplus::bus::bus& bus, const char* objPath,
                             const sdeventplus::Event& event) :
-        ScheduledHostTransitionInherit(bus, objPath, true),
+        ScheduledHostTransitionInherit(
+            bus, objPath, ScheduledHostTransition::action::defer_emit),
         bus(bus), event(event),
         timer(event, std::bind(&ScheduledHostTransition::callback, this))
     {
