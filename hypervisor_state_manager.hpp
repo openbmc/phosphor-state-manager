@@ -41,7 +41,8 @@ class Hypervisor : public HypervisorInherit
      * @param[in] objPath   - The Dbus object path
      */
     Hypervisor(sdbusplus::bus::bus& bus, const char* objPath) :
-        HypervisorInherit(bus, objPath, false), bus(bus),
+        HypervisorInherit(bus, objPath, HypervisorInherit::action::defer_emit),
+        bus(bus),
         bootProgressChangeSignal(
             bus,
             sdbusRule::propertiesChanged(
