@@ -47,7 +47,8 @@ class Chassis : public ChassisInherit
      * @param[in] id        - Chassis id
      */
     Chassis(sdbusplus::bus::bus& bus, const char* objPath, size_t id) :
-        ChassisInherit(bus, objPath, true), bus(bus),
+        ChassisInherit(bus, objPath, ChassisInherit::action::defer_emit),
+        bus(bus),
         systemdSignals(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
