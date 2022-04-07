@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ea94604_1b27fb52",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-07T00:29:36Z",
+      "side": 1,
+      "message": "Why does this one have a cereal dependency?",
+      "revId": "5a8be4134c09f19edb4947e43fcbbdb4442e9676",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
