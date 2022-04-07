@@ -16,6 +16,24 @@
       "message": "Why does this one have a cereal dependency?",
       "revId": "5a8be4134c09f19edb4947e43fcbbdb4442e9676",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0b801f1_97e4b980",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-07T02:33:29Z",
+      "side": 1,
+      "message": "```\nIn file included from ../discover_system_state.cpp:3:\n../host_state_manager.hpp:8:10: fatal error: cereal/access.hpp: No such file or directory\n    8 | #include \u003ccereal/access.hpp\u003e\n      |          ^~~~~~~~~~~~~~~~~~~\n```",
+      "parentUuid": "8ea94604_1b27fb52",
+      "revId": "5a8be4134c09f19edb4947e43fcbbdb4442e9676",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
