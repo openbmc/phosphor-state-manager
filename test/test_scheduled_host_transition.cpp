@@ -31,7 +31,7 @@ class TestScheduledHostTransition : public testing::Test
 
     TestScheduledHostTransition() :
         event(sdeventplus::Event::get_default()),
-        scheduledHostTransition(mockedBus, "", event)
+        scheduledHostTransition(mockedBus, "", 0, event)
     {
         // Empty
     }

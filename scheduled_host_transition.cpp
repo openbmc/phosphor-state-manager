@@ -94,7 +94,7 @@ seconds ScheduledHostTransition::getTime()
 
 void ScheduledHostTransition::hostTransition()
 {
-    auto hostPath = std::string{HOST_OBJPATH} + '0';
+    auto hostPath = std::string{HOST_OBJPATH} + std::to_string(id);
 
     // Set RestartCause to indicate this transition is occurring due to a
     // scheduled host transition as long as it's not an off request

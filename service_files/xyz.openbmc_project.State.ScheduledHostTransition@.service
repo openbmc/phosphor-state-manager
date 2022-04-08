@@ -1,0 +1,17 @@
+[Unit]
+Description=Phosphor Scheduled Host%i Transition Manager
+Wants=obmc-mapper.target
+After=obmc-mapper.target
+Wants=xyz.openbmc_project.State.Host%i.service
+After=xyz.openbmc_project.State.Host%i.service
+Wants=xyz.openbmc_project.Logging.service
+After=xyz.openbmc_project.Logging.service
+
+[Service]
+ExecStart=/usr/bin/phosphor-scheduled-host-transition --host %i
+Restart=always
+Type=dbus
+BusName=xyz.openbmc_project.State.ScheduledHostTransition%i
+
+[Install]
+WantedBy=multi-user.target

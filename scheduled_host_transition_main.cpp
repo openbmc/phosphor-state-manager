@@ -2,14 +2,36 @@
 
 #include "scheduled_host_transition.hpp"
 
+#include <getopt.h>
+
 #include <sdbusplus/bus.hpp>
 
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
 
-int main()
+int main(int argc, char** argv)
 {
+    size_t hostId = 0;
+
+    int arg;
+    int optIndex = 0;
+
+    static struct option longOpts[] = {{"host", required_argument, 0, 'h'},
+                                       {0, 0, 0, 0}};
+
+    while ((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
+    {
+        switch (arg)
+        {
+            case 'h':
+                hostId = std::stoul(optarg);
+                break;
+            default:
+                break;
+        }
+    }
+
     namespace fs = std::filesystem;
 
     // Get a default event loop
@@ -19,7 +41,7 @@ int main()
     auto bus = sdbusplus::bus::new_default();
 
     // For now, we only have one instance of the host
-    auto objPathInst = std::string{HOST_OBJPATH} + '0';
+    auto objPathInst = std::string{HOST_OBJPATH} + std::to_string(hostId);
 
     // Check SCHEDULED_HOST_TRANSITION_PERSIST_PATH
     auto dir = fs::path(SCHEDULED_HOST_TRANSITION_PERSIST_PATH).parent_path();
@@ -32,9 +54,11 @@ int main()
     sdbusplus::server::manager::manager objManager(bus, objPathInst.c_str());
 
     phosphor::state::manager::ScheduledHostTransition manager(
-        bus, objPathInst.c_str(), event);
+        bus, objPathInst.c_str(), hostId, event);
 
-    bus.request_name(SCHEDULED_HOST_TRANSITION_BUSNAME);
+    bus.request_name((std::string{SCHEDULED_HOST_TRANSITION_BUSNAME} +
+                      std::to_string(hostId))
+                         .c_str());
 
     // Attach the bus to sd_event to service user requests
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);

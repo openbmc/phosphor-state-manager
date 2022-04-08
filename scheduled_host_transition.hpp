@@ -30,10 +30,10 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
 {
   public:
     ScheduledHostTransition(sdbusplus::bus::bus& bus, const char* objPath,
-                            const sdeventplus::Event& event) :
+                            size_t id, const sdeventplus::Event& event) :
         ScheduledHostTransitionInherit(
             bus, objPath, ScheduledHostTransition::action::defer_emit),
-        bus(bus), event(event),
+        bus(bus), id(id), event(event),
         timer(event, std::bind(&ScheduledHostTransition::callback, this))
     {
         initialize();
@@ -61,6 +61,9 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
 
     /** @brief sdbusplus bus client connection */
     sdbusplus::bus::bus& bus;
+
+    /** @brief Host id. **/
+    const size_t id = 0;
 
     /** @brief sdbusplus event */
     const sdeventplus::Event& event;
