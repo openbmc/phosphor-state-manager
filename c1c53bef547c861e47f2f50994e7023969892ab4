@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be6d89d_7eb6fb2e",
+        "filename": "service_files/xyz.openbmc_project.State.ScheduledHostTransition.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-08T02:42:32Z",
+      "side": 0,
+      "message": "I removed this line because it didn\u0027t seem to make sense.\n\n1) I can\u0027t see any reference to scheduledhosttransition being passed to mapper.\n2) This service doesn\u0027t even create an object named /xyz/openbmc_project/state/scheduledhosttransition, so the mapper query should never complete if it existed.\n\nBut there might have been some subtlety that I didn\u0027t understand in how the service was ending up getting launched.  I suspect it was triggered off the busname, but I can\u0027t really find reference to ScheduleHostTransition elsewhere in the codebase either.  Please let me know if I\u0027ve missed something you remember.",
+      "revId": "c1c53bef547c861e47f2f50994e7023969892ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
