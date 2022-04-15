@@ -1,0 +1,4 @@
+[Unit]
+Description=Graceful Quiesce Target
+After=multi-user.target
+Conflicts=obmc-chassis-poweroff@%i.target
