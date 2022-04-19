@@ -72,9 +72,6 @@ class SystemdTargetLogging
                                    const std::string& result);
 
   private:
-    /** @brief Call phosphor-dump-manager to create BMC dump */
-    void createBmcDump();
-
     /** @brief Start BMC Quiesce Target to indicate critical service failure */
     void startBmcQuiesceTarget();
 

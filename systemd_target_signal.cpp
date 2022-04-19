@@ -1,5 +1,7 @@
 #include "systemd_target_signal.hpp"
 
+#include "utils.hpp"
+
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
@@ -18,26 +20,6 @@ using phosphor::logging::elog;
 PHOSPHOR_LOG2_USING;
 
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
-
-void SystemdTargetLogging::createBmcDump()
-{
-    auto method = this->bus.new_method_call(
-        "xyz.openbmc_project.Dump.Manager", "/xyz/openbmc_project/dump/bmc",
-        "xyz.openbmc_project.Dump.Create", "CreateDump");
-    method.append(
-        std::vector<
-            std::pair<std::string, std::variant<std::string, uint64_t>>>());
-    try
-    {
-        this->bus.call_noreply(method);
-    }
-    catch (const sdbusplus::exception::exception& e)
-    {
-        error("Failed to create BMC dump, exception:{ERROR}", "ERROR", e);
-        // just continue, this is error path anyway so we're just collecting
-        // what we can
-    }
-}
 
 void SystemdTargetLogging::startBmcQuiesceTarget()
 {
@@ -104,7 +86,7 @@ const std::string SystemdTargetLogging::processError(const std::string& unit,
                 "UNIT", unit, "RESULT", result);
 
             // Generate a BMC dump when a monitored target fails
-            createBmcDump();
+            utils::createBmcDump(this->bus);
             return (targetEntry->second.errorToLog);
         }
     }
@@ -120,7 +102,7 @@ const std::string SystemdTargetLogging::processError(const std::string& unit,
                 "UNIT", unit, "RESULT", result);
 
             // Generate a BMC dump when a critical service fails
-            createBmcDump();
+            utils::createBmcDump(this->bus);
             // Enter BMC Quiesce when a critical service fails
             startBmcQuiesceTarget();
             return (std::string{

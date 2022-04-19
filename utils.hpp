@@ -66,6 +66,12 @@ void createError(
     sdbusplus::bus::bus& bus, const std::string& errorMsg,
     sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel);
 
+/** @brief Call phosphor-dump-manager to create BMC user dump
+ *
+ * @param[in] bus          - The Dbus bus object
+ */
+void createBmcDump(sdbusplus::bus::bus& bus);
+
 } // namespace utils
 } // namespace manager
 } // namespace state
