@@ -262,6 +262,10 @@ bool Host::isAutoReboot()
                 utils::createError(this->bus, errorMsg,
                                    sdbusplus::xyz::openbmc_project::Logging::
                                        server::Entry::Level::Critical);
+
+                // Generate BMC dump to assist with debug
+                utils::createBmcDump(this->bus);
+
                 return false;
             }
         }
