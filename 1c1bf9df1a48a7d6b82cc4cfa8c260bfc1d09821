@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da01cea9_5453b004",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-04-25T20:07:06Z",
+      "side": 1,
+      "message": "utils depends on libgpiod for other functions that read gpio values.",
+      "revId": "1c1bf9df1a48a7d6b82cc4cfa8c260bfc1d09821",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
