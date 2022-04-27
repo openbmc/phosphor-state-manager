@@ -16,6 +16,24 @@
       "message": "Perhaps this is too pedantic, but the system is still secure if abrImage !\u003d 0. It\u0027s more of a predicative fault, and we want to raise an error for manufacturing.\n\nI\u0027m not sure if it should be lumped with the secure boot state, or made it\u0027s own thing.\n\n(I see we had that discussion just above...)",
       "revId": "2d10cf215a7cbe870b9407ef6c9c34025602f77b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "170f1608_b8736929",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-27T01:02:05Z",
+      "side": 1,
+      "message": "Yeah, given that in later commits we only log this message (and error) if in manufacturing mode, lets just leave it. A nice simple message like this seems easier then trying to explain it all out.",
+      "parentUuid": "2f862c0c_d87469c0",
+      "revId": "2d10cf215a7cbe870b9407ef6c9c34025602f77b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
