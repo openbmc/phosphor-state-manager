@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce551271_a2da90ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-28T19:25:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bf443595_2520da13",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e44381b0_88f9ced9",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de50dba0_3d12f6a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-28T19:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e44381b0_88f9ced9",
+      "range": {
+        "startLine": 9,
+        "startChar": 72,
+        "endLine": 9,
+        "endChar": 73
+      },
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb9e6e07_01b59dd0",
@@ -60,6 +108,24 @@
       "writtenOn": "2022-04-28T12:23:28Z",
       "side": 1,
       "message": "nit: I prefer bullets\nTested:\n- Ran in docker unit test ..\n- Built image with change, put BMC in quiesce, started multi-user.target and ensured BMC stayed in Quiesed.",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a9f84f5_1e685f4b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-28T19:25:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "eb9e6e07_01b59dd0",
       "revId": "b0909368705351cf3084899fb821c72a40430b19",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +164,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f443c687_e5016d70",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-28T19:25:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7605835d_897c4158",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7015a8d_785171f6",
@@ -115,6 +199,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "595350de_41cfbae7",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-28T19:25:17Z",
+      "side": 1,
+      "message": "Resolved, sorry for missing this earlier.(I use Emacs and have gotten gotten flab for it in the past)",
+      "parentUuid": "c7015a8d_785171f6",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89a7e055_16758edb",
@@ -128,6 +230,24 @@
       "writtenOn": "2022-04-28T12:58:26Z",
       "side": 1,
       "message": "This indicates you added some extra spaces. There\u0027s another editor setting for that to (ensure no spaces on empty lines).",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d79266_2c775ac4",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-28T19:25:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89a7e055_16758edb",
       "revId": "b0909368705351cf3084899fb821c72a40430b19",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
