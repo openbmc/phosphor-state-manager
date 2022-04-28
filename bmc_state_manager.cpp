@@ -205,7 +205,6 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         try
         {
             this->bus.call(method);
-            this->stateSignal.release();
         }
         catch (const sdbusplus::exception::exception& e)
         {
@@ -213,7 +212,7 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         }
 
         // disable the system state change object as well
-        stateSignal.reset();
+        this->stateSignal.reset();
 
         return 0;
     }
