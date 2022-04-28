@@ -113,6 +113,23 @@
       "message": "The \u003e\u003e indicates you have a tab here. Be sure whichever editor your are using for development has the tabs-to-spaces option enabled. CI failed because of this (formatting failure).",
       "revId": "b0909368705351cf3084899fb821c72a40430b19",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a7e055_16758edb",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-28T12:58:26Z",
+      "side": 1,
+      "message": "This indicates you added some extra spaces. There\u0027s another editor setting for that to (ensure no spaces on empty lines).",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
