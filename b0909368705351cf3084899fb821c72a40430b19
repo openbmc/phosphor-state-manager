@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf443595_2520da13",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-28T12:23:28Z",
+      "side": 1,
+      "message": "nit: make this more specific, like \"bmc-quiesce: ensure bmc stays in quiesce\"\nAnother nit is I prefer all lower case in the summary line.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e44381b0_88f9ced9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-28T12:23:28Z",
+      "side": 1,
+      "message": "nit: This is over by once char, please keep within the 72 (same below with Tested)",
+      "range": {
+        "startLine": 9,
+        "startChar": 72,
+        "endLine": 9,
+        "endChar": 73
+      },
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb9e6e07_01b59dd0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-28T12:23:28Z",
+      "side": 1,
+      "message": "nit: I prefer bullets\nTested:\n- Ran in docker unit test ..\n- Built image with change, put BMC in quiesce, started multi-user.target and ensured BMC stayed in Quiesed.",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9efc0051_e5f253fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-28T12:23:28Z",
+      "side": 1,
+      "message": "Good to see you getting some first reviews up!",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7605835d_897c4158",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-28T12:23:28Z",
+      "side": 1,
+      "message": "nit: \"If BMC is in Quiesced, do not process any other state changes\"",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7015a8d_785171f6",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-28T12:23:28Z",
+      "side": 1,
+      "message": "The \u003e\u003e indicates you have a tab here. Be sure whichever editor your are using for development has the tabs-to-spaces option enabled. CI failed because of this (formatting failure).",
+      "revId": "b0909368705351cf3084899fb821c72a40430b19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
