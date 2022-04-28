@@ -205,15 +205,11 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         try
         {
             this->bus.call(method);
-            this->stateSignal.release();
         }
         catch (const sdbusplus::exception::exception& e)
         {
             info("Error in Unsubscribe: {ERROR}", "ERROR", e);
         }
-
-        // disable the system state change object as well
-        stateSignal.reset();
 
         return 0;
     }
