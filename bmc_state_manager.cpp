@@ -188,6 +188,13 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
     std::string newStateUnit{};
     std::string newStateResult{};
 
+    // Grabs current state if Quiesced then ignore
+    if (server::BMC::currentBMCState() == BMCState::Quiesced)
+    {
+	return 0;
+    }
+    
+
     // Read the msg and populate each variable
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
