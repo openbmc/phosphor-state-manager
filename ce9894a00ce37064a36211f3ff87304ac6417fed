@@ -50,6 +50,57 @@
       "message": "Please have a blank line above this line",
       "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6289495_d3943b3f",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-29T15:44:59Z",
+      "side": 1,
+      "message": "ok, so I think I finally figured out why my last attempts at this did not work! You can remove this check and see my notes below.",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e45b805e_b0c36128",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-29T15:44:59Z",
+      "side": 1,
+      "message": "This is bad! It just releases the object but does not delete it. Just get rid of this.",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca7afa53_258c3057",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-29T15:44:59Z",
+      "side": 1,
+      "message": "This is the right way to do it, but because we released it above, it doesn\u0027t do anything! So remove line 214 and for completeness make this a \"this-\u003estateSignal.reset();\". This is the only change we need here.",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
