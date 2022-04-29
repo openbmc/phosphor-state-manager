@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33cdb32_a268fc6c",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:04:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "85f654b0_71b9f131",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 8
+      },
+      "revId": "ef59d85a0d3eaff4f664da0b301897f6fdcf7ddd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c12bfec0_809e9267",
@@ -54,6 +78,24 @@
       "writtenOn": "2022-04-29T17:52:24Z",
       "side": 1,
       "message": "nit: you added an extra line here (and an empty space on that line)",
+      "revId": "ef59d85a0d3eaff4f664da0b301897f6fdcf7ddd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0080640b_87c8fa88",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:04:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c12bfec0_809e9267",
       "revId": "ef59d85a0d3eaff4f664da0b301897f6fdcf7ddd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

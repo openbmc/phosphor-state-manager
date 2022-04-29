@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "279b427e_869e62fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:04:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c678a63a_cb8b8335",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70b64038_92f7efc5",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "740e595b_d3f1ef80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:04:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33bd625e_5c8d5043",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6289495_d3943b3f",
@@ -65,6 +101,24 @@
       "writtenOn": "2022-04-29T15:44:59Z",
       "side": 1,
       "message": "ok, so I think I finally figured out why my last attempts at this did not work! You can remove this check and see my notes below.",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c06a335f_de324839",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:04:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6289495_d3943b3f",
       "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +140,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed6c9398_1b9bb156",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:04:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e45b805e_b0c36128",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca7afa53_258c3057",
@@ -99,6 +171,24 @@
       "writtenOn": "2022-04-29T15:44:59Z",
       "side": 1,
       "message": "This is the right way to do it, but because we released it above, it doesn\u0027t do anything! So remove line 214 and for completeness make this a \"this-\u003estateSignal.reset();\". This is the only change we need here.",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16a90a6d_f9af1bea",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-04-29T20:04:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ca7afa53_258c3057",
       "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
