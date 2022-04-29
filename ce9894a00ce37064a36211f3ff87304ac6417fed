@@ -33,6 +33,23 @@
       "message": "Instead of saying this, you should provide a summary of what you did for Manual testing. I\u0027d like to see your change booted on a system, the BMC put in Quiesce (systemctl start obmc-bmc-service-quiesce@0.target) and then try something like \"systemctl start multi-user.target\" and ensure the bmc state (obmcutil state) does not leave Quiesce.",
       "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33bd625e_5c8d5043",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-29T13:10:07Z",
+      "side": 1,
+      "message": "Please have a blank line above this line",
+      "revId": "ce9894a00ce37064a36211f3ff87304ac6417fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
