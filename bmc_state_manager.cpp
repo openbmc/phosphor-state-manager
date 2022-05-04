@@ -9,6 +9,7 @@
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/State/BMC/server.hpp>
 
 #include <cassert>
 #include <filesystem>
@@ -46,7 +47,7 @@ constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
 std::string BMC::getUnitState(const std::string& unitToCheck)
 {
-    std::variant<std::string> currentState;
+    sdbusplus::xyz::openbmc_project::State::server::BMC::BMCState currentState;
     sdbusplus::message::object_path unitTargetPath;
 
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
@@ -86,7 +87,8 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
         info("Error in ActiveState Get: {ERROR}", "ERROR", e);
         return std::string{};
     }
-    return (std::get<std::string>(currentState));
+    return sdbusplus::xyz::openbmc_project::State::server::BMC::
+        convertBMCStateToString(currentState);
 }
 
 void BMC::discoverInitialState()
