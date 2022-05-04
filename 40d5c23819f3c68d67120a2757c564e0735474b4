@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2014cf1c_92d741c8",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-04T20:58:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67209700_ada47480",
+      "revId": "40d5c23819f3c68d67120a2757c564e0735474b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3de02d53_d9f972c6",
