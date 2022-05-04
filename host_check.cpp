@@ -9,6 +9,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Condition/HostFirmware/server.hpp>
+#include <xyz/openbmc_project/State/Chassis/server.hpp>
 
 #include <cstdio>
 #include <cstdlib>
@@ -47,6 +48,7 @@ constexpr auto CHASSIS_STATE_POWER_PROP = "CurrentPowerState";
 // running over it
 bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
 {
+    using FirmwareCondition = HostFirmware::FirmwareCondition;
     // Find all implementations of host firmware condition interface
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
                                       MAPPER_INTERFACE, "GetSubTree");
@@ -100,13 +102,12 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
 
                 auto response = bus.call(method);
 
-                std::variant<std::string> currentFwCond;
-                response.read(currentFwCond);
+                std::variant<FirmwareCondition> currentFwCondV;
+                auto currentFwCond =
+                    std::get<FirmwareCondition>(currentFwCondV);
+                response.read(currentFwCondV);
 
-                if (std::get<std::string>(currentFwCond) ==
-                    "xyz.openbmc_project.Condition.HostFirmware."
-                    "FirmwareCondition."
-                    "Running")
+                if (currentFwCond == FirmwareCondition::Running)
                 {
                     return true;
                 }
@@ -131,17 +132,19 @@ bool isChassiPowerOn(sdbusplus::bus::bus& bus, size_t id)
 
     try
     {
+        using PowerState =
+            sdbusplus::xyz::openbmc_project::State::server::Chassis::PowerState;
         auto method = bus.new_method_call(svcname.c_str(), objpath.c_str(),
                                           PROPERTY_INTERFACE, "Get");
         method.append(CHASSIS_STATE_INTF, CHASSIS_STATE_POWER_PROP);
 
         auto response = bus.call(method);
 
-        std::variant<std::string> currentPowerState;
-        response.read(currentPowerState);
+        std::variant<PowerState> currentPowerStateV;
+        auto currentPowerState = std::get<PowerState>(currentPowerStateV);
+        response.read(currentPowerStateV);
 
-        if (std::get<std::string>(currentPowerState) ==
-            "xyz.openbmc_project.State.Chassis.PowerState.On")
+        if (currentPowerState == PowerState::On)
         {
             return true;
         }
