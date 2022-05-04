@@ -8,6 +8,7 @@
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 #include <cstdlib>
 #include <fstream>
@@ -41,25 +42,28 @@ bool wasHostBooting(sdbusplus::bus::bus& bus)
 {
     try
     {
+        using ProgressStages = sdbusplus::xyz::openbmc_project::State::Boot::
+            server::Progress::ProgressStages;
+
         auto method = bus.new_method_call(HOST_STATE_SVC, HOST_STATE_PATH,
                                           PROPERTY_INTERFACE, "Get");
         method.append(BOOT_STATE_INTF, BOOT_PROGRESS_PROP);
 
         auto response = bus.call(method);
 
-        std::variant<std::string> bootProgress;
-        response.read(bootProgress);
+        std::variant<ProgressStages> bootProgressV;
+        auto bootProgress = std::get<ProgressStages>(bootProgressV);
+        response.read(bootProgressV);
 
-        if (std::get<std::string>(bootProgress) ==
-            "xyz.openbmc_project.State.Boot.Progress.ProgressStages."
-            "Unspecified")
+        if (bootProgress == sdbusplus::xyz::openbmc_project::State::Boot::
+                                server::Progress::ProgressStages::Unspecified)
         {
             info("Host was not booting before BMC reboot");
             return false;
         }
 
         info("Host was booting before BMC reboot: {BOOTPROGRESS}",
-             "BOOTPROGRESS", std::get<std::string>(bootProgress));
+             "BOOTPROGRESS", bootProgress);
     }
     catch (const sdbusplus::exception::exception& e)
     {
