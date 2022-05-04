@@ -8,6 +8,7 @@
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Logging/Create/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 
 #include <cstdlib>
 #include <fstream>
@@ -47,10 +48,12 @@ bool wasHostBooting(sdbusplus::bus::bus& bus)
 
         auto response = bus.call(method);
 
-        std::variant<std::string> bootProgress;
+	sdbusplus::xyz::openbmc_project::State::Boot::server::Progress::ProgressStages bootProgress;
+	std::string bootProgressStr = sdbusplus::xyz::openbmc_project::State::Boot::server::
+        Progress::convertProgressStagesToString(bootProgress);
         response.read(bootProgress);
 
-        if (std::get<std::string>(bootProgress) ==
+        if (bootProgressStr ==
             "xyz.openbmc_project.State.Boot.Progress.ProgressStages."
             "Unspecified")
         {
@@ -59,7 +62,7 @@ bool wasHostBooting(sdbusplus::bus::bus& bus)
         }
 
         info("Host was booting before BMC reboot: {BOOTPROGRESS}",
-             "BOOTPROGRESS", std::get<std::string>(bootProgress));
+             "BOOTPROGRESS",bootProgressStr);
     }
     catch (const sdbusplus::exception::exception& e)
     {
