@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c104ec4_fc59020c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-05T20:35:46Z",
+      "side": 1,
+      "message": "Understood. The issue you outlined is directly due to string parsing that is unnecessary because of the enums. In this case, no changes are needed. Will revert back to original.",
+      "parentUuid": "f0eda835_77a31563",
+      "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "438a20b9_156252ca",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 20
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5873c070_44e558dd",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-05T20:35:46Z",
+      "side": 1,
+      "message": "For reference if I was to change the return type to BMS::State, I would also then have to change the value of the constexpr ActiveState to match the enum string? \n\nI know the theory above would be incorrect since that would change functionality of the code by acting on sdbusplus bindings as supposed to systemmd unit objects two entirely different systems, but am curious to hear how that would result.",
+      "parentUuid": "438a20b9_156252ca",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 11
+      },
+      "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f83e2a9_dfe1ac88",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 20
@@ -54,6 +96,24 @@
       "writtenOn": "2022-05-05T16:27:28Z",
       "side": 1,
       "message": "Alright... I think I understand now.\n\nThis function doesn\u0027t operate in sdbusplus enumerations at all.  It is calling systemd1.Unit::ActiveState which is:\n\n\u003e ActiveState contains a state value that reflects whether the unit is currently active or not. The following states are currently defined: \"active\", \"reloading\", \"inactive\", \"failed\", \"activating\", and \"deactivating\". \"active\" indicates that unit is active (obviously...). \"reloading\" indicates that the unit is active and currently reloading its configuration. \"inactive\" indicates that it is inactive and the previous run was successful or no previous run has taken place yet. \"failed\" indicates that it is inactive and the previous run was not successful (more information about the reason for this is available on the unit type specific interfaces, for example for services in the Result property, see below). \"activating\" indicates that the unit has previously been inactive but is currently in the process of entering an active state. Conversely \"deactivating\" indicates that the unit is currently in the process of deactivation.\n\nhttps://www.freedesktop.org/software/systemd/man/org.freedesktop.systemd1.html\n\nIf you try to do this read here you\u0027re guaranteed to get an exception due to \"enum mismatch\".",
+      "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe7e68d_ea9493b3",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-05T20:35:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3f83e2a9_dfe1ac88",
       "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
