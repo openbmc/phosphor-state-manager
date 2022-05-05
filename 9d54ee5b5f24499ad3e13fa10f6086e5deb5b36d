@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0eda835_77a31563",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-05T16:27:28Z",
+      "side": 1,
+      "message": "Based on my comments in line #83, I don\u0027t think this variant is actually \"redundant\".  We\u0027re calling systemd dbus objects, which do not operate in sdbusplus enums.  I think the variant is necessary because we\u0027re calling \"GetProperty\".  The property we are attempting to read appears to be a string value, so std::variant\u003cstd::string\u003e is entirely appropriate for this operation.",
+      "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "438a20b9_156252ca",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-05T16:27:28Z",
+      "side": 1,
+      "message": "How about changing this to return `BMCState` as well?  Nobody internal to the process should be operating on strings in most likelihood.\n\nIt looks like this function is only called in two places and in both cases they end up with a comparison against the string-constant `activeState \u003d \"active\"`.  This comparison will never be true since the enum string is much longer.  I\u0027m slightly perplexed on how the existing code even works.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 11
+      },
+      "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f83e2a9_dfe1ac88",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-05T16:27:28Z",
+      "side": 1,
+      "message": "Alright... I think I understand now.\n\nThis function doesn\u0027t operate in sdbusplus enumerations at all.  It is calling systemd1.Unit::ActiveState which is:\n\n\u003e ActiveState contains a state value that reflects whether the unit is currently active or not. The following states are currently defined: \"active\", \"reloading\", \"inactive\", \"failed\", \"activating\", and \"deactivating\". \"active\" indicates that unit is active (obviously...). \"reloading\" indicates that the unit is active and currently reloading its configuration. \"inactive\" indicates that it is inactive and the previous run was successful or no previous run has taken place yet. \"failed\" indicates that it is inactive and the previous run was not successful (more information about the reason for this is available on the unit type specific interfaces, for example for services in the Result property, see below). \"activating\" indicates that the unit has previously been inactive but is currently in the process of entering an active state. Conversely \"deactivating\" indicates that the unit is currently in the process of deactivation.\n\nhttps://www.freedesktop.org/software/systemd/man/org.freedesktop.systemd1.html\n\nIf you try to do this read here you\u0027re guaranteed to get an exception due to \"enum mismatch\".",
+      "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
