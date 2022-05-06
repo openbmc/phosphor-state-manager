@@ -101,6 +101,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b757567b_95b3a183",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-06T19:44:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5873c070_44e558dd",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 11
+      },
+      "revId": "9d54ee5b5f24499ad3e13fa10f6086e5deb5b36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f83e2a9_dfe1ac88",
