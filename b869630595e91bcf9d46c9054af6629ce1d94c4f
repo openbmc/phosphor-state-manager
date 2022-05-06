@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33dfcb81_4bc5a52a",
+        "filename": "host_check.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-06T17:53:13Z",
+      "side": 1,
+      "message": "I am setting up manual testing now.",
+      "parentUuid": "0910e0df_6ff5f777",
+      "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76e05906_dd5cc5e0",
         "filename": "host_check.cpp",
         "patchSetId": 31
@@ -31,6 +49,23 @@
       "writtenOn": "2022-05-06T17:51:53Z",
       "side": 1,
       "message": "I know the string produced here doesn\u0027t really need to be stored into a variable since it is only used for one conditional. It does make reading the conditional more direct, so I left it in.",
+      "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "288a5e02_f4cbd945",
+        "filename": "host_check.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-06T17:53:13Z",
+      "side": 1,
+      "message": "and here.",
       "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
