@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0910e0df_6ff5f777",
+        "filename": "host_check.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-06T17:51:53Z",
+      "side": 1,
+      "message": "After parsing through phosphor-state-manager via grok I believe this was the only other file that needed changes other than host_reset_recovery.cpp. All others had the enums implemented or were using systemd and not sdbusplus.",
+      "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76e05906_dd5cc5e0",
+        "filename": "host_check.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-06T17:51:53Z",
+      "side": 1,
+      "message": "I know the string produced here doesn\u0027t really need to be stored into a variable since it is only used for one conditional. It does make reading the conditional more direct, so I left it in.",
+      "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
