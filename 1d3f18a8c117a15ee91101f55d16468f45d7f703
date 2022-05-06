@@ -16,6 +16,24 @@
       "message": "Have you tested this?  I\u0027m fairly sure it should still be\n\n    std::variant\u003c...ProgressStages\u003e bootProgress\n\nwhen we read it out of the message.  We had called:\n\n              org.freedesktop.DBus.Properties.Get (in STRING interface_name,\n                                                   in STRING property_name,\n                                                   out VARIANT value);  \u003c--- notice \u0027out\u0027 is a VARIANT.",
       "revId": "1d3f18a8c117a15ee91101f55d16468f45d7f703",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35c20a18_703a679a",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-06T14:46:20Z",
+      "side": 1,
+      "message": "Got it. I was excited over using the bindings(although incorrectly).\nThinking about it too much, or perhaps too little.",
+      "parentUuid": "ba8a24da_b39e8361",
+      "revId": "1d3f18a8c117a15ee91101f55d16468f45d7f703",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
