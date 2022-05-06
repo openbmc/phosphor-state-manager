@@ -55,6 +55,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a11ee65_adfbc5d4",
+        "filename": "host_check.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-06T19:01:33Z",
+      "side": 1,
+      "message": "Need to swap 106 and 108.",
+      "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "288a5e02_f4cbd945",
         "filename": "host_check.cpp",
         "patchSetId": 31
@@ -66,6 +83,40 @@
       "writtenOn": "2022-05-06T17:53:13Z",
       "side": 1,
       "message": "and here.",
+      "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7ef2e99_d157511d",
+        "filename": "host_check.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-06T19:01:33Z",
+      "side": 1,
+      "message": "Whoops.  Swap here also.  Need to get the contents out of the variant after you read it from the bus.",
+      "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a953de9f_743ab6dc",
+        "filename": "host_reset_recovery.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-06T19:01:33Z",
+      "side": 1,
+      "message": "I missed this one as well.",
       "revId": "b869630595e91bcf9d46c9054af6629ce1d94c4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
