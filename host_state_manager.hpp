@@ -80,7 +80,9 @@ class Host : public HostInherit
         // Will throw exception on fail
         determineInitialState();
 
-        attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
+        // Sets auto-reboot attempts to max-allowed
+        attemptsLeft(sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                         RebootAttempts::retryAttempts());
 
         // We deferred this until we could get our property correct
         this->emit_object_added();
@@ -99,27 +101,60 @@ class Host : public HostInherit
     HostState currentHostState(HostState value) override;
 
     /**
+     * @brief Set value for allowable auto-reboot count
+     *
+     * This override is responsible for ensuring that when external users
+     * set the number of automatic retry attempts that the number of
+     * automatic reboot attempts left will update accordingly.
+     *
+     * @param[in] value - desired Reboot count value
+     *
+     * @return number of reboot attempts allowed.
+     */
+    uint32_t retryAttempts(uint32_t value) override
+    {
+        if (sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                RebootAttempts::attemptsLeft() != value)
+        {
+            info("Automatic reboot retry attempts set to: {VALUE} ", "VALUE",
+                 value);
+            sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                RebootAttempts::attemptsLeft(value);
+        }
+
+        return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                    RebootAttempts::retryAttempts(value));
+    }
+
+    /**
      * @brief Set host reboot count to default
      *
      * OpenBMC software controls the number of allowed reboot attempts so
      * any external set request of this property will be overridden by
-     * this function and set to the default.
+     * this function and set to the number of the allowed auto-reboot
+     * retry attempts found on the system.
      *
      * The only code responsible for decrementing the boot count resides
      * within this process and that will use the sub class interface
      * directly
      *
-     * @param[in] value      - Reboot count value, will be ignored
+     * @param[in] value  - Reboot count value
      *
-     * @return Default number of reboot attempts left
+     * @return number of reboot attempts left(allowed by retry attempts
+     * property)
      */
     uint32_t attemptsLeft(uint32_t value) override
     {
-        // value is ignored in this implementation
-        (void)(value);
         debug("External request to reset reboot count");
+        auto retryAttempts = sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                     RebootAttempts::retryAttempts()
+        if (value > retryAttempts)
+        {
+            debug("External request to reset reboot count too high setting to max allowed");
+            value = retryAttempts;
+        }               
         return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
-                    RebootAttempts::attemptsLeft(BOOT_COUNT_MAX_ALLOWED));
+                    RebootAttempts::attemptsLeft(value));
     }
 
   private:
@@ -227,7 +262,9 @@ class Host : public HostInherit
                                       server::Progress::bootProgress()),
                 convertForMessage(
                     sdbusplus::xyz::openbmc_project::State::OperatingSystem::
-                        server::Status::operatingSystemState()));
+                        server::Status::operatingSystemState()),
+                sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                    RebootAttempts::retryAttempts());
     }
 
     /** @brief Function required by Cereal to perform deserialization.
@@ -240,12 +277,21 @@ class Host : public HostInherit
     template <class Archive>
     void load(Archive& archive, const std::uint32_t version)
     {
-        // version is not used currently
-        (void)(version);
         std::string reqTranState;
         std::string bootProgress;
         std::string osState;
-        archive(reqTranState, bootProgress, osState);
+        // Older cereal archive without RetryAttempt may be implemented
+        // just set to 3(default)
+        uint32_t retryAttempts = BOOT_COUNT_MAX_ALLOWED;
+        switch(version)
+     {
+        case 2:
+            archive(cereal::make_nvp("value0", retryAttempts));
+            [[fallthrough]];
+        case 1:
+            archive(reqTranState, bootProgress, osState);
+            break;
+     }
         auto reqTran = Host::convertTransitionFromString(reqTranState);
         // When restoring, set the requested state with persistent value
         // but don't call the override which would execute it
@@ -256,6 +302,8 @@ class Host : public HostInherit
         sdbusplus::xyz::openbmc_project::State::OperatingSystem::server::
             Status::operatingSystemState(
                 Host::convertOSStatusFromString(osState));
+        sdbusplus::xyz::openbmc_project::Control::Boot::server::RebootAttempts::
+            retryAttempts(retryAttempts);
     }
 
     /** @brief Serialize and persist requested host state
