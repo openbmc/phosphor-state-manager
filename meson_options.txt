@@ -80,7 +80,7 @@ option(
 
 option(
     'class-version', type: 'integer',
-    value: 1,
+    value: 2,
     description: 'Class version to register with Cereal.',
 )
 
