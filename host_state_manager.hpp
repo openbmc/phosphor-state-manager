@@ -99,29 +99,28 @@ class Host : public HostInherit
     HostState currentHostState(HostState value) override;
 
     /**
-     * @brief Set host reboot count to default
+     * @brief Set value for allowable auto-reboot count
      *
-     * OpenBMC software controls the number of allowed reboot attempts so
-     * any external set request of this property will be overridden by
-     * this function and set to the default.
+     * This override is responsible for ensuring that when external users
+     * set the number of automatic retry attempts that the number of
+     * automatic reboot attempts left will update accordingly.
      *
-     * The only code responsible for decrementing the boot count resides
-     * within this process and that will use the sub class interface
-     * directly
+     * @param[in] value - desired Reboot count value
      *
-     * @param[in] value      - Reboot count value, will be ignored
-     *
-     * @return Default number of reboot attempts left
+     * @return number of reboot attempts allowed.
      */
-    uint32_t attemptsLeft(uint32_t value) override
+    uint32_t retryAttempts(uint32_t value) override
     {
-        // value is ignored in this implementation
-        (void)(value);
-        debug("External request to reset reboot count");
-        return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
-                    RebootAttempts::attemptsLeft(BOOT_COUNT_MAX_ALLOWED));
-    }
+        if (sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                RebootAttempts::attemptsLeft() != value)
+        {
+            sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                RebootAttempts::attemptsLeft(value);
+        }
 
+        return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                    RebootAttempts::retryAttempts(value));
+    }
   private:
     /**
      * @brief subscribe to the systemd signals
