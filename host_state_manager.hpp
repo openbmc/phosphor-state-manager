@@ -116,10 +116,9 @@ class Host : public HostInherit
     uint32_t attemptsLeft(uint32_t value) override
     {
         // value is ignored in this implementation
-        (void)(value);
         debug("External request to reset reboot count");
         return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
-                    RebootAttempts::attemptsLeft(BOOT_COUNT_MAX_ALLOWED));
+                    RebootAttempts::attemptsLeft(value));
     }
 
   private:
