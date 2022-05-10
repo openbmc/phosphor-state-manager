@@ -99,27 +99,25 @@ class Host : public HostInherit
     HostState currentHostState(HostState value) override;
 
     /**
-     * @brief Set host reboot count to default
+     * @brief Set host reboot count to specified value
      *
-     * OpenBMC software controls the number of allowed reboot attempts so
-     * any external set request of this property will be overridden by
-     * this function and set to the default.
+     * OpenBMC software controls the number of allowed reboot attempts
+     * This function allows external users to set it.
      *
      * The only code responsible for decrementing the boot count resides
      * within this process and that will use the sub class interface
      * directly
      *
-     * @param[in] value      - Reboot count value, will be ignored
+     * @param[in] value - number of desired reboot attempts
      *
-     * @return Default number of reboot attempts left
+     * @return number of reboot attempts left
      */
     uint32_t attemptsLeft(uint32_t value) override
     {
         // value is ignored in this implementation
-        (void)(value);
         debug("External request to reset reboot count");
         return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
-                    RebootAttempts::attemptsLeft(BOOT_COUNT_MAX_ALLOWED));
+                    RebootAttempts::attemptsLeft(value));
     }
 
   private:
