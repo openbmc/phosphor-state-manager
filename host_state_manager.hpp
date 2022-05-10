@@ -99,11 +99,38 @@ class Host : public HostInherit
     HostState currentHostState(HostState value) override;
 
     /**
+     * @brief Set value for allowable auto-reboot count
+     *
+     * This override is responsible for ensuring that when external users
+     * set the number of automatic retry attempts that the number of
+     * automatic reboot attempts left will update accordingly.
+     *
+     * @param[in] value - desired Reboot count value
+     *
+     * @return number of reboot attempts allowed.
+     */
+    uint32_t retryAttempts(uint32_t value) override
+    {
+        if (sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                RebootAttempts::attemptsLeft() != value)
+        {
+            info("Automatic reboot retry attempts set to: {ATTEMPT_VAL} ",
+                 "ATTEMPT_VAL", value);
+            sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                RebootAttempts::attemptsLeft(value);
+        }
+
+        return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                    RebootAttempts::retryAttempts(value));
+    }
+
+    /**
      * @brief Set host reboot count to default
      *
      * OpenBMC software controls the number of allowed reboot attempts so
      * any external set request of this property will be overridden by
-     * this function and set to the default.
+     * this function and set to the number of the allowed auto-reboot
+     * retry attempts found on the system.
      *
      * The only code responsible for decrementing the boot count resides
      * within this process and that will use the sub class interface
@@ -111,15 +138,18 @@ class Host : public HostInherit
      *
      * @param[in] value      - Reboot count value, will be ignored
      *
-     * @return Default number of reboot attempts left
+     * @return number of reboot attempts left(allowed by retry attempts
+     * property)
      */
     uint32_t attemptsLeft(uint32_t value) override
     {
+        auto retryAttempts = sdbusplus::xyz::openbmc_project::Control::Boot::
+            server::RebootAttempts::retryAttempts();
         // value is ignored in this implementation
         (void)(value);
         debug("External request to reset reboot count");
         return (sdbusplus::xyz::openbmc_project::Control::Boot::server::
-                    RebootAttempts::attemptsLeft(BOOT_COUNT_MAX_ALLOWED));
+                    RebootAttempts::attemptsLeft(retryAttempts));
     }
 
   private:
@@ -225,6 +255,8 @@ class Host : public HostInherit
                                       server::Host::requestedHostTransition()),
                 convertForMessage(sdbusplus::xyz::openbmc_project::State::Boot::
                                       server::Progress::bootProgress()),
+                sdbusplus::xyz::openbmc_project::Control::Boot::server::
+                    RebootAttempts::retryAttempts(),
                 convertForMessage(
                     sdbusplus::xyz::openbmc_project::State::OperatingSystem::
                         server::Status::operatingSystemState()));
@@ -245,7 +277,8 @@ class Host : public HostInherit
         std::string reqTranState;
         std::string bootProgress;
         std::string osState;
-        archive(reqTranState, bootProgress, osState);
+        uint32_t retryAttempts;
+        archive(reqTranState, bootProgress, retryAttempts, osState);
         auto reqTran = Host::convertTransitionFromString(reqTranState);
         // When restoring, set the requested state with persistent value
         // but don't call the override which would execute it
@@ -253,6 +286,8 @@ class Host : public HostInherit
             requestedHostTransition(reqTran);
         sdbusplus::xyz::openbmc_project::State::Boot::server::Progress::
             bootProgress(Host::convertProgressStagesFromString(bootProgress));
+        sdbusplus::xyz::openbmc_project::Control::Boot::server::RebootAttempts::
+            retryAttempts(retryAttempts);
         sdbusplus::xyz::openbmc_project::State::OperatingSystem::server::
             Status::operatingSystemState(
                 Host::convertOSStatusFromString(osState));
