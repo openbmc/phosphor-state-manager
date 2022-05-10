@@ -253,7 +253,7 @@ bool Host::isAutoReboot()
             {
                 // We are at 0 so reset reboot counter and go to quiesce state
                 info("Auto reboot enabled but HOST BOOTCOUNT already set to 0");
-                attemptsLeft(BOOT_COUNT_MAX_ALLOWED);
+                attemptsLeft(reboot::RebootAttempts::retryAttempts());
 
                 // Generate log since we will now be sitting in Quiesce
                 const std::string errorMsg =
