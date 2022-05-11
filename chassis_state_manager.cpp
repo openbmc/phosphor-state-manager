@@ -45,6 +45,8 @@ constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT_FMT =
 constexpr auto CHASSIS_STATE_POWERON_TGT_FMT = "obmc-chassis-poweron@{}.target";
 constexpr auto RESET_HOST_SENSORS_SVC_FMT =
     "phosphor-reset-sensor-states@{}.service";
+constexpr auto AUTO_POWER_RESTORE_SVC_FMT =
+    "phosphor-discover-system-state@{}.service";
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
@@ -203,6 +205,8 @@ fail:
 
 void Chassis::determineStatusOfPower()
 {
+    auto initialPowerStatus = server::Chassis::currentPowerStatus();
+
     bool powerGood = determineStatusOfUPSPower();
     if (!powerGood)
     {
@@ -214,6 +218,18 @@ void Chassis::determineStatusOfPower()
     {
         // All checks passed, set power status to good
         server::Chassis::currentPowerStatus(PowerStatus::Good);
+
+        // If power status transitioned from bad to good and chassis power is
+        // off then call Auto Power Restart to see if the system should auto
+        // power on now that power status is good
+        if ((initialPowerStatus != PowerStatus::Good) &&
+            (server::Chassis::currentPowerState() == PowerState::Off))
+        {
+            info("power status transitioned from {START_PWR_STATE} to Good and "
+                 "chassis power is off, calling APR",
+                 "START_PWR_STATE", initialPowerStatus);
+            restartUnit(fmt::format(AUTO_POWER_RESTORE_SVC_FMT, this->id));
+        }
     }
 }
 
@@ -455,6 +471,19 @@ void Chassis::startUnit(const std::string& sysdUnit)
 {
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE, "StartUnit");
+
+    method.append(sysdUnit);
+    method.append("replace");
+
+    this->bus.call_noreply(method);
+
+    return;
+}
+
+void Chassis::restartUnit(const std::string& sysdUnit)
+{
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "RestartUnit");
 
     method.append(sysdUnit);
     method.append("replace");
