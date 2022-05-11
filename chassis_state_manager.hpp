@@ -100,13 +100,17 @@ class Chassis : public ChassisInherit
 
     /** @brief Determine status of power provided by an Uninterruptible Power
      *         Supply into the system
+     *
+     *  @return True if UPS power is good, false otherwise
      */
-    void determineStatusOfUPSPower();
+    bool determineStatusOfUPSPower();
 
     /** @brief Determine status of power provided by the power supply units into
      *         the system
+     *
+     *  @return True if PSU power is good, false otherwise
      */
-    void determineStatusOfPSUPower();
+    bool determineStatusOfPSUPower();
 
     /**
      * @brief subscribe to the systemd signals
