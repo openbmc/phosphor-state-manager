@@ -203,19 +203,21 @@ fail:
 
 void Chassis::determineStatusOfPower()
 {
-    // Default PowerStatus to good
-    server::Chassis::currentPowerStatus(PowerStatus::Good);
-
-    determineStatusOfUPSPower();
-    if (server::Chassis::currentPowerStatus() != PowerStatus::Good)
+    bool powerGood = determineStatusOfUPSPower();
+    if (!powerGood)
     {
         return;
     }
 
-    determineStatusOfPSUPower();
+    powerGood = determineStatusOfPSUPower();
+    if (powerGood)
+    {
+        // All checks passed, set power status to good
+        server::Chassis::currentPowerStatus(PowerStatus::Good);
+    }
 }
 
-void Chassis::determineStatusOfUPSPower()
+bool Chassis::determineStatusOfUPSPower()
 {
     // Find all implementations of the UPower interface
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
@@ -288,7 +290,7 @@ void Chassis::determineStatusOfUPSPower()
                          std::get<uint>(properties["State"]));
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
-                    return;
+                    return false;
                 }
 
                 if (std::get<uint>(properties["BatteryLevel"]) ==
@@ -297,7 +299,7 @@ void Chassis::determineStatusOfUPSPower()
                     info("UPS Battery Level is Full");
                     // Only one UPS per system, we've found it and it's all
                     // good so exit function
-                    return;
+                    return true;
                 }
                 else
                 {
@@ -306,7 +308,7 @@ void Chassis::determineStatusOfUPSPower()
                          std::get<uint>(properties["BatteryLevel"]));
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
-                    return;
+                    return false;
                 }
             }
             catch (const sdbusplus::exception::exception& e)
@@ -318,10 +320,10 @@ void Chassis::determineStatusOfUPSPower()
             }
         }
     }
-    return;
+    return true;
 }
 
-void Chassis::determineStatusOfPSUPower()
+bool Chassis::determineStatusOfPSUPower()
 {
     // Find all implementations of the PowerSystemInputs interface
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
@@ -372,7 +374,7 @@ void Chassis::determineStatusOfPSUPower()
                 {
                     info("Power System Inputs status is in Fault state");
                     server::Chassis::currentPowerStatus(PowerStatus::BrownOut);
-                    return;
+                    return false;
                 }
             }
             catch (const sdbusplus::exception::exception& e)
@@ -385,7 +387,7 @@ void Chassis::determineStatusOfPSUPower()
             }
         }
     }
-    return;
+    return true;
 }
 
 void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
