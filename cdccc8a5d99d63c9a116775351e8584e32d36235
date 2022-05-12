@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29253bb2_8a391631",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-05-12T20:14:58Z",
+      "side": 1,
+      "message": "If the only user was the app that checked the value at power on then it was probably ok, but yeah if other apps are checking or subscribing to property change signals it\u0027d be an issue.",
+      "revId": "cdccc8a5d99d63c9a116775351e8584e32d36235",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
