@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe60188_64d5ce80",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-05-12T20:18:51Z",
+      "side": 1,
+      "message": "Wouldn\u0027t setting this to Good have a similar issue addressed in the previous commit in this chain where apps monitoring the value would see the property being Good temporarily? What is the default when no default is defined, empty? Would that be ok until determining the power state is run?",
+      "revId": "e875969ef0004cee1153fd34c928a87ec9de0c82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
