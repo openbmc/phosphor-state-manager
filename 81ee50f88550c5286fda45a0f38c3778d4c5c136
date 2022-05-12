@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f7c9df6_5e8537cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-12T17:13:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d76d3a52_60dc103e",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40403da3_6bef622f",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-12T16:37:53Z",
       "side": 1,
       "message": "Please provide a bit more high level info on the \"Why\" here. So high level summary here is that the Redfish API now provides a mechanism for the user of the system to configure the number of times the BMC should restart the host firmware in error paths before giving up. Previously the BMC code had just hard coded this to 3 so even if someone provided a different value over D-Bus for this property, the code would always set it to 3. Your change here is now allowing external users to actually set it to something other then 3.",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "708bb6f0_8ce22716",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-12T17:13:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "40403da3_6bef622f",
       "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -117,6 +153,24 @@
       "writtenOn": "2022-05-12T16:37:53Z",
       "side": 1,
       "message": "Please update function documentation.",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39471439_7e907303",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-12T17:13:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9f6b3a20_c558942d",
       "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
