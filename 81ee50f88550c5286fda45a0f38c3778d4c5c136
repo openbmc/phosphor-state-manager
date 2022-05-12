@@ -3,6 +3,74 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d76d3a52_60dc103e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-12T16:37:53Z",
+      "side": 1,
+      "message": "nit: no \"-\" between words. This is just a normal summary sentence.",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40403da3_6bef622f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-12T16:37:53Z",
+      "side": 1,
+      "message": "Please provide a bit more high level info on the \"Why\" here. So high level summary here is that the Redfish API now provides a mechanism for the user of the system to configure the number of times the BMC should restart the host firmware in error paths before giving up. Previously the BMC code had just hard coded this to 3 so even if someone provided a different value over D-Bus for this property, the code would always set it to 3. Your change here is now allowing external users to actually set it to something other then 3.",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a163753_f0394b45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-12T16:37:53Z",
+      "side": 1,
+      "message": "Please update this once test is complete",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b91818_8cb1a5f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-12T16:37:53Z",
+      "side": 1,
+      "message": "Patrick, you were the original proponent on not allowing the host the ability to configure it\u0027s own reboot count, and stated it was a BMC controlled policy. With there now being a Redfish API to set this, we\u0027re going to change that design. Let me know if you have any concerns.",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e032eec_6d5fdec4",
         "filename": "host_state_manager.hpp",
         "patchSetId": 2
@@ -14,6 +82,41 @@
       "writtenOn": "2022-05-10T05:27:56Z",
       "side": 1,
       "message": "Should \"BOOT_COUNT_MAX_ALLOWED\" be here or removed?",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a4773fe_318be002",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-12T16:37:53Z",
+      "side": 1,
+      "message": "I think we leave it for this commit. We need to default it to something on initial startup. Although I could see the argument for us adding this to our cereal (saved/restored) data. So if a user changes it, we persist that change. So lets plan on another commit after this that adds this to our save/restore data using the cereal class below.",
+      "parentUuid": "4e032eec_6d5fdec4",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f6b3a20_c558942d",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-12T16:37:53Z",
+      "side": 1,
+      "message": "Please update function documentation.",
       "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
