@@ -6,7 +6,7 @@ OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hostst
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
 bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs, stopofftargets"
 
-USAGE="Usage: obmcutil [-h] [--wait] [--verbose]
+USAGE="Usage: obmcutil [-h] [--wait] [--verbose] [--hid=<HOST_ID>] [--cid=<CHASSIS_ID>]
                 {$OPTS}"
 
 INTERFACE_ROOT=xyz.openbmc_project
@@ -38,6 +38,10 @@ G_QUERY=
 G_WAIT=
 # Print the journal to the console
 G_VERBOSE=
+# Host instance id, defult 0
+G_HID="0"
+# Chassis instance id, defult 0
+G_CID="0"
 
 print_help ()
 {
@@ -80,6 +84,8 @@ print_help ()
     echo "  -h, --help          show this help message and exit"
     echo "  -w, --wait          block until state transition succeeds or fails"
     echo "  -v, --verbose       print the journal to stdout if --wait is supplied"
+    echo "  --hid               host instance id, defult 0"
+    echo "  --cid               chassis instance id, defult 0"
     exit 0
 }
 
@@ -298,7 +304,7 @@ handle_cmd ()
 {
     case "$1" in
         chassisoff)
-            OBJECT=$STATE_OBJECT/chassis0
+            OBJECT=$STATE_OBJECT/chassis$G_CID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Chassis
             PROPERTY=RequestedPowerTransition
@@ -309,7 +315,7 @@ handle_cmd ()
             ;;
         chassison)
             check_and_warn_boot_block
-            OBJECT=$STATE_OBJECT/chassis0
+            OBJECT=$STATE_OBJECT/chassis$G_CID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Chassis
             PROPERTY=RequestedPowerTransition
@@ -319,7 +325,7 @@ handle_cmd ()
             set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweroff)
-            OBJECT=$STATE_OBJECT/host0
+            OBJECT=$STATE_OBJECT/host$G_HID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Host
             PROPERTY=RequestedHostTransition
@@ -330,7 +336,7 @@ handle_cmd ()
             ;;
         poweron)
             check_and_warn_boot_block
-            OBJECT=$STATE_OBJECT/host0
+            OBJECT=$STATE_OBJECT/host$G_HID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Host
             PROPERTY=RequestedHostTransition
@@ -347,21 +353,21 @@ handle_cmd ()
             state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         chassisstate)
-            OBJECT=$STATE_OBJECT/chassis0
+            OBJECT=$STATE_OBJECT/chassis$G_CID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Chassis
             PROPERTY=CurrentPowerState
             state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         hoststate)
-            OBJECT=$STATE_OBJECT/host0
+            OBJECT=$STATE_OBJECT/host$G_HID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Host
             PROPERTY=CurrentHostState
             state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
             ;;
         osstate)
-            OBJECT=$STATE_OBJECT/host0
+            OBJECT=$STATE_OBJECT/host$G_HID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.OperatingSystem.Status
             PROPERTY=OperatingSystemState
@@ -375,7 +381,7 @@ handle_cmd ()
             check_and_warn_boot_block
             ;;
         bootprogress)
-            OBJECT=$STATE_OBJECT/host0
+            OBJECT=$STATE_OBJECT/host$G_HID
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$STATE_INTERFACE.Boot.Progress
             PROPERTY=BootProgress
@@ -400,7 +406,7 @@ handle_cmd ()
             /usr/libexec/chassiskill
             ;;
         hostrebootoff)
-            OBJECT=$CONTROL_OBJECT/host0/auto_reboot
+            OBJECT=$CONTROL_OBJECT/host$G_HID/auto_reboot
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
             PROPERTY=AutoReboot
@@ -408,7 +414,7 @@ handle_cmd ()
             set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "b" $VALUE
             ;;
         hostrebootoffonetime)
-            OBJECT=$CONTROL_OBJECT/host0/auto_reboot/one_time
+            OBJECT=$CONTROL_OBJECT/host$G_HID/auto_reboot/one_time
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
             PROPERTY=AutoReboot
@@ -416,7 +422,7 @@ handle_cmd ()
             set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "b" $VALUE
         ;;
         hostrebooton)
-            OBJECT=$CONTROL_OBJECT/host0/auto_reboot
+            OBJECT=$CONTROL_OBJECT/host$G_HID/auto_reboot
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
             PROPERTY=AutoReboot
@@ -480,6 +486,17 @@ for arg in "$@"; do
             ;;
         -v|--verbose)
             G_VERBOSE=y
+            shiftcnt=$((shiftcnt+1))
+            ;;
+        --hid=*)
+            G_HID="${arg#*=}"
+            if [ $G_CID -eq 0 ]; then
+                G_CID="${arg#*=}"
+            fi
+            shiftcnt=$((shiftcnt+1))
+            ;;
+        --cid=*)
+            G_CID="${arg#*=}"
             shiftcnt=$((shiftcnt+1))
             ;;
         -*)
