@@ -16,6 +16,24 @@
       "message": "Wouldn\u0027t setting this to Good have a similar issue addressed in the previous commit in this chain where apps monitoring the value would see the property being Good temporarily? What is the default when no default is defined, empty? Would that be ok until determining the power state is run?",
       "revId": "e875969ef0004cee1153fd34c928a87ec9de0c82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a26c135_a5a25844",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-16T13:11:56Z",
+      "side": 1,
+      "message": "Yeah, I would have preferred we had a \"Undefined\" state defined in PDI. But, the good news here is that this only occurs when this application first starts up, and we don\u0027t put the property on D-Bus until the \"emit_object_added()\" call below and that\u0027s after we\u0027ve figured out the real power status. So the only real reason I added this init here is so we don\u0027t see it as a power status change and call APR on startup.",
+      "parentUuid": "3fe60188_64d5ce80",
+      "revId": "e875969ef0004cee1153fd34c928a87ec9de0c82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
