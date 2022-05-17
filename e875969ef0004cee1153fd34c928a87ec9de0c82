@@ -34,6 +34,24 @@
       "parentUuid": "3fe60188_64d5ce80",
       "revId": "e875969ef0004cee1153fd34c928a87ec9de0c82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27599393_0f937e69",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-05-17T16:13:01Z",
+      "side": 1,
+      "message": "this is a dbus property?  dbus will glady issue properties changed signals before interfaces_added for some reason. To be safe you may want to use the 2 argument call which has \u0027skipsignal\u0027 as the second arg and set it to true.",
+      "parentUuid": "1a26c135_a5a25844",
+      "revId": "e875969ef0004cee1153fd34c928a87ec9de0c82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
