@@ -52,6 +52,24 @@
       "parentUuid": "1a26c135_a5a25844",
       "revId": "e875969ef0004cee1153fd34c928a87ec9de0c82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06222aca_28a865cd",
+        "filename": "chassis_state_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-17T18:55:13Z",
+      "side": 1,
+      "message": "I like it, better to be safe then sorry.",
+      "parentUuid": "27599393_0f937e69",
+      "revId": "e875969ef0004cee1153fd34c928a87ec9de0c82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
