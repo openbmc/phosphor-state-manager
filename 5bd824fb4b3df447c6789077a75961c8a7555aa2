@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dec8a12_bfafe4d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-25T22:40:44Z",
+      "side": 1,
+      "message": "CI failure due to the new PDI not being present in the jenkins build.",
+      "revId": "5bd824fb4b3df447c6789077a75961c8a7555aa2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
