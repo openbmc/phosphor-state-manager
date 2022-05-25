@@ -11,7 +11,6 @@ bool gVerbose = true;
 
 TEST(TargetSignalData, BasicPaths)
 {
-
     // Create default data structure for testing
     TargetErrorData targetData = {
         {"multi-user.target",

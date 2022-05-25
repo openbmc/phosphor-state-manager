@@ -91,7 +91,6 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
 
 void BMC::discoverInitialState()
 {
-
     // First look to see if the BMC quiesce target is active
     auto currentStateStr = getUnitState(obmcQuiesceTarget);
     if (currentStateStr == activeState)
@@ -249,7 +248,6 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
 
 BMC::BMCState BMC::currentBMCState(BMCState value)
 {
-
     info("Setting the BMCState field to {CURRENT_BMC_STATE}",
          "CURRENT_BMC_STATE", value);
 

@@ -97,7 +97,6 @@ int main()
 
     if (std::filesystem::exists(SYSFS_ABR_IMAGE_PATH))
     {
-
         try
         {
             dbgFile.open(SYSFS_ABR_IMAGE_PATH);

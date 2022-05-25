@@ -60,7 +60,6 @@ class Chassis : public ChassisInherit
                          std::bind(&Chassis::pohCallback, this),
                          std::chrono::hours{1}, std::chrono::minutes{1})
     {
-
         subscribeToSystemdSignals();
 
         createSystemdTargetTable();

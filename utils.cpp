@@ -107,7 +107,6 @@ void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
 
 int getGpioValue(const std::string& gpioName)
 {
-
     int gpioval = -1;
     gpiod_line* line = gpiod_line_find(gpioName.c_str());
 
@@ -135,7 +134,6 @@ void createError(
     sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel,
     std::map<std::string, std::string> additionalData)
 {
-
     try
     {
         // Always add the _PID on for some extra logging debug

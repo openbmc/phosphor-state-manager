@@ -100,7 +100,6 @@ void Chassis::createSystemdTargetTable()
 //        has read property function
 void Chassis::determineInitialState()
 {
-
     // Monitor for any properties changed signals on UPower device path
     uPowerPropChangeSignal = std::make_unique<sdbusplus::bus::match_t>(
         bus,
@@ -594,7 +593,6 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
 
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
-
     info("Change to Chassis Requested Power State: {REQ_POWER_TRAN}",
          "REQ_POWER_TRAN", value);
     startUnit(systemdTargetTable.find(value)->second);

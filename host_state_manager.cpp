@@ -77,7 +77,6 @@ void Host::subscribeToSystemdSignals()
 
 void Host::determineInitialState()
 {
-
     if (stateActive(getTarget(server::Host::HostState::Running)) ||
         isHostRunning(id))
     {
