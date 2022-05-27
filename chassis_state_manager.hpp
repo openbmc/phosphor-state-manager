@@ -21,6 +21,7 @@ namespace state
 {
 namespace manager
 {
+std::string CHASSIS_LOST_POWER = "chassis@{}-lost-power";
 
 using ChassisInherit = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::State::server::Chassis,
