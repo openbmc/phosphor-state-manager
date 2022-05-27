@@ -153,11 +153,18 @@ void Chassis::determineInitialState()
                 {
                     info(
                         "Chassis power was on before the BMC reboot and it is off now");
-
-                    // Reset host sensors since system is off now
-                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
+                    // Not completely sure about this, maybe just use snprintf
+                    std::string CHASSIS_LOST_POWER_FMT =
+                         fmt::format("chassis@{}-lost-power", id);
+                    std::string CHASSIS_LOST_POWER_FILE_FMT =
+                        "/run/openbmc/" + CHASSIS_LOST_POWER_FMT;
 
                     setStateChangeTime();
+                    // Generate file indicating AC loss occurred
+                    fs::create_directories(BASE_FILE_DIR);
+                    fs::path chassisPowerLossFile{CHASSIS_LOST_POWER_FILE_FMT};
+                    std::ofstream outfile(chassisPowerLossFile);
+                    outfile.close();
 
                     // 0 indicates pinhole reset. 1 is NOT pinhole reset
                     if (phosphor::state::manager::utils::getGpioValue(
