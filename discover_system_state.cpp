@@ -6,6 +6,7 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp"
 
+#include <fmt/format.h>
 #include <getopt.h>
 #include <systemd/sd-bus.h>
 
@@ -14,6 +15,7 @@
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 
+#include <filesystem>
 #include <iostream>
 #include <map>
 #include <string>
@@ -119,6 +121,21 @@ int main(int argc, char** argv)
         {
             // one_time is set to None so use the customer setting
             info("One time not set, check user setting of power policy");
+
+#ifdef ONLY_RUN_APR_ON_POWER_LOSS
+            // Only use customer setting if chassis power was on prior to
+            // the BMC reboot
+            // auto size = std::snprintf(nullptr, 0, CHASSIS_LOST_POWER_FILE,
+            // 0); size++; // null std::unique_ptr<char[]> buf(new char[size]);
+            // std::snprintf(buf.get(), size, CHASSIS_LOST_POWER_FILE, 0);
+            fs::path aclossPath{fmt::format(CHASSIS_LOST_POWER_FILE, 0)};
+            if (!fs::exists(aclossPath))
+            {
+                info(
+                    "Chassis power was not on prior to BMC reboot so do not run any power policy");
+                return 0;
+            }
+#endif
             auto reply = bus.call(methodUserSetting);
             reply.read(result);
             powerPolicy = std::get<std::string>(result);
