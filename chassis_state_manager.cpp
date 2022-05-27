@@ -7,6 +7,7 @@
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 
 #include <fmt/format.h>
+#include <fmt/printf.h>
 
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
@@ -152,11 +153,16 @@ void Chassis::determineInitialState()
                 {
                     info(
                         "Chassis power was on before the BMC reboot and it is off now");
-
-                    // Reset host sensors since system is off now
-                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
+                    std::string chassis_lost_power_file_fmt =
+                         fmt::sprintf(CHASSIS_LOST_POWER_FILE, id);
+                    startUnit(fmt::format(CHASSIS_BLACKOUT_TGT_FMT, id));
 
                     setStateChangeTime();
+                    // Generate file indicating AC loss occurred
+                    fs::create_directories(BASE_FILE_DIR);
+                    fs::path chassisPowerLossFile{chassis_lost_power_file_fmt};
+                    std::ofstream outfile(chassisPowerLossFile);
+                    outfile.close();
 
                     // 0 indicates pinhole reset. 1 is NOT pinhole reset
                     if (phosphor::state::manager::utils::getGpioValue(
