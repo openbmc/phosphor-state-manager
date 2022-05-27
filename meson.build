@@ -56,7 +56,16 @@ if build_host_gpios.enabled()
         'HOST_GPIOS_OBJPATH', get_option('host-gpios-objpath'))
 endif
 
+conf.set10(
+    'ONLYRUNAPRONPOWERLOSS', get_option('only-run-apr-on-power-loss'))
+
 # globals shared across applications
+conf.set_quoted(
+    'BASE_FILE_DIR', '/run/openbmc/')
+
+conf.set_quoted(
+    'CHASSIS_LOST_POWER_FILE', '/run/openbmc/chassis@%d-lost-power')
+ 
 conf.set_quoted(
     'HOST_RUNNING_FILE', '/run/openbmc/host@%d-on')
 
@@ -75,6 +84,7 @@ phosphorlogging = dependency('phosphor-logging')
 phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
 libgpiod = dependency('libgpiod', version : '>=1.4.1')
 fmt = dependency('fmt')
+cppfs = meson.get_compiler('cpp').find_library('stdc++fs')
 
 if cpp.has_header('nlohmann/json.hpp')
     nlohmann_json = declare_dependency()
@@ -197,6 +207,7 @@ executable('phosphor-discover-system-state',
             'utils.cpp',
             dependencies: [
                 cereal,
+                cppfs,
                 libgpiod,
                 phosphorlogging,
                 sdbusplus,
