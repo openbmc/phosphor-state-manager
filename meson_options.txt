@@ -119,3 +119,8 @@ option('sysfs-abr-image-path', type : 'string',
     value : '/sys/kernel/debug/aspeed/sbc/abr_image',
     description : 'The sysfs path to the abr image value.',
 )
+
+option('only-run-apr-on-power-loss', type : 'boolean',
+    value : 'false',
+    description : 'Only run APR if chassis is on prior to reboot.'
+)
