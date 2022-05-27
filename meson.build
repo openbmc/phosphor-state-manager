@@ -56,7 +56,16 @@ if build_host_gpios.enabled()
         'HOST_GPIOS_OBJPATH', get_option('host-gpios-objpath'))
 endif
 
+conf.set10(
+    'ONLY_RUN_APR_ON_POWER_LOSS', get_option('only-run-apr-on-power-loss'))
+
 # globals shared across applications
+conf.set_quoted(
+    'BASE_FILE_DIR', '/run/openbmc/')
+
+conf.set_quoted(
+    'CHASSIS_LOST_POWER_FILE', '/run/openbmc/chassis@%d-lost-power')
+
 conf.set_quoted(
     'HOST_RUNNING_FILE', '/run/openbmc/host@%d-on')
 
