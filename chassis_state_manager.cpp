@@ -7,6 +7,7 @@
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 
 #include <fmt/format.h>
+#include <fmt/printf.h>
 
 #include <cereal/archives/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
@@ -43,8 +44,9 @@ constexpr auto CHASSIS_STATE_POWEROFF_TGT_FMT =
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT_FMT =
     "obmc-chassis-hard-poweroff@{}.target";
 constexpr auto CHASSIS_STATE_POWERON_TGT_FMT = "obmc-chassis-poweron@{}.target";
-constexpr auto RESET_HOST_SENSORS_SVC_FMT =
-    "phosphor-reset-sensor-states@{}.service";
+constexpr auto CHASSIS_BLACKOUT_TGT_FMT = "obmc-chassis-blackout@{}.target";
+constexpr auto RESET_HOST_SENSORS_SVC =
+    "phosphor-reset-sensor-states@0.service";
 constexpr auto AUTO_POWER_RESTORE_SVC_FMT =
     "phosphor-discover-system-state@{}.service";
 constexpr auto ACTIVE_STATE = "active";
@@ -152,11 +154,21 @@ void Chassis::determineInitialState()
                 {
                     info(
                         "Chassis power was on before the BMC reboot and it is off now");
-
+                    std::string chassis_lost_power_file_fmt =
+                        fmt::sprintf(CHASSIS_LOST_POWER_FILE, id);
+                    startUnit(fmt::format(CHASSIS_BLACKOUT_TGT_FMT, id));
                     // Reset host sensors since system is off now
+
+                    // CHASSIS_BLACKOUT_TGT invoked above calls this service
+                    // Needs to be removed when the install target is merged
                     startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
 
                     setStateChangeTime();
+                    // Generate file indicating AC loss occurred
+                    fs::create_directories(BASE_FILE_DIR);
+                    fs::path chassisPowerLossFile{chassis_lost_power_file_fmt};
+                    std::ofstream outfile(chassisPowerLossFile);
+                    outfile.close();
 
                     // 0 indicates pinhole reset. 1 is NOT pinhole reset
                     if (phosphor::state::manager::utils::getGpioValue(
