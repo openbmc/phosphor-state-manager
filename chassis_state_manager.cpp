@@ -158,6 +158,15 @@ void Chassis::determineInitialState()
                     startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
 
                     setStateChangeTime();
+                    // Generate file indicating AC loss occurred
+                    fs::create_directories(BASE_FILE_DIR);
+                    auto size =
+                        std::snprintf(nullptr, 0, CHASSIS_LOST_POWER_FILE, 0);
+                    size++; // null
+                    std::unique_ptr<char[]> buf(new char[size]);
+                    std::snprintf(buf.get(), size, CHASSIS_LOST_POWER_FILE, 0);
+                    std::ofstream outfile(buf.get());
+                    outfile.close();
 
                     // 0 indicates pinhole reset. 1 is NOT pinhole reset
                     if (phosphor::state::manager::utils::getGpioValue(
