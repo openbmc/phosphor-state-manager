@@ -171,6 +171,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "adcda1e6_af3f3dee",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-31T19:28:33Z",
+      "side": 1,
+      "message": "With the cppfs dependency added to the phosphor-discover-system-state executable this will be needed in order to compile. If I remove the dependency (and the cppfs definition) the code also compiles. The question is, is \u0027stdc++fs\u0027 needed in general? I will have to test it. My guess is that it will not be needed at this point\nI initially added it in after viewing your downstream commit and seeing it was there, but after researching it a bit I\u0027m fairly confident it is included in the c++17 standard. Phosphor-state-manager is compiled using c++20 and therefore the compiler linking is not needed.",
+      "parentUuid": "2e9dc9e7_9ad6d1ba",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79235885_2609a8aa",
         "filename": "meson_options.txt",
         "patchSetId": 9
