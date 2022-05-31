@@ -101,11 +101,18 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
                               CONDITION_HOST_PROPERTY);
 
                 auto response = bus.call(method);
-
                 std::variant<FirmwareCondition> currentFwCondV;
                 response.read(currentFwCondV);
                 auto currentFwCond =
                     std::get<FirmwareCondition>(currentFwCondV);
+
+                // Added to enhance debug logging in situations where host-check
+                // does not successfully find host-state and assumes system is
+                // off.
+                info(
+                    "Read host fw condition {COND_VALUE} from {COND_SERVICE}, {COND_PATH}",
+                    "COND_VALUE", currentFwCond, "COND_SERVICE",
+                    service.c_str(), "COND_PATH", path.c_str());
 
                 if (currentFwCond == FirmwareCondition::Running)
                 {
@@ -139,9 +146,9 @@ bool isChassiPowerOn(sdbusplus::bus::bus& bus, size_t id)
         method.append(CHASSIS_STATE_INTF, CHASSIS_STATE_POWER_PROP);
 
         auto response = bus.call(method);
-
         std::variant<PowerState> currentPowerStateV;
         response.read(currentPowerStateV);
+
         auto currentPowerState = std::get<PowerState>(currentPowerStateV);
 
         if (currentPowerState == PowerState::On)
@@ -182,10 +189,15 @@ bool isHostRunning(size_t id)
     // normal cases where the BMC is rebooted with chassis power off. In
     // cases where chassis power is on, the host is likely running so we want
     // to be sure we check all interfaces
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
+        // Give a debug message so that customers know there can be up to 5
+        // seconds of downtime.
+        info(
+            "Introspecting new bus objects for bus id: {ID} sleeping for 1 second.",
+            "ID", id);
         // Give mapper a small window to introspect new objects on bus
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         if (checkFirmwareConditionRunning(bus))
         {
             info("Host is running!");
