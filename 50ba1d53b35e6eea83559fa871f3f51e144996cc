@@ -67,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1cd6006d_8982bb5f",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-31T20:35:22Z",
+      "side": 1,
+      "message": "?? I\u0027m guessing this was a precursor to your logging comment on #117.",
+      "parentUuid": "97fb9bad_e9f8e0fe",
+      "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a92eb56f_373919a4",
         "filename": "host_state_manager.hpp",
         "patchSetId": 17
@@ -78,6 +96,24 @@
       "writtenOn": "2022-05-31T16:20:15Z",
       "side": 1,
       "message": "Changing this should be very rare, I\u0027d like a \"info\" log that this change has occurred and what the new value is.",
+      "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f80216a_ea704f64",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-31T20:35:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a92eb56f_373919a4",
       "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
