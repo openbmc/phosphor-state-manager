@@ -73,6 +73,24 @@
       "message": "I don\u0027t think we should preserve the attemptsLeft property. I\u0027d prefer that always just get defaulted to whatever retryAttempts is. Who knows the scenario of why this application has been reset, and when, so best to just start fresh with the number of reboots the host has available.",
       "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "286fdad3_d34b24f3",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-31T20:18:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bb84448f_5dcd0ecd",
+      "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

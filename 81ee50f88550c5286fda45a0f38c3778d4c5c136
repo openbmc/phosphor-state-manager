@@ -196,6 +196,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91d1fe90_735c0a92",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-31T20:18:42Z",
+      "side": 1,
+      "message": "I added the properties to the cereal save/load. Should I change the property attemptsLeft to default to 3 in PDI so it\u0027s initialized before the Host is instantiated? Don\u0027t really see a drawback to initializing it before runtime.",
+      "parentUuid": "05938467_ec52448c",
+      "revId": "81ee50f88550c5286fda45a0f38c3778d4c5c136",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f6b3a20_c558942d",
         "filename": "host_state_manager.hpp",
         "patchSetId": 2
