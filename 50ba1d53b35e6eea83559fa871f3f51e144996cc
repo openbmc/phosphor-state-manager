@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e45d1fb_17a05c87",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:20:15Z",
+      "side": 1,
+      "message": "I think you can remove this \"in\"",
+      "range": {
+        "startLine": 11,
+        "startChar": 9,
+        "endLine": 11,
+        "endChar": 11
+      },
+      "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97fb9bad_e9f8e0fe",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:20:15Z",
+      "side": 1,
+      "message": "Changing this should be",
+      "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a92eb56f_373919a4",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:20:15Z",
+      "side": 1,
+      "message": "Changing this should be very rare, I\u0027d like a \"info\" log that this change has occurred and what the new value is.",
+      "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb84448f_5dcd0ecd",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:20:15Z",
+      "side": 1,
+      "message": "I don\u0027t think we should preserve the attemptsLeft property. I\u0027d prefer that always just get defaulted to whatever retryAttempts is. Who knows the scenario of why this application has been reset, and when, so best to just start fresh with the number of reboots the host has available.",
+      "revId": "50ba1d53b35e6eea83559fa871f3f51e144996cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3082eacb_8c89170a",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:20:15Z",
+      "side": 0,
+      "message": "So we\u0027ve gotta leave this interface. It\u0027s used in multiple spots in the code base. A user can still come in an reset the number of attemptsLeft. But instead of it hard coding \"3\" it should just set it to whatever retryAttempts is set to.",
+      "revId": "4ee594663bfb4229332ec46b8bcaa7bdce947f6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
