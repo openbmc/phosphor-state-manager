@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83649c7a_7f77dbb3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:26:54Z",
+      "side": 1,
+      "message": "\"only for\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 21,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "002a1162_bfc3d102",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:26:54Z",
+      "side": 1,
+      "message": "APR (which is to always run APR on an BMC reboot).",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fc256fa_b771ef32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:26:54Z",
+      "side": 1,
+      "message": "please provide full path and file name here",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f61aca01_a14163ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:26:54Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this one, lets see if it\u0027s really needed, and if it is explain why it is.",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "394426c9_ebad1238",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:26:54Z",
+      "side": 1,
+      "message": "Please rename to ONLY_RUN_APR_ON_POWER_LOSS",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e9dc9e7_9ad6d1ba",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:26:54Z",
+      "side": 1,
+      "message": "I\u0027m trying to remember why this one was needed. The other apps here don\u0027t use it. If you remove it, do things still compile?",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79235885_2609a8aa",
+        "filename": "meson_options.txt",
+        "patchSetId": 9
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T16:26:54Z",
+      "side": 1,
+      "message": "Only run",
+      "range": {
+        "startLine": 125,
+        "startChar": 19,
+        "endLine": 125,
+        "endChar": 23
+      },
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
