@@ -137,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4eca56d_9cb0fadf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-05-31T19:39:38Z",
+      "side": 1,
+      "message": "Considering the build was successful without the addition in phosphor-state-manager. The dependency is not needed. It is already cooked into the executable.",
+      "parentUuid": "f61aca01_a14163ca",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "394426c9_ebad1238",
         "filename": "meson.build",
         "patchSetId": 9
