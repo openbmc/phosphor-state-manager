@@ -63,6 +63,24 @@
       "message": "Are you intentionally ignoring the value still?\n\nI suspect this line is to shut up a linter.  Can we simply remove \u0027value\u0027 (leave uint32_t) or add the [[maybe_unused]] attribute?",
       "revId": "eca35e37c8097b375768cec5f0e7ac927ac786e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac201852_fbca168b",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-01T15:18:51Z",
+      "side": 1,
+      "message": "Just removed value. Reason being [[maybe_unused]] probably isn\u0027t the best for this situation. I think that would be best for a potentially unused variable. There is no reason to be using \"value\". The only case where it would be convenient would be to check if value is equal to retryAttempts to avoid the set. However, I\u0027m still retrieving the value of retryAttempts regardless, so might as well just set the property with whatever retryAttempts is and totally ignore the value.",
+      "parentUuid": "f9895f93_be116056",
+      "revId": "eca35e37c8097b375768cec5f0e7ac927ac786e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
