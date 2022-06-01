@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be30a1f3_688df5fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-01T19:34:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2b56ba9_24e71eb6",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "6385898bf2e57d99bfad5602067497ae8a9e3a99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "839277dc_7457864e",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "958de69d_add66faa",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-01T19:34:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "839277dc_7457864e",
+      "revId": "6385898bf2e57d99bfad5602067497ae8a9e3a99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b040b0ed_0b9c4725",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-06-01T18:41:58Z",
       "side": 1,
       "message": "This variable doesn\u0027t make much sense to me. Maybe chassisPowerLossFile or something a bit more obvious?",
+      "range": {
+        "startLine": 132,
+        "startChar": 21,
+        "endLine": 132,
+        "endChar": 31
+      },
+      "revId": "6385898bf2e57d99bfad5602067497ae8a9e3a99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e80f7985_84b188cb",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-01T19:34:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b040b0ed_0b9c4725",
       "range": {
         "startLine": 132,
         "startChar": 21,
