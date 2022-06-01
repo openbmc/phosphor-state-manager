@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b045046_fbd4f6d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-01T19:32:18Z",
+      "side": 1,
+      "message": "sorry I must\u0027ve had a drafted commit and never applied it.",
+      "parentUuid": "687e1c15_ee37236f",
+      "range": {
+        "startLine": 10,
+        "startChar": 21,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "002a1162_bfc3d102",
@@ -121,6 +145,24 @@
       "side": 1,
       "message": "Doesn\u0027t seem like this was added",
       "parentUuid": "8240a439_5c309106",
+      "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74ae254a_98387d7b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-01T19:32:18Z",
+      "side": 1,
+      "message": "sorry I must\u0027ve had a drafted commit message and never applied it.",
+      "parentUuid": "e9fa3004_5366611b",
       "revId": "707612c1db428b3b0b45f729ab13150a88098f61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
