@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e255cba3_26879a3f",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-01T18:32:09Z",
+      "side": 1,
+      "message": "I think now that we actually want the value, you need to do what you did for retryAttempts and define a variable here, and set that (i.e. uint32_t value) in function declaration and then set that for attemptsLeft.",
+      "revId": "e22a04d6b5a1406330fe331ae47127fcbf2610bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
