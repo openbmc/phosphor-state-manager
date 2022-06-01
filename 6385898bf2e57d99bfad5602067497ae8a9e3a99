@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b56ba9_24e71eb6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-01T18:41:58Z",
+      "side": 1,
+      "message": "Please just provide the dir the file is in: i.e. /run/openbmc/. Not sure why this /lib/systemd/system is included here?",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "6385898bf2e57d99bfad5602067497ae8a9e3a99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "839277dc_7457864e",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-01T18:41:58Z",
+      "side": 1,
+      "message": "Lets delete the dead code",
+      "revId": "6385898bf2e57d99bfad5602067497ae8a9e3a99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b040b0ed_0b9c4725",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-01T18:41:58Z",
+      "side": 1,
+      "message": "This variable doesn\u0027t make much sense to me. Maybe chassisPowerLossFile or something a bit more obvious?",
+      "range": {
+        "startLine": 132,
+        "startChar": 21,
+        "endLine": 132,
+        "endChar": 31
+      },
+      "revId": "6385898bf2e57d99bfad5602067497ae8a9e3a99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
