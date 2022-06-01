@@ -16,6 +16,23 @@
       "message": "As long as these are the desired clang properties lgtm. ",
       "revId": "6c61b573a59c492395d7df29cd930b92d7b55f51",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ab104c5_807d0480",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-01T18:54:23Z",
+      "side": 1,
+      "message": "Oops, I didn\u0027t realize CI didn\u0027t run against this! The new rules found a few formatting issues that need fixing.",
+      "revId": "6c61b573a59c492395d7df29cd930b92d7b55f51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
