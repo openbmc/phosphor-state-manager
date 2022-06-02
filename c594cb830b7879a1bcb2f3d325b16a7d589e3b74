@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9259e481_787eb9b4",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-02T21:58:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0d84885_25bc07f2",
+      "revId": "c594cb830b7879a1bcb2f3d325b16a7d589e3b74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed5efa6a_b416b080",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-02T20:23:14Z",
       "side": 1,
       "message": "I don\u0027t think this compiles when the feature is enabled? You\u0027re redeclaring hostId. You should just be using the hostId set when the function starts.",
+      "revId": "c594cb830b7879a1bcb2f3d325b16a7d589e3b74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbc5f524_d3521b80",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-02T21:58:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed5efa6a_b416b080",
       "revId": "c594cb830b7879a1bcb2f3d325b16a7d589e3b74",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
