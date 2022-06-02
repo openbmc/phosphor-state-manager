@@ -51,6 +51,24 @@
       "message": "You could probably do some of your optimized fs::path using the fmt lib work here as well. Up to you though.",
       "revId": "3f329e29e69244b02374cb793147528af6dd1249",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d67ec57_010a2b2f",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-02T18:01:46Z",
+      "side": 1,
+      "message": "I was going to try and test first, but since that\u0027s been delayed I changed anyways.",
+      "parentUuid": "534e90b1_0a31fe82",
+      "revId": "3f329e29e69244b02374cb793147528af6dd1249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
