@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0744212_4dde03a4",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-02T14:26:47Z",
+      "side": 1,
+      "message": "I\u0027m not sure how Cereal works, but it may require the new field be at the end. One use case would be a system has the previous file, that only has the 3 entries in it. Your new code runs, which tries to load 4 entries from it. What\u0027s the behavior? Does it error on all of them, or restore the 3 and just ignore that the 4th that is not there. Once your code runs to store the values, the file will be good, so it\u0027s just that first case we need to think about. May be best to manually stop the state service, manipulate the file to only have 3, and see what happens when you start your code. The file is out in /var/lib/phosphor-state-manager/",
+      "revId": "370ba0c8ed53e5cfd51f086937a6522cf9a6556e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
