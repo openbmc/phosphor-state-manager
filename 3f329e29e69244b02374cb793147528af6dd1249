@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0ccc473_1e157821",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-02T14:33:24Z",
+      "side": 1,
+      "message": "nit: un-needed line feed here",
+      "revId": "3f329e29e69244b02374cb793147528af6dd1249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "534e90b1_0a31fe82",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-02T14:33:24Z",
+      "side": 1,
+      "message": "You could probably do some of your optimized fs::path using the fmt lib work here as well. Up to you though.",
+      "revId": "3f329e29e69244b02374cb793147528af6dd1249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
