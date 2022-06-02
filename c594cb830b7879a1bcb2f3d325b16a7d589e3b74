@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d84885_25bc07f2",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-02T20:23:14Z",
+      "side": 1,
+      "message": "The hpp has this:\n/** @brief Chassis id. **/\n179      const size_t id \u003d 0;\n\nYou should be using that class variable to support multiple chassis.",
+      "revId": "c594cb830b7879a1bcb2f3d325b16a7d589e3b74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed5efa6a_b416b080",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-02T20:23:14Z",
+      "side": 1,
+      "message": "I don\u0027t think this compiles when the feature is enabled? You\u0027re redeclaring hostId. You should just be using the hostId set when the function starts.",
+      "revId": "c594cb830b7879a1bcb2f3d325b16a7d589e3b74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
