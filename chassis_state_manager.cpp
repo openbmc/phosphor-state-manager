@@ -42,6 +42,7 @@ constexpr auto CHASSIS_STATE_POWEROFF_TGT_FMT =
     "obmc-chassis-poweroff@{}.target";
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT_FMT =
     "obmc-chassis-hard-poweroff@{}.target";
+constexpr auto CHASSIS_BLACKOUT_TGT_FMT = "obmc-chassis-blackout@{}.target";
 constexpr auto CHASSIS_STATE_POWERON_TGT_FMT = "obmc-chassis-poweron@{}.target";
 constexpr auto RESET_HOST_SENSORS_SVC_FMT =
     "phosphor-reset-sensor-states@{}.service";
@@ -153,9 +154,8 @@ void Chassis::determineInitialState()
                     info(
                         "Chassis power was on before the BMC reboot and it is off now");
 
-                    // Reset host sensors since system is off now
-                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
-
+                    // Start chassis blackout target(resets sensor states)
+                    startUnit(fmt::format(CHASSIS_BLACKOUT_TGT_FMT, id));
                     setStateChangeTime();
 
                     // 0 indicates pinhole reset. 1 is NOT pinhole reset

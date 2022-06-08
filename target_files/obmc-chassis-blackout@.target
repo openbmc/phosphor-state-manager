@@ -1,0 +1,4 @@
+[Unit]
+Description=Chassis Blackout Target
+After=multi-user.target
+Conflicts=obmc-chassis-poweron@i.target
