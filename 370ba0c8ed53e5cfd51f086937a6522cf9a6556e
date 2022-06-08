@@ -34,6 +34,24 @@
       "parentUuid": "b0744212_4dde03a4",
       "revId": "370ba0c8ed53e5cfd51f086937a6522cf9a6556e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85309ea0_a7a35066",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-08T05:37:09Z",
+      "side": 1,
+      "message": "I take the quiesce comment back. I don\u0027t know what I did originally but when replicating the bmc was in a weird state where it kept transitioning from on to off. Regardless it needs to be fixed.",
+      "parentUuid": "e293fc0e_481d7977",
+      "revId": "370ba0c8ed53e5cfd51f086937a6522cf9a6556e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
