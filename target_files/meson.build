@@ -1,5 +1,6 @@
 unit_files = [
     'obmc-bmc-service-quiesce@.target',
+    'obmc-chassis-blackout@.target',
     'obmc-chassis-hard-poweroff@.target',
     'obmc-chassis-powered-off@.target',
     'obmc-chassis-poweroff@.target',

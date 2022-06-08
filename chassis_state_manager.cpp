@@ -154,8 +154,8 @@ void Chassis::determineInitialState()
                         "Chassis power was on before the BMC reboot and it is off now");
 
                     // Reset host sensors since system is off now
-                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
 
+                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
                     setStateChangeTime();
 
                     // 0 indicates pinhole reset. 1 is NOT pinhole reset
