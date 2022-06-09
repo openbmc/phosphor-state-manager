@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e55ed67d_f75c80ca",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-09T13:37:13Z",
+      "side": 1,
+      "message": "So, it seems to me like on a fresh boot of a system, it will not have retryAttemps set in the archive file initially. So do we read a 0 in that case? Are we then writing a 0 for retryAttemps? I wonder if we need a check to see if it\u0027s 0 and if it is, write the default value we read from PDI to it instead? To test, just stop the host state service, remove the cereal file from /var/lib/, start the host state app, and read the retryAttempts from D-Bus.",
+      "revId": "3658c87c4a6dac98a7134307bf3810c4064fee33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
