@@ -16,6 +16,24 @@
       "message": "So, it seems to me like on a fresh boot of a system, it will not have retryAttemps set in the archive file initially. So do we read a 0 in that case? Are we then writing a 0 for retryAttemps? I wonder if we need a check to see if it\u0027s 0 and if it is, write the default value we read from PDI to it instead? To test, just stop the host state service, remove the cereal file from /var/lib/, start the host state app, and read the retryAttempts from D-Bus.",
       "revId": "3658c87c4a6dac98a7134307bf3810c4064fee33",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8719eaa6_5dcf0c7b",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-10T18:29:24Z",
+      "side": 1,
+      "message": "I did some extensive testing with this to get results for most cases.\n1. On a fresh boot \"RetryAttempts\" is set to the PDI default of 3.\n2. When the \u0027obmc-host-stop@0.target\u0027 is started and the host service is stopped and restarted(after modifying the cereal file) the proper value for retry attempts is loaded and added to dbus.\n3. When the host service is stopped and the `obmc-host-stop@0.target\u0027 is invoked(to generate the cereal file) and the value is removed I hit a de-serialize exception. RetryAttempts loses it\u0027s user set value and resorts back to the default of 3.\n4. When the file is deleted and the host is started back up, RetryAttempts(and all other properties) resort back to their default state.\n\nSo the issue that we\u0027re reading 0 most likely isn\u0027t the case since I don\u0027t believe that would cause a de-serialization error. The error must be coming from serial trying to read a value but reading EOF instead. I think the fix will be to use the previously voided cereal version so that the correct load operation is performed. I\u0027ll also have to reach out to Patrick about potentially using the [maybe_unused] for the load function, however I don\u0027t know if that will work nicely with the cereal template.",
+      "parentUuid": "e55ed67d_f75c80ca",
+      "revId": "3658c87c4a6dac98a7134307bf3810c4064fee33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
