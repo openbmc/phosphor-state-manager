@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d69828_d47a5ce8",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-10T20:54:09Z",
+      "side": 1,
+      "message": "This is needed for instantiation to set the property to the max-allowed.",
+      "revId": "bdff11f746b01fb3de0ddcab810a45b22de9b66f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
