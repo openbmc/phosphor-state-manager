@@ -16,6 +16,24 @@
       "message": "Looks like this was a editor backup file? Should not be a part of gerrit review.",
       "revId": "1e91dc63570d03c2c239acaa3db0965f210bd98f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71ff7002_3375f2f8",
+        "filename": ".host_state_manager.cp.swp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-13T20:57:11Z",
+      "side": 0,
+      "message": "yep, I deleted it. It should be gone? If anything I\u0027ll re-commit.",
+      "parentUuid": "94152f5c_a7c23bfb",
+      "revId": "1e91dc63570d03c2c239acaa3db0965f210bd98f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
