@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "613f542c_179d9f76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-13T20:51:16Z",
+      "side": 1,
+      "message": "Utilize this commit to add the new target and put it in target_files/ ?",
+      "revId": "97503214c48e0638c5f0f5a84624769417b1d895",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22099109_a44ab4f2",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-13T20:51:16Z",
+      "side": 1,
+      "message": "Oh, here\u0027s another service you can add to this new target. Should be good to add it in with your other openbmc/openbmc change to add the LED service. And then once in there, you can come back and remove from here.",
+      "revId": "97503214c48e0638c5f0f5a84624769417b1d895",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
