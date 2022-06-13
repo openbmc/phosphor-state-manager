@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "50855a6d_8fe8adfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-13T21:00:25Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/54364\nI made as a separate commit. I will make this one a follow-up.",
+      "parentUuid": "613f542c_179d9f76",
+      "revId": "97503214c48e0638c5f0f5a84624769417b1d895",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "22099109_a44ab4f2",
