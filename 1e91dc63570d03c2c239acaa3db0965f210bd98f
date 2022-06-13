@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94152f5c_a7c23bfb",
+        "filename": ".host_state_manager.cp.swp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-13T20:43:29Z",
+      "side": 0,
+      "message": "Looks like this was a editor backup file? Should not be a part of gerrit review.",
+      "revId": "1e91dc63570d03c2c239acaa3db0965f210bd98f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
