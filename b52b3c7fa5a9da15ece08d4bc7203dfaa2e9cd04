@@ -68,6 +68,24 @@
       "message": "In quiesce state, is there no way to return to login after it enters this state?",
       "revId": "b52b3c7fa5a9da15ece08d4bc7203dfaa2e9cd04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faeead8b_36781489",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-14T20:05:59Z",
+      "side": 1,
+      "message": "Once the BMC is in a Quiesced state it should remain as such. To be completely honest I am unsure if a login is possible if in this state. I would assume so from maybe a service account? I can ask around and to find the answers.",
+      "parentUuid": "94fcf3c1_1b70482f",
+      "revId": "b52b3c7fa5a9da15ece08d4bc7203dfaa2e9cd04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
