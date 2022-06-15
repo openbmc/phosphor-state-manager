@@ -79,12 +79,6 @@ option(
 )
 
 option(
-    'class-version', type: 'integer',
-    value: 1,
-    description: 'Class version to register with Cereal.',
-)
-
-option(
     'scheduled-host-transition-busname', type: 'string',
     value: 'xyz.openbmc_project.State.ScheduledHostTransition',
     description: 'The scheduled host transition Dbus busname to own.',

@@ -43,8 +43,6 @@ conf.set_quoted(
     'SCHEDULED_HOST_TRANSITION_BUSNAME', get_option('scheduled-host-transition-busname'))
 conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
-conf.set(
-    'CLASS_VERSION', get_option('class-version'))
 conf.set_quoted(
     'SYSFS_SECURE_BOOT_PATH', get_option('sysfs-secure-boot-path'))
 conf.set_quoted(
