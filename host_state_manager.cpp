@@ -27,6 +27,8 @@
 #include <map>
 #include <string>
 
+// Define Cereal class version
+constexpr auto CLASS_VERSION = 2;
 // Register class version with Cereal
 CEREAL_CLASS_VERSION(phosphor::state::manager::Host, CLASS_VERSION)
 
