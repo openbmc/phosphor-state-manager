@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14adcb09_6ecbdd70",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-15T15:37:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "15906627_bd70c612",
+      "range": {
+        "startLine": 141,
+        "startChar": 49,
+        "endLine": 141,
+        "endChar": 66
+      },
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25fa431e_fedd2a0b",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-06-15T11:23:41Z",
       "side": 1,
       "message": "Do you need a `min(value, retryAttempts)` ?  I\u0027m not saying you do but just asking since it seems like a possibility.",
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a56530a1_545624aa",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-15T15:37:22Z",
+      "side": 1,
+      "message": "I didn\u0027t think to implement any logic since the unsigned type would prevent a negative value from being passed. However,this does make me think some logic should be added here to ensure attemptsLeft is not set to a value greater than retryAttempts(MAX_BOOT_COUNT_ALLOWED).\nAs far as a \u0027min\u0027 I don\u0027t think that would completely apply since the use case may be to set the attemptsLeft back to the value of retryAttempts after experiencing a couple of unsuccessful boots. That may produce undesired behavior for someone working on the machine. Don\u0027t think checking to make sure attemptsLeft cannot be set to zero makes much sense since it is a valid request.",
+      "parentUuid": "25fa431e_fedd2a0b",
       "revId": "476de328ddcc304e910777004017a4a8871cecd4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +113,30 @@
       "writtenOn": "2022-06-15T11:23:41Z",
       "side": 1,
       "message": "I can\u0027t believe we made this a meson option, but whatever.  Maybe some cleanup for another day.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 1
+      },
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d53884a_5a483aa7",
+        "filename": "meson_options.txt",
+        "patchSetId": 37
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-15T15:37:22Z",
+      "side": 1,
+      "message": "I think it\u0027ll be rather quick to take out.\nThis option is only used in host_state_manager.cpp\nI\u0027ll remove it and make the corresponding changes there in another commit.",
+      "parentUuid": "cb54038a_c1da1ec7",
       "range": {
         "startLine": 81,
         "startChar": 0,
