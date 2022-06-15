@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15906627_bd70c612",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-15T11:23:41Z",
+      "side": 1,
+      "message": "Not anymore... ;)",
+      "range": {
+        "startLine": 141,
+        "startChar": 49,
+        "endLine": 141,
+        "endChar": 66
+      },
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25fa431e_fedd2a0b",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-15T11:23:41Z",
+      "side": 1,
+      "message": "Do you need a `min(value, retryAttempts)` ?  I\u0027m not saying you do but just asking since it seems like a possibility.",
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94120112_86bfa16e",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-15T11:23:41Z",
+      "side": 1,
+      "message": "I think I\u0027d prefer the logic inverted for this.\n\nif (version \u003c 2)\n{\n   ... stuff without the field\n}\nelse\n{\n   ... stuff with the field.\n}\n\nToo bad there isn\u0027t an easy way to implement this with a case + fall-through... or is there?  If you switch the order so retryAttempts is added to the archive first then:\n\nretryAttempts \u003d BOOT_COUNT_MAX_ALLOWED;\nswitch (version) \n{\n    case 2:\n        archive(retryAttempts);\n        // need some magic allow-fallthrough comment.\n        \n    case 1:\n        archive(reqTranState, bootProgress, osState);\n        break;\n}",
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb54038a_c1da1ec7",
+        "filename": "meson_options.txt",
+        "patchSetId": 37
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-15T11:23:41Z",
+      "side": 1,
+      "message": "I can\u0027t believe we made this a meson option, but whatever.  Maybe some cleanup for another day.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 1
+      },
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
