@@ -16,6 +16,24 @@
       "message": "Seems like we lost the lines that do the reset sensors with this latest patch set:\n\n                    // Reset host sensors since system is off now\n                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));",
       "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd722cdf_0613886e",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-15T18:58:59Z",
+      "side": 1,
+      "message": "I should\u0027ve specified. This service is now attached to this target. \nhttps://gerrit.openbmc.org/c/openbmc/openbmc/+/54587",
+      "parentUuid": "19070e17_e67b5d6a",
+      "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
