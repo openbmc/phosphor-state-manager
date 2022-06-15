@@ -88,6 +88,24 @@
       "parentUuid": "bb4de3d6_d0d87b68",
       "revId": "9b794da1534a4ee63cfc125d036ad2fa6fba06fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af5d6a94_f0069df0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-15T02:57:59Z",
+      "side": 1,
+      "message": "I thought I sent the above earlier,but it was living in draft purgatory. Anyways, I know why \"snprintf\" was used for the reasons I listed above. I left the meson file \"as-is\" from my previous commit. However, I declared a string for the chassis_lost_power_file, since it was essentially the only way to format with fmt.\nI\u0027m totally indifferent whichever method would be preferred. Both have their benefits.\nMy main concern is that there is a lot of upstream code using fmt::format which produces cleaner, nicer looking source code, but will be incompatible with meson build settings that are denoted with \"%d\". \nThe snprintf method allows for the proper formatting to occur, but is rather ugly code IMO. \nMaybe pointing this out will prevent technical debt(or headaches) in the future.",
+      "parentUuid": "ffa1d8dc_2219d104",
+      "revId": "9b794da1534a4ee63cfc125d036ad2fa6fba06fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
