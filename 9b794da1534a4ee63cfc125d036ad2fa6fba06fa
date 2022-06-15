@@ -70,6 +70,24 @@
       "parentUuid": "2df26a7f_1da8e47b",
       "revId": "9b794da1534a4ee63cfc125d036ad2fa6fba06fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffa1d8dc_2219d104",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-15T02:52:18Z",
+      "side": 1,
+      "message": "So I actually figured out what\u0027s going on here.\nThe meson setting is defined as \n\u0027CHASSIS_LOST_POWER_FILE\u0027, \u0027/run/openbmc/chassis@%d-lost-power\u0027)\nfmt uses {} as it\u0027s formatting token.\nThis is a problem when building meson. \nAlthough I left the setting in the mesonbuild, I am creating a \nconst expr CHASSIS_LOST_POWER_FILE_FMT\u003d BASE_FILE_DIR + \"obmc-chassis@{}-lost-power. This should get rid of the lack of formatting. building and testing now.",
+      "parentUuid": "bb4de3d6_d0d87b68",
+      "revId": "9b794da1534a4ee63cfc125d036ad2fa6fba06fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
