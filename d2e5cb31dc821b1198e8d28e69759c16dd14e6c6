@@ -34,6 +34,24 @@
       "parentUuid": "19070e17_e67b5d6a",
       "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e314ed6_6c484f55",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2022-06-17T18:18:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dd722cdf_0613886e",
+      "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
