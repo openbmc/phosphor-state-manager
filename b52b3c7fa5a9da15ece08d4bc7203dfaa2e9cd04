@@ -86,6 +86,23 @@
       "parentUuid": "94fcf3c1_1b70482f",
       "revId": "b52b3c7fa5a9da15ece08d4bc7203dfaa2e9cd04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d7d4fb7_a3ba8d2c",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-20T12:41:29Z",
+      "side": 1,
+      "message": "Seems this should just be a part of your original review. We want this to all go in together at once.",
+      "revId": "b52b3c7fa5a9da15ece08d4bc7203dfaa2e9cd04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
