@@ -52,6 +52,58 @@
       "parentUuid": "dd722cdf_0613886e",
       "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e28e46b_4ed8257f",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-20T15:38:36Z",
+      "side": 1,
+      "message": "You have to treat this as it\u0027s own standalone commit. You could rebase this on top of the other change if you like. But as-is, that code needs to remain since it\u0027s not a part of what this commit is trying to do (and that other commit has not merged).",
+      "parentUuid": "9e314ed6_6c484f55",
+      "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea175b9d_45362a91",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-20T15:38:36Z",
+      "side": 1,
+      "message": "See meson.build comment. Lets not hard code the file name in two places, just make it whatever is needed in meson.build.",
+      "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "885e8fe9_b3502fa0",
+        "filename": "meson.build",
+        "patchSetId": 35
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-20T15:38:36Z",
+      "side": 1,
+      "message": "I think you should just make this to be whatever fmt needs (i.e. the {}). We can slowly move state-manager over to using that with the other files as well since it\u0027s much cleaner code.",
+      "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
