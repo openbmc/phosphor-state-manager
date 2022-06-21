@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e095cae5_91c6cb8e",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-21T15:37:10Z",
+      "side": 1,
+      "message": "We\u0027ll need to ensure the bump for this goes in parallel with the change to add the RESET_HOST_SENSORS service to the blackout target.",
+      "revId": "6a812859afd8811070a208c75f699a5d78ffae3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e76b1f1f_b3f0f93e",
+        "filename": "target_files/obmc-chassis-blackout@.target",
+        "patchSetId": 9
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-21T15:37:10Z",
+      "side": 1,
+      "message": "@%i",
+      "range": {
+        "startLine": 4,
+        "startChar": 30,
+        "endLine": 4,
+        "endChar": 31
+      },
+      "revId": "6a812859afd8811070a208c75f699a5d78ffae3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
