@@ -39,6 +39,30 @@
       },
       "revId": "6a812859afd8811070a208c75f699a5d78ffae3d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "888f214d_8984052d",
+        "filename": "target_files/obmc-chassis-blackout@.target",
+        "patchSetId": 9
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-21T15:49:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e76b1f1f_b3f0f93e",
+      "range": {
+        "startLine": 4,
+        "startChar": 30,
+        "endLine": 4,
+        "endChar": 31
+      },
+      "revId": "6a812859afd8811070a208c75f699a5d78ffae3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
