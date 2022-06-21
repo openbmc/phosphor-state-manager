@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "355ce7d6_d1022195",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 48
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-21T20:10:33Z",
+      "side": 1,
+      "message": "it\u0027s when I cherry pick and amend, I usually catch it. Will have to change my git.config.",
+      "parentUuid": "03940729_5cce6b9e",
+      "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2806c0fb_2a7a1edf",
         "filename": "host_state_manager.hpp",
         "patchSetId": 48
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-21T18:48:47Z",
       "side": 1,
       "message": "I know you just moved this comment from the old code but it is kind of silly.  We have a constant, which is defined and controlled elsewhere, but then we add English text with the value here.\n\nI\u0027d probably write \"just set to the default (BOOT_COUNT_MAX_ALLOWED)\".",
+      "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98f84e29_0caca4b2",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-21T20:10:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2806c0fb_2a7a1edf",
       "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2022-06-21T18:48:47Z",
       "side": 1,
       "message": "... especially considering 3 is just the default in a meson-option and not even a hard-coded constant.",
+      "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "813ac121_5a7b0e43",
+        "filename": "meson_options.txt",
+        "patchSetId": 48
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-21T20:10:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d38ddf24_44f97d6b",
       "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
