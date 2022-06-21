@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03940729_5cce6b9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 48
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-21T18:48:47Z",
+      "side": 1,
+      "message": "Drop.  \n\nI\u0027m not sure how you keep ending up with these sneaking in.  Something funny with your set up?",
+      "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2806c0fb_2a7a1edf",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-21T18:48:47Z",
+      "side": 1,
+      "message": "I know you just moved this comment from the old code but it is kind of silly.  We have a constant, which is defined and controlled elsewhere, but then we add English text with the value here.\n\nI\u0027d probably write \"just set to the default (BOOT_COUNT_MAX_ALLOWED)\".",
+      "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d38ddf24_44f97d6b",
+        "filename": "meson_options.txt",
+        "patchSetId": 48
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-21T18:48:47Z",
+      "side": 1,
+      "message": "... especially considering 3 is just the default in a meson-option and not even a hard-coded constant.",
+      "revId": "abb828bf88aa06bd647a9657ced42818d55578f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
