@@ -33,6 +33,24 @@
       "message": "Local variables should not be in all upper case",
       "revId": "7aa12ecb0004246276e893d462d783e8364dc83c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa9844f8_d60dfb4c",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-21T02:52:33Z",
+      "side": 1,
+      "message": "Yeah I got myself into a wonky place tonight. I added a meson option to provide the token for the formatting, but meson does not like to work nicely with \"{}\" (the token fmt format uses). I\u0027m going to figure out a way around it tomorrow. \nthus, why the wonky-ness is hard-coded atm. I know this is super ugly. Will fix.",
+      "parentUuid": "4c24c9f0_8cad538a",
+      "revId": "7aa12ecb0004246276e893d462d783e8364dc83c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
