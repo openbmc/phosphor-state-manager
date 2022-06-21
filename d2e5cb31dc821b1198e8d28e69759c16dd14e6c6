@@ -89,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e14a6797_60db217a",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-21T20:16:46Z",
+      "side": 1,
+      "message": "removed used fmt::sprintf as supposed to fmt::format.",
+      "parentUuid": "ea175b9d_45362a91",
+      "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "885e8fe9_b3502fa0",
@@ -102,6 +120,24 @@
       "writtenOn": "2022-06-20T15:38:36Z",
       "side": 1,
       "message": "I think you should just make this to be whatever fmt needs (i.e. the {}). We can slowly move state-manager over to using that with the other files as well since it\u0027s much cleaner code.",
+      "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22b5d152_4b5a73dd",
+        "filename": "meson.build",
+        "patchSetId": 35
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-21T20:16:46Z",
+      "side": 1,
+      "message": "fmt::sprintf() is the key to clean code here.",
+      "parentUuid": "885e8fe9_b3502fa0",
       "revId": "d2e5cb31dc821b1198e8d28e69759c16dd14e6c6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
