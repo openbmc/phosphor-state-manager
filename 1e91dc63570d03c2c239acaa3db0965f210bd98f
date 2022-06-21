@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dcd5be3_ff80e6cf",
+        "filename": "meson.build",
+        "patchSetId": 45
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-21T12:48:26Z",
+      "side": 0,
+      "message": "I\u0027m struggling to keep track of the reviews a bit here, but I think I had a comment somewhere that I\u0027m not sure why you removed this and put it in the header file? Why not just change it to 2 in the meson files?",
+      "revId": "1e91dc63570d03c2c239acaa3db0965f210bd98f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
