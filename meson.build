@@ -263,6 +263,11 @@ install_data('obmcutil',
         install_dir: get_option('bindir')
 )
 
+install_data('scripts/host-reboot',
+        install_mode: 'rwxr-xr-x',
+        install_dir: get_option('libexecdir')
+)
+
 systemd = dependency('systemd')
 systemd_system_unit_dir = systemd.get_variable(
     pkgconfig : 'systemdsystemunitdir')
