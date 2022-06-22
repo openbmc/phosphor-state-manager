@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef160f7f_736a198e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 51
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-22T12:59:48Z",
+      "side": 1,
+      "message": "I think we agreed this would be a separate commit",
+      "revId": "7683e96c8335ab42bc3bd8df771625c7f9f03588",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
