@@ -1,0 +1,47 @@
+#!/bin/bash -e
+# A script which is called in a host-reboot path to check the host reboot count
+# and either initiate the host firmware boot, or move it to the quiesce state
+# (if the reboot count has been reached)
+
+# This script has a single required parameter, the instance number of the
+# host that is being rebooted (or quiesced)
+
+set -euo pipefail
+
+get_reboot_count()
+{
+    busctl get-property xyz.openbmc_project.State.Host \
+        /xyz/openbmc_project/state/host0 \
+        xyz.openbmc_project.Control.Boot.RebootAttempts AttemptsLeft \
+        | cut -d ' ' -f2
+}
+
+# host instance id is input parameter to function
+host_quiesce()
+{
+    systemctl start obmc-host-quiesce@"$1".target
+}
+
+# host instance id is input parameter to function
+host_reboot()
+{
+    systemctl start obmc-host-startmin@"$1".target
+}
+
+# This service is run as a part of a systemd target to reboot the host
+# As such, it has to first shutdown the host, and then reboot it. Due to
+# systemd complexities with Conflicts statements between the targets to
+# shutdown and to boot, need to start off by sleeping 5 seconds to ensure
+# the shutdown path has completed before starting the boot (or quiesce)
+sleep 5
+
+host_instance=$1
+
+reboot_count=$(get_reboot_count)
+if [ "$reboot_count" -eq 0 ]; then
+    echo "reboot count is 0, go to host quiesce"
+    host_quiesce "$host_instance"
+else
+    echo "reboot count is $reboot_count so reboot host"
+    host_reboot "$host_instance"
+fi

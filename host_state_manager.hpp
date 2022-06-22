@@ -353,6 +353,9 @@ class Host : public HostInherit
 
     /** @brief Requested Transition to systemd target mapping table. **/
     std::map<Transition, std::string> transitionTargetTable;
+
+    /** @brief Target called when a host crash occurs **/
+    std::string hostCrashTarget;
 };
 
 } // namespace manager

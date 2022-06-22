@@ -6,14 +6,14 @@ Wants=obmc-host-stopped@%i.target
 After=obmc-host-stopped@%i.target
 
 [Service]
-#ExecStart=/bin/systemctl start obmc-host-start@%i.target
-# This service is starting another target that conflicts with the
-# target this service is running in. OpenBMC needs a refactor of
-# how it does its host reset path. Until then, this short term
+# This service is running a script that is starting another target that
+# conflicts with the target this service is running in. OpenBMC needs a
+# refactor of how it does its host reset path. Until then, this short term
 # solution does the job.
 # Since this is a part of the reboot target, call the startmin
-# target which does the minimum required to start the host.
-ExecStart=/bin/sh -c "sleep 5 && systemctl start obmc-host-startmin@%i.target"
+# target which does the minimum required to start the host if the reboot count
+# is not 0, otherwise it will quiesce the host.
+ExecStart=/usr/libexec/host-reboot %i
 
 [Install]
 WantedBy=obmc-host-reboot@%i.target
