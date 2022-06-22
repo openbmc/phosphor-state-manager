@@ -44,8 +44,7 @@ constexpr auto CHASSIS_STATE_POWEROFF_TGT_FMT =
 constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT_FMT =
     "obmc-chassis-hard-poweroff@{}.target";
 constexpr auto CHASSIS_STATE_POWERON_TGT_FMT = "obmc-chassis-poweron@{}.target";
-constexpr auto RESET_HOST_SENSORS_SVC_FMT =
-    "phosphor-reset-sensor-states@{}.service";
+constexpr auto CHASSIS_BLACKOUT_TGT_FMT = "obmc-chassis-blackout@{}.target";
 constexpr auto AUTO_POWER_RESTORE_SVC_FMT =
     "phosphor-discover-system-state@{}.service";
 constexpr auto ACTIVE_STATE = "active";
@@ -155,9 +154,8 @@ void Chassis::determineInitialState()
                         "Chassis power was on before the BMC reboot and it is off now");
 
                     // Reset host sensors since system is off now
-                    // TODO: when CHASSIS_BLACKOUT_TGT will include this service
-                    // Needs to be removed when the blackout target is merged
-                    startUnit(fmt::format(RESET_HOST_SENSORS_SVC_FMT, id));
+                    // Ensure Power Leds are off.
+                    startUnit(fmt::format(CHASSIS_BLACKOUT_TGT_FMT, id));
 
                     setStateChangeTime();
                     // Generate file indicating AC loss occurred
