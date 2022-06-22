@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ead8fb46_e65b95e8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-22T15:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3efd74ce_47d50f97",
+      "revId": "171782e37d0f5e162688de67c039879d3bd2b3d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f7e5408_6a84f377",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-06-22T12:46:19Z",
       "side": 1,
       "message": "This sentence not needed, it\u0027s implied with generic targets like this.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 19
+      },
+      "revId": "171782e37d0f5e162688de67c039879d3bd2b3d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c975c2e_de02e6b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-22T15:34:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8f7e5408_6a84f377",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfc3a9b_4b07295c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-22T15:34:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0103b1d_06c29ebb",
+      "range": {
+        "startLine": 17,
+        "startChar": 20,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "171782e37d0f5e162688de67c039879d3bd2b3d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2dab65b9_11d7b04f",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-06-22T12:46:19Z",
       "side": 1,
       "message": "This detection is in chassis_state_manager, but I\u0027d just leave this out all together. This is in the code.",
+      "range": {
+        "startLine": 18,
+        "startChar": 8,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "171782e37d0f5e162688de67c039879d3bd2b3d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68b690ca_2074da88",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-22T15:34:55Z",
+      "side": 1,
+      "message": "yikes, you could tell i\u0027ve spent some time with host_state_manager...",
+      "parentUuid": "2dab65b9_11d7b04f",
       "range": {
         "startLine": 18,
         "startChar": 8,
