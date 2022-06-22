@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d452ac92_bb2554ca",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-22T15:59:49Z",
+      "side": 1,
+      "message": "\u003e As far as a \u0027min\u0027 I don\u0027t think that would completely apply since the use case may be to set the attemptsLeft back to the value of retryAttempts after experiencing a couple of unsuccessful boots.\n\nI\u0027m not really following this comment.  min(value, retryAttempts) would be value unless value \u003e retryAttempts.  This is just a clamp to make sure someone cannot set attemptsLeft \u003e retryAttempts.  Again, I don\u0027t know if you need it but you seem to imply that you do by this:\n\n\u003e However,this does make me think some logic should be added here to ensure attemptsLeft is not set to a value greater than retryAttempts(MAX_BOOT_COUNT_ALLOWED).\n\nIn my opinion `min` would do exactly that.  Can you describe a case where it wouldn\u0027t?",
+      "parentUuid": "a56530a1_545624aa",
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94120112_86bfa16e",
         "filename": "host_state_manager.hpp",
         "patchSetId": 37
