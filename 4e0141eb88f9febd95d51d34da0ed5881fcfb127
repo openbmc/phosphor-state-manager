@@ -16,6 +16,24 @@
       "message": "This isn\u0027t the blackout commit, it\u0027s the configurable AC loss one. Although they are related, they are different commits and it seems you\u0027ve got the wires crossed here between the two. The goal of the AC loss one was to simply make it configurable on whether we could run APR on every BMC reboot or only when a blackout occurred.",
       "revId": "4e0141eb88f9febd95d51d34da0ed5881fcfb127",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53c274aa_7fbc9ab5",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-06-22T15:40:50Z",
+      "side": 1,
+      "message": "got it. I guess I was trying to knockout two birds with one stone will fix.",
+      "parentUuid": "6e8a839e_a93894a7",
+      "revId": "4e0141eb88f9febd95d51d34da0ed5881fcfb127",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
