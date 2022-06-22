@@ -127,6 +127,7 @@ void Host::createSystemdTargetMaps()
          fmt::format("obmc-host-reboot@{}.target", id)}
     };
 #endif
+    hostCrashTarget = fmt::format("obmc-host-crash@{}.target", id);
 }
 
 const std::string& Host::getTarget(HostState state)
@@ -351,6 +352,14 @@ void Host::sysStateChangeJobNew(sdbusplus::message::message& msg)
     {
         info("Received signal that host is in diagnostice mode");
         this->currentHostState(server::Host::HostState::DiagnosticMode);
+    }
+    else if (newStateUnit == hostCrashTarget)
+    {
+        info("Received signal that host has crashed, decrement reboot count");
+
+        // A host crash can cause a reboot of the host so decrement the reboot
+        // count
+        decrementRebootCount();
     }
 }
 
