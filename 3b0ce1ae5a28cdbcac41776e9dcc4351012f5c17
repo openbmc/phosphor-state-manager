@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f36e5f88_9fec6033",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 55
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-05T13:19:16Z",
+      "side": 1,
+      "message": "A lot of text here but what I\u0027m really looking for is.\n\n- Left flag at default, verified that APR was run when an AC loss was not detected\n- Set flag to true, verified the APR was not run when an AC loss was not detected\n- Set flag to true, verified the APR was run when AC loss was detected",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 20
+      },
+      "revId": "3b0ce1ae5a28cdbcac41776e9dcc4351012f5c17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0ffb16e_2fade24d",
         "filename": "chassis_state_manager.cpp",
         "patchSetId": 55
