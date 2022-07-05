@@ -121,6 +121,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3226a7ed_453dd563",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-05T19:30:06Z",
+      "side": 1,
+      "message": "I don\u0027t know how I left Patrick\u0027s commented unattended to. Sorry, I must have glanced over when checking gerrit. Just implemented will push briefly.",
+      "parentUuid": "35b90e74_c59a230f",
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94120112_86bfa16e",
         "filename": "host_state_manager.hpp",
         "patchSetId": 37
