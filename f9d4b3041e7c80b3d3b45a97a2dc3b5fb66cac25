@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f5d8122_f0503bcb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-05T13:24:01Z",
+      "side": 1,
+      "message": "\"Booted image with corresponding bitbake recipe change and verified new target was found in /lib/systemd/system/ on p10bmc machine\"",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "f9d4b3041e7c80b3d3b45a97a2dc3b5fb66cac25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fa1b3b7_c0845db5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-05T13:24:01Z",
+      "side": 1,
+      "message": "This doesn\u0027t do much to prove the new target was installed (since it\u0027s not called as a part of this commit).",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 47
+      },
+      "revId": "f9d4b3041e7c80b3d3b45a97a2dc3b5fb66cac25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
