@@ -137,6 +137,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84efc4b4_fd1337ed",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-05T20:41:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3226a7ed_453dd563",
+      "revId": "476de328ddcc304e910777004017a4a8871cecd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94120112_86bfa16e",
