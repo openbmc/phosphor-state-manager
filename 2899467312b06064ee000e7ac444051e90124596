@@ -16,6 +16,23 @@
       "message": "lgtm, though I don\u0027t consider myself a bash expert",
       "revId": "2899467312b06064ee000e7ac444051e90124596",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "656efbcf_59c31026",
+        "filename": "scripts/host-reboot",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-06T21:49:59Z",
+      "side": 1,
+      "message": "Just so I know that I\u0027m interpreting all of this correctly. The host shutdown target was not running since the host_crash target was hit first, and therefore was not not allowed to properly shutdown the host. You added a conflict with the host-stop target so that the crash target was not hit before the host-stop target. The script you added is then called during a phosphor-reboot service to apply the proper target to systemd.",
+      "revId": "2899467312b06064ee000e7ac444051e90124596",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
