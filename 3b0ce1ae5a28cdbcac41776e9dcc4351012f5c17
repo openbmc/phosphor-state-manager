@@ -47,6 +47,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "814a1fd1_c1b95359",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-06T15:18:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c0ffb16e_2fade24d",
+      "range": {
+        "startLine": 164,
+        "startChar": 32,
+        "endLine": 164,
+        "endChar": 59
+      },
+      "revId": "3b0ce1ae5a28cdbcac41776e9dcc4351012f5c17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4dd1358_be48e8ac",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-07-05T13:17:00Z",
       "side": 1,
       "message": "nit: variable naming conventions",
+      "range": {
+        "startLine": 127,
+        "startChar": 24,
+        "endLine": 127,
+        "endChar": 51
+      },
+      "revId": "3b0ce1ae5a28cdbcac41776e9dcc4351012f5c17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2247922c_da2fe71a",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-06T15:18:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e4dd1358_be48e8ac",
       "range": {
         "startLine": 127,
         "startChar": 24,
