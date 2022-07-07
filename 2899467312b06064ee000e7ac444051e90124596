@@ -51,6 +51,24 @@
       "parentUuid": "656efbcf_59c31026",
       "revId": "2899467312b06064ee000e7ac444051e90124596",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd492478_14396586",
+        "filename": "scripts/host-reboot",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-07T22:01:35Z",
+      "side": 1,
+      "message": "I thought I remembered seeing similar logic from the script somewhere in phosphor-state-manager. I guess that\u0027s why I was trying to interpret the need for the script. Makes sense though, thanks!",
+      "parentUuid": "97e2c7ad_9a3981d1",
+      "revId": "2899467312b06064ee000e7ac444051e90124596",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
