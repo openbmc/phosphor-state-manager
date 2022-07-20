@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0013890e_0f602f5b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-20T16:12:58Z",
+      "side": 1,
+      "message": "This is a generic non-system specific commit so I\u0027d leave out mention of meta-ibm. You can mention that system owners can override the default of 0 for PowerRestoreDelay via an override in their meta layer.",
+      "range": {
+        "startLine": 15,
+        "startChar": 11,
+        "endLine": 17,
+        "endChar": 18
+      },
+      "revId": "0833aeebb38ea68fe28d173c0fa9ac9c6cbb4efc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "779021b8_a68f1ca2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-20T16:12:58Z",
+      "side": 1,
+      "message": "Hmm, gonna need some more background here. 1 or 2 seconds I\u0027d get but 44 seconds too long??",
+      "revId": "0833aeebb38ea68fe28d173c0fa9ac9c6cbb4efc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ff982e_688c4ca9",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-20T16:12:58Z",
+      "side": 1,
+      "message": "Please use the lg2 capability here to log the actual delay from powerRestoreDelay",
+      "range": {
+        "startLine": 158,
+        "startChar": 66,
+        "endLine": 158,
+        "endChar": 75
+      },
+      "revId": "0833aeebb38ea68fe28d173c0fa9ac9c6cbb4efc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
