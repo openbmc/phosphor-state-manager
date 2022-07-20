@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52093172_d6adbf96",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-20T19:15:54Z",
+      "side": 1,
+      "message": "Yeah, if this was simulation then it may just be the nature of that environment. I think manually starting the discover service once BMC hits ready and ensuring the delay is consistent is good.",
+      "parentUuid": "1f39735b_591607e0",
+      "revId": "0833aeebb38ea68fe28d173c0fa9ac9c6cbb4efc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38ff982e_688c4ca9",
         "filename": "discover_system_state.cpp",
         "patchSetId": 6
