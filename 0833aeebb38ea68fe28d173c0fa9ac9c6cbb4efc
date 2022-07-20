@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed247a97_0e86f457",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-20T18:40:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0013890e_0f602f5b",
+      "range": {
+        "startLine": 15,
+        "startChar": 11,
+        "endLine": 17,
+        "endChar": 18
+      },
+      "revId": "0833aeebb38ea68fe28d173c0fa9ac9c6cbb4efc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "779021b8_a68f1ca2",
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f39735b_591607e0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-20T18:40:32Z",
+      "side": 1,
+      "message": "Yeah I assume there\u0027s another process interfering (the system flushing caches). This is an occasional case so included it. Typically the reboot finishes in the specified amount of time.",
+      "parentUuid": "779021b8_a68f1ca2",
+      "revId": "0833aeebb38ea68fe28d173c0fa9ac9c6cbb4efc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38ff982e_688c4ca9",
         "filename": "discover_system_state.cpp",
         "patchSetId": 6
@@ -54,6 +96,30 @@
       "writtenOn": "2022-07-20T16:12:58Z",
       "side": 1,
       "message": "Please use the lg2 capability here to log the actual delay from powerRestoreDelay",
+      "range": {
+        "startLine": 158,
+        "startChar": 66,
+        "endLine": 158,
+        "endChar": 75
+      },
+      "revId": "0833aeebb38ea68fe28d173c0fa9ac9c6cbb4efc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66dce51b_67e8a4c2",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-20T18:40:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "38ff982e_688c4ca9",
       "range": {
         "startLine": 158,
         "startChar": 66,
