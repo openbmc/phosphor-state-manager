@@ -17,6 +17,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <thread>
 
 namespace phosphor
 {
@@ -134,13 +135,30 @@ int main(int argc, char** argv)
                 convertForMessage(RestorePolicy::Policy::None));
         }
 
+        auto methodUserSettingDelay = bus.new_method_call(
+            settings.service(settings.powerRestorePolicy, powerRestoreIntf)
+                .c_str(),
+            settings.powerRestorePolicy.c_str(),
+            "org.freedesktop.DBus.Properties", "Get");
+
+        methodUserSettingDelay.append(powerRestoreIntf, "PowerRestoreDelay");
+
+        std::variant<uint64_t> restoreDelay;
+
+        auto delayResult = bus.call(methodUserSettingDelay);
+        delayResult.read(restoreDelay);
+        auto powerRestoreDelay = std::get<uint64_t>(restoreDelay);
+
         info("Host power is off, processing power policy {POWER_POLICY}",
              "POWER_POLICY", powerPolicy);
 
         if (RestorePolicy::Policy::AlwaysOn ==
             RestorePolicy::convertPolicyFromString(powerPolicy))
         {
-            info("power_policy=ALWAYS_POWER_ON, powering host on");
+            info("power_policy=ALWAYS_POWER_ON, powering host on ({DELAY}s delay)",
+                 "DELAY", powerRestoreDelay);
+            std::this_thread::sleep_for(
+                std::chrono::seconds(powerRestoreDelay));
             phosphor::state::manager::utils::setProperty(
                 bus, hostPath, HOST_BUSNAME, "RestartCause",
                 convertForMessage(
@@ -152,7 +170,11 @@ int main(int argc, char** argv)
         else if (RestorePolicy::Policy::AlwaysOff ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
-            info("power_policy=ALWAYS_POWER_OFF, set requested state to off");
+            info(
+                "power_policy=ALWAYS_POWER_OFF, set requested state to off ({DELAY}s delay)",
+                "DELAY", powerRestoreDelay);
+            std::this_thread::sleep_for(
+                std::chrono::seconds(powerRestoreDelay));
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
@@ -166,7 +188,10 @@ int main(int argc, char** argv)
         else if (RestorePolicy::Policy::Restore ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
-            info("power_policy=RESTORE, restoring last state");
+            info("power_policy=RESTORE, restoring last state ({DELAY}s delay)",
+                 "DELAY", powerRestoreDelay);
+            std::this_thread::sleep_for(
+                std::chrono::seconds(powerRestoreDelay));
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
