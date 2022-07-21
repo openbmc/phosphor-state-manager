@@ -156,7 +156,8 @@ int main(int argc, char** argv)
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
-            if (hostReqState == convertForMessage(server::Host::Transition::On))
+            if (hostReqState !=
+                convertForMessage(server::Host::Transition::Off))
             {
                 phosphor::state::manager::utils::setProperty(
                     bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
@@ -170,7 +171,10 @@ int main(int argc, char** argv)
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
-            if (hostReqState == convertForMessage(server::Host::Transition::On))
+
+            // As long as the host transition is not 'Off' power on host state.
+            if (hostReqState !=
+                convertForMessage(server::Host::Transition::Off))
             {
                 phosphor::state::manager::utils::setProperty(
                     bus, hostPath, HOST_BUSNAME, "RestartCause",
@@ -178,7 +182,7 @@ int main(int argc, char** argv)
                         server::Host::RestartCause::PowerPolicyPreviousState));
                 phosphor::state::manager::utils::setProperty(
                     bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
-                    hostReqState);
+                    convertForMessage(server::Host::Transition::On));
             }
         }
     }
