@@ -65,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a74ebad3_0a3e9a01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-22T18:52:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b4c6fbd_4101247b",
+      "revId": "e0a8442c1231b0d29d143611a783d6c054eaeb6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9263a2c1_c4a13c4d",
@@ -126,6 +144,30 @@
       "side": 1,
       "message": "my image tests I mean.",
       "parentUuid": "8f5081f9_dcb7e8b5",
+      "range": {
+        "startLine": 184,
+        "startChar": 20,
+        "endLine": 184,
+        "endChar": 32
+      },
+      "revId": "e0a8442c1231b0d29d143611a783d6c054eaeb6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2df942b_0ffe9ba7",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-22T18:52:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23c10541_0a11c58a",
       "range": {
         "startLine": 184,
         "startChar": 20,
