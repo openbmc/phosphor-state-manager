@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db67ffad_f8fec1d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-22T16:34:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1139b98_c504896a",
+      "range": {
+        "startLine": 7,
+        "startChar": 36,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "e0a8442c1231b0d29d143611a783d6c054eaeb6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b4c6fbd_4101247b",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-07-22T13:47:04Z",
       "side": 1,
       "message": "I think we should just make this \"On\". Doing a GracefulWarmReboot from a powered off system will probably work, but doesn\u0027t make a lot of sense. We want to just do a normal power on here.",
+      "range": {
+        "startLine": 184,
+        "startChar": 20,
+        "endLine": 184,
+        "endChar": 32
+      },
+      "revId": "e0a8442c1231b0d29d143611a783d6c054eaeb6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f5081f9_dcb7e8b5",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-22T16:34:08Z",
+      "side": 1,
+      "message": "whoops, I had that in my downstream tests. Missed it thanks.",
+      "parentUuid": "9263a2c1_c4a13c4d",
       "range": {
         "startLine": 184,
         "startChar": 20,
