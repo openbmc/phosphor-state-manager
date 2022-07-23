@@ -36,7 +36,7 @@ bool isMfgModeEnabled()
         auto reply = bus.call(method);
         reply.read(mfgModeEnabled);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in property Get, error {ERROR}, property {PROPERTY}",
               "ERROR", e, "PROPERTY", propertyName);

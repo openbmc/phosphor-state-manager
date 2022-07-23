@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     std::string busName = HOST_GPIOS_BUSNAME;
 
     // Add sdbusplus ObjectManager
-    sdbusplus::server::manager::manager objManager(bus, objGroupName.c_str());
+    sdbusplus::server::manager_t objManager(bus, objGroupName.c_str());
 
     // For now, we only support checking Host0 status
     auto host = std::make_unique<phosphor::condition::Host>(

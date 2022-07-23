@@ -30,7 +30,7 @@ class SystemdTargetLogging
 
     SystemdTargetLogging(const TargetErrorData& targetData,
                          const ServiceMonitorData& serviceData,
-                         sdbusplus::bus::bus& bus) :
+                         sdbusplus::bus_t& bus) :
         targetData(targetData),
         serviceData(serviceData), bus(bus),
         systemdJobRemovedSignal(
@@ -92,7 +92,7 @@ class SystemdTargetLogging
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    void systemdUnitChange(sdbusplus::message::message& msg);
+    void systemdUnitChange(sdbusplus::message_t& msg);
 
     /** @brief Wait for systemd to show up on dbus
      *
@@ -102,7 +102,7 @@ class SystemdTargetLogging
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    void processNameChangeSignal(sdbusplus::message::message& msg);
+    void processNameChangeSignal(sdbusplus::message_t& msg);
 
     /** @brief Systemd targets to monitor and error logs to create */
     const TargetErrorData& targetData;
@@ -111,7 +111,7 @@ class SystemdTargetLogging
     const ServiceMonitorData& serviceData;
 
     /** @brief Persistent sdbusplus DBus bus connection. */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus systemd JobRemoved signals **/
     sdbusplus::bus::match_t systemdJobRemovedSignal;

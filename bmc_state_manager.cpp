@@ -59,7 +59,7 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
         auto result = this->bus.call(method);
         result.read(unitTargetPath);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         // Not all input units will have been loaded yet so just return an
         // empty string if an exception is caught in this path
@@ -81,7 +81,7 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
         // Is input target active or inactive?
         result.read(currentState);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         info("Error in ActiveState Get: {ERROR}", "ERROR", e);
         return std::string{};
@@ -125,7 +125,7 @@ void BMC::subscribeToSystemdSignals()
     {
         this->bus.call(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
@@ -151,7 +151,7 @@ void BMC::executeTransition(const Transition tranReq)
         {
             this->bus.call(method);
         }
-        catch (const sdbusplus::exception::exception& e)
+        catch (const sdbusplus::exception_t& e)
         {
             info("Error in HardReboot: {ERROR}", "ERROR", e);
         }
@@ -181,7 +181,7 @@ void BMC::executeTransition(const Transition tranReq)
         {
             this->bus.call(method);
         }
-        catch (const sdbusplus::exception::exception& e)
+        catch (const sdbusplus::exception_t& e)
         {
             info("Error in StartUnit - replace-irreversibly: {ERROR}", "ERROR",
                  e);
@@ -190,7 +190,7 @@ void BMC::executeTransition(const Transition tranReq)
     return;
 }
 
-int BMC::bmcStateChange(sdbusplus::message::message& msg)
+int BMC::bmcStateChange(sdbusplus::message_t& msg)
 {
     uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;
@@ -215,7 +215,7 @@ int BMC::bmcStateChange(sdbusplus::message::message& msg)
         {
             this->bus.call(method);
         }
-        catch (const sdbusplus::exception::exception& e)
+        catch (const sdbusplus::exception_t& e)
         {
             info("Error in Unsubscribe: {ERROR}", "ERROR", e);
         }

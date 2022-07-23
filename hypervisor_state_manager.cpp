@@ -91,7 +91,7 @@ void Hypervisor::updateCurrentHostState(std::string& bootProgress)
     }
 }
 
-void Hypervisor::bootProgressChangeEvent(sdbusplus::message::message& msg)
+void Hypervisor::bootProgressChangeEvent(sdbusplus::message_t& msg)
 {
     std::string statusInterface;
     std::map<std::string, std::variant<std::string>> msgData;

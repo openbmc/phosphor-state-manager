@@ -22,7 +22,7 @@ namespace state
 namespace manager
 {
 
-using ChassisInherit = sdbusplus::server::object::object<
+using ChassisInherit = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::State::server::Chassis,
     sdbusplus::xyz::openbmc_project::State::server::PowerOnHours>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
@@ -46,7 +46,7 @@ class Chassis : public ChassisInherit
      * @param[in] objPath   - The Dbus object path
      * @param[in] id        - Chassis id
      */
-    Chassis(sdbusplus::bus::bus& bus, const char* objPath, size_t id) :
+    Chassis(sdbusplus::bus_t& bus, const char* objPath, size_t id) :
         ChassisInherit(bus, objPath, ChassisInherit::action::defer_emit),
         bus(bus),
         systemdSignals(
@@ -160,10 +160,10 @@ class Chassis : public ChassisInherit
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    int sysStateChange(sdbusplus::message::message& msg);
+    int sysStateChange(sdbusplus::message_t& msg);
 
     /** @brief Persistent sdbusplus DBus connection. */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus systemd signals **/
     sdbusplus::bus::match_t systemdSignals;
@@ -253,7 +253,7 @@ class Chassis : public ChassisInherit
      * @param[in]  msg              - Data associated with subscribed signal
      *
      */
-    void uPowerChangeEvent(sdbusplus::message::message& msg);
+    void uPowerChangeEvent(sdbusplus::message_t& msg);
 
     /** @brief Process PowerSystemInputs property changes
      *
@@ -263,7 +263,7 @@ class Chassis : public ChassisInherit
      * @param[in]  msg              - Data associated with subscribed signal
      *
      */
-    void powerSysInputsChangeEvent(sdbusplus::message::message& msg);
+    void powerSysInputsChangeEvent(sdbusplus::message_t& msg);
 };
 
 } // namespace manager

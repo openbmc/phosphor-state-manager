@@ -78,7 +78,7 @@ void Chassis::subscribeToSystemdSignals()
             SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH, SYSTEMD_INTERFACE, "Subscribe");
         this->bus.call(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
@@ -179,7 +179,7 @@ void Chassis::determineInitialState()
             }
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         // It's acceptable for the pgood state service to not be available
         // since it will notify us of the pgood state when it comes up.
@@ -248,7 +248,7 @@ bool Chassis::determineStatusOfUPSPower()
         auto mapperResponseMsg = bus.call(mapper);
         mapperResponseMsg.read(mapperResponse);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in mapper GetSubTree call for UPS: {ERROR}", "ERROR", e);
         throw;
@@ -326,7 +326,7 @@ bool Chassis::determineStatusOfUPSPower()
                     return false;
                 }
             }
-            catch (const sdbusplus::exception::exception& e)
+            catch (const sdbusplus::exception_t& e)
             {
                 error("Error reading UPS property, error: {ERROR}, "
                       "service: {SERVICE} path: {PATH}",
@@ -354,7 +354,7 @@ bool Chassis::determineStatusOfPSUPower()
         auto mapperResponseMsg = bus.call(mapper);
         mapperResponseMsg.read(mapperResponse);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in mapper GetSubTree call for PowerSystemInputs: {ERROR}",
               "ERROR", e);
@@ -392,7 +392,7 @@ bool Chassis::determineStatusOfPSUPower()
                     return false;
                 }
             }
-            catch (const sdbusplus::exception::exception& e)
+            catch (const sdbusplus::exception_t& e)
             {
                 error(
                     "Error reading Power System Inputs property, error: {ERROR}, "
@@ -405,7 +405,7 @@ bool Chassis::determineStatusOfPSUPower()
     return true;
 }
 
-void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
+void Chassis::uPowerChangeEvent(sdbusplus::message_t& msg)
 {
     debug("UPS Property Change Event Triggered");
     std::string statusInterface;
@@ -444,7 +444,7 @@ void Chassis::uPowerChangeEvent(sdbusplus::message::message& msg)
     return;
 }
 
-void Chassis::powerSysInputsChangeEvent(sdbusplus::message::message& msg)
+void Chassis::powerSysInputsChangeEvent(sdbusplus::message_t& msg)
 {
     debug("Power System Inputs Property Change Event Triggered");
     std::string statusInterface;
@@ -507,7 +507,7 @@ bool Chassis::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(unitTargetPath);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in GetUnit call: {ERROR}", "ERROR", e);
         return false;
@@ -525,7 +525,7 @@ bool Chassis::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(currentState);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in ActiveState Get: {ERROR}", "ERROR", e);
         return false;
@@ -536,7 +536,7 @@ bool Chassis::stateActive(const std::string& target)
            currentStateStr == ACTIVATING_STATE;
 }
 
-int Chassis::sysStateChange(sdbusplus::message::message& msg)
+int Chassis::sysStateChange(sdbusplus::message_t& msg)
 {
     sdbusplus::message::object_path newStateObjPath;
     std::string newStateUnit{};
@@ -550,7 +550,7 @@ int Chassis::sysStateChange(sdbusplus::message::message& msg)
         uint32_t newStateID{};
         msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in state change - bad encoding: {ERROR} {REPLY_SIG}",
               "ERROR", e, "REPLY_SIG", msg.get_signature());

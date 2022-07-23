@@ -15,7 +15,7 @@ namespace state
 namespace manager
 {
 
-using BMCInherit = sdbusplus::server::object::object<
+using BMCInherit = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::State::server::BMC>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
@@ -33,7 +33,7 @@ class BMC : public BMCInherit
      * @param[in] busName   - The Dbus name to own
      * @param[in] objPath   - The Dbus object path
      */
-    BMC(sdbusplus::bus::bus& bus, const char* objPath) :
+    BMC(sdbusplus::bus_t& bus, const char* objPath) :
         BMCInherit(bus, objPath, BMCInherit::action::defer_emit), bus(bus),
         stateSignal(std::make_unique<decltype(stateSignal)::element_type>(
             bus,
@@ -97,10 +97,10 @@ class BMC : public BMCInherit
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    int bmcStateChange(sdbusplus::message::message& msg);
+    int bmcStateChange(sdbusplus::message_t& msg);
 
     /** @brief Persistent sdbusplus DBus bus connection. **/
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus system state changes **/
     std::unique_ptr<sdbusplus::bus::match_t> stateSignal;

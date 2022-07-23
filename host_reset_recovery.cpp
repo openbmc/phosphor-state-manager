@@ -38,7 +38,7 @@ constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
-bool wasHostBooting(sdbusplus::bus::bus& bus)
+bool wasHostBooting(sdbusplus::bus_t& bus)
 {
     try
     {
@@ -64,7 +64,7 @@ bool wasHostBooting(sdbusplus::bus::bus& bus)
         info("Host was booting before BMC reboot: {BOOTPROGRESS}",
              "BOOTPROGRESS", bootProgress);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error reading BootProgress, error {ERROR}, service {SERVICE}, "
               "path {PATH}",
@@ -76,7 +76,7 @@ bool wasHostBooting(sdbusplus::bus::bus& bus)
     return true;
 }
 
-void createErrorLog(sdbusplus::bus::bus& bus)
+void createErrorLog(sdbusplus::bus_t& bus)
 {
     try
     {
@@ -95,7 +95,7 @@ void createErrorLog(sdbusplus::bus::bus& bus)
         method.append(errorMessage, level, additionalData);
         auto resp = bus.call(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error(
             "sdbusplus D-Bus call exception, error {ERROR}, objpath {OBJPATH}, "
@@ -126,7 +126,7 @@ bool isChassisTargetComplete()
     return !f.good();
 }
 
-void moveToHostQuiesce(sdbusplus::bus::bus& bus)
+void moveToHostQuiesce(sdbusplus::bus_t& bus)
 {
     try
     {
@@ -138,7 +138,7 @@ void moveToHostQuiesce(sdbusplus::bus::bus& bus)
 
         bus.call_noreply(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("sdbusplus call exception starting quiesce target: {ERROR}",
               "ERROR", e);

@@ -20,7 +20,7 @@ namespace utils
  *
  * @return The name of the service
  */
-std::string getService(sdbusplus::bus::bus& bus, std::string path,
+std::string getService(sdbusplus::bus_t& bus, std::string path,
                        std::string interface);
 
 /** @brief Get the value of input property
@@ -32,7 +32,7 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
  *
  * @return The value of the property
  */
-std::string getProperty(sdbusplus::bus::bus& bus, const std::string& path,
+std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
                         const std::string& interface,
                         const std::string& propertyName);
 
@@ -44,7 +44,7 @@ std::string getProperty(sdbusplus::bus::bus& bus, const std::string& path,
  * @param[in] property     - The property name to set
  * @param[in] value        - The value of property
  */
-void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
+void setProperty(sdbusplus::bus_t& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
                  const std::string& value);
 
@@ -64,7 +64,7 @@ int getGpioValue(const std::string& gpioName);
  * parampin] additionalData - Optional extra data to add to the log
  */
 void createError(
-    sdbusplus::bus::bus& bus, const std::string& errorMsg,
+    sdbusplus::bus_t& bus, const std::string& errorMsg,
     sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel,
     std::map<std::string, std::string> additionalData = {});
 
@@ -72,7 +72,7 @@ void createError(
  *
  * @param[in] bus          - The Dbus bus object
  */
-void createBmcDump(sdbusplus::bus::bus& bus);
+void createBmcDump(sdbusplus::bus_t& bus);
 
 } // namespace utils
 } // namespace manager

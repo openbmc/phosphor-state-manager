@@ -46,7 +46,7 @@ constexpr auto CHASSIS_STATE_POWER_PROP = "CurrentPowerState";
 
 // Find all implementations of Condition interface and check if host is
 // running over it
-bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
+bool checkFirmwareConditionRunning(sdbusplus::bus_t& bus)
 {
     using FirmwareCondition = HostFirmware::FirmwareCondition;
     // Find all implementations of host firmware condition interface
@@ -63,7 +63,7 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
         auto mapperResponseMsg = bus.call(mapper);
         mapperResponseMsg.read(mapperResponse);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error(
             "Error in mapper GetSubTree call for HostFirmware condition: {ERROR}",
@@ -116,7 +116,7 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
                     return true;
                 }
             }
-            catch (const sdbusplus::exception::exception& e)
+            catch (const sdbusplus::exception_t& e)
             {
                 error("Error reading HostFirmware condition, error: {ERROR}, "
                       "service: {SERVICE} path: {PATH}",
@@ -129,7 +129,7 @@ bool checkFirmwareConditionRunning(sdbusplus::bus::bus& bus)
 }
 
 // Helper function to check if chassis power is on
-bool isChassiPowerOn(sdbusplus::bus::bus& bus, size_t id)
+bool isChassiPowerOn(sdbusplus::bus_t& bus, size_t id)
 {
     auto svcname = std::string{CHASSIS_STATE_SVC} + std::to_string(id);
     auto objpath = std::string{CHASSIS_STATE_PATH} + std::to_string(id);
@@ -153,7 +153,7 @@ bool isChassiPowerOn(sdbusplus::bus::bus& bus, size_t id)
             return true;
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error reading Chassis Power State, error: {ERROR}, "
               "service: {SERVICE} path: {PATH}",

@@ -24,7 +24,7 @@ namespace state
 namespace manager
 {
 
-using HostInherit = sdbusplus::server::object::object<
+using HostInherit = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::State::server::Host,
     sdbusplus::xyz::openbmc_project::State::Boot::server::Progress,
     sdbusplus::xyz::openbmc_project::Control::Boot::server::RebootAttempts,
@@ -53,7 +53,7 @@ class Host : public HostInherit
      * @param[in] objPath   - The Dbus object path
      * @param[in] id        - The Host id
      */
-    Host(sdbusplus::bus::bus& bus, const char* objPath, size_t id) :
+    Host(sdbusplus::bus_t& bus, const char* objPath, size_t id) :
         HostInherit(bus, objPath, HostInherit::action::defer_emit), bus(bus),
         systemdSignalJobRemoved(
             bus,
@@ -211,7 +211,7 @@ class Host : public HostInherit
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    void sysStateChangeJobRemoved(sdbusplus::message::message& msg);
+    void sysStateChangeJobRemoved(sdbusplus::message_t& msg);
 
     /** @brief Check if JobNew systemd signal is relevant to this object
      *
@@ -224,7 +224,7 @@ class Host : public HostInherit
      * @param[in]  msg       - Data associated with subscribed signal
      *
      */
-    void sysStateChangeJobNew(sdbusplus::message::message& msg);
+    void sysStateChangeJobNew(sdbusplus::message_t& msg);
 
     /** @brief Decrement reboot count
      *
@@ -334,7 +334,7 @@ class Host : public HostInherit
     const std::string& getTarget(Transition tranReq);
 
     /** @brief Persistent sdbusplus DBus bus connection. */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus systemd JobRemoved signal **/
     sdbusplus::bus::match_t systemdSignalJobRemoved;

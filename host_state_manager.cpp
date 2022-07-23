@@ -67,7 +67,7 @@ void Host::subscribeToSystemdSignals()
     {
         this->bus.call_noreply(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
         elog<InternalFailure>();
@@ -170,7 +170,7 @@ bool Host::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(unitTargetPath);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in GetUnit call: {ERROR}", "ERROR", e);
         return false;
@@ -188,7 +188,7 @@ bool Host::stateActive(const std::string& target)
         auto result = this->bus.call(method);
         result.read(currentState);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in ActiveState Get: {ERROR}", "ERROR", e);
         return false;
@@ -275,14 +275,14 @@ bool Host::isAutoReboot()
             return false;
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in AutoReboot Get, {ERROR}", "ERROR", e);
         return false;
     }
 }
 
-void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
+void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
 {
     uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;
@@ -339,7 +339,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message::message& msg)
     }
 }
 
-void Host::sysStateChangeJobNew(sdbusplus::message::message& msg)
+void Host::sysStateChangeJobNew(sdbusplus::message_t& msg)
 {
     uint32_t newStateID{};
     sdbusplus::message::object_path newStateObjPath;

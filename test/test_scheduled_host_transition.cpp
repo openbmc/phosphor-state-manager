@@ -26,7 +26,7 @@ class TestScheduledHostTransition : public testing::Test
   public:
     sdeventplus::Event event;
     sdbusplus::SdBusMock sdbusMock;
-    sdbusplus::bus::bus mockedBus = sdbusplus::get_mocked_new(&sdbusMock);
+    sdbusplus::bus_t mockedBus = sdbusplus::get_mocked_new(&sdbusMock);
     ScheduledHostTransition scheduledHostTransition;
 
     TestScheduledHostTransition() :

@@ -20,7 +20,7 @@ constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-std::string getService(sdbusplus::bus::bus& bus, std::string path,
+std::string getService(sdbusplus::bus_t& bus, std::string path,
                        std::string interface)
 {
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
@@ -44,7 +44,7 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
             throw std::runtime_error("Error no matching service");
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in mapper call with path {PATH}, interface "
               "{INTERFACE}, and exception {ERROR}",
@@ -55,7 +55,7 @@ std::string getService(sdbusplus::bus::bus& bus, std::string path,
     return mapperResponse.begin()->first;
 }
 
-std::string getProperty(sdbusplus::bus::bus& bus, const std::string& path,
+std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
                         const std::string& interface,
                         const std::string& propertyName)
 {
@@ -72,7 +72,7 @@ std::string getProperty(sdbusplus::bus::bus& bus, const std::string& path,
         auto reply = bus.call(method);
         reply.read(property);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in property Get, error {ERROR}, property {PROPERTY}",
               "ERROR", e, "PROPERTY", propertyName);
@@ -89,7 +89,7 @@ std::string getProperty(sdbusplus::bus::bus& bus, const std::string& path,
     return std::get<std::string>(property);
 }
 
-void setProperty(sdbusplus::bus::bus& bus, const std::string& path,
+void setProperty(sdbusplus::bus_t& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
                  const std::string& value)
 {
@@ -130,7 +130,7 @@ int getGpioValue(const std::string& gpioName)
 }
 
 void createError(
-    sdbusplus::bus::bus& bus, const std::string& errorMsg,
+    sdbusplus::bus_t& bus, const std::string& errorMsg,
     sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel,
     std::map<std::string, std::string> additionalData)
 {
@@ -146,7 +146,7 @@ void createError(
         method.append(errorMsg, errLevel, additionalData);
         auto resp = bus.call(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("sdbusplus D-Bus call exception, error {ERROR} trying to create "
               "an error with {ERROR_MSG}",
@@ -162,7 +162,7 @@ void createError(
     }
 }
 
-void createBmcDump(sdbusplus::bus::bus& bus)
+void createBmcDump(sdbusplus::bus_t& bus)
 {
     auto method = bus.new_method_call(
         "xyz.openbmc_project.Dump.Manager", "/xyz/openbmc_project/dump/bmc",
@@ -174,7 +174,7 @@ void createBmcDump(sdbusplus::bus::bus& bus)
     {
         bus.call_noreply(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Failed to create BMC dump, exception:{ERROR}", "ERROR", e);
         // just continue, this is error path anyway so we're just collecting

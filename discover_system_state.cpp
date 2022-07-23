@@ -182,7 +182,7 @@ int main(int argc, char** argv)
             }
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Error in PowerRestorePolicy Get: {ERROR}", "ERROR", e);
         elog<InternalFailure>();

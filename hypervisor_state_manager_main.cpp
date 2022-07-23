@@ -14,7 +14,7 @@ int main()
     auto objPathInst = std::string{HYPERVISOR_OBJPATH} + '0';
 
     // Add sdbusplus ObjectManager.
-    sdbusplus::server::manager::manager objManager(bus, objPathInst.c_str());
+    sdbusplus::server::manager_t objManager(bus, objPathInst.c_str());
 
     phosphor::state::manager::Hypervisor manager(bus, objPathInst.c_str());
 

@@ -27,7 +27,7 @@ struct Objects
      * @param[in] bus  - The Dbus bus object
      * @param[in] root - The root object path
      */
-    explicit Objects(sdbusplus::bus::bus& bus, const Path& root = defaultRoot);
+    explicit Objects(sdbusplus::bus_t& bus, const Path& root = defaultRoot);
     Objects(const Objects&) = delete;
     Objects& operator=(const Objects&) = delete;
     Objects(Objects&&) = delete;
@@ -58,7 +58,7 @@ struct Objects
     Path powerRestorePolicyOneTime;
 
     /** @brief The Dbus bus object */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 };
 
 /** @class HostObjects
@@ -74,7 +74,7 @@ struct HostObjects : public Objects
      * @param[in] bus - The Dbus bus object
      * @param[in] id  - The Host id
      */
-    HostObjects(sdbusplus::bus::bus& bus, size_t id);
+    HostObjects(sdbusplus::bus_t& bus, size_t id);
 };
 
 } // namespace settings

@@ -18,7 +18,7 @@ namespace manager
 
 using Transition =
     sdbusplus::xyz::openbmc_project::State::server::Host::Transition;
-using ScheduledHostTransitionInherit = sdbusplus::server::object::object<
+using ScheduledHostTransitionInherit = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::State::server::ScheduledHostTransition>;
 
 /** @class ScheduledHostTransition
@@ -29,7 +29,7 @@ using ScheduledHostTransitionInherit = sdbusplus::server::object::object<
 class ScheduledHostTransition : public ScheduledHostTransitionInherit
 {
   public:
-    ScheduledHostTransition(sdbusplus::bus::bus& bus, const char* objPath,
+    ScheduledHostTransition(sdbusplus::bus_t& bus, const char* objPath,
                             size_t id, const sdeventplus::Event& event) :
         ScheduledHostTransitionInherit(
             bus, objPath, ScheduledHostTransition::action::defer_emit),
@@ -60,7 +60,7 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
     friend class TestScheduledHostTransition;
 
     /** @brief sdbusplus bus client connection */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief Host id. **/
     const size_t id = 0;

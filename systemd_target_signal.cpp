@@ -34,7 +34,7 @@ void SystemdTargetLogging::startBmcQuiesceTarget()
     {
         this->bus.call_noreply(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Failed to start BMC quiesce target, exception:{ERROR}", "ERROR",
               e);
@@ -62,7 +62,7 @@ void SystemdTargetLogging::logError(const std::string& errorLog,
     {
         this->bus.call_noreply(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         error("Failed to create systemd target error, error:{ERROR_MSG}, "
               "result:{RESULT}, exception:{ERROR}",
@@ -113,7 +113,7 @@ const std::string SystemdTargetLogging::processError(const std::string& unit,
     return (std::string{});
 }
 
-void SystemdTargetLogging::systemdUnitChange(sdbusplus::message::message& msg)
+void SystemdTargetLogging::systemdUnitChange(sdbusplus::message_t& msg)
 {
     uint32_t id;
     sdbusplus::message::object_path objPath;
@@ -136,8 +136,7 @@ void SystemdTargetLogging::systemdUnitChange(sdbusplus::message::message& msg)
     return;
 }
 
-void SystemdTargetLogging::processNameChangeSignal(
-    sdbusplus::message::message& msg)
+void SystemdTargetLogging::processNameChangeSignal(sdbusplus::message_t& msg)
 {
     std::string name;      // well-known
     std::string old_owner; // unique-name
@@ -164,7 +163,7 @@ void SystemdTargetLogging::subscribeToSystemdSignals()
     {
         this->bus.call(method);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         // If error indicates systemd is not on dbus yet then do nothing.
         // The systemdNameChangeSignals callback will detect when it is on
