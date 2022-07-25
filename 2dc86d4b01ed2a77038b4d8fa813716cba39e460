@@ -16,6 +16,24 @@
       "message": "oh shoot, I just realized that this property is \"The delay in microseconds before invoke power restore policy after\". It\u0027s in microseconds so 30 seconds is actually 30,000,000 for a 30s delay. Easiest to probably just use the \"std::chrono::microseconds\" chrono in the sleep_for below. And change this variable name to something like powerRestoreDelayUsec so it\u0027s obvious it\u0027s in microseconds.  No need to fully re-test, just be sure a value of 30,000,000 works as expected in simulation with your code change.",
       "revId": "2dc86d4b01ed2a77038b4d8fa813716cba39e460",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3fe013_133de0fd",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-25T15:14:49Z",
+      "side": 1,
+      "message": "I was wondering why a long was used for this property. Got it.",
+      "parentUuid": "743a50dc_1586ecd2",
+      "revId": "2dc86d4b01ed2a77038b4d8fa813716cba39e460",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
