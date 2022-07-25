@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79454cf0_e428a9a2",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2022-07-25T17:12:20Z",
+      "side": 0,
+      "message": "Do we have to update the RequestedHostTransition to \"Off\" if previous value is \"WarmReboot\" or \"ForceWarmReboot\"?",
+      "revId": "128ea8e3f1c56af1f7aa615a6f3b94088c9ba978",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
