@@ -70,6 +70,24 @@
       "parentUuid": "3b8b44d4_155f5c14",
       "revId": "128ea8e3f1c56af1f7aa615a6f3b94088c9ba978",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd8cfa61_e827096a",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-07-26T15:11:11Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "2a6109b7_87ca5a77",
+      "revId": "128ea8e3f1c56af1f7aa615a6f3b94088c9ba978",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
