@@ -52,6 +52,24 @@
       "parentUuid": "5cc135f4_41c26adb",
       "revId": "128ea8e3f1c56af1f7aa615a6f3b94088c9ba978",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a6109b7_87ca5a77",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-26T12:16:01Z",
+      "side": 0,
+      "message": "Yeah, makes sense to me. Do the same check here that was added below:\n\n            if (hostReqState !\u003d\n                convertForMessage(server::Host::Transition::Off))\n{request off}",
+      "parentUuid": "3b8b44d4_155f5c14",
+      "revId": "128ea8e3f1c56af1f7aa615a6f3b94088c9ba978",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
