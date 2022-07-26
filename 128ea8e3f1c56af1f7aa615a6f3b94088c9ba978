@@ -34,6 +34,24 @@
       "parentUuid": "79454cf0_e428a9a2",
       "revId": "128ea8e3f1c56af1f7aa615a6f3b94088c9ba978",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b8b44d4_155f5c14",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2022-07-26T02:29:44Z",
+      "side": 0,
+      "message": "I concern about this case:\nStep1: Set Power Policy is \"Always-off\". Request to \"GracefulWarmReboot\"/\"ForceWarmReboot\". AC power. When BMC reboot successfully, power state is off (due to PowerPolicy is \"Always-off\"), but the \"RequestedHostTransition\" is \"GracefulWarmReboot\"/\"ForceWarmReboot\"\nStep2: Set PowerPolicy to \"Restore\". AC power, when BMC reboot successfully, the power state if on (due to \"RequestedHostTransition\" is \"GracefulWarmReboot\"/\"ForceWarmReboot\"). \nI think in this case, in step 1, the software should set the \"RequestedHostTransition\" to \"Off\".",
+      "parentUuid": "5cc135f4_41c26adb",
+      "revId": "128ea8e3f1c56af1f7aa615a6f3b94088c9ba978",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
