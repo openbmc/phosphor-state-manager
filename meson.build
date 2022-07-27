@@ -190,6 +190,7 @@ executable('phosphor-bmc-state-manager',
             'bmc_state_manager_main.cpp',
             'utils.cpp',
             dependencies: [
+                fmt,
                 libgpiod,
                 phosphordbusinterfaces,
                 phosphorlogging,
