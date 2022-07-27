@@ -182,6 +182,22 @@ void createBmcDump(sdbusplus::bus_t& bus)
     }
 }
 
+bool checkACLoss(size_t& hostId)
+{
+     std::string chassisLostPowerFileFmt =
+         fmt::sprintf(CHASSIS_LOST_POWER_FILE, hostId);
+
+     std::filesystem::path chassisPowerLossFile{chassisLostPowerFileFmt};
+     if (std::filesystem::exists(chassisPowerLossFile))
+     {
+         return true;
+     }
+
+         return false;
+}
+
+
+
 } // namespace utils
 } // namespace manager
 } // namespace state
