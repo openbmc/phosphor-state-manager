@@ -125,10 +125,7 @@ int main(int argc, char** argv)
             info("One time not set, check user setting of power policy");
 
 #ifdef ONLY_RUN_APR_ON_POWER_LOSS
-            std::string chassisLostPowerFileFmt =
-                fmt::sprintf(CHASSIS_LOST_POWER_FILE, hostId);
-            fs::path chassisPowerLossFile{chassisLostPowerFileFmt};
-            if (!fs::exists(chassisPowerLossFile))
+            if (!phosphor::state::manager::utils::checkACLoss(hostId))
             {
                 info(
                     "Chassis power was not on prior to BMC reboot so do not run any power policy");

@@ -74,6 +74,13 @@ void createError(
  */
 void createBmcDump(sdbusplus::bus_t& bus);
 
+/** @brief Attempt to locate the obmc-chassis-lost-power@ file
+ *    to indicate that an AC loss occured.
+ *
+ * @param[in] chassisId  - the chassis instance
+ */
+bool checkACLoss(size_t& chassisId);
+
 } // namespace utils
 } // namespace manager
 } // namespace state
