@@ -313,6 +313,15 @@ void BMC::discoverLastRebootCause()
             break;
     }
 
+    // If the above code could not detect a reason, check to see
+    // if an AC loss occured.
+    size_t hostId = 0;
+    if (phosphor::state::manager::utils::checkACLoss(hostId))
+    {
+        this->lastRebootCause(RebootCause::POR);
+        return;
+    }
+
     // If the above code could not detect a reason, look for a the
     // reset-cause-pinhole gpio to see if it is the reason for the reboot
     auto gpioval =
