@@ -1,8 +1,13 @@
+#include "config.h"
 #include "utils.hpp"
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
 #include <gpiod.h>
 
 #include <phosphor-logging/lg2.hpp>
+
+#include <filesystem>
 
 namespace phosphor
 {
@@ -180,6 +185,20 @@ void createBmcDump(sdbusplus::bus_t& bus)
         // just continue, this is error path anyway so we're just collecting
         // what we can
     }
+}
+
+bool checkACLoss(size_t& chassisId)
+{
+    std::string chassisLostPowerFileFmt =
+        fmt::sprintf(CHASSIS_LOST_POWER_FILE, chassisId);
+
+    std::filesystem::path chassisPowerLossFile{chassisLostPowerFileFmt};
+    if (std::filesystem::exists(chassisPowerLossFile))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 } // namespace utils
