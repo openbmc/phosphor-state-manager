@@ -176,6 +176,7 @@ executable('phosphor-chassis-check-power-status',
             'chassis_check_power_status.cpp',
             'utils.cpp',
             dependencies: [
+                fmt,
                 libgpiod,
                 phosphordbusinterfaces,
                 phosphorlogging,
@@ -190,6 +191,7 @@ executable('phosphor-bmc-state-manager',
             'bmc_state_manager_main.cpp',
             'utils.cpp',
             dependencies: [
+                fmt,
                 libgpiod,
                 phosphordbusinterfaces,
                 phosphorlogging,
@@ -262,7 +264,8 @@ executable('phosphor-secure-boot-check',
             'secure_boot_check.cpp',
             'utils.cpp',
             dependencies: [
-            sdbusplus, phosphorlogging, libgpiod
+            fmt, sdbusplus,
+            phosphorlogging, libgpiod
             ],
     implicit_include_directories: true,
     install: true
