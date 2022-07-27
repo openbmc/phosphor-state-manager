@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
@@ -73,6 +73,13 @@ void createError(
  * @param[in] bus          - The Dbus bus object
  */
 void createBmcDump(sdbusplus::bus_t& bus);
+
+/** @brief Attempt to locate the obmc-chassis-lost-power@ file
+ *    to indicate that an AC loss occured.
+ *
+ * @param[in] hostId  - the host instance
+ */
+bool checkACLoss(size_t& hostId);
 
 } // namespace utils
 } // namespace manager
