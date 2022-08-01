@@ -52,6 +52,24 @@
       "parentUuid": "555fcdc9_5dd258b7",
       "revId": "c03f4388e105f57fa5a2543226b17bffc13a48e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76037fbb_7e808197",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1001428
+      },
+      "writtenOn": "2022-08-01T16:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "241d97d8_7764b535",
+      "revId": "c03f4388e105f57fa5a2543226b17bffc13a48e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
