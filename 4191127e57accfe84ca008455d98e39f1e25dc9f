@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50b44596_2a280ed8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-01T15:24:41Z",
+      "side": 1,
+      "message": "Delays are always dangerous, as you never know what may change timing in the future. See code review comment for idea on how to avoid this.",
+      "range": {
+        "startLine": 15,
+        "startChar": 17,
+        "endLine": 15,
+        "endChar": 34
+      },
+      "revId": "4191127e57accfe84ca008455d98e39f1e25dc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9216220_91a68697",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-01T15:24:41Z",
+      "side": 1,
+      "message": "nit: space is already limited in commit messages so I\u0027d nix the indent. Just start with the \"-\" left aligned. It\u0027s just easier to read the less line wrapping that is needed.",
+      "revId": "4191127e57accfe84ca008455d98e39f1e25dc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01fb33ac_370144a3",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-01T15:24:41Z",
+      "side": 1,
+      "message": "Instead of a delay, just add the appropriate dependency to the xyz.openbmc_project.State.BMC.service\n\nAfter\u003dxyz.openbmc_project.State.Chassis@0.service",
+      "revId": "4191127e57accfe84ca008455d98e39f1e25dc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf4d9c60_b40d8873",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-01T15:24:41Z",
+      "side": 1,
+      "message": "chassisId would be a better name for this parameter here and in the function prototype.",
+      "revId": "4191127e57accfe84ca008455d98e39f1e25dc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
