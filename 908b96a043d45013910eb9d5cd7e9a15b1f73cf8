@@ -34,6 +34,24 @@
       "parentUuid": "5c2c9059_dfd3a7b5",
       "revId": "908b96a043d45013910eb9d5cd7e9a15b1f73cf8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f84a7b93_4bc204ec",
+        "filename": "utils.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-02T18:27:29Z",
+      "side": 1,
+      "message": "Need to include the generated config file with the variables in it:\n#include \"config.h\"",
+      "parentUuid": "5f008202_c9bc9ae0",
+      "revId": "908b96a043d45013910eb9d5cd7e9a15b1f73cf8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
