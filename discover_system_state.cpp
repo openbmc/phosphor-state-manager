@@ -124,14 +124,6 @@ int main(int argc, char** argv)
             // one_time is set to None so use the customer setting
             info("One time not set, check user setting of power policy");
 
-#ifdef ONLY_RUN_APR_ON_POWER_LOSS
-            if (!phosphor::state::manager::utils::checkACLoss(hostId))
-            {
-                info(
-                    "Chassis power was not on prior to BMC reboot so do not run any power policy");
-                return 0;
-            }
-#endif
             auto reply = bus.call(methodUserSetting);
             reply.read(result);
             powerPolicy = std::get<std::string>(result);
@@ -183,6 +175,17 @@ int main(int argc, char** argv)
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
                 convertForMessage(server::Host::Transition::On));
         }
+        // Always execute power on if AlwaysOn is set, otherwise check config
+        // option (and AC loss status) on whether to execute other policy
+        // settings
+#ifdef ONLY_RUN_APR_ON_POWER_LOSS
+        else if (!phosphor::state::manager::utils::checkACLoss(hostId))
+        {
+            info(
+                "Chassis power was not on prior to BMC reboot so do not run any further power policy");
+            return 0;
+        }
+#endif
         else if (RestorePolicy::Policy::AlwaysOff ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
