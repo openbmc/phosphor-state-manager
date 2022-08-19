@@ -10,8 +10,8 @@ set -euo pipefail
 
 get_reboot_count()
 {
-    busctl get-property xyz.openbmc_project.State.Host \
-        /xyz/openbmc_project/state/host0 \
+    busctl get-property xyz.openbmc_project.State.Host"$1" \
+        /xyz/openbmc_project/state/host"$1" \
         xyz.openbmc_project.Control.Boot.RebootAttempts AttemptsLeft \
         | cut -d ' ' -f2
 }
@@ -37,7 +37,7 @@ sleep 5
 
 host_instance=$1
 
-reboot_count=$(get_reboot_count)
+reboot_count=$(get_reboot_count "$host_instance")
 if [ "$reboot_count" -eq 0 ]; then
     echo "reboot count is 0, go to host quiesce"
     host_quiesce "$host_instance"
