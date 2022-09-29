@@ -181,9 +181,12 @@ int main(int argc, char** argv)
 #ifdef ONLY_RUN_APR_ON_POWER_LOSS
         else if (!phosphor::state::manager::utils::checkACLoss(hostId))
         {
-            info(
-                "Chassis power was not on prior to BMC reboot so do not run any further power policy");
-            return 0;
+            if (ONLY_RUN_APR_ON_POWER_LOSS)
+            {
+                info(
+                    "Chassis power was not on prior to BMC reboot so do not run any further power policy");
+                return 0;
+            }
         }
 #endif
         else if (RestorePolicy::Policy::AlwaysOff ==
