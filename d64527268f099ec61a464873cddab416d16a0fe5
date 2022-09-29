@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8abeed35_36466a2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-09-29T02:26:10Z",
+      "side": 1,
+      "message": "Fix Power policy issue \"host always off after AC cycle with power policy is always-on and the host is off before AC\" after commit \"Only run power restore on AC losses\"",
+      "revId": "d64527268f099ec61a464873cddab416d16a0fe5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
