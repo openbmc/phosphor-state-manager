@@ -16,6 +16,14 @@ get_reboot_count()
         | cut -d ' ' -f2
 }
 
+get_restart_cause()
+{
+    busctl get-property xyz.openbmc_project.State.Host"$1" \
+        /xyz/openbmc_project/state/host"$1" \
+        xyz.openbmc_project.State.Host RestartCause \
+        | cut -d '"' -f2
+}
+
 # host instance id is input parameter to function
 host_quiesce()
 {
@@ -37,11 +45,21 @@ sleep 5
 
 host_instance=$1
 
+# Normally the standard power on path will determine if the system has reached
+# its reboot count and halt in Quiesce if so. But in the host-crash path this
+# standard path is not utilized, as it goes only through systemd targets. To
+# ensure the system does not end up in an endless reboot loop, put host into
+# Quiesce if reboot count is exhausted and the reason for the reboot was a
+# HostCrash
 reboot_count=$(get_reboot_count "$host_instance")
-if [ "$reboot_count" -eq 0 ]; then
-    echo "reboot count is 0, go to host quiesce"
+restart_cause=$(get_restart_cause "$host_instance")
+if [ "$reboot_count" -eq 0 ] && \
+   [ "$restart_cause" == "xyz.openbmc_project.State.Host.RestartCause.HostCrash" ];
+then
+    echo "reboot count is 0 and host crashed, go to host quiesce"
     host_quiesce "$host_instance"
 else
-    echo "reboot count is $reboot_count so reboot host"
+    echo "reboot count ($reboot_count) is greater then 0 or host did not" \
+         "crash so reboot host"
     host_reboot "$host_instance"
 fi
