@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c38f2b2_5c0b41da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-11-01T07:50:41Z",
+      "side": 1,
+      "message": "Done. Thanks.",
+      "parentUuid": "52fe9619_3874a1db",
+      "range": {
+        "startLine": 10,
+        "startChar": 61,
+        "endLine": 10,
+        "endChar": 66
+      },
+      "revId": "5547f5840e0b69a2b0553d6492ca55462da73f1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04eb1e8c_c543b4e5",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-01T06:41:28Z",
       "side": 1,
       "message": "why not obmc-chassis-powercycle@{}.target instead of obmc-chassis-powerreset@{}.target",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 11
+      },
+      "revId": "5547f5840e0b69a2b0553d6492ca55462da73f1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f84348f_20139ff2",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-11-01T07:50:41Z",
+      "side": 1,
+      "message": "Because the target file in the \"phosphor-state-manager\" recipe is named \"obmc-chassis-powerreset@target\", but the chassis transition property defined in the \"phosphor-dbus-interface\" recipe is \"PowerCycle\".\n\nDid you think we should change the name to \"obmc-chassis-powercycle@{}.target\", including the target filename?",
+      "parentUuid": "04eb1e8c_c543b4e5",
       "range": {
         "startLine": 49,
         "startChar": 0,
