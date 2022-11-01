@@ -93,6 +93,30 @@
       },
       "revId": "5547f5840e0b69a2b0553d6492ca55462da73f1a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b42dfc6e_22a1346c",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001412
+      },
+      "writtenOn": "2022-11-01T13:28:12Z",
+      "side": 1,
+      "message": "yes, if possible you could change both the places.",
+      "parentUuid": "3f84348f_20139ff2",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 11
+      },
+      "revId": "5547f5840e0b69a2b0553d6492ca55462da73f1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
