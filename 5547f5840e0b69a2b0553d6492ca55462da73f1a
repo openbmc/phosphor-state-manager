@@ -117,6 +117,30 @@
       },
       "revId": "5547f5840e0b69a2b0553d6492ca55462da73f1a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "343d600f_73f17406",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-01T16:10:30Z",
+      "side": 1,
+      "message": "The \"obmc-chassis-powerreset@.target\" is actually for a different function. It handles detecting if chassis power is on after a BMC reset and if it is on, it creates the /run/openbmc/chassis@%i-on file to indicate chassis power is already on after a BMC reboot.\n\nI recommend you create a new target for this function, obmc-chassis-powercycle@{}.target. At a high level this new target should call obmc-chassis-hard-poweroff@.target and then obmc-chassis-poweron@.target (or maybe obmc-host-start@.target if it wants to fully boot the system?)\n\nOne issue we had with the host-reboot path is that systemd does not handle well having 2 conflicting targets in the same target (i.e. chassis-off/on). I had to introduce a service, phosphor-reboot-host@.service that works around this systemd limitation. Something similar may be needed here for this powercycle target.",
+      "parentUuid": "b42dfc6e_22a1346c",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 11
+      },
+      "revId": "5547f5840e0b69a2b0553d6492ca55462da73f1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
