@@ -1,0 +1,5 @@
+[Unit]
+Description=Chassis%i Cycle
+After=multi-user.target
+Conflicts=obmc-chassis-poweroff@%i.target
+
