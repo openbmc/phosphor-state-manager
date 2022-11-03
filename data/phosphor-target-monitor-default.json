@@ -9,6 +9,9 @@
         "obmc-chassis-poweroff@0.target" : {
             "errorsToMonitor": ["default"],
             "errorToLog": "xyz.openbmc_project.State.Chassis.Error.PowerOffFailure"},
+        "obmc-chassis-powercycle@0.target" : {
+            "errorsToMonitor": ["default"],
+            "errorToLog": "xyz.openbmc_project.State.Chassis.Error.PowerCycleFailure"},
         "obmc-host-start@0.target" : {
             "errorsToMonitor": ["default"],
             "errorToLog": "xyz.openbmc_project.State.Host.Error.HostStartFailure"},
