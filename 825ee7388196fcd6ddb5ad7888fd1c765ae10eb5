@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08c198e1_a6ad3ae8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-04T18:44:29Z",
+      "side": 1,
+      "message": "Some commit message nuances. The \"Summary\" is your first line. The expectation is that this section of the commit message is where you explain why this commit is needed. So remove the \"Summary\" and just add some text about why this commit is needed (i.e. A new system is being designed which will utilize phosphor-state-manager and it requires the chassis system power cycle feature).",
+      "revId": "825ee7388196fcd6ddb5ad7888fd1c765ae10eb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dace83f_48d97184",
+        "filename": "target_files/obmc-chassis-powercycle@.target",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-04T18:44:29Z",
+      "side": 1,
+      "message": "I don\u0027t think you want this Conflicts. The \"powercycle\" will probably start this target under the covers (to power off) then call the power on target.",
+      "revId": "825ee7388196fcd6ddb5ad7888fd1c765ae10eb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
