@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a82cc14b_72f73760",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-11-07T15:09:48Z",
+      "side": 1,
+      "message": "Please check your git-config on this as well.",
+      "revId": "9aa1c2c638bfb3260e64e827361640f0affa7765",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
