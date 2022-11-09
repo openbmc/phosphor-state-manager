@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "d4c2c245_e2f45d5b",
         "filename": "README.md",
@@ -20,10 +21,34 @@
         "endChar": 13
       },
       "revId": "1157be7dcfc3ead4c40538150ed76d125306ad40",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62b907cf_1e42ddd6",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-09T21:40:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4c2c245_e2f45d5b",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "1157be7dcfc3ead4c40538150ed76d125306ad40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "bc611f95_30e84d35",
         "filename": "README.md",
@@ -43,8 +68,31 @@
         "endChar": 16
       },
       "revId": "1157be7dcfc3ead4c40538150ed76d125306ad40",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aac62a6_03090046",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-09T21:40:46Z",
+      "side": 1,
+      "message": "Nope not needed, this just implements the same d-bus interface as the host.",
+      "parentUuid": "bc611f95_30e84d35",
+      "range": {
+        "startLine": 60,
+        "startChar": 15,
+        "endLine": 60,
+        "endChar": 16
+      },
+      "revId": "1157be7dcfc3ead4c40538150ed76d125306ad40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
