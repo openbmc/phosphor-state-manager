@@ -6,6 +6,7 @@ unit_files = [
     'obmc-chassis-poweroff@.target',
     'obmc-chassis-poweron@.target',
     'obmc-chassis-powerreset@.target',
+    'obmc-chassis-powercycle@.target',
     'obmc-fan-control-ready@.target',
     'obmc-fan-control.target',
     'obmc-fan-watchdog-takeover.target',
