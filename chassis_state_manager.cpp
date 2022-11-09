@@ -45,6 +45,8 @@ constexpr auto CHASSIS_STATE_HARD_POWEROFF_TGT_FMT =
     "obmc-chassis-hard-poweroff@{}.target";
 constexpr auto CHASSIS_STATE_POWERON_TGT_FMT = "obmc-chassis-poweron@{}.target";
 constexpr auto CHASSIS_BLACKOUT_TGT_FMT = "obmc-chassis-blackout@{}.target";
+constexpr auto CHASSIS_STATE_POWERCYCLE_TGT_FMT =
+    "obmc-chassis-powercycle@{}.target";
 constexpr auto AUTO_POWER_RESTORE_SVC_FMT =
     "phosphor-discover-system-state@{}.service";
 constexpr auto ACTIVE_STATE = "active";
@@ -92,7 +94,9 @@ void Chassis::createSystemdTargetTable()
     systemdTargetTable = {
         // Use the hard off target to ensure we shutdown immediately
         {Transition::Off, fmt::format(CHASSIS_STATE_HARD_POWEROFF_TGT_FMT, id)},
-        {Transition::On, fmt::format(CHASSIS_STATE_POWERON_TGT_FMT, id)}};
+        {Transition::On, fmt::format(CHASSIS_STATE_POWERON_TGT_FMT, id)},
+        {Transition::PowerCycle,
+         fmt::format(CHASSIS_STATE_POWERCYCLE_TGT_FMT, id)}};
 }
 
 // TODO - Will be rewritten once sdbusplus client bindings are in place
