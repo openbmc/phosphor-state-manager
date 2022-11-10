@@ -1,7 +1,11 @@
 unit_files = [
     'phosphor-systemd-target-monitor.service',
     'phosphor-discover-system-state@.service',
+    'phosphor-power-start@.service',
+    'phosphor-power-stop@.service',
+    'phosphor-powered-off@.service',
     'phosphor-reboot-host@.service',
+    'phosphor-reset-chassis-on@.service',
     'phosphor-reset-host-reboot-attempts@.service',
     'phosphor-reset-host-recovery@.service',
     'phosphor-reset-host-running@.service',
