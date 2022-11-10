@@ -1,5 +1,5 @@
 [Unit]
-Description=Stop Power%i
+Description=Start Power Off for Chassis%i
 Wants=obmc-power-stop@%i.target
 Before=obmc-power-stop@%i.target
 Wants=obmc-power-stop-pre@%i.target
@@ -14,4 +14,4 @@ ExecStart=/bin/sh -c "busctl call `mapper get-service /org/openbmc/control/power
 SyslogIdentifier=obmc-power-stop
 
 [Install]
-WantedBy=obmc-host-stop@%i.target
+WantedBy=obmc-chassis-poweroff@%i.target

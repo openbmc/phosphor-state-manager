@@ -1,5 +1,5 @@
 [Unit]
-Description=Start Power%i
+Description=Start Power On for Chassis%i
 Wants=obmc-power-start@%i.target
 Before=obmc-power-start@%i.target
 Wants=obmc-power-start-pre@%i.target
@@ -17,4 +17,4 @@ ExecStart=/bin/sh -c "busctl call `mapper get-service /org/openbmc/control/power
 SyslogIdentifier=phosphor-power-start
 
 [Install]
-WantedBy=obmc-host-start@%i.target
+WantedBy=obmc-chassis-poweron@%i.target
