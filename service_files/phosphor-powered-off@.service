@@ -1,5 +1,5 @@
 [Unit]
-Description=Power is off to chassis%i
+Description=Power is off to Chassis%i
 After=phosphor-wait-power-off@%i.service
 Requires=phosphor-wait-power-off@%i.service
 
@@ -14,6 +14,7 @@ RemainAfterExit=no
 # services may conflict with this target to ensure they
 # are stopped at the appropriate time.
 ExecStart=/bin/systemctl start obmc-chassis-powered-off@%i.target
+SyslogIdentifier=phosphor-powered-off
 
 
 [Install]
