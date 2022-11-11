@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c01a3f1e_4f2f1628",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-11T21:35:32Z",
+      "side": 1,
+      "message": "AndrewJ noted on the mailing list that \"phosphor-power\" for the start of the service names is a bit confusing in that it could make people think the services are associated with the \"phosphor-power\" repo. Use the other common naming convention with OpenBMC instead, \"obmc\"",
+      "revId": "10d0b52aed27df93bfa3db337c00a554104c070a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
