@@ -16,6 +16,24 @@
       "message": "Pardon me for asking what is probably a bad question, but is the intention here that this service is called for system power on and the platform will need to provide a suitable daemon (phosphor-power? Something else platform specific if phosphor-power is not suitable?) and that daemon would handle any actual power on/off actions?",
       "revId": "427c42b189558e74430ee73721f1207d96e80686",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb875df_0d5f9381",
+        "filename": "service_files/obmc-power-start@.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-16T16:57:39Z",
+      "side": 1,
+      "message": "Yeah, the (unwritten?) rule is that if you want to use phosphor-state-manager, something must implement the org.openbmc.control.Power interface if you wish to power on/off your chassis. Currently within OpenBMC that\u0027s either from the phosphor-power repo or the op-pwrctl piece of phosphor-skeleton.\n\nNext up after these changes is to take some of the community feedback and improve on PSM documentation.",
+      "parentUuid": "e0bb990c_0d68004a",
+      "revId": "427c42b189558e74430ee73721f1207d96e80686",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
