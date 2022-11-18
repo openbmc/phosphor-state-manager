@@ -3,8 +3,8 @@
 This repository contains the software responsible for tracking and controlling
 the state of different objects within OpenBMC. This currently includes the BMC,
 Chassis, Host, and Hypervisor. The most critical feature of
-phosphor-state-manager software is its support for requests to power on and off
-the system by the user.
+phosphor-state-manager (PSM) software is its support for requests to power on
+and off the system by the user.
 
 This software also enforces any restore policy (i.e. auto power on system after
 a system power event or bmc reset) and ensures its states are updated correctly
@@ -27,12 +27,16 @@ state to/by the end user.
 phosphor-state-manager makes extensive use of systemd. There is a writeup
 [here][1] with an overview of systemd and its use by OpenBMC.
 
+phosphor-state-manager monitors for systemd targets to complete as a trigger
+to updating the its corresponding D-Bus property. When using PSM, a user must
+ensure all generic services installed within the PSM targets complete
+successfully in order to have PSM properly report states.
+
 phosphor-state-manager follows some basics design guidelines in its
 implementation and use of systemd:
 
 - Keep the different objects as independent as possible (host, chassis, bmc)
-- Use systemd targets for everything and keep the code within
-  phosphor-state-manager minimal
+- Use systemd targets for everything and keep the code within PSM minimal
 - Ensure it can support required external interfaces, but don't necessarily
   create 1x1 mappings otherwise every external interface will end up with its
   own special chassis or host state request
@@ -42,16 +46,24 @@ implementation and use of systemd:
 phosphor-state-manager implements states and state requests as defined in
 phosphor-dbus-interfaces for each object it supports.
 
-- [bmc][2]: The BMC has very minimal states. It is `Ready` once all services
-  within the default.target have executed. The only state change request you can
-  make of the BMC is for it to reboot itself.
-  - CurrentBMCState: NotReady, Ready
+- [bmc][2]: The BMC has very minimal states. It is `NotReady` when first
+  started and `Ready` once all services within the default.target have executed.
+  It is `Quiesced` when a critical service has entered the failed state. The
+  only state change request you can make of the BMC is for it to reboot itself.
+  - CurrentBMCState: NotReady, Ready, Quiesced
   - RequestedBMCTransition: Reboot
+  - Monitored systemd targets: multi-user.target and
+    obmc-bmc-service-quiesce@.target
 - [chassis][3]: The chassis represents the physical hardware in which the system
   is contained. It usually has the power supplies, fans, and other hardware
-  associated with it. It can be either `On` or `Off`.
-  - CurrentPowerState: On, Off
+  associated with it. It can be either `On`, `Off`, or in a fail state. A
+  `BrownOut` state indicates there is not enough chassis power to fully power
+  on and `UninterruptiblePowerSupply` indicates the chassis is running on a
+  UPS.
+  - CurrentPowerState: On, Off, BrownOut, UninterruptiblePowerSupply
   - RequestedPowerTransition: On, Off
+  - Monitored systemd targets: obmc-chassis-poweron@.target,
+    obmc-chassis-poweroff@.target
 - [host][4]: The host represents the software running on the system. In most
   cases this is an operating system of some sort. The host can be `Off`,
   `Running`, `TransitioningToRunning`, `TransitioningToOff`, `Quiesced`(error
@@ -60,18 +72,20 @@ phosphor-dbus-interfaces for each object it supports.
     Quiesced, DiagnosticMode
   - RequestedHostTransition: Off, On, Reboot, GracefulWarmReboot,
     ForceWarmReboot
+  - Monitored systemd targets: obmc-host-startmin@.target,
+    obmc-host-stop@.target, obmc-host-quiesce@.target,
+    obmc-host-diagnostic-mode@.target
 - [hypervisor][4]: The hypervisor is an optional package systems can install
   which tracks the state of the hypervisor on the system. This state manager
   object implements a limited subset of the host D-Bus interface.
   - CurrentHostState: Standby, TransitionToRunning, Running, Off, Quiesced
   - RequestedHostTransition: On
 
-As noted above, phosphor-state-manager provides a command line tool,
-[obmcutil][5], which takes a `state` parameter. This will use D-Bus commands to
-retrieve the above states and present them to the user. It also provides other
-commands which will send the appropriate D-Bus commands to the above properties
-to power on/off the chassis and host (see `obmcutil --help` within an OpenBMC
-system).
+As noted above, PSM provides a command line tool, [obmcutil][5], which takes a
+`state` parameter. This will use D-Bus commands to retrieve the above states and
+present them to the user. It also provides other commands which will send the
+appropriate D-Bus commands to the above properties to power on/off the chassis
+and host (see `obmcutil --help` within an OpenBMC system).
 
 The above objects also implement other D-Bus objects like power on hours, boot
 progress, reboot attempts, and operating system status. These D-Bus objects are
@@ -81,8 +95,7 @@ also defined out in the phosphor-dbus-interfaces repository.
 
 The [RestorePolicy][6] defines the behavior the user wants when the BMC is
 reset. If the chassis or host is on/running then this service will not run. If
-they are off then the `RestorePolicy` will be read and executed by
-phosphor-state-manager code.
+they are off then the `RestorePolicy` will be read and executed by PSM code.
 
 ## BMC Reset with Host and/or Chassis On
 
@@ -114,8 +127,8 @@ determines that power is on then it will do the following:
     successfully but they actually do nothing. This is what you would want in
     this case. Power is already on so you don't want to run the services to turn
     power on. You do want to get the obmc-chassis-poweron@0.target in the Active
-    state though so that the chassis object within phosphor-state-manager will
-    correctly report that the chassis is `On`
+    state though so that the chassis object within PSM will correctly report
+    that the chassis is `On`
 - Start a service to check if the host is on
 
 The chassis@0-on file is removed once the obmc-chassis-poweron@0.target becomes
