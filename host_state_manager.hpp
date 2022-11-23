@@ -14,7 +14,6 @@
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
 
 #include <filesystem>
-#include <functional>
 #include <string>
 
 namespace phosphor
@@ -60,15 +59,13 @@ class Host : public HostInherit
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
                 sdbusRule::path("/org/freedesktop/systemd1") +
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-            std::bind(std::mem_fn(&Host::sysStateChangeJobRemoved), this,
-                      std::placeholders::_1)),
+            [this](sdbusplus::message_t& m) { sysStateChangeJobRemoved(m); }),
         systemdSignalJobNew(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobNew") +
                 sdbusRule::path("/org/freedesktop/systemd1") +
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-            std::bind(std::mem_fn(&Host::sysStateChangeJobNew), this,
-                      std::placeholders::_1)),
+            [this](sdbusplus::message_t& m) { sysStateChangeJobNew(m); }),
         settings(bus, id), id(id)
     {
         // Enable systemd signals
