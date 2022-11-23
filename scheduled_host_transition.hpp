@@ -34,7 +34,7 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
         ScheduledHostTransitionInherit(
             bus, objPath, ScheduledHostTransition::action::defer_emit),
         bus(bus), id(id), event(event),
-        timer(event, std::bind(&ScheduledHostTransition::callback, this))
+        timer(event, [this](auto&) { callback(); })
     {
         initialize();
 

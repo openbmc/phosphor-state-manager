@@ -13,7 +13,6 @@
 
 #include <chrono>
 #include <filesystem>
-#include <functional>
 
 namespace phosphor
 {
@@ -54,11 +53,11 @@ class Chassis : public ChassisInherit
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
                 sdbusRule::path("/org/freedesktop/systemd1") +
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-            std::bind(std::mem_fn(&Chassis::sysStateChange), this,
-                      std::placeholders::_1)),
-        id(id), pohTimer(sdeventplus::Event::get_default(),
-                         std::bind(&Chassis::pohCallback, this),
-                         std::chrono::hours{1}, std::chrono::minutes{1})
+            [this](sdbusplus::message_t& m) { sysStateChange(m); }),
+        id(id),
+        pohTimer(
+            sdeventplus::Event::get_default(), [this](auto&) { pohCallback(); },
+            std::chrono::hours{1}, std::chrono::minutes{1})
     {
         subscribeToSystemdSignals();
 

@@ -41,13 +41,10 @@ class SystemdTargetLogging
                     "/org/freedesktop/systemd1") +
                 sdbusplus::bus::match::rules::interface(
                     "org.freedesktop.systemd1.Manager"),
-            std::bind(std::mem_fn(&SystemdTargetLogging::systemdUnitChange),
-                      this, std::placeholders::_1)),
+            [this](sdbusplus::message_t& m) { systemdUnitChange(m); }),
         systemdNameOwnedChangedSignal(
             bus, sdbusplus::bus::match::rules::nameOwnerChanged(),
-            std::bind(
-                std::mem_fn(&SystemdTargetLogging::processNameChangeSignal),
-                this, std::placeholders::_1))
+            [this](sdbusplus::message_t& m) { processNameChangeSignal(m); })
     {}
 
     /**

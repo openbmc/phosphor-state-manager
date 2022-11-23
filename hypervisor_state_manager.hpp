@@ -49,8 +49,7 @@ class Hypervisor : public HypervisorInherit
             sdbusRule::propertiesChanged(
                 "/xyz/openbmc_project/state/host0",
                 "xyz.openbmc_project.State.Boot.Progress"),
-            std::bind(std::mem_fn(&Hypervisor::bootProgressChangeEvent), this,
-                      std::placeholders::_1))
+            [this](sdbusplus::message_t& m) { bootProgressChangeEvent(m); })
     {}
 
     /** @brief Set value of HostTransition */

@@ -6,8 +6,6 @@
 
 #include <sdbusplus/bus.hpp>
 
-#include <functional>
-
 namespace phosphor
 {
 namespace state
@@ -40,8 +38,7 @@ class BMC : public BMCInherit
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
                 sdbusRule::path("/org/freedesktop/systemd1") +
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-            std::bind(std::mem_fn(&BMC::bmcStateChange), this,
-                      std::placeholders::_1)))
+            [this](sdbusplus::message_t& m) { bmcStateChange(m); }))
     {
         subscribeToSystemdSignals();
         discoverInitialState();
