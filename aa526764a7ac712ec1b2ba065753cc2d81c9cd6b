@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe9b3f27_953150f5",
+        "filename": "bmc_state_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2022-11-29T14:09:20Z",
+      "side": 1,
+      "message": "I see this for each one... is it necessary?  like to capture \u0027this\u0027?",
+      "range": {
+        "startLine": 41,
+        "startChar": 12,
+        "endLine": 41,
+        "endChar": 15
+      },
+      "revId": "aa526764a7ac712ec1b2ba065753cc2d81c9cd6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
