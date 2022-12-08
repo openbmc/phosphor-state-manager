@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d99fdf26_3f7562af",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-08T17:25:43Z",
+      "side": 1,
+      "message": "Not a huge fan of this change but oh-well.",
+      "revId": "2e56cd44368e33e3c2ab31cd2720d9ad5a323bf3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
