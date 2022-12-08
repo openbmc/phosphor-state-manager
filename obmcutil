@@ -7,7 +7,7 @@ osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryo
 bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs, stopofftargets"
 
 USAGE="Usage: obmcutil [-h] [--wait] [--verbose] [--id=<INSTANCE_ID>]
-                {$OPTS}"
+{$OPTS}"
 
 INTERFACE_ROOT=xyz.openbmc_project
 STATE_INTERFACE=$INTERFACE_ROOT.State
@@ -41,7 +41,7 @@ G_VERBOSE=
 # Instance id, default 0
 G_INSTANCE_ID="0"
 
-print_help ()
+function print_help()
 {
     echo "$USAGE"
     echo ""
@@ -86,7 +86,7 @@ print_help ()
     exit 0
 }
 
-run_timeout ()
+function run_timeout()
 {
     local timeout="$1"; shift
     local cmd="$*"
@@ -121,7 +121,7 @@ run_timeout ()
 
     if ! wait $wait_child; then
         echo "Unable to confirm '$G_ORIG_CMD' success" \
-        "within timeout period (${timeout}s)"
+            "within timeout period (${timeout}s)"
     fi
 
     if [ -n "$verbose_child" ]; then
@@ -129,7 +129,7 @@ run_timeout ()
     fi
 }
 
-run_cmd ()
+function run_cmd()
 {
     local cmd="$*";
 
@@ -140,44 +140,44 @@ run_cmd ()
     fi
 }
 
-set_property ()
+function set_property()
 {
     run_cmd busctl set-property "$@"
 }
 
-get_property ()
+function get_property()
 {
     G_WAIT=""
     run_cmd busctl get-property "$@"
 }
 
-state_query ()
+function state_query()
 {
     local state
     state=$(get_property "$@" | cut -d '"' -f2)
     printf "%-20s: %s\n" "$4" "$state"
 }
 
-print_usage_err ()
+function print_usage_err()
 {
     echo "ERROR: $1" >&2
     echo "$USAGE"
     exit 1
 }
 
-mask_systemd_target ()
+function mask_systemd_target()
 {
     target="$*"
     systemctl mask "$target"
 }
 
-unmask_systemd_target ()
+function unmask_systemd_target()
 {
     target="$*"
     systemctl unmask "$target"
 }
 
-disable_bmc_reboot ()
+function disable_bmc_reboot()
 {
     dir="/run/systemd/system/"
     file="reboot-guard.conf"
@@ -189,7 +189,7 @@ disable_bmc_reboot ()
     done
 }
 
-enable_bmc_reboot ()
+function enable_bmc_reboot()
 {
     dir="/run/systemd/system/"
     file="reboot-guard.conf"
@@ -202,7 +202,7 @@ enable_bmc_reboot ()
 }
 
 # will write blocking errors to stdout
-check_boot_block_errors ()
+function check_boot_block_errors()
 {
     # array of boot block objects
     blockArray=()
@@ -244,7 +244,7 @@ check_boot_block_errors ()
 }
 
 # helper function to check for boot block errors and notify user
-check_and_warn_boot_block()
+function check_and_warn_boot_block()
 {
     blockingErrors=$(check_boot_block_errors)
     if [ -n "$blockingErrors" ]; then
@@ -256,36 +256,36 @@ check_and_warn_boot_block()
 }
 
 # list all phosphor-logging entries
-list_logs()
+function list_logs()
 {
     # Look for any objects under logging that implement the
     # xyz.openbmc_project.Logging.Entry
     busctl -j call xyz.openbmc_project.ObjectMapper \
-            /xyz/openbmc_project/object_mapper \
-            xyz.openbmc_project.ObjectMapper \
-            GetSubTreePaths sias "/xyz/openbmc_project/logging/" 0 1 \
-            xyz.openbmc_project.Logging.Entry
+        /xyz/openbmc_project/object_mapper \
+        xyz.openbmc_project.ObjectMapper \
+        GetSubTreePaths sias "/xyz/openbmc_project/logging/" 0 1 \
+        xyz.openbmc_project.Logging.Entry
 }
 
 # display input log details
-show_log()
+function show_log()
 {
     busctl -j call xyz.openbmc_project.Logging \
-           "$1" \
-           org.freedesktop.DBus.Properties \
-           GetAll s xyz.openbmc_project.Logging.Entry
+        "$1" \
+        org.freedesktop.DBus.Properties \
+        GetAll s xyz.openbmc_project.Logging.Entry
 }
 
 # delete all phosphor-logging entries
-delete_logs()
+function delete_logs()
 {
     busctl call xyz.openbmc_project.Logging \
-           /xyz/openbmc_project/logging \
-           xyz.openbmc_project.Collection.DeleteAll DeleteAll
+        /xyz/openbmc_project/logging \
+        xyz.openbmc_project.Collection.DeleteAll DeleteAll
 }
 
 # stop all targets associated with powering off a system
-stop_off_targets()
+function stop_off_targets()
 {
     systemctl stop \
         obmc-chassis-powered-off@0.target \
@@ -297,7 +297,7 @@ stop_off_targets()
         obmc-power-stop@0.target
 }
 
-handle_cmd ()
+function handle_cmd()
 {
     case "$1" in
         chassisoff)
@@ -388,14 +388,12 @@ handle_cmd ()
             OBJECT=/org/openbmc/control/power0
             SERVICE=$(mapper get-service $OBJECT)
             INTERFACE=org.openbmc.control.Power
-            for property in pgood state pgood_timeout
-            do
+            for property in pgood state pgood_timeout; do
                 # get_property can potentially return several
                 # different formats of values, so we do the parsing outside
                 # of get_property depending on the query. These queries
                 # return 'i VALUE' formatted strings.
-                STATE=$(get_property "$SERVICE" $OBJECT $INTERFACE $property \
-                    | sed 's/i[ ^I]*//')
+                STATE=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$property" | sed 's/i[ ^I]*//')
                 printf "%s = %s\n" $property "$STATE"
             done
             ;;
@@ -417,7 +415,7 @@ handle_cmd ()
             PROPERTY=AutoReboot
             VALUE=false
             set_property "$SERVICE" $OBJECT $INTERFACE $PROPERTY "b" $VALUE
-        ;;
+            ;;
         hostrebooton)
             OBJECT=$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot
             SERVICE=$(mapper get-service $OBJECT)
