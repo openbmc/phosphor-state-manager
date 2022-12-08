@@ -18,9 +18,9 @@ OpenBMC system and utilizes D-Bus APIs. These D-Bus APIs are used for
 development and debug and are not intended for end users.
 
 As with all OpenBMC applications, interfaces and properties within
-phosphor-state-manager are D-Bus interfaces. These interfaces are then used
-by external interface protocols, such as Redfish and IPMI, to report and
-control state to/by the end user.
+phosphor-state-manager are D-Bus interfaces. These interfaces are then used by
+external interface protocols, such as Redfish and IPMI, to report and control
+state to/by the end user.
 
 ## State Tracking and Control
 
@@ -29,6 +29,7 @@ phosphor-state-manager makes extensive use of systemd. There is a writeup
 
 phosphor-state-manager follows some basics design guidelines in its
 implementation and use of systemd:
+
 - Keep the different objects as independent as possible (host, chassis, bmc)
 - Use systemd targets for everything and keep the code within
   phosphor-state-manager minimal
@@ -40,9 +41,10 @@ implementation and use of systemd:
 
 phosphor-state-manager implements states and state requests as defined in
 phosphor-dbus-interfaces for each object it supports.
+
 - [bmc][2]: The BMC has very minimal states. It is `Ready` once all services
-  within the default.target have executed. The only state change request you
-  can make of the BMC is for it to reboot itself.
+  within the default.target have executed. The only state change request you can
+  make of the BMC is for it to reboot itself.
   - CurrentBMCState: NotReady, Ready
   - RequestedBMCTransition: Reboot
 - [chassis][3]: The chassis represents the physical hardware in which the system
@@ -52,9 +54,8 @@ phosphor-dbus-interfaces for each object it supports.
   - RequestedPowerTransition: On, Off
 - [host][4]: The host represents the software running on the system. In most
   cases this is an operating system of some sort. The host can be `Off`,
-  `Running`, `TransitioningToRunning`, `TransitioningToOff`,
-  `Quiesced`(error condition), or in `DiagnosticMode`(collecting diagnostic
-  data for a failure)
+  `Running`, `TransitioningToRunning`, `TransitioningToOff`, `Quiesced`(error
+  condition), or in `DiagnosticMode`(collecting diagnostic data for a failure)
   - CurrentHostState: Off, Running, TransitioningToRunning, TransitioningToOff,
     Quiesced, DiagnosticMode
   - RequestedHostTransition: Off, On, Reboot, GracefulWarmReboot,
@@ -79,29 +80,31 @@ also defined out in the phosphor-dbus-interfaces repository.
 ## Restore Policy on Power Events
 
 The [RestorePolicy][6] defines the behavior the user wants when the BMC is
-reset. If the chassis or host is on/running then this service will not run.
-If they are off then the `RestorePolicy` will be read and executed by
+reset. If the chassis or host is on/running then this service will not run. If
+they are off then the `RestorePolicy` will be read and executed by
 phosphor-state-manager code.
 
 ## BMC Reset with Host and/or Chassis On
 
 In situations where the BMC is reset and the chassis and host are on and
 running, its critical that the BMC software do two things:
+
 - Never impact the state of the system (causing a power off of a running system
-is very bad)
+  is very bad)
 - Ensure the BMC, Chassis, and Host states accurately represent the state of the
-system.
+  system.
 
 Note that some of this logic is provided via service files in system-specific
-meta layers. That is because the logic to determine if the chassis is on or
-if the host is running can vary from system to system. The requirement to
-create the files defined below and ensure the common targets go active is a
-must for anyone wishing to enable this feature.
+meta layers. That is because the logic to determine if the chassis is on or if
+the host is running can vary from system to system. The requirement to create
+the files defined below and ensure the common targets go active is a must for
+anyone wishing to enable this feature.
 
 phosphor-state-manager discovers state vs. trying to cache and save states. This
 ensure it's always getting the most accurate state information. It discovers the
 chassis state by checking the `pgood` value from the power application. If it
 determines that power is on then it will do the following:
+
 - Create a file called /run/openbmc/chassis@0-on
   - The presence of this file tells the services to alter their behavior because
     the chassis is already powered on
@@ -121,6 +124,7 @@ required by this target).
 
 The logic to check if the host is on sends a command to the host, and if a
 response is received then similar logic to chassis is done:
+
 - Create a file called /run/openbmc/host@0-on
 - Start the obmc-host-start@0.target
   - Similar to above, most services will not run due to the file being created
@@ -132,6 +136,7 @@ obmc-host-startmin@0.target become active (i.e. all service have been
 successfully started which are wanted or required by these targets).
 
 ## Building the Code
+
 ```
 To build this package, do the following steps:
 
@@ -142,8 +147,12 @@ To clean the repository again run `rm -rf build`.
 ```
 
 [1]: https://github.com/openbmc/docs/blob/master/architecture/openbmc-systemd.md
-[2]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/BMC.interface.yaml
-[3]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/Chassis.interface.yaml
-[4]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/Host.interface.yaml
+[2]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/BMC.interface.yaml
+[3]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/Chassis.interface.yaml
+[4]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/Host.interface.yaml
 [5]: https://github.com/openbmc/phosphor-state-manager/blob/master/obmcutil
-[6]: https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Control/Power/RestorePolicy.interface.yaml
+[6]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Control/Power/RestorePolicy.interface.yaml

@@ -1,5 +1,5 @@
 {
-    "services" : [
+    "services": [
         "xyz.openbmc_project.biosconfig_manager.service",
         "xyz.openbmc_project.Dump.Manager.service",
         "xyz.openbmc_project.EntityManager.service",
