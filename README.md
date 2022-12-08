@@ -137,14 +137,12 @@ successfully started which are wanted or required by these targets).
 
 ## Building the Code
 
-```
 To build this package, do the following steps:
 
-    1. meson build
-    2. ninja -C build
+1. `meson setup build`
+2. `ninja -C build`
 
 To clean the repository again run `rm -rf build`.
-```
 
 [1]: https://github.com/openbmc/docs/blob/master/architecture/openbmc-systemd.md
 [2]:
