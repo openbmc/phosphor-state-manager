@@ -163,7 +163,7 @@ bool isChassiPowerOn(sdbusplus::bus_t& bus, size_t id)
     return false;
 }
 
-bool isHostRunning(size_t id)
+bool __attribute__((weak)) isHostRunning(size_t id)
 {
     info("Check if host is running");
 

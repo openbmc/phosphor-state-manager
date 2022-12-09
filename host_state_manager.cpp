@@ -27,6 +27,10 @@
 #include <map>
 #include <string>
 
+#if HOST_CHECK_OPTIONAL
+#include "host_check_optional.hpp"
+#endif
+
 // Register class version with Cereal
 CEREAL_CLASS_VERSION(phosphor::state::manager::Host, CLASS_VERSION)
 
