@@ -78,6 +78,14 @@ if(get_option('warm-reboot').enabled())
     add_project_arguments('-DENABLE_WARM_REBOOT',language:'cpp')
 endif
 
+if not get_option('optional-host-check').disabled()
+  add_project_arguments(
+    cpp.get_supported_arguments([
+        '-DHOST_CHECK_OPTIONAL',
+    ]),
+    language : 'cpp')
+endif
+
 sdbusplus = dependency('sdbusplus')
 sdeventplus = dependency('sdeventplus')
 phosphorlogging = dependency('phosphor-logging')
@@ -121,24 +129,39 @@ if not has_cereal
     cereal = cereal_proj.dependency('cereal')
 endif
 
-executable('phosphor-host-state-manager',
-            'host_state_manager.cpp',
-            'host_state_manager_main.cpp',
-            'settings.cpp',
-            'host_check.cpp',
-            'utils.cpp',
-            dependencies: [
-                cereal,
-                fmt,
-                libgpiod,
-                phosphordbusinterfaces,
-                phosphorlogging,
-                sdbusplus,
-                sdeventplus,
-            ],
+host_state_dependencies = [
+  cereal,
+  fmt,
+  libgpiod,
+  phosphordbusinterfaces,
+  phosphorlogging,
+  sdbusplus,
+  sdeventplus
+]
+srcfile_hoststate = [
+  'host_state_manager.cpp',
+  'host_state_manager_main.cpp',
+  'settings.cpp',
+  'utils.cpp',
+]
+
+if not get_option('optional-host-check').disabled()
+  executable(
+    'phosphor-host-state-manager',
+    srcfile_hoststate + ['host_check_optional.cpp'],
+    dependencies: host_state_dependencies,
     implicit_include_directories: true,
     install: true
-)
+  )
+else
+  executable(
+    'phosphor-host-state-manager',
+    srcfile_hoststate + ['host_check.cpp'],
+    dependencies: host_state_dependencies,
+    implicit_include_directories: true,
+    install: true
+  )
+endif
 
 executable('phosphor-hypervisor-state-manager',
             'hypervisor_state_manager.cpp',
