@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "652f9f1a_9a220e0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-12T20:47:08Z",
+      "side": 1,
+      "message": "Please have a single summary line under 50 chars followed by a blank line.",
+      "revId": "359625cb6eaa01a3378940042537ab4ffaff4e51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dcf8c19_affa38ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-12T20:47:08Z",
+      "side": 1,
+      "message": "Please provide more of a \"why\" for this commit. i.e. why do you need this or think it\u0027s a valid new function.",
+      "revId": "359625cb6eaa01a3378940042537ab4ffaff4e51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "313fe4ab_f0f53be6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-12T20:47:08Z",
+      "side": 1,
+      "message": "nit: \"Tested:\"",
+      "revId": "359625cb6eaa01a3378940042537ab4ffaff4e51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
