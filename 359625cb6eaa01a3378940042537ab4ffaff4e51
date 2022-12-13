@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaab232f_6618925d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-12-13T02:32:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "652f9f1a_9a220e0f",
+      "revId": "359625cb6eaa01a3378940042537ab4ffaff4e51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dcf8c19_affa38ca",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee6258bf_ab29e2ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-12-13T02:32:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dcf8c19_affa38ca",
+      "revId": "359625cb6eaa01a3378940042537ab4ffaff4e51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "313fe4ab_f0f53be6",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-12-12T20:47:08Z",
       "side": 1,
       "message": "nit: \"Tested:\"",
+      "revId": "359625cb6eaa01a3378940042537ab4ffaff4e51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92b89e00_a6eea84d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-12-13T02:32:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "313fe4ab_f0f53be6",
       "revId": "359625cb6eaa01a3378940042537ab4ffaff4e51",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
