@@ -124,3 +124,8 @@ option('only-run-apr-on-power-loss', type : 'boolean',
     value : 'false',
     description : 'Only run automatic restore policy due to loss of AC power.'
 )
+
+option('state-manager', type: 'feature',
+    value: 'enabled',
+    description: 'Enable state manager to build according dependencies' 
+)
