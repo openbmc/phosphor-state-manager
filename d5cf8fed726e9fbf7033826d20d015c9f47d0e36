@@ -16,6 +16,24 @@
       "message": "Can you elaborate more about why we need this change?",
       "revId": "d5cf8fed726e9fbf7033826d20d015c9f47d0e36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1862f091_86af2346",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001671
+      },
+      "writtenOn": "2022-12-27T01:58:51Z",
+      "side": 1,
+      "message": "In current version, we didn\u0027t verify gtest and gmock is available or not. But we should make sure gtest and gmock is available to use or we will need to find substitute solution and corresponding log message.",
+      "parentUuid": "77cb48bc_3785fb1b",
+      "revId": "d5cf8fed726e9fbf7033826d20d015c9f47d0e36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
