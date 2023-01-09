@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55dc2912_97a4f0db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-01-09T20:20:45Z",
+      "side": 1,
+      "message": "I\u0027m going to need a bit more info on why this commit is needed? Why would you not want to build state-manager in the state-manager repo?\n\nAlso, please don\u0027t exceed 72 chars",
+      "revId": "a74c42733a6b0cd7379ed79230f3aa69e4686c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7c3a963_7e77941f",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-01-09T20:20:45Z",
+      "side": 1,
+      "message": "Added a blank space",
+      "range": {
+        "startLine": 130,
+        "startChar": 71,
+        "endLine": 130,
+        "endChar": 72
+      },
+      "revId": "a74c42733a6b0cd7379ed79230f3aa69e4686c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
