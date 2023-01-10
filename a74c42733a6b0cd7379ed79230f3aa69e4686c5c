@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93622139_b80e31ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001671
+      },
+      "writtenOn": "2023-01-10T03:59:23Z",
+      "side": 1,
+      "message": "Updated with the commit message.",
+      "parentUuid": "3f27b81c_2e62559c",
+      "revId": "a74c42733a6b0cd7379ed79230f3aa69e4686c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7c3a963_7e77941f",
         "filename": "meson_options.txt",
         "patchSetId": 2
@@ -49,6 +67,30 @@
       "writtenOn": "2023-01-09T20:20:45Z",
       "side": 1,
       "message": "Added a blank space",
+      "range": {
+        "startLine": 130,
+        "startChar": 71,
+        "endLine": 130,
+        "endChar": 72
+      },
+      "revId": "a74c42733a6b0cd7379ed79230f3aa69e4686c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4289a818_2e3df63f",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1001671
+      },
+      "writtenOn": "2023-01-10T03:59:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7c3a963_7e77941f",
       "range": {
         "startLine": 130,
         "startChar": 71,
