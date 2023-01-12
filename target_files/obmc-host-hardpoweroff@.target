@@ -1,0 +1,3 @@
+[Unit]
+Description=Power%i Host Hard Power Off
+After=multi-user.target

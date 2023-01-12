@@ -35,6 +35,10 @@
         "obmc-host-reboot@0.target": {
             "errorsToMonitor": ["default"],
             "errorToLog": "xyz.openbmc_project.State.Host.Error.HostRebootFailure"
+        },
+        "obmc-host-hardpoweroff@0.target": {
+            "errorsToMonitor": ["default"],
+            "errorToLog": "xyz.openbmc_project.State.Host.Error.HostHardPowerOffFailure"
         }
     }
 }
