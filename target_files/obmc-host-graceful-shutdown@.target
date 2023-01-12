@@ -1,0 +1,5 @@
+[Unit]
+Description=Power%i Host Graceful Shutdown
+After=multi-user.target
+OnFailure=obmc-chassis-poweroff@%i.target
+OnFailureJobMode=flush
