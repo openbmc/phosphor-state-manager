@@ -112,6 +112,8 @@ void Host::createSystemdTargetMaps()
         {Transition::Off, fmt::format("obmc-host-shutdown@{}.target", id)},
         {Transition::On, fmt::format("obmc-host-start@{}.target", id)},
         {Transition::Reboot, fmt::format("obmc-host-reboot@{}.target", id)},
+        {Transition::GracefulShutdown,
+         fmt::format("obmc-host-graceful-shutdown@{}.target", id)},
 // Some systems do not support a warm reboot so just map the reboot
 // requests to our normal cold reboot in that case
 #if ENABLE_WARM_REBOOT
