@@ -56,6 +56,13 @@ int main(int argc, char** argv)
     phosphor::state::manager::ScheduledHostTransition manager(
         bus, objPathInst.c_str(), hostId, event);
 
+    // For backwards compatibility, request a busname without host id if
+    // input id is 0.
+    if (hostId == 0)
+    {
+        bus.request_name(SCHEDULED_HOST_TRANSITION_BUSNAME);
+    }
+
     bus.request_name((std::string{SCHEDULED_HOST_TRANSITION_BUSNAME} +
                       std::to_string(hostId))
                          .c_str());
