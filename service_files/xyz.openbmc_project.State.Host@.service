@@ -9,6 +9,10 @@ After=obmc-mapper.target
 After=phosphor-ipmi-host.service
 After=pldmd.service
 Before=obmc-host-reset@%i.target
+Wants=xyz.openbmc_project.Settings.service
+After=xyz.openbmc_project.Settings.service
+Wants=xyz.openbmc_project.Dump.Manager.service
+After=xyz.openbmc_project.Dump.Manager.service
 
 [Service]
 ExecStart=/usr/bin/phosphor-host-state-manager --host %i
