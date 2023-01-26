@@ -4,7 +4,7 @@ Wants=obmc-power-start-pre@%i.target
 Before=obmc-power-start-pre@%i.target
 Wants=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
 After=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
-After=op-reset-chassis-on@%i.service
+After=phosphor-reset-chassis-on@%i.service
 Conflicts=obmc-chassis-poweroff@%i.target
 ConditionPathExists=!/run/openbmc/chassis@%i-on
 
