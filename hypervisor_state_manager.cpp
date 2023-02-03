@@ -46,7 +46,11 @@ server::Host::Transition Hypervisor::requestedHostTransition(Transition value)
 
 server::Host::HostState Hypervisor::currentHostState(HostState value)
 {
-    info("Change to Hypervisor State: {HYP_STATE}", "HYP_STATE", value);
+    // Only log a message if this has changed since last
+    if (value != server::Host::currentHostState())
+    {
+        info("Change to Hypervisor State: {HYP_STATE}", "HYP_STATE", value);
+    }
     return server::Host::currentHostState(value);
 }
 
