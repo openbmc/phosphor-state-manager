@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b65bc7db_f0bb637c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-02-13T14:42:48Z",
+      "side": 1,
+      "message": "Please come up with a single line summary under 52 chars followed by a line feed",
+      "revId": "57d5f3b90a873a98e19b8e5b5654a8d9b0719714",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cddfa03_d8061a86",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -92,6 +109,23 @@
         "endLine": 15,
         "endChar": 35
       },
+      "revId": "57d5f3b90a873a98e19b8e5b5654a8d9b0719714",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "457e79f7_d1e80d3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-02-13T14:42:48Z",
+      "side": 1,
+      "message": "Overall the design within host-check is generic, it looks for \"something\" to implement the firmware running interface. If it doesn\u0027t find it, it doesn\u0027t do anything, if it does find it, it reads it. If you have a different way of doing this logic, just have it implement it under that interface. If you don\u0027t want it, don\u0027t implement it on your system.\n\nAs noted earlier, please take a look at the GPIO implementation in state-manager. Adding a -1 to this review until we get that investigation done.",
       "revId": "57d5f3b90a873a98e19b8e5b5654a8d9b0719714",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
