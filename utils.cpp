@@ -21,12 +21,33 @@ namespace utils
 
 PHOSPHOR_LOG2_USING;
 
+constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-std::string getService(sdbusplus::bus_t& bus, std::string path,
+void subscribeToSystemdSignals(sdbusplus::bus::bus& bus)
+{
+    auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                      SYSTEMD_INTERFACE, "Subscribe");
+
+    try
+    {
+        bus.call(method);
+    }
+    catch (const sdbusplus::exception::exception& e)
+    {
+        error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
+        throw std::runtime_error("Unable to subscribe to systemd signals");
+    }
+    return;
+}
+
+std::string getService(sdbusplus::bus::bus& bus, std::string path,
                        std::string interface)
 {
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,

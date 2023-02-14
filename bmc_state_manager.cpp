@@ -116,24 +116,6 @@ void BMC::discoverInitialState()
     return;
 }
 
-void BMC::subscribeToSystemdSignals()
-{
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "Subscribe");
-
-    try
-    {
-        this->bus.call(method);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
-        elog<InternalFailure>();
-    }
-
-    return;
-}
-
 void BMC::executeTransition(const Transition tranReq)
 {
     // HardReboot does not shutdown any services and immediately transitions
