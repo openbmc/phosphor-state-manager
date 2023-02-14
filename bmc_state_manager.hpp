@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utils.hpp"
 #include "xyz/openbmc_project/State/BMC/server.hpp"
 
 #include <linux/watchdog.h>
@@ -40,7 +41,7 @@ class BMC : public BMCInherit
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             [this](sdbusplus::message_t& m) { bmcStateChange(m); }))
     {
-        subscribeToSystemdSignals();
+        utils::subscribeToSystemdSignals(bus);
         discoverInitialState();
         discoverLastRebootCause();
         this->emit_object_added();
@@ -74,11 +75,6 @@ class BMC : public BMCInherit
      * @brief discover the state of the bmc
      **/
     void discoverInitialState();
-
-    /**
-     * @brief subscribe to the systemd signals
-     **/
-    void subscribeToSystemdSignals();
 
     /** @brief Execute the transition request
      *

@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "settings.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/State/Host/server.hpp"
 
 #include <cereal/access.hpp>
@@ -69,7 +70,7 @@ class Host : public HostInherit
         settings(bus, id), id(id)
     {
         // Enable systemd signals
-        subscribeToSystemdSignals();
+        utils::subscribeToSystemdSignals(bus);
 
         // create map of target name base on host id
         createSystemdTargetMaps();
@@ -151,15 +152,6 @@ class Host : public HostInherit
     }
 
   private:
-    /**
-     * @brief subscribe to the systemd signals
-     *
-     * This object needs to capture when it's systemd targets complete
-     * so it can keep it's state updated
-     *
-     **/
-    void subscribeToSystemdSignals();
-
     /**
      * @brief Determine initial host state and set internally
      *

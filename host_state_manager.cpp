@@ -59,22 +59,6 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
-void Host::subscribeToSystemdSignals()
-{
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "Subscribe");
-    try
-    {
-        this->bus.call_noreply(method);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
-        elog<InternalFailure>();
-    }
-    return;
-}
-
 void Host::determineInitialState()
 {
     if (stateActive(getTarget(server::Host::HostState::Running)) ||

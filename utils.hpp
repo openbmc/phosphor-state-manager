@@ -12,6 +12,14 @@ namespace manager
 namespace utils
 {
 
+/** @brief Tell systemd to generate d-bus events
+ *
+ * @param[in] bus          - The Dbus bus object
+ *
+ * @return void, will throw exception on failure
+ */
+void subscribeToSystemdSignals(sdbusplus::bus::bus& bus);
+
 /** @brief Get service name from object path and interface
  *
  * @param[in] bus          - The Dbus bus object

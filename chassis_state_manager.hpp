@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "utils.hpp"
 #include "xyz/openbmc_project/State/Chassis/server.hpp"
 #include "xyz/openbmc_project/State/PowerOnHours/server.hpp"
 
@@ -59,7 +60,7 @@ class Chassis : public ChassisInherit
             sdeventplus::Event::get_default(), [this](auto&) { pohCallback(); },
             std::chrono::hours{1}, std::chrono::minutes{1})
     {
-        subscribeToSystemdSignals();
+        utils::subscribeToSystemdSignals(bus);
 
         createSystemdTargetTable();
 
@@ -112,15 +113,6 @@ class Chassis : public ChassisInherit
      *  @return True if PSU power is good, false otherwise
      */
     bool determineStatusOfPSUPower();
-
-    /**
-     * @brief subscribe to the systemd signals
-     *
-     * This object needs to capture when it's systemd targets complete
-     * so it can keep it's state updated
-     *
-     **/
-    void subscribeToSystemdSignals();
 
     /** @brief Start the systemd unit requested
      *
