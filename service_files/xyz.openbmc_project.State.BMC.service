@@ -2,8 +2,6 @@
 Description=Phosphor BMC State Manager
 Before=mapper-wait@-xyz-openbmc_project-state-bmc.service
 After=xyz.openbmc_project.State.Chassis@0.service
-Wants=obmc-mapper.target
-After=obmc-mapper.target
 
 
 [Service]
