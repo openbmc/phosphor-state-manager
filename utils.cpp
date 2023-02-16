@@ -8,6 +8,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <chrono>
 #include <filesystem>
 
 namespace phosphor
@@ -18,6 +19,8 @@ namespace manager
 {
 namespace utils
 {
+
+using namespace std::literals::chrono_literals;
 
 PHOSPHOR_LOG2_USING;
 
@@ -37,7 +40,12 @@ void subscribeToSystemdSignals(sdbusplus::bus::bus& bus)
 
     try
     {
-        bus.call(method);
+        // On OpenBMC based systems, systemd has had a few situations where it
+        // has been unable to respond to this call within the default d-bus
+        // timeout of 25 seconds. This is due to the large amount of work being
+        // done by systemd during OpenBMC startup. Set the timeout for this call
+        // to 60 seconds (worst case seen was around 30s so double it).
+        bus.call(method, std::chrono::microseconds(60s));
     }
     catch (const sdbusplus::exception::exception& e)
     {
