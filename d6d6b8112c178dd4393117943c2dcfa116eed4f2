@@ -22,6 +22,30 @@
       },
       "revId": "d6d6b8112c178dd4393117943c2dcfa116eed4f2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14f419bc_b831ae19",
+        "filename": "utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-02-17T19:54:26Z",
+      "side": 1,
+      "message": "Good point, Patrick simplified these with the _t",
+      "parentUuid": "0d3955fb_6f677860",
+      "range": {
+        "startLine": 42,
+        "startChar": 17,
+        "endLine": 42,
+        "endChar": 49
+      },
+      "revId": "d6d6b8112c178dd4393117943c2dcfa116eed4f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
