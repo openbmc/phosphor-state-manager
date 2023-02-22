@@ -16,6 +16,24 @@
       "message": "I\u0027m surprised this cast is required.  We probably should clean up the sdbusplus APIs to make this saner.",
       "revId": "6ecd0188bf33fb2670b2096f00fa5443873de478",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f351d82e_96906f38",
+        "filename": "utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-02-22T19:01:45Z",
+      "side": 1,
+      "message": "oh, didn\u0027t even think to try without it.",
+      "parentUuid": "102a3365_b811bea0",
+      "revId": "6ecd0188bf33fb2670b2096f00fa5443873de478",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
