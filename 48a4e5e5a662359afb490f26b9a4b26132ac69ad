@@ -1,0 +1,10 @@
+Code-Review+1: Patrick Williams <patrick@stwcx.xyz>
+Code-Review+1: Shawn McCarney <shawnmm@us.ibm.com>
+Code-Review+1: Matt Spinler <spinler@us.ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Andrew Geissler <andrew@geissonator.com>
+Submitted-by: Andrew Geissler <andrew@geissonator.com>
+Submitted-at: Mon, 27 Feb 2023 14:09:36 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/61018
+Project: openbmc/phosphor-state-manager
+Branch: refs/heads/master
