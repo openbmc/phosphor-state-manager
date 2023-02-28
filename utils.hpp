@@ -18,7 +18,7 @@ namespace utils
  *
  * @return void, will throw exception on failure
  */
-void subscribeToSystemdSignals(sdbusplus::bus::bus& bus);
+void subscribeToSystemdSignals(sdbusplus::bus_t& bus);
 
 /** @brief Get service name from object path and interface
  *

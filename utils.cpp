@@ -33,7 +33,7 @@ constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
-void subscribeToSystemdSignals(sdbusplus::bus::bus& bus)
+void subscribeToSystemdSignals(sdbusplus::bus_t& bus)
 {
     auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                       SYSTEMD_INTERFACE, "Subscribe");
@@ -55,7 +55,7 @@ void subscribeToSystemdSignals(sdbusplus::bus::bus& bus)
     return;
 }
 
-std::string getService(sdbusplus::bus::bus& bus, std::string path,
+std::string getService(sdbusplus::bus_t& bus, std::string path,
                        std::string interface)
 {
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
