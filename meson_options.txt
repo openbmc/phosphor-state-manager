@@ -13,6 +13,12 @@ option(
 )
 
 option(
+    'host-sched-objpath', type: 'string',
+    value: '/xyz/openbmc_project/scheduled/host',
+    description: 'The scheduled host Dbus root.',
+)
+
+option(
     'hypervisor-busname', type: 'string',
     value: 'xyz.openbmc_project.State.Hypervisor',
     description: 'The Hypervisor DBus busname to own.',

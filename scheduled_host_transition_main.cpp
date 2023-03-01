@@ -41,7 +41,7 @@ int main(int argc, char** argv)
     auto bus = sdbusplus::bus::new_default();
 
     // For now, we only have one instance of the host
-    auto objPathInst = std::string{HOST_OBJPATH} + std::to_string(hostId);
+    auto objPathInst = std::string{HOST_SCHED_OBJPATH} + std::to_string(hostId);
 
     // Check SCHEDULED_HOST_TRANSITION_PERSIST_PATH
     auto dir = fs::path(SCHEDULED_HOST_TRANSITION_PERSIST_PATH).parent_path();

@@ -20,6 +20,8 @@ conf.set_quoted(
 conf.set_quoted(
     'HOST_OBJPATH', get_option('host-objpath'))
 conf.set_quoted(
+    'HOST_SCHED_OBJPATH', get_option('host-sched-objpath'))
+conf.set_quoted(
     'HYPERVISOR_BUSNAME', get_option('hypervisor-busname'))
 conf.set_quoted(
     'HYPERVISOR_OBJPATH', get_option('hypervisor-objpath'))
