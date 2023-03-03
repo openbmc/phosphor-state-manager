@@ -178,7 +178,7 @@ int main(int argc, char** argv)
         // Always execute power on if AlwaysOn is set, otherwise check config
         // option (and AC loss status) on whether to execute other policy
         // settings
-#ifdef ONLY_RUN_APR_ON_POWER_LOSS
+#if ONLY_RUN_APR_ON_POWER_LOSS
         else if (!phosphor::state::manager::utils::checkACLoss(hostId))
         {
             info(
