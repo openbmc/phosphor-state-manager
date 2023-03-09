@@ -34,6 +34,24 @@
       "parentUuid": "8e42b27f_8155f322",
       "revId": "7ec6b2c4484d231793cd1ad10864e2c11f5a7595",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da2fe760_27519075",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-03-09T03:01:23Z",
+      "side": 1,
+      "message": "The CI test will pass after hard power off was added in phosphor-dbus-interfaces",
+      "parentUuid": "f9fae43d_e032d2f6",
+      "revId": "7ec6b2c4484d231793cd1ad10864e2c11f5a7595",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
