@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b2d2d17_9b9d7b46",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-03-27T21:59:05Z",
+      "side": 1,
+      "message": "Similar to how the other paths were done, lets put this in the meson config files so others could override this path if their system were different.",
+      "revId": "96273e453bdf408dc8f9447ae04258b62af71cd9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bff8f9fe_8e9b2879",
         "filename": "secure_boot_check.cpp",
         "patchSetId": 1
@@ -43,6 +60,47 @@
         "endLine": 23,
         "endChar": 79
       },
+      "revId": "96273e453bdf408dc8f9447ae04258b62af71cd9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f2cdd34_5d3a9bcb",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-03-27T21:59:05Z",
+      "side": 1,
+      "message": "Yeah, we\u0027ll def want to know why we failed in the log. Also, are we sure every system that will run this function will have this TPM path? If it\u0027s easier you can just create the error in this function.",
+      "parentUuid": "bff8f9fe_8e9b2879",
+      "range": {
+        "startLine": 23,
+        "startChar": 7,
+        "endLine": 23,
+        "endChar": 79
+      },
+      "revId": "96273e453bdf408dc8f9447ae04258b62af71cd9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "378fb43e_592ca3a0",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-03-27T21:59:05Z",
+      "side": 1,
+      "message": "Please provide a brief comment here on what this function is",
       "revId": "96273e453bdf408dc8f9447ae04258b62af71cd9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
