@@ -11,6 +11,37 @@
 PHOSPHOR_LOG2_USING;
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+constexpr auto TPM_PATH = "/sys/class/tpm/tpm0/pcr-sha256/0";
+
+bool checkTpmMeasurement()
+{
+    bool tpmError = false;
+
+    if (!std::filesystem::exists(TPM_PATH))
+    {
+        tpmError = true;
+        error("TPM measurement file does not exist: {FILE}", "FILE", TPM_PATH);
+    }
+    else
+    {
+        std::string tpmValueStr;
+        std::ifstream tpmFile(TPM_PATH);
+
+        tpmFile >> tpmValueStr;
+        if (tpmValueStr.empty())
+        {
+            tpmError = true;
+            error("TPM measurement value is empty: {FILE}", "FILE", TPM_PATH);
+        }
+        else if (tpmValueStr == "0")
+        {
+            tpmError = true;
+            error("TPM measurement value is 0: {FILE}", "FILE", TPM_PATH);
+        }
+        tpmFile.close();
+    }
+    return tpmError;
+}
 
 // Utilize the QuiesceOnHwError setting as an indication that the system
 // is operating in an environment where the user should be notified of
@@ -137,6 +168,18 @@ int main()
                     Warning,
                 additionalData);
         }
+    }
+
+    if (checkTpmMeasurement())
+    {
+        std::map<std::string, std::string> additionalData;
+        additionalData.emplace("TPM_PATH", TPM_PATH);
+        auto bus = sdbusplus::bus::new_default();
+        phosphor::state::manager::utils::createError(
+            bus, "xyz.openbmc_project.State.Error.TpmMeasurementFail",
+            sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                Critical,
+            additionalData);
     }
 
     return 0;
