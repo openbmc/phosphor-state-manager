@@ -130,3 +130,9 @@ option('only-run-apr-on-power-loss', type : 'boolean',
     value : 'false',
     description : 'Only run automatic restore policy due to loss of AC power.'
 )
+
+option('sysfs-tpm-measurement-path', type : 'string',
+    value : '/sys/class/tpm/tpm0/pcr-sha256/0',
+    description : 'The sysfs path to the tpm measurement value.',
+)
+

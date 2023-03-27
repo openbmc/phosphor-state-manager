@@ -61,6 +61,9 @@ endif
 conf.set10(
     'ONLY_RUN_APR_ON_POWER_LOSS', get_option('only-run-apr-on-power-loss'))
 
+conf.set_quoted(
+    'SYSFS_TPM_MEASUREMENT_PATH', get_option('sysfs-tpm-measurement-path'))
+
 # globals shared across applications
 conf.set_quoted(
     'BASE_FILE_DIR', '/run/openbmc/')

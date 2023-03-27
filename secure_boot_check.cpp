@@ -12,6 +12,55 @@ PHOSPHOR_LOG2_USING;
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
+// Check if the TPM measurement file exists and has a valid value.
+// If the TPM measurement is invalid, it logs an error message.
+void checkTpmMeasurement()
+{
+    bool tpmError = false;
+    std::string errorMsg;
+    if (!std::filesystem::exists(std::string(SYSFS_TPM_MEASUREMENT_PATH)))
+    {
+        tpmError = true;
+        errorMsg = "TPM measurement file does not exist: " +
+                   std::string(SYSFS_TPM_MEASUREMENT_PATH);
+    }
+    else
+    {
+        std::string tpmValueStr;
+        std::ifstream tpmFile(std::string(SYSFS_TPM_MEASUREMENT_PATH));
+
+        tpmFile >> tpmValueStr;
+        if (tpmValueStr.empty())
+        {
+            tpmError = true;
+            errorMsg = "TPM measurement value is empty: " +
+                       std::string(SYSFS_TPM_MEASUREMENT_PATH);
+        }
+        else if (tpmValueStr == "0")
+        {
+            tpmError = true;
+            errorMsg = "TPM measurement value is 0: " +
+                       std::string(SYSFS_TPM_MEASUREMENT_PATH);
+        }
+        tpmFile.close();
+    }
+
+    if (tpmError)
+    {
+        // Doesn't have valid TPM measurement, log an error message
+        std::map<std::string, std::string> additionalData;
+        error("{ERROR}", "ERROR", errorMsg);
+        additionalData.emplace("ERROR", errorMsg);
+        auto bus = sdbusplus::bus::new_default();
+        phosphor::state::manager::utils::createError(
+            bus, "xyz.openbmc_project.State.Error.TpmMeasurementFail",
+            sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                Error,
+            additionalData);
+    }
+    return;
+}
+
 // Utilize the QuiesceOnHwError setting as an indication that the system
 // is operating in an environment where the user should be notified of
 // security settings (i.e. "Manufacturing")
@@ -138,6 +187,9 @@ int main()
                 additionalData);
         }
     }
+
+    // Check the TPM measurement
+    checkTpmMeasurement();
 
     return 0;
 }
