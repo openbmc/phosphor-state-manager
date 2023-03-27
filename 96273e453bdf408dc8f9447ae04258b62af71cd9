@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "902112f8_08002636",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-03-27T21:41:53Z",
+      "side": 1,
+      "message": "PELs are an IBM only thing so it\u0027s better not to put those in the common repos.  Instead, you can show part of openbmc D-bus event log, which you can get from \u0027obmcutil showlogs\u0027 ,and then \u0027obmcutil listlog\u0027.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 6
+      },
+      "revId": "96273e453bdf408dc8f9447ae04258b62af71cd9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff8f9fe_8e9b2879",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-03-27T21:41:53Z",
+      "side": 1,
+      "message": "I think it would be useful to have this information in the event log so you know what went wrong in the field.  There\u0027s two ways I can think of:\n\n1. Pass it into createError() inside the additionalData variable, like \"ERROR\": TPM measurement file...\"\"\n2.  Have the PEL message registry entry capture the journal.\n\nThe first method allows people that don\u0027t use PELs to also get the info in the D-Bus event log.",
+      "range": {
+        "startLine": 23,
+        "startChar": 7,
+        "endLine": 23,
+        "endChar": 79
+      },
+      "revId": "96273e453bdf408dc8f9447ae04258b62af71cd9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
