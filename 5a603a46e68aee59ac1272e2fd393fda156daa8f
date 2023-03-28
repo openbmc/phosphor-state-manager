@@ -46,6 +46,30 @@
       },
       "revId": "5a603a46e68aee59ac1272e2fd393fda156daa8f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1839c464_4c509d61",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000025
+      },
+      "writtenOn": "2023-03-28T15:16:05Z",
+      "side": 1,
+      "message": "True, but the system will still power on and everything should work, so I think Critical is too high too",
+      "parentUuid": "1c0b5733_c069a498",
+      "range": {
+        "startLine": 58,
+        "startChar": 16,
+        "endLine": 58,
+        "endChar": 24
+      },
+      "revId": "5a603a46e68aee59ac1272e2fd393fda156daa8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
