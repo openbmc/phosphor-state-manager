@@ -22,6 +22,30 @@
       },
       "revId": "5a603a46e68aee59ac1272e2fd393fda156daa8f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c0b5733_c069a498",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-03-28T14:52:03Z",
+      "side": 1,
+      "message": "The system relies on the presence and validity of platform TPM measurements to create and decrypt sealed keys. If this information is missing or invalid, the system may not work properly and data may remain inaccessible. This can be a critical error as it could result in data loss or security breaches. \n\nI am not sure whether critical is right severity, we may not be fully utilizing TPM functionality at this time.\n\n@eddie, can you confirm.",
+      "parentUuid": "7a6b7887_3fef87c2",
+      "range": {
+        "startLine": 58,
+        "startChar": 16,
+        "endLine": 58,
+        "endChar": 24
+      },
+      "revId": "5a603a46e68aee59ac1272e2fd393fda156daa8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
