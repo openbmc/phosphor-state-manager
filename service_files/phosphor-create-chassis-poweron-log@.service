@@ -1,0 +1,20 @@
+[Unit]
+Description=Create info log indicating chassis%i poweron has started
+Wants=obmc-power-start-pre@%i.target
+Before=obmc-power-start-pre@%i.target
+Before=phosphor-regulators-config.service
+Conflicts=obmc-chassis-poweroff@%i.target
+ConditionPathExists=!/run/openbmc/chassis@%i-on
+
+[Service]
+Restart=no
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c \
+  "busctl call xyz.openbmc_project.Logging /xyz/openbmc_project/logging \
+   xyz.openbmc_project.Logging.Create Create ssa{ss} \
+   xyz.openbmc_project.State.Info.ChassisPowerOnStarted \
+   xyz.openbmc_project.Logging.Entry.Level.Informational 1 CHASSIS_ID %i"
+
+[Install]
+WantedBy=obmc-chassis-poweron@%i.target

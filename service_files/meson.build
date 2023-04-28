@@ -20,7 +20,8 @@ unit_files = [
     'phosphor-set-host-transition-to-off@.service',
     'phosphor-set-host-transition-to-running@.service',
     'phosphor-chassis-check-power-status@.service',
-    'phosphor-bmc-security-check.service'
+    'phosphor-bmc-security-check.service',
+    'phosphor-create-chassis-poweron-log@.service'
 ]
 
 foreach u : unit_files
