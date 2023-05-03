@@ -69,11 +69,6 @@ void Hypervisor::updateCurrentHostState(std::string& bootProgress)
         currentHostState(server::Host::HostState::Standby);
     }
     else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
-                             "ProgressStages.OSStart")
-    {
-        currentHostState(server::Host::HostState::TransitioningToRunning);
-    }
-    else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
                              "ProgressStages.OSRunning")
     {
         currentHostState(server::Host::HostState::Running);
