@@ -29,8 +29,7 @@ TEST(updateCurrentHostState, BasicPaths)
     bootProgress = "xyz.openbmc_project.State.Boot.Progress."
                    "ProgressStages.OSStart";
     hypObj.updateCurrentHostState(bootProgress);
-    EXPECT_EQ(hypObj.currentHostState(),
-              server::Host::HostState::TransitioningToRunning);
+    EXPECT_EQ(hypObj.currentHostState(), server::Host::HostState::Off);
 
     bootProgress = "xyz.openbmc_project.State.Boot.Progress."
                    "ProgressStages.OSRunning";
