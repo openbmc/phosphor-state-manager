@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3244f599_ad00fd06",
+        "filename": "test/hypervisor_state.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2023-05-05T14:40:14Z",
+      "side": 1,
+      "message": "I think it is more clear if you just remove this, you are already testing Invalid and Unspecified. \n\nA comment would be another choice. \n // ProgressStages.OSStart isn\u0027t supported, so HostState is defaulted to Off",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 71
+      },
+      "revId": "3fd70229394e758429f794c6022dac1762cb09a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
