@@ -44,12 +44,13 @@ class Hypervisor : public HypervisorInherit
         HypervisorInherit(bus, objPath,
                           HypervisorInherit::action::emit_object_added),
         bus(bus),
-        bootProgressChangeSignal(
-            bus,
-            sdbusRule::propertiesChanged(
-                "/xyz/openbmc_project/state/host0",
-                "xyz.openbmc_project.State.Boot.Progress"),
-            [this](sdbusplus::message_t& m) { bootProgressChangeEvent(m); })
+        bootProgressChangeSignal(bus,
+                                 sdbusRule::propertiesChanged(
+                                     "/xyz/openbmc_project/state/host0",
+                                     "xyz.openbmc_project.State.Boot.Progress"),
+                                 [this](sdbusplus::message_t& m) {
+        bootProgressChangeEvent(m);
+        })
     {}
 
     /** @brief Set value of HostTransition */

@@ -41,8 +41,8 @@ int main(int argc, char** argv)
 
     auto bus = sdbusplus::bus::new_default();
 
-    auto chassisBusName =
-        std::string{CHASSIS_BUSNAME} + std::to_string(chassisId);
+    auto chassisBusName = std::string{CHASSIS_BUSNAME} +
+                          std::to_string(chassisId);
     auto objPathInst = std::string{CHASSIS_OBJPATH} + std::to_string(chassisId);
 
     if (chassisId == 0)

@@ -57,8 +57,8 @@ int main(int argc, char** argv)
         {
             case 'h':
                 hostId = std::stoul(optarg);
-                hostPath =
-                    std::string("/xyz/openbmc_project/state/host") + optarg;
+                hostPath = std::string("/xyz/openbmc_project/state/host") +
+                           optarg;
                 break;
             default:
                 break;
