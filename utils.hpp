@@ -89,6 +89,12 @@ void createBmcDump(sdbusplus::bus_t& bus);
  */
 bool checkACLoss(size_t& chassisId);
 
+/** @brief Determine if the BMC is at its Ready state
+ *
+ * @param[in] bus          - The Dbus bus object
+ */
+bool isBmcReady(sdbusplus::bus_t& bus);
+
 } // namespace utils
 } // namespace manager
 } // namespace state
