@@ -231,6 +231,19 @@ bool checkACLoss(size_t& chassisId)
     return false;
 }
 
+bool isBmcReady(sdbusplus::bus_t& bus)
+{
+    auto bmcState = getProperty(bus, "/xyz/openbmc_project/state/bmc0",
+                                "xyz.openbmc_project.State.BMC",
+                                "CurrentBMCState");
+    if (bmcState != "xyz.openbmc_project.State.BMC.BMCState.Ready")
+    {
+        debug("BMC State is {BMC_STATE}", "BMC_STATE", bmcState);
+        return false;
+    }
+    return true;
+}
+
 } // namespace utils
 } // namespace manager
 } // namespace state
