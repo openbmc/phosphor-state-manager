@@ -20,6 +20,7 @@
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
+#include <xyz/openbmc_project/State/Host/error.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -397,6 +398,16 @@ bool Host::deserialize()
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     info("Host state transition request of {REQ}", "REQ", value);
+
+#if ONLY_ALLOW_BOOT_WHEN_BMC_READY
+    if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
+    {
+        info("BMC State is not Ready so no host on operations allowed");
+        throw sdbusplus::xyz::openbmc_project::State::Host::Error::
+            BMCNotReady();
+    }
+#endif
+
     // If this is not a power off request then we need to
     // decrement the reboot counter.  This code should
     // never prevent a power on, it should just decrement
