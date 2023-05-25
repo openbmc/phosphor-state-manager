@@ -64,6 +64,9 @@ conf.set10(
 conf.set_quoted(
     'SYSFS_TPM_MEASUREMENT_PATH', get_option('sysfs-tpm-measurement-path'))
 
+conf.set10(
+    'ONLY_ALLOW_BOOT_WHEN_BMC_READY', get_option('only-allow-boot-when-bmc-ready'))
+
 # globals shared across applications
 conf.set_quoted(
     'BASE_FILE_DIR', '/run/openbmc/')
