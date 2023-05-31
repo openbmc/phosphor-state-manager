@@ -15,7 +15,7 @@ ConditionPathExists=!/run/openbmc/chassis@%i-on
 
 [Service]
 Restart=no
-Type=oneshot
+Type=simple
 RemainAfterExit=yes
 ExecStart=/usr/bin/phosphor-discover-system-state --host %i
 
