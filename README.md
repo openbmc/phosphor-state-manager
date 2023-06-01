@@ -96,6 +96,17 @@ The [RestorePolicy][6] defines the behavior the user wants when the BMC is
 reset. If the chassis or host is on/running then this service will not run. If
 they are off then the `RestorePolicy` will be read and executed by PSM code.
 
+The `PowerRestoreDelay` property within the interface defines how long the
+service will wait before issuing the power on request.
+
+## Only Allow System Boot When BMC Ready
+
+There is an optional `only-allow-boot-when-bmc-ready` feature which can be
+enabled within PSM that will not allow chassis or host operations (other then
+`Off` requests) if the BMC is not in a `Ready` state. Care should be taken to
+ensure `PowerRestoreDelay` is set to a suitable value to ensure the BMC reaches
+`Ready` before the power restore function requests the power on.
+
 ## BMC Reset with Host and/or Chassis On
 
 In situations where the BMC is reset and the chassis and host are on and
