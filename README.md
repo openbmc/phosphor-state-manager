@@ -53,7 +53,7 @@ phosphor-dbus-interfaces for each object it supports.
   - CurrentBMCState: NotReady, Ready, Quiesced
   - RequestedBMCTransition: Reboot
   - Monitored systemd targets: multi-user.target and
-    obmc-bmc-service-quiesce@.target
+    <<obmc-bmc-service-quiesce@.target>>
 - [chassis][3]: The chassis represents the physical hardware in which the system
   is contained. It usually has the power supplies, fans, and other hardware
   associated with it. It can be either `On`, `Off`, or in a fail state. A
@@ -61,8 +61,8 @@ phosphor-dbus-interfaces for each object it supports.
   and `UninterruptiblePowerSupply` indicates the chassis is running on a UPS.
   - CurrentPowerState: On, Off, BrownOut, UninterruptiblePowerSupply
   - RequestedPowerTransition: On, Off
-  - Monitored systemd targets: obmc-chassis-poweron@.target,
-    obmc-chassis-poweroff@.target
+  - Monitored systemd targets: <<obmc-chassis-poweron@.target>>,
+    <<obmc-chassis-poweroff@.target>>
 - [host][4]: The host represents the software running on the system. In most
   cases this is an operating system of some sort. The host can be `Off`,
   `Running`, `TransitioningToRunning`, `TransitioningToOff`, `Quiesced`(error
@@ -71,9 +71,9 @@ phosphor-dbus-interfaces for each object it supports.
     Quiesced, DiagnosticMode
   - RequestedHostTransition: Off, On, Reboot, GracefulWarmReboot,
     ForceWarmReboot
-  - Monitored systemd targets: obmc-host-startmin@.target,
-    obmc-host-stop@.target, obmc-host-quiesce@.target,
-    obmc-host-diagnostic-mode@.target
+  - Monitored systemd targets: <<obmc-host-startmin@.target>>,
+    <<obmc-host-stop@.target>>, <<obmc-host-quiesce@.target>>,
+    <<obmc-host-diagnostic-mode@.target>>
 - [hypervisor][4]: The hypervisor is an optional package systems can install
   which tracks the state of the hypervisor on the system. This state manager
   object implements a limited subset of the host D-Bus interface.
@@ -95,6 +95,17 @@ also defined out in the phosphor-dbus-interfaces repository.
 The [RestorePolicy][6] defines the behavior the user wants when the BMC is
 reset. If the chassis or host is on/running then this service will not run. If
 they are off then the `RestorePolicy` will be read and executed by PSM code.
+
+The `PowerRestoreDelay` property within the interface defines how long the
+service will wait before issuing the power on request.
+
+## Only Allow System Boot When BMC Ready
+
+There is an optional `only-allow-boot-when-bmc-ready` feature which can be
+enabled within PSM that will not allow chassis or host operations (other then
+`Off` requests) if the BMC is not in a `Ready` state. Care should be taken to
+ensure `PowerRestoreDelay` is set to a suitable value to ensure the BMC reaches
+`Ready` before the power restore function requests the power on.
 
 ## BMC Reset with Host and/or Chassis On
 
@@ -120,17 +131,17 @@ determines that power is on then it will do the following:
 - Create a file called /run/openbmc/chassis@0-on
   - The presence of this file tells the services to alter their behavior because
     the chassis is already powered on
-- Start the obmc-chassis-poweron@0.target
+- Start the <obmc-chassis-poweron@0.target>
   - The majority of services in this target will "fake start" due to the file
     being present. They will report to systemd that they started and ran
     successfully but they actually do nothing. This is what you would want in
     this case. Power is already on so you don't want to run the services to turn
-    power on. You do want to get the obmc-chassis-poweron@0.target in the Active
+    power on. You do want to get the <obmc-chassis-poweron@0.target> in the Active
     state though so that the chassis object within PSM will correctly report
     that the chassis is `On`
 - Start a service to check if the host is on
 
-The chassis@0-on file is removed once the obmc-chassis-poweron@0.target becomes
+The chassis@0-on file is removed once the <obmc-chassis-poweron@0.target> becomes
 active (i.e. all service have been successfully started which are wanted or
 required by this target).
 
@@ -138,13 +149,13 @@ The logic to check if the host is on sends a command to the host, and if a
 response is received then similar logic to chassis is done:
 
 - Create a file called /run/openbmc/host@0-on
-- Start the obmc-host-start@0.target
+- Start the <obmc-host-start@0.target>
   - Similar to above, most services will not run due to the file being created
     and their service files implementing a
     "ConditionPathExists=!/run/openbmc/host@0-request"
 
-The host@0-on file is removed once the obmc-host-start@0.target and
-obmc-host-startmin@0.target become active (i.e. all service have been
+The host@0-on file is removed once the <obmc-host-start@0.target> and
+<obmc-host-startmin@0.target> become active (i.e. all service have been
 successfully started which are wanted or required by these targets).
 
 ## Building the Code
