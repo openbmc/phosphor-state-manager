@@ -295,15 +295,6 @@ void BMC::discoverLastRebootCause()
             break;
     }
 
-    // If the above code could not detect a reason, check to see
-    // if an AC loss occured.
-    size_t chassisId = 0;
-    if (phosphor::state::manager::utils::checkACLoss(chassisId))
-    {
-        this->lastRebootCause(RebootCause::POR);
-        return;
-    }
-
     // If the above code could not detect a reason, look for a the
     // reset-cause-pinhole gpio to see if it is the reason for the reboot
     auto gpioval =
@@ -321,6 +312,17 @@ void BMC::discoverLastRebootCause()
             this->bus, errorMsg,
             sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
                 Notice);
+        return;
+    }
+
+    // If we still haven't found a reason, see if we lost AC power
+    // Note that a pinhole reset will remove AC power to the chassis
+    // on some systems so we always want to look for the pinhole reset
+    // first as that would be the main reason AC power was lost.
+    size_t chassisId = 0;
+    if (phosphor::state::manager::utils::checkACLoss(chassisId))
+    {
+        this->lastRebootCause(RebootCause::POR);
     }
 
     return;
