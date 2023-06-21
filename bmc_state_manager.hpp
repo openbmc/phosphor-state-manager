@@ -66,6 +66,20 @@ class BMC : public BMCInherit
     /** @brief Set value of LastRebootCause **/
     RebootCause lastRebootCause(RebootCause value) override;
 
+    /**
+     * @brief Helper function to get reboot cause
+     *
+     * @param[in]  watchdogBootStatus  - Value read from watchdog boot status
+     * @param[in]  phrGpioVal          - The value of the pinhole-reset GPIO
+     * @param[in]  chassisACLoss       - True if BMC reboot was due to power
+     *                                   loss
+     *
+     * @return The cause of the BMC reboot
+     **/
+    static BMC::RebootCause getRebootCause(const uint64_t bootReason,
+                                           const int phrGpioVal,
+                                           const bool chassisACLoss);
+
   private:
     /**
      * @brief Retrieve input systemd unit state

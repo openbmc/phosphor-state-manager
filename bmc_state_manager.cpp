@@ -259,9 +259,46 @@ uint64_t BMC::lastRebootTime() const
     return duration_cast<milliseconds>(rebootTime.time_since_epoch()).count();
 }
 
+BMC::RebootCause BMC::getRebootCause(const uint64_t watchdogBootStatus,
+                                     const int phrGpioVal,
+                                     const bool chassisACLoss)
+{
+    switch (watchdogBootStatus)
+    {
+        case WDIOF_EXTERN1:
+            return (RebootCause::Watchdog);
+        case WDIOF_CARDRESET:
+            return (RebootCause::POR);
+        default:
+            // Continue below to see if more details can be found
+            // on reason for reboot
+            break;
+    }
+
+    // If the above code could not detect a reason, look for a the
+    // reset-cause-pinhole gpio to see if it is the reason for the reboot
+    // A 0 indicates a pinhole reset occurred
+    if (0 == phrGpioVal)
+    {
+        info("The BMC reset was caused by a pinhole reset");
+        return (RebootCause::PinholeReset);
+    }
+
+    // If we still haven't found a reason, see if we lost AC power
+    // Note that a pinhole reset will remove AC power to the chassis
+    // on some systems so we always want to look for the pinhole reset
+    // first as that would be the main reason AC power was lost.
+    if (chassisACLoss)
+    {
+        return (RebootCause::POR);
+    }
+
+    return (RebootCause::Unknown);
+}
+
 void BMC::discoverLastRebootCause()
 {
-    uint64_t bootReason = 0;
+    uint64_t watchdogBootStatus = 0;
     std::ifstream file;
     auto bootstatusPath = "/sys/class/watchdog/watchdog0/bootstatus";
 
@@ -271,7 +308,7 @@ void BMC::discoverLastRebootCause()
     try
     {
         file.open(bootstatusPath);
-        file >> bootReason;
+        file >> watchdogBootStatus;
     }
     catch (const std::exception& e)
     {
@@ -280,51 +317,23 @@ void BMC::discoverLastRebootCause()
               bootstatusPath, "ERRNO", rc);
     }
 
-    switch (bootReason)
-    {
-        case WDIOF_EXTERN1:
-            this->lastRebootCause(RebootCause::Watchdog);
-            return;
-        case WDIOF_CARDRESET:
-            this->lastRebootCause(RebootCause::POR);
-            return;
-        default:
-            this->lastRebootCause(RebootCause::Unknown);
-            // Continue below to see if more details can be found
-            // on reason for reboot
-            break;
-    }
-
-    // If the above code could not detect a reason, look for a the
-    // reset-cause-pinhole gpio to see if it is the reason for the reboot
-    auto gpioval =
+    int phrGpioVal =
         phosphor::state::manager::utils::getGpioValue("reset-cause-pinhole");
 
-    // A 0 indicates a pinhole reset occurred
-    if (0 == gpioval)
-    {
-        info("The BMC reset was caused by a pinhole reset");
-        this->lastRebootCause(RebootCause::PinholeReset);
+    size_t chassisId = 0;
+    this->lastRebootCause(getRebootCause(
+        watchdogBootStatus, phrGpioVal,
+        phosphor::state::manager::utils::checkACLoss(chassisId)));
 
+    if (server::BMC::lastRebootCause() == RebootCause::PinholeReset)
+    {
         // Generate log telling user a pinhole reset has occurred
         const std::string errorMsg = "xyz.openbmc_project.State.PinholeReset";
         phosphor::state::manager::utils::createError(
             this->bus, errorMsg,
             sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
                 Notice);
-        return;
     }
-
-    // If we still haven't found a reason, see if we lost AC power
-    // Note that a pinhole reset will remove AC power to the chassis
-    // on some systems so we always want to look for the pinhole reset
-    // first as that would be the main reason AC power was lost.
-    size_t chassisId = 0;
-    if (phosphor::state::manager::utils::checkACLoss(chassisId))
-    {
-        this->lastRebootCause(RebootCause::POR);
-    }
-
     return;
 }
 
