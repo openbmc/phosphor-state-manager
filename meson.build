@@ -380,4 +380,24 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
           include_directories: '../'
       )
   )
+
+    test(
+      'test_bmc_state',
+      executable('test_bmc_state',
+          './test/bmc_state.cpp',
+          'bmc_state_manager.cpp',
+          'utils.cpp',
+          dependencies: [
+              gtest,
+              fmt,
+              libgpiod,
+              phosphordbusinterfaces,
+              phosphorlogging,
+              sdbusplus,
+              sdeventplus,
+          ],
+          implicit_include_directories: true,
+          include_directories: '../'
+      )
+  )
 endif
