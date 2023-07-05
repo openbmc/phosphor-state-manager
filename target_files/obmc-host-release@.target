@@ -1,0 +1,5 @@
+[Unit]
+Description=The Host%i is ready to be released
+Requires=obmc-host-release-pre@%i.target
+After=obmc-host-release-pre@%i.target
+RefuseManualStop=yes
