@@ -16,6 +16,40 @@
       "message": "Should be called `obmc-host-release-pre.target` to match typical target naming conventions.",
       "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a5b6237_6e6d4418",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2023-07-05T21:30:37Z",
+      "side": 1,
+      "message": "We wouldn\u0027t want this to start the service if undesired, it should only order after.",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a95e2d_28c4d187",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2023-07-05T21:30:37Z",
+      "side": 1,
+      "message": "We probably need to figure out if we can agree on a common set of dependencies to wait for",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
