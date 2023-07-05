@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3c2006a_17f072ec",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2023-07-05T21:29:27Z",
+      "side": 1,
+      "message": "Should be called `obmc-host-release-pre.target` to match typical target naming conventions.",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
