@@ -68,6 +68,24 @@
       "parentUuid": "f4a95e2d_28c4d187",
       "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04195f17_5928250d",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2023-07-05T21:39:04Z",
+      "side": 1,
+      "message": "Well, if you don\u0027t use it, it wouldn\u0027t be running and so systemd would just drop the dependency silently.\n\nIt\u0027s more that anyone who expects their host to start quickly and not wait for ipmid even though they are running it would get bitten.",
+      "parentUuid": "b71a3e06_87b78947",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
