@@ -1,0 +1,6 @@
+[Unit]
+Description=The Host%i's BIOS is ready to be prepared for release. \
+  In cases where the BIOS chip is being managed by the BMC, trigger \
+  workflows to prepare the BIOS before letting Host%i to take over and \
+  boot from it.
+RefuseManualStop=yes

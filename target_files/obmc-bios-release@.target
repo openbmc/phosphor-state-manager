@@ -1,0 +1,6 @@
+[Unit]
+Description=The Host%i's BIOS is ready to be released. All preparstion \
+  for the BIOS is done for Host%i to take control and use. \
+Wants=obmc-bios-release-pre@%i.target
+After=obmc-bios-release-pre@%i.target
+RefuseManualStop=yes

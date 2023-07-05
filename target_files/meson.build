@@ -1,4 +1,6 @@
 unit_files = [
+    'obmc-bios-release-pre@.target',
+    'obmc-bios-release@.target',
     'obmc-bmc-service-quiesce@.target',
     'obmc-chassis-blackout@.target',
     'obmc-chassis-hard-poweroff@.target',
