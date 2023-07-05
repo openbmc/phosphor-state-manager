@@ -1,0 +1,5 @@
+[Unit]
+Description=The host is ready to be prepared for release
+Wants=phosphor-ipmi-host.service
+After=phosphor-ipmi-host.service
+RefuseManualStop=yes
