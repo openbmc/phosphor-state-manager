@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d05435d_f5678c9e",
+        "filename": "target_files/obmc-host-release.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-11T15:56:20Z",
+      "side": 1,
+      "message": "Should be called \"obmc-host-release@.target\" as PSM supports multiple instances of the host firmware.",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a1468c8_93d5d544",
+        "filename": "target_files/obmc-host-release.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-11T15:56:20Z",
+      "side": 1,
+      "message": "nit:released",
+      "range": {
+        "startLine": 2,
+        "startChar": 36,
+        "endLine": 2,
+        "endChar": 43
+      },
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3c2006a_17f072ec",
         "filename": "target_files/obmc-pre-host-ready.target",
         "patchSetId": 2
@@ -14,6 +54,24 @@
       "writtenOn": "2023-07-05T21:29:27Z",
       "side": 1,
       "message": "Should be called `obmc-host-release-pre.target` to match typical target naming conventions.",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cd31624_182d3b48",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-11T15:56:20Z",
+      "side": 1,
+      "message": "+1 (with a @ for host instance support)",
+      "parentUuid": "d3c2006a_17f072ec",
       "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -84,6 +142,24 @@
       "side": 1,
       "message": "Well, if you don\u0027t use it, it wouldn\u0027t be running and so systemd would just drop the dependency silently.\n\nIt\u0027s more that anyone who expects their host to start quickly and not wait for ipmid even though they are running it would get bitten.",
       "parentUuid": "b71a3e06_87b78947",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e71ff00a_e2084ed6",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-11T15:56:20Z",
+      "side": 1,
+      "message": "Yeah if we get rid of the Wants I think we\u0027d be ok. I could add a After for the pldmd service for our boxes.",
+      "parentUuid": "04195f17_5928250d",
       "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
