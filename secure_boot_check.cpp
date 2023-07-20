@@ -2,6 +2,8 @@
 
 #include "utils.hpp"
 
+#include <fmt/format.h>
+
 #include <phosphor-logging/lg2.hpp>
 
 #include <filesystem>
@@ -11,6 +13,51 @@
 PHOSPHOR_LOG2_USING;
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+
+// TPM is disabled on Rainier. isTpmEnabled returns the boolean value
+// 'tpmEnabled' based on the system type.
+bool isTpmEnabled()
+{
+    std::string path =
+        "/xyz/openbmc_project/inventory/system/chassis/motherboard";
+    std::string interface = "com.ibm.ipzvpd.VSBP";
+    std::string property = "IM";
+
+    bool tpmEnabled = true;
+    std::variant<std::vector<uint8_t>> value;
+
+    auto bus = sdbusplus::bus::new_default();
+    auto service = phosphor::state::manager::utils::getService(bus, path,
+                                                               interface);
+    try
+    {
+        auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                          PROPERTY_INTERFACE, "Get");
+        method.append(interface, property);
+        auto reply = bus.call(method);
+        reply.read(value);
+        auto ids = std::get<std::vector<uint8_t>>(value);
+
+        std::string hexId = fmt::format("0x{:02x}{:02x}{:02x}{:02x}", ids.at(0),
+                                        ids.at(1), ids.at(2), ids.at(3));
+        std::set<std::string> rainierTypes = {
+            "0x50001000", // Rainier_2S4U
+            "0x50001001", // Rainier_2S2U
+            "0x50001002", // Rainier_1S4U
+            "0x50001003"  // Rainier_1S2U
+        };
+
+        tpmEnabled = !(rainierTypes.count(hexId) > 0);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error in property Get, error {ERROR}, property {PROPERTY}",
+              "ERROR", e, "PROPERTY", property);
+        throw;
+    }
+
+    return tpmEnabled;
+}
 
 // Check if the TPM measurement file exists and has a valid value.
 // If the TPM measurement is invalid, it logs an error message.
@@ -189,7 +236,10 @@ int main()
     }
 
     // Check the TPM measurement
-    checkTpmMeasurement();
+    if (isTpmEnabled())
+    {
+        checkTpmMeasurement();
+    }
 
     return 0;
 }
