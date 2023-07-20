@@ -62,6 +62,9 @@ conf.set10(
     'ONLY_RUN_APR_ON_POWER_LOSS', get_option('only-run-apr-on-power-loss'))
 
 conf.set_quoted(
+    'SYSFS_TPM_DEVICE_PATH', get_option('sysfs-tpm-device-path'))
+
+conf.set_quoted(
     'SYSFS_TPM_MEASUREMENT_PATH', get_option('sysfs-tpm-measurement-path'))
 
 conf.set10(
