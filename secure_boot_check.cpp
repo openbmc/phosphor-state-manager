@@ -188,8 +188,11 @@ int main()
         }
     }
 
-    // Check the TPM measurement
-    checkTpmMeasurement();
+    // Check the TPM measurement if TPM is enabled
+    if (std::filesystem::exists(std::string(SYSFS_TPM_DEVICE_PATH)))
+    {
+        checkTpmMeasurement();
+    }
 
     return 0;
 }
