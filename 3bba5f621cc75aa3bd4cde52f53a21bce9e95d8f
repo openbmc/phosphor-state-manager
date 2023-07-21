@@ -16,6 +16,24 @@
       "message": "Hmm, an IBM specific machine check isn\u0027t going to work in PSM. This code currently is generic enough that anyone could use it. With this check, it becomes very IBM specific.\n\nI know there\u0027s a setting, \"xyz.openbmc_project.Settings /xyz/openbmc_project/control/host0/TPMEnable xyz.openbmc_project.Control.TPM.Policy\". That\u0027s more a customer setting though I think. But we need something like that. A new setting that is something like \"TPMSupported\". We\u0027d need to set that in a IBM specific repo (maybe vpd). Or we could look into just using entity-manager and having it put something on d-bus to indicate TPM is not supported. Either way, we then could have this PSM code look at this generic setting to know whether to support TPM or not.",
       "revId": "3bba5f621cc75aa3bd4cde52f53a21bce9e95d8f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5ea9246_04c74d92",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-07-21T15:52:41Z",
+      "side": 1,
+      "message": "The setting \"/xyz/openbmc_project/control/host0/TPMEnable\" is for the host, and we do not have a corresponding setting for BMC TPM. Can you point me on using entity-manage to add it to D-Bus? which D-Bus interface should we use for BMC? Can we utilize a meson option?",
+      "parentUuid": "e0429602_006b12dc",
+      "revId": "3bba5f621cc75aa3bd4cde52f53a21bce9e95d8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
