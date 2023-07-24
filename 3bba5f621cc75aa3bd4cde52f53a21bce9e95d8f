@@ -34,6 +34,24 @@
       "parentUuid": "e0429602_006b12dc",
       "revId": "3bba5f621cc75aa3bd4cde52f53a21bce9e95d8f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "746886a5_e85813c1",
+        "filename": "secure_boot_check.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001633
+      },
+      "writtenOn": "2023-07-24T22:29:00Z",
+      "side": 1,
+      "message": "Updated the code based on your suggestion and added a new option to provide the sysfs TPM device file for verifying TPM\u0027s status.",
+      "parentUuid": "c5ea9246_04c74d92",
+      "revId": "3bba5f621cc75aa3bd4cde52f53a21bce9e95d8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
