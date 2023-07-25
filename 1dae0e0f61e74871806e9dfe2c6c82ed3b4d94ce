@@ -16,6 +16,24 @@
       "message": "nit: is it OK to have an IBM system specific path as the default?",
       "revId": "1dae0e0f61e74871806e9dfe2c6c82ed3b4d94ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "645dea2f_a1dea0ea",
+        "filename": "meson_options.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-25T22:11:12Z",
+      "side": 1,
+      "message": "yeah, I feel like we did it with a few items in this security check (I\u0027m pretty sure only IBM uses this currently). Gotta have something for a default, better then something invalid.",
+      "parentUuid": "d09f44db_0ba7e0c5",
+      "revId": "1dae0e0f61e74871806e9dfe2c6c82ed3b4d94ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
