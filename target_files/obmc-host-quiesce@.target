@@ -1,5 +1,6 @@
 [Unit]
 Description=Quiesce Target
 After=multi-user.target
+Requires=op-clear-sys-dump-active@.service
 Conflicts=obmc-chassis-poweroff@%i.target
 Conflicts=obmc-host-stop@%i.target
