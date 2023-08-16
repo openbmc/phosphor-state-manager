@@ -40,12 +40,11 @@ unit_files = [
     'obmc-power-stop@.target',
 ]
 
+fs = import('fs')
 foreach u : unit_files
-    configure_file(
-        copy: true,
-        input: u,
+    fs.copyfile(
+        u,
         install: true,
-        install_dir: systemd_system_unit_dir,
-        output: u,
-        )
+        install_dir: systemd_system_unit_dir
+    )
 endforeach
