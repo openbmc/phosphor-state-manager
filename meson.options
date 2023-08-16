@@ -127,7 +127,7 @@ option('sysfs-abr-image-path', type : 'string',
 )
 
 option('only-run-apr-on-power-loss', type : 'boolean',
-    value : 'false',
+    value : false,
     description : 'Only run automatic restore policy due to loss of AC power.'
 )
 
@@ -142,6 +142,6 @@ option('sysfs-tpm-measurement-path', type : 'string',
 )
 
 option('only-allow-boot-when-bmc-ready', type : 'boolean',
-    value : 'false',
+    value : false,
     description : 'Only allow chassis and host power on operations when BMC is Ready.'
 )
