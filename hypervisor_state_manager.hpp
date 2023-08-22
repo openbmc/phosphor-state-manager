@@ -62,7 +62,7 @@ class Hypervisor : public HypervisorInherit
         currentHostState(server::Host::HostState value) override;
 
     /** @brief Return value of CurrentHostState */
-    server::Host::HostState currentHostState();
+    server::Host::HostState currentHostState() const override;
 
     /** @brief Check if BootProgress change affects hypervisor state
      *

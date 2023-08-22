@@ -54,7 +54,7 @@ server::Host::HostState Hypervisor::currentHostState(HostState value)
     return server::Host::currentHostState(value);
 }
 
-server::Host::HostState Hypervisor::currentHostState()
+server::Host::HostState Hypervisor::currentHostState() const
 {
     return server::Host::currentHostState();
 }
