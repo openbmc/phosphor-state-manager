@@ -5,6 +5,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
+#include <xyz/openbmc_project/State/Host/server.hpp>
 #include <xyz/openbmc_project/State/ScheduledHostTransition/server.hpp>
 
 class TestScheduledHostTransition;
