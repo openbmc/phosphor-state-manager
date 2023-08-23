@@ -166,7 +166,7 @@ int getGpioValue(const std::string& gpioName)
 
 void createError(
     sdbusplus::bus_t& bus, const std::string& errorMsg,
-    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level errLevel,
+    sdbusplus::server::xyz::openbmc_project::logging::Entry::Level errLevel,
     std::map<std::string, std::string> additionalData)
 {
     try

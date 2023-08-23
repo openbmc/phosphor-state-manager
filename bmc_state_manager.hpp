@@ -15,7 +15,7 @@ namespace manager
 {
 
 using BMCInherit = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::State::server::BMC>;
+    sdbusplus::server::xyz::openbmc_project::state::BMC>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class BMC

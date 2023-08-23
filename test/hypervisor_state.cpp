@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace server = sdbusplus::server::xyz::openbmc_project::state;
 
 TEST(updateCurrentHostState, BasicPaths)
 {

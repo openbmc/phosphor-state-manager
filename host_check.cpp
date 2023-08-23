@@ -28,7 +28,7 @@ namespace manager
 PHOSPHOR_LOG2_USING;
 
 using namespace std::literals;
-using namespace sdbusplus::xyz::openbmc_project::Condition::server;
+using namespace sdbusplus::server::xyz::openbmc_project::condition;
 
 // Required strings for sending the msg to check on host
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
@@ -137,7 +137,7 @@ bool isChassiPowerOn(sdbusplus::bus_t& bus, size_t id)
     try
     {
         using PowerState =
-            sdbusplus::xyz::openbmc_project::State::server::Chassis::PowerState;
+            sdbusplus::server::xyz::openbmc_project::state::Chassis::PowerState;
         auto method = bus.new_method_call(svcname.c_str(), objpath.c_str(),
                                           PROPERTY_INTERFACE, "Get");
         method.append(CHASSIS_STATE_INTF, CHASSIS_STATE_POWER_PROP);

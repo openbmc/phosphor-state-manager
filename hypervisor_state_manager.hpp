@@ -15,9 +15,9 @@ namespace manager
 {
 
 using HypervisorInherit = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::State::server::Host>;
+    sdbusplus::server::xyz::openbmc_project::state::Host>;
 
-namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace server = sdbusplus::server::xyz::openbmc_project::state;
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
 /** @class Host

@@ -12,7 +12,7 @@ namespace condition
 {
 
 using HostIntf = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::Condition::server::HostFirmware>;
+    sdbusplus::server::xyz::openbmc_project::condition::HostFirmware>;
 
 class Host : public HostIntf
 {

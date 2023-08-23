@@ -25,7 +25,7 @@ namespace manager
 PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
-namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace server = sdbusplus::server::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
@@ -310,7 +310,7 @@ void BMC::discoverLastRebootCause()
         const std::string errorMsg = "xyz.openbmc_project.State.PinholeReset";
         phosphor::state::manager::utils::createError(
             this->bus, errorMsg,
-            sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
                 Notice);
         return;
     }

@@ -32,9 +32,9 @@ namespace manager
 PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
-namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace server = sdbusplus::server::xyz::openbmc_project::state;
 namespace decoratorServer =
-    sdbusplus::xyz::openbmc_project::State::Decorator::server;
+    sdbusplus::server::xyz::openbmc_project::state::decorator;
 
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;

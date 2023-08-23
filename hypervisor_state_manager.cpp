@@ -22,7 +22,7 @@ namespace manager
 PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
-namespace server = sdbusplus::xyz::openbmc_project::State::server;
+namespace server = sdbusplus::server::xyz::openbmc_project::state;
 using namespace phosphor::logging;
 
 server::Host::Transition Hypervisor::requestedHostTransition(Transition value)

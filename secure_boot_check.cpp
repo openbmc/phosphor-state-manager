@@ -54,7 +54,7 @@ void checkTpmMeasurement()
         auto bus = sdbusplus::bus::new_default();
         phosphor::state::manager::utils::createError(
             bus, "xyz.openbmc_project.State.Error.TpmMeasurementFail",
-            sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
                 Error,
             additionalData);
     }
@@ -182,7 +182,7 @@ int main()
             auto bus = sdbusplus::bus::new_default();
             phosphor::state::manager::utils::createError(
                 bus, "xyz.openbmc_project.State.Error.SecurityCheckFail",
-                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
                     Warning,
                 additionalData);
         }

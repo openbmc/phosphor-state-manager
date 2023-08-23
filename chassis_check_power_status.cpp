@@ -58,7 +58,7 @@ int main(int argc, char** argv)
             "xyz.openbmc_project.State.ChassisPowerBad";
         phosphor::state::manager::utils::createError(
             bus, errorMsg,
-            sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
                 Critical);
         return -1;
     }

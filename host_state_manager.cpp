@@ -41,11 +41,11 @@ namespace manager
 PHOSPHOR_LOG2_USING;
 
 // When you see server:: or reboot:: you know we're referencing our base class
-namespace server = sdbusplus::xyz::openbmc_project::State::server;
-namespace reboot = sdbusplus::xyz::openbmc_project::Control::Boot::server;
-namespace bootprogress = sdbusplus::xyz::openbmc_project::State::Boot::server;
+namespace server = sdbusplus::server::xyz::openbmc_project::state;
+namespace reboot = sdbusplus::server::xyz::openbmc_project::control::boot;
+namespace bootprogress = sdbusplus::server::xyz::openbmc_project::state::boot;
 namespace osstatus =
-    sdbusplus::xyz::openbmc_project::State::OperatingSystem::server;
+    sdbusplus::server::xyz::openbmc_project::state::operating_system;
 using namespace phosphor::logging;
 namespace fs = std::filesystem;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;

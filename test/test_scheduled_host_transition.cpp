@@ -19,7 +19,7 @@ using namespace std::chrono;
 using InvalidTimeError =
     sdbusplus::xyz::openbmc_project::ScheduledTime::Error::InvalidTime;
 using HostTransition =
-    sdbusplus::xyz::openbmc_project::State::server::ScheduledHostTransition;
+    sdbusplus::server::xyz::openbmc_project::state::ScheduledHostTransition;
 
 class TestScheduledHostTransition : public testing::Test
 {

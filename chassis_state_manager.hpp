@@ -23,8 +23,8 @@ namespace manager
 {
 
 using ChassisInherit = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::State::server::Chassis,
-    sdbusplus::xyz::openbmc_project::State::server::PowerOnHours>;
+    sdbusplus::server::xyz::openbmc_project::state::Chassis,
+    sdbusplus::server::xyz::openbmc_project::state::PowerOnHours>;
 namespace sdbusRule = sdbusplus::bus::match::rules;
 namespace fs = std::filesystem;
 

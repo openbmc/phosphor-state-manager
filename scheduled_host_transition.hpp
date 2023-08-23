@@ -18,9 +18,9 @@ namespace manager
 {
 
 using Transition =
-    sdbusplus::xyz::openbmc_project::State::server::Host::Transition;
+    sdbusplus::server::xyz::openbmc_project::state::Host::Transition;
 using ScheduledHostTransitionInherit = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::State::server::ScheduledHostTransition>;
+    sdbusplus::server::xyz::openbmc_project::state::ScheduledHostTransition>;
 
 /** @class ScheduledHostTransition
  *  @brief Scheduled host transition implementation.

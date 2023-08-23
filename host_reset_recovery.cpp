@@ -88,11 +88,10 @@ void createErrorLog(sdbusplus::bus_t& bus)
             "xyz.openbmc_project.State.Error.HostNotRunning";
         auto method = bus.new_method_call(LOGGING_SVC, LOGGING_PATH,
                                           LOGGING_CREATE_INTF, "Create");
-        auto level =
-            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
-                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
-                    Error);
-        method.append(errorMessage, level, additionalData);
+        method.append(errorMessage,
+                      sdbusplus::server::xyz::openbmc_project::logging::Entry::
+                          Level::Error,
+                      additionalData);
         auto resp = bus.call(method);
     }
     catch (const sdbusplus::exception_t& e)

@@ -33,7 +33,7 @@ PHOSPHOR_LOG2_USING;
 
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
-using namespace sdbusplus::xyz::openbmc_project::Control::Power::server;
+using namespace sdbusplus::server::xyz::openbmc_project::control::power;
 
 } // namespace manager
 } // namespace state
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
     HostObjects settings(bus, hostId);
 
     using namespace phosphor::state::manager;
-    namespace server = sdbusplus::xyz::openbmc_project::State::server;
+    namespace server = sdbusplus::server::xyz::openbmc_project::state;
 
     // This application is only run if chassis power is off
 

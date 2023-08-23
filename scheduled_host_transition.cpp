@@ -39,8 +39,8 @@ using namespace xyz::openbmc_project::ScheduledTime;
 using InvalidTimeError =
     sdbusplus::xyz::openbmc_project::ScheduledTime::Error::InvalidTime;
 using HostTransition =
-    sdbusplus::xyz::openbmc_project::State::server::ScheduledHostTransition;
-using HostState = sdbusplus::xyz::openbmc_project::State::server::Host;
+    sdbusplus::server::xyz::openbmc_project::state::ScheduledHostTransition;
+using HostState = sdbusplus::server::xyz::openbmc_project::state::Host;
 
 constexpr auto PROPERTY_TRANSITION = "RequestedHostTransition";
 constexpr auto PROPERTY_RESTART_CAUSE = "RestartCause";
