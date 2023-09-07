@@ -4,13 +4,11 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <gpiod.h>
-#include <sys/sysinfo.h>
 
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 
-#include <cassert>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -246,17 +244,7 @@ BMC::RebootCause BMC::lastRebootCause(RebootCause value)
 
 uint64_t BMC::lastRebootTime() const
 {
-    using namespace std::chrono;
-    struct sysinfo info;
-
-    auto rc = sysinfo(&info);
-    assert(rc == 0);
-
-    // Since uptime is in seconds, also get the current time in seconds.
-    auto now = time_point_cast<seconds>(system_clock::now());
-    auto rebootTime = now - seconds(info.uptime);
-
-    return duration_cast<milliseconds>(rebootTime.time_since_epoch()).count();
+    return rebootTime;
 }
 
 void BMC::discoverLastRebootCause()
