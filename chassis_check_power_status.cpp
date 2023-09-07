@@ -9,6 +9,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <iostream>
 #include <map>
