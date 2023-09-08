@@ -16,6 +16,24 @@
       "message": "nit: please remove unneeded includes from cpp file",
       "revId": "cc381b8a3022e87c1a629590600d56daf47d3ff0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e67c54_a013edaf",
+        "filename": "bmc_state_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-09-08T15:33:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3d894f2_5a2eeb2b",
+      "revId": "cc381b8a3022e87c1a629590600d56daf47d3ff0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
