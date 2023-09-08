@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3d894f2_5a2eeb2b",
+        "filename": "bmc_state_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-09-08T13:01:45Z",
+      "side": 1,
+      "message": "nit: please remove unneeded includes from cpp file",
+      "revId": "cc381b8a3022e87c1a629590600d56daf47d3ff0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
