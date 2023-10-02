@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e0245c3_e68eb897",
+        "filename": "target_files/obmc-host-release.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-10-02T22:52:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d05435d_f5678c9e",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a1468c8_93d5d544",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-07-11T15:56:20Z",
       "side": 1,
       "message": "nit:released",
+      "range": {
+        "startLine": 2,
+        "startChar": 36,
+        "endLine": 2,
+        "endChar": 43
+      },
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "368553c6_57331903",
+        "filename": "target_files/obmc-host-release.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-10-02T22:52:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a1468c8_93d5d544",
       "range": {
         "startLine": 2,
         "startChar": 36,
@@ -76,6 +118,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba5f6650_540a5ac2",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-10-02T22:52:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cd31624_182d3b48",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a5b6237_6e6d4418",
@@ -89,6 +149,24 @@
       "writtenOn": "2023-07-05T21:30:37Z",
       "side": 1,
       "message": "We wouldn\u0027t want this to start the service if undesired, it should only order after.",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d376f71_068cccab",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-10-02T22:52:05Z",
+      "side": 1,
+      "message": "removed.",
+      "parentUuid": "4a5b6237_6e6d4418",
       "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -160,6 +238,24 @@
       "side": 1,
       "message": "Yeah if we get rid of the Wants I think we\u0027d be ok. I could add a After for the pldmd service for our boxes.",
       "parentUuid": "04195f17_5928250d",
+      "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29e4b966_e57f4f60",
+        "filename": "target_files/obmc-pre-host-ready.target",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-10-02T22:52:05Z",
+      "side": 1,
+      "message": "I have removed `Wants` for now. Or we can just have this as blank and each system append it with their layers.",
+      "parentUuid": "e71ff00a_e2084ed6",
       "revId": "fe5d8c935ab4ba9620fb5ebea8cc6669785da7a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
