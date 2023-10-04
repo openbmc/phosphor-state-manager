@@ -58,6 +58,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a849efe5_86a86986",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-10-04T22:36:36Z",
+      "side": 1,
+      "message": "oh right. Updated. Also needs to test with gbs again since that this was with the old change.",
+      "parentUuid": "0375f3a9_f66f661f",
+      "revId": "abcdb14040b1ce58ba050fe66ed19e00fb19ab44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c31eb14_35d965d6",
@@ -71,6 +89,30 @@
       "writtenOn": "2023-10-03T18:55:09Z",
       "side": 1,
       "message": "I would suggest some documentation being added here.\n\nWhat is the \u0027release\u0027 and what is \u0027start\u0027?  We currently have a start target but I don\u0027t know what the difference (and relationship) is with release.",
+      "range": {
+        "startLine": 2,
+        "startChar": 41,
+        "endLine": 2,
+        "endChar": 42
+      },
+      "revId": "abcdb14040b1ce58ba050fe66ed19e00fb19ab44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93bdde2f_2fc0a972",
+        "filename": "target_files/obmc-host-release@.target",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2023-10-04T22:36:36Z",
+      "side": 1,
+      "message": "🤔, I guess there is no difference. I\u0027ll test this out more and it seems more likely that this change will not be needed.\n\nThanks for pointing it out. I am not familiar with that\u0027s already available.",
+      "parentUuid": "2c31eb14_35d965d6",
       "range": {
         "startLine": 2,
         "startChar": 41,
