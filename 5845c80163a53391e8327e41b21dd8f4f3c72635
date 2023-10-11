@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82547e2f_305ff77c",
+        "filename": "target_files/obmc-bios-release@.target",
+        "patchSetId": 7
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-11T19:09:14Z",
+      "side": 1,
+      "message": "bios?",
+      "range": {
+        "startLine": 4,
+        "startChar": 11,
+        "endLine": 4,
+        "endChar": 15
+      },
+      "revId": "5845c80163a53391e8327e41b21dd8f4f3c72635",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b22a7f0e_df5f750b",
+        "filename": "target_files/obmc-bios-release@.target",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-11T19:09:14Z",
+      "side": 1,
+      "message": "Don\u0027t we need some kind of \u0027Before\u0027 in order to ensure this is ordered somehow?  Otherwise how does this get put into the boot order?",
+      "revId": "5845c80163a53391e8327e41b21dd8f4f3c72635",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
