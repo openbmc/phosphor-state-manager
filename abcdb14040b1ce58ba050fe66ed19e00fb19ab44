@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3cc9afa_7e832d10",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-12T19:11:02Z",
+      "side": 1,
+      "message": "I don\u0027t understand how this is related to multi-user.target.  You really only want to run this code on BMC boot??  It seems surprising that the BMC boot is somehow related to the managed host in this way.",
+      "parentUuid": "abc7a7e3_ae2c4d1e",
+      "revId": "abcdb14040b1ce58ba050fe66ed19e00fb19ab44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0375f3a9_f66f661f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
