@@ -121,6 +121,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb74d969_f1a21a88",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-18T12:42:50Z",
+      "side": 1,
+      "message": "Which \"After\u003d\" relationship?\n\nI understand the suggestion that is in the commit message of what this has to do with the BIOS / BMC relationship.  I don\u0027t understand how that turned into the code we see.\n\nSomehow this target gets added to the `multi-user` target, which is what is ran during the BMC boot, but the words in the commit message imply it has some relation to `obmc-host-*` operations (which would make sense).  None of *those* relationships show up in the code, which is where I\u0027m lost.",
+      "parentUuid": "9c3fef57_f466d3df",
+      "revId": "abcdb14040b1ce58ba050fe66ed19e00fb19ab44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0375f3a9_f66f661f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
