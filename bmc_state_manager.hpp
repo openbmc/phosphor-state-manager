@@ -66,7 +66,7 @@ class BMC : public BMCInherit
                 timeSyncSignal.reset();
             }
         }
-            }))
+    }))
     {
         utils::subscribeToSystemdSignals(bus);
         discoverInitialState();
