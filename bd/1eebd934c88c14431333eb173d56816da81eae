@@ -1,0 +1,8 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Adriana Kobylak <anoo@linux.ibm.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Willy Tu <wltu@google.com>
+Submitted-at: Fri, 20 Oct 2023 11:00:25 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/66936
+Project: openbmc/phosphor-state-manager
+Branch: refs/heads/master
