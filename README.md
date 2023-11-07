@@ -96,8 +96,10 @@ The [RestorePolicy][6] defines the behavior the user wants when the BMC is
 reset. If the chassis or host is on/running then this service will not run. If
 they are off then the `RestorePolicy` will be read and executed by PSM code.
 
-The `PowerRestoreDelay` property within the interface defines how long the
-service will wait before issuing the power on request.
+The `PowerRestoreDelay` property within the interface defines a maximum time the
+service will wait for the BMC to enter the `Ready` state before issuing the
+power on request, this allows host to be powered on as early as the BMC is
+ready.
 
 ## Only Allow System Boot When BMC Ready
 

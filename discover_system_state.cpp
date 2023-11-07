@@ -166,7 +166,7 @@ int main(int argc, char** argv)
             info(
                 "power_policy=ALWAYS_POWER_ON, powering host on ({DELAY}s delay)",
                 "DELAY", powerRestoreDelaySec.count());
-            std::this_thread::sleep_for(powerRestoreDelayUsec);
+            utils::waitBmcReady(bus, powerRestoreDelaySec);
             phosphor::state::manager::utils::setProperty(
                 bus, hostPath, HOST_BUSNAME, "RestartCause",
                 convertForMessage(
@@ -192,7 +192,7 @@ int main(int argc, char** argv)
             info(
                 "power_policy=ALWAYS_POWER_OFF, set requested state to off ({DELAY}s delay)",
                 "DELAY", powerRestoreDelaySec.count());
-            std::this_thread::sleep_for(powerRestoreDelayUsec);
+            utils::waitBmcReady(bus, powerRestoreDelaySec);
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
@@ -209,7 +209,7 @@ int main(int argc, char** argv)
         {
             info("power_policy=RESTORE, restoring last state ({DELAY}s delay)",
                  "DELAY", powerRestoreDelaySec.count());
-            std::this_thread::sleep_for(powerRestoreDelayUsec);
+            utils::waitBmcReady(bus, powerRestoreDelaySec);
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
