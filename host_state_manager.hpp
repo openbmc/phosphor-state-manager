@@ -11,6 +11,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Control/Boot/RebootAttempts/server.hpp>
+#include <xyz/openbmc_project/Control/Power/ACPIPowerState/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
 
@@ -28,6 +29,7 @@ using HostInherit = sdbusplus::server::object_t<
     sdbusplus::server::xyz::openbmc_project::state::Host,
     sdbusplus::server::xyz::openbmc_project::state::boot::Progress,
     sdbusplus::server::xyz::openbmc_project::control::boot::RebootAttempts,
+    sdbusplus::server::xyz::openbmc_project::control::power::ACPIPowerState,
     sdbusplus::server::xyz::openbmc_project::state::operating_system::Status>;
 
 PHOSPHOR_LOG2_USING;
