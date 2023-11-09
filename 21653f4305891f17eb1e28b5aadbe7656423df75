@@ -34,6 +34,24 @@
       "parentUuid": "78e90b18_904728f4",
       "revId": "21653f4305891f17eb1e28b5aadbe7656423df75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "187c513e_de7bfbfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-11-09T20:31:27Z",
+      "side": 1,
+      "message": "I have a feeling we\u0027re probably the only one\u0027s using this feature in PSM. So we could say this is just an implementation detail. Can you add a little blurb to https://github.com/openbmc/phosphor-state-manager/blob/master/README.md#restore-policy-on-power-events to note this new behavior in PSM and then we\u0027ll see if anyone else weighs in on this design.",
+      "parentUuid": "063308be_8223ae83",
+      "revId": "21653f4305891f17eb1e28b5aadbe7656423df75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
