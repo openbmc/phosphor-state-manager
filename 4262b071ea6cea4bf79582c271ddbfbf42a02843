@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f375cff3_3e86f78c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2023-11-27T04:30:24Z",
+      "side": 1,
+      "message": "I added 2 more services to support Chassis TransitionToOn/Off state. Please help me review this commit",
+      "revId": "4262b071ea6cea4bf79582c271ddbfbf42a02843",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
