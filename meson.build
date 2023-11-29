@@ -51,7 +51,7 @@ conf.set_quoted(
     'SYSFS_SECURE_BOOT_PATH', get_option('sysfs-secure-boot-path'))
 conf.set_quoted(
     'SYSFS_ABR_IMAGE_PATH', get_option('sysfs-abr-image-path'))
-if build_host_gpios.enabled()
+if build_host_gpios.allowed()
     conf.set_quoted(
         'HOST_GPIOS_BUSNAME', get_option('host-gpios-busname'))
     conf.set_quoted(
@@ -85,7 +85,7 @@ conf.set_quoted(
 
 configure_file(output: 'config.h', configuration: conf)
 
-if(get_option('warm-reboot').enabled())
+if(get_option('warm-reboot').allowed())
     add_project_arguments('-DENABLE_WARM_REBOOT',language:'cpp')
 endif
 
@@ -298,7 +298,7 @@ systemd_system_unit_dir = systemd.get_variable(
 subdir('service_files')
 subdir('target_files')
 
-if build_host_gpios.enabled()
+if build_host_gpios.allowed()
     subdir('host_condition_gpio')
 endif
 
