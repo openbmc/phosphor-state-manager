@@ -89,24 +89,13 @@ if(get_option('warm-reboot').allowed())
     add_project_arguments('-DENABLE_WARM_REBOOT',language:'cpp')
 endif
 
+nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 sdbusplus = dependency('sdbusplus')
 sdeventplus = dependency('sdeventplus')
 phosphorlogging = dependency('phosphor-logging')
 phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
 libgpiod = dependency('libgpiod', version : '>=1.4.1')
 fmt = dependency('fmt')
-
-if cpp.has_header('nlohmann/json.hpp')
-    nlohmann_json = declare_dependency()
-else
-    subproject('nlohmann-json')
-    nlohmann_json = declare_dependency(
-        include_directories: [
-            'subprojects/nlohmann-json/single_include',
-            'subprojects/nlohmann-json/single_include/nlohmann',
-        ]
-    )
-endif
 
 if cpp.has_header('CLI/CLI.hpp')
     CLI11 = declare_dependency()
@@ -173,7 +162,7 @@ executable('phosphor-chassis-state-manager',
                 cereal,
                 fmt,
                 libgpiod,
-                nlohmann_json,
+                nlohmann_json_dep,
                 phosphordbusinterfaces,
                 phosphorlogging,
                 sdbusplus,
@@ -237,7 +226,7 @@ executable('phosphor-systemd-target-monitor',
             dependencies: [
                 CLI11,
                 libgpiod,
-                nlohmann_json,
+                nlohmann_json_dep,
                 phosphorlogging,
                 sdbusplus,
                 sdeventplus,
@@ -322,7 +311,7 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
           'systemd_target_parser.cpp',
           dependencies: [
               gtest,
-              nlohmann_json,
+              nlohmann_json_dep,
           ],
           implicit_include_directories: true,
           include_directories: '../'
@@ -338,7 +327,7 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
           dependencies: [
               gtest,
               libgpiod,
-              nlohmann_json,
+              nlohmann_json_dep,
               phosphorlogging,
               sdbusplus,
               sdeventplus,
