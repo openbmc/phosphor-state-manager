@@ -1,7 +1,7 @@
 [Unit]
 Description=Phosphor Scheduled Host%i Transition Manager
-Wants=xyz.openbmc_project.State.Host%i.service
-After=xyz.openbmc_project.State.Host%i.service
+Wants=xyz.openbmc_project.State.Host@%i.service
+After=xyz.openbmc_project.State.Host@%i.service
 
 [Service]
 ExecStart=/usr/bin/phosphor-scheduled-host-transition --host %i
