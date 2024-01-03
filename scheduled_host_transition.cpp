@@ -47,6 +47,8 @@ constexpr auto PROPERTY_RESTART_CAUSE = "RestartCause";
 
 uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
 {
+    info("A scheduled host transtion request has been made for {TIME}", "TIME",
+         value);
     if (value == 0)
     {
         // 0 means the function Scheduled Host Transition is disabled
@@ -93,6 +95,14 @@ void ScheduledHostTransition::hostTransition()
 {
     auto hostPath = std::string{HOST_OBJPATH} + std::to_string(id);
 
+    auto reqTrans = convertForMessage(HostTransition::scheduledTransition());
+
+    info("Trying to set requestedTransition to {REQUESTED_TRANSITION}",
+         "REQUESTED_TRANSITION", reqTrans);
+
+    utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_TRANSITION,
+                       reqTrans);
+
     // Set RestartCause to indicate this transition is occurring due to a
     // scheduled host transition as long as it's not an off request
     if (HostTransition::scheduledTransition() != HostState::Transition::Off)
@@ -103,13 +113,6 @@ void ScheduledHostTransition::hostTransition()
         utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_RESTART_CAUSE,
                            resCause);
     }
-    auto reqTrans = convertForMessage(HostTransition::scheduledTransition());
-
-    utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_TRANSITION,
-                       reqTrans);
-
-    info("Set requestedTransition to {REQUESTED_TRANSITION}",
-         "REQUESTED_TRANSITION", reqTrans);
 }
 
 void ScheduledHostTransition::callback()
@@ -199,7 +202,29 @@ void ScheduledHostTransition::handleTimeUpdates()
     auto deltaTime = seconds(schedTime) - getTime();
     if (deltaTime <= seconds(0))
     {
-        hostTransition();
+        try
+        {
+            hostTransition();
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            // If error indicates BMC is not at Ready error then reschedule for
+            // 60s later
+            if ((e.name() != nullptr) &&
+                (e.name() ==
+                 std::string_view(
+                     "xyz.openbmc_project.State.Host.Error.BMCNotReady")))
+            {
+                warning(
+                    "BMC is not at ready, reschedule transition request for 60s");
+                timer.restart(seconds(60));
+                return;
+            }
+            else
+            {
+                throw;
+            }
+        }
         // Set scheduledTime to 0 to disable host transition and update
         // scheduled values
         scheduledTime(0);
