@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2db5ab5e_3a457741",
+        "filename": "scheduled_host_transition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-01-05T19:54:57Z",
+      "side": 1,
+      "message": "Lets add an info log so we know when people schedule a power on and what time they are scheduling for.",
+      "revId": "9a5b10ef19f55d1e1c2a4480afd4113bf0e00239",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bff69d88_ad96902f",
+        "filename": "scheduled_host_transition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-01-05T19:54:57Z",
+      "side": 1,
+      "message": "Some further testing found some incorrect assumptions on my part. This should only be the time we want in the future, so just 30s. And it will only happen once because then the timer expires and we disable, so lets make this 60s to be sure we reach BMC Ready.\n\nBut why did my testing work? It turns out that when NTP is enabled, the onTimeChange() function is called every 10s! Yeah, NTP updates the time every 10s, triggering that function call, which is why my code appeared to work. Very confusing.",
+      "revId": "9a5b10ef19f55d1e1c2a4480afd4113bf0e00239",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
