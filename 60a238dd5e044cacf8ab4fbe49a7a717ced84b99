@@ -16,6 +16,24 @@
       "message": "If this is the only place the time is traced/logged, would it be more useful in a human readable format as opposed to epoch time?",
       "revId": "60a238dd5e044cacf8ab4fbe49a7a717ced84b99",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aed4f12_5f10920a",
+        "filename": "scheduled_host_transition.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-01-08T20:53:47Z",
+      "side": 1,
+      "message": "Yeah, this is it, and with all the complexities behind time configurations and such I\u0027d rather just log exactly what\u0027s going into the dbus property. We can use that + the timestamp in the journal for this log to figure anything else we need.",
+      "parentUuid": "24177c50_96d97b94",
+      "revId": "60a238dd5e044cacf8ab4fbe49a7a717ced84b99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
