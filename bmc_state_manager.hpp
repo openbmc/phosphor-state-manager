@@ -63,7 +63,6 @@ class BMC : public BMCInherit
                 std::get<std::string>(value) == "active")
             {
                 updateLastRebootTime();
-                timeSyncSignal.reset();
             }
         }
     }))
