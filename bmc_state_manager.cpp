@@ -252,8 +252,8 @@ void BMC::updateLastRebootTime()
     // Since uptime is in seconds, also get the current time in seconds.
     auto now = time_point_cast<seconds>(system_clock::now());
     auto rebootTimeTs = now - seconds(info.uptime);
-    rebootTime =
-        duration_cast<milliseconds>(rebootTimeTs.time_since_epoch()).count();
+    rebootTime = duration_cast<milliseconds>(rebootTimeTs.time_since_epoch()).count();
+    BMCInherit::lastRebootTime(rebootTime);
 }
 
 uint64_t BMC::lastRebootTime() const
