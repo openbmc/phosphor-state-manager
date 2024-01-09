@@ -254,6 +254,7 @@ void BMC::updateLastRebootTime()
     auto rebootTimeTs = now - seconds(info.uptime);
     rebootTime =
         duration_cast<milliseconds>(rebootTimeTs.time_since_epoch()).count();
+    server::BMC::lastRebootTime(rebootTime);
 }
 
 uint64_t BMC::lastRebootTime() const
