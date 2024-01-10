@@ -16,6 +16,24 @@
       "message": "To align with other code here, should just do:\nserver::BMC::lastRebootTime(rebootTime);",
       "revId": "451fd98a6efb9cdf9ca154fe6cc87253d1c12e4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5331c8ab_8d21b04e",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2024-01-10T21:46:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1d4f68d_7d56298e",
+      "revId": "451fd98a6efb9cdf9ca154fe6cc87253d1c12e4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
