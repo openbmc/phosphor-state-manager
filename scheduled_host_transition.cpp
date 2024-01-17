@@ -11,6 +11,7 @@
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/ScheduledTime/error.hpp>
+#include <xyz/openbmc_project/State/Host/error.hpp>
 
 #include <chrono>
 #include <filesystem>
@@ -208,12 +209,12 @@ void ScheduledHostTransition::handleTimeUpdates()
         }
         catch (const sdbusplus::exception_t& e)
         {
+            using BMCNotReady = sdbusplus::error::xyz::openbmc_project::state::
+                host::BMCNotReady;
             // If error indicates BMC is not at Ready error then reschedule for
             // 60s later
             if ((e.name() != nullptr) &&
-                (e.name() ==
-                 std::string_view(
-                     "xyz.openbmc_project.State.Host.Error.BMCNotReady")))
+                (e.name() == std::string_view(BMCNotReady::errName)))
             {
                 warning(
                     "BMC is not at ready, reschedule transition request for 60s");

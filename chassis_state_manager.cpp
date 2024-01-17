@@ -10,12 +10,14 @@
 #include <fmt/printf.h>
 
 #include <cereal/archives/json.hpp>
+#include <org/freedesktop/UPower/Device/client.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/exception.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
 #include <xyz/openbmc_project/State/Chassis/error.hpp>
 #include <xyz/openbmc_project/State/Decorator/PowerSystemInputs/server.hpp>
 
@@ -35,6 +37,9 @@ PHOSPHOR_LOG2_USING;
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
 namespace decoratorServer =
     sdbusplus::server::xyz::openbmc_project::state::decorator;
+
+using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
+using UPowerDevice = sdbusplus::client::org::freedesktop::u_power::Device<>;
 
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
@@ -65,12 +70,6 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
-constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
-constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
-constexpr auto UPOWER_INTERFACE = "org.freedesktop.UPower.Device";
-constexpr auto POWERSYSINPUTS_INTERFACE =
-    "xyz.openbmc_project.State.Decorator.PowerSystemInputs";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void Chassis::createSystemdTargetTable()
@@ -92,7 +91,7 @@ void Chassis::determineInitialState()
     uPowerPropChangeSignal = std::make_unique<sdbusplus::bus::match_t>(
         bus,
         sdbusplus::bus::match::rules::propertiesChangedNamespace(
-            "/org/freedesktop/UPower", UPOWER_INTERFACE),
+            "/org/freedesktop/UPower", UPowerDevice::interface),
         [this](auto& msg) { this->uPowerChangeEvent(msg); });
 
     // Monitor for any properties changed signals on PowerSystemInputs
@@ -101,7 +100,7 @@ void Chassis::determineInitialState()
         sdbusplus::bus::match::rules::propertiesChangedNamespace(
             fmt::format(
                 "/xyz/openbmc_project/power/power_supplies/chassis{}/psus", id),
-            POWERSYSINPUTS_INTERFACE),
+            decoratorServer::PowerSystemInputs::interface),
         [this](auto& msg) { this->powerSysInputsChangeEvent(msg); });
 
     determineStatusOfPower();
@@ -231,10 +230,11 @@ void Chassis::determineStatusOfPower()
 bool Chassis::determineStatusOfUPSPower()
 {
     // Find all implementations of the UPower interface
-    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                      MAPPER_INTERFACE, "GetSubTree");
+    auto mapper = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetSubTree");
 
-    mapper.append("/", 0, std::vector<std::string>({UPOWER_INTERFACE}));
+    mapper.append("/", 0, std::vector<std::string>({UPowerDevice::interface}));
 
     std::map<std::string, std::map<std::string, std::vector<std::string>>>
         mapperResponse;
@@ -266,7 +266,7 @@ bool Chassis::determineStatusOfUPSPower()
             {
                 auto method = bus.new_method_call(service.c_str(), path.c_str(),
                                                   PROPERTY_INTERFACE, "GetAll");
-                method.append(UPOWER_INTERFACE);
+                method.append(UPowerDevice::interface);
 
                 auto response = bus.call(method);
                 using Property = std::string;
@@ -337,10 +337,13 @@ bool Chassis::determineStatusOfUPSPower()
 bool Chassis::determineStatusOfPSUPower()
 {
     // Find all implementations of the PowerSystemInputs interface
-    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                      MAPPER_INTERFACE, "GetSubTree");
+    auto mapper = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetSubTree");
 
-    mapper.append("/", 0, std::vector<std::string>({POWERSYSINPUTS_INTERFACE}));
+    mapper.append("/", 0,
+                  std::vector<std::string>(
+                      {decoratorServer::PowerSystemInputs::interface}));
 
     std::map<std::string, std::map<std::string, std::vector<std::string>>>
         mapperResponse;
@@ -367,7 +370,7 @@ bool Chassis::determineStatusOfPSUPower()
             {
                 auto method = bus.new_method_call(service.c_str(), path.c_str(),
                                                   PROPERTY_INTERFACE, "GetAll");
-                method.append(POWERSYSINPUTS_INTERFACE);
+                method.append(decoratorServer::PowerSystemInputs::interface);
 
                 auto response = bus.call(method);
                 using Property = std::string;

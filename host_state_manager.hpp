@@ -4,7 +4,6 @@
 
 #include "settings.hpp"
 #include "utils.hpp"
-#include "xyz/openbmc_project/State/Host/server.hpp"
 
 #include <cereal/access.hpp>
 #include <cereal/cereal.hpp>
@@ -12,6 +11,7 @@
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Control/Boot/RebootAttempts/server.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
+#include <xyz/openbmc_project/State/Host/server.hpp>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
 
 #include <filesystem>

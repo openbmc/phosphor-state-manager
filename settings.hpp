@@ -1,6 +1,8 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Control/Boot/RebootPolicy/client.hpp>
+#include <xyz/openbmc_project/Control/Power/RestorePolicy/client.hpp>
 
 #include <string>
 
@@ -12,9 +14,10 @@ using Service = std::string;
 using Interface = std::string;
 
 constexpr auto defaultRoot = "/";
-constexpr auto autoRebootIntf = "xyz.openbmc_project.Control.Boot.RebootPolicy";
-constexpr auto powerRestoreIntf =
-    "xyz.openbmc_project.Control.Power.RestorePolicy";
+constexpr auto autoRebootIntf = sdbusplus::client::xyz::openbmc_project::
+    control::boot::RebootPolicy<>::interface;
+constexpr auto powerRestoreIntf = sdbusplus::client::xyz::openbmc_project::
+    control::power::RestorePolicy<>::interface;
 
 /** @class Objects
  *  @brief Fetch paths of settings d-bus objects of interest, upon construction

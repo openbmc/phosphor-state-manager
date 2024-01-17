@@ -3,6 +3,7 @@
 #include "utils.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Logging/Settings/client.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -11,6 +12,8 @@
 PHOSPHOR_LOG2_USING;
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+using LoggingSettings =
+    sdbusplus::client::xyz::openbmc_project::logging::Settings<>;
 
 // Check if the TPM measurement file exists and has a valid value.
 // If the TPM measurement is invalid, it logs an error message.
@@ -68,7 +71,7 @@ bool isMfgModeEnabled()
 {
     auto bus = sdbusplus::bus::new_default();
     std::string path = "/xyz/openbmc_project/logging/settings";
-    std::string interface = "xyz.openbmc_project.Logging.Settings";
+    std::string interface = LoggingSettings::interface;
     std::string propertyName = "QuiesceOnHwError";
     std::variant<bool> mfgModeEnabled;
 

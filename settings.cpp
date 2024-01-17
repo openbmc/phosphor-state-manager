@@ -5,6 +5,7 @@
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
 namespace settings
 {
@@ -14,17 +15,16 @@ PHOSPHOR_LOG2_USING;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
-constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
-constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
-constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
+using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 
 Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
 {
     std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
     auto depth = 0;
 
-    auto mapperCall = bus.new_method_call(mapperService, mapperPath, mapperIntf,
-                                          "GetSubTree");
+    auto mapperCall = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, "GetSubTree");
     mapperCall.append(root);
     mapperCall.append(depth);
     mapperCall.append(settingsIntfs);
@@ -100,8 +100,9 @@ Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
 Service Objects::service(const Path& path, const Interface& interface) const
 {
     using Interfaces = std::vector<Interface>;
-    auto mapperCall = bus.new_method_call(mapperService, mapperPath, mapperIntf,
-                                          "GetObject");
+    auto mapperCall = bus.new_method_call(ObjectMapper::default_service,
+                                          ObjectMapper::instance_path,
+                                          ObjectMapper::interface, "GetObject");
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 
