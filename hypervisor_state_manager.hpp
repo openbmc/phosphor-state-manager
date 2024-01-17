@@ -3,9 +3,10 @@
 #include "config.h"
 
 #include "settings.hpp"
-#include "xyz/openbmc_project/State/Host/server.hpp"
 
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/client.hpp>
+#include <xyz/openbmc_project/State/Host/server.hpp>
 
 namespace phosphor
 {
@@ -16,6 +17,8 @@ namespace manager
 
 using HypervisorInherit = sdbusplus::server::object_t<
     sdbusplus::server::xyz::openbmc_project::state::Host>;
+using BootProgress =
+    sdbusplus::client::xyz::openbmc_project::state::boot::Progress<>;
 
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
 namespace sdbusRule = sdbusplus::bus::match::rules;
@@ -46,9 +49,8 @@ class Hypervisor : public HypervisorInherit
         bus(bus),
         bootProgressChangeSignal(
             bus,
-            sdbusRule::propertiesChanged(
-                "/xyz/openbmc_project/state/host0",
-                "xyz.openbmc_project.State.Boot.Progress"),
+            sdbusRule::propertiesChanged("/xyz/openbmc_project/state/host0",
+                                         BootProgress::interface),
             [this](sdbusplus::message_t& m) { bootProgressChangeEvent(m); })
     {}
 

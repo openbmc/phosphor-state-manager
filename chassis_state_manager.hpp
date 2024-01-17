@@ -3,14 +3,14 @@
 #include "config.h"
 
 #include "utils.hpp"
-#include "xyz/openbmc_project/State/Chassis/server.hpp"
-#include "xyz/openbmc_project/State/PowerOnHours/server.hpp"
 
 #include <cereal/cereal.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/clock.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
+#include <xyz/openbmc_project/State/Chassis/server.hpp>
+#include <xyz/openbmc_project/State/PowerOnHours/server.hpp>
 
 #include <chrono>
 #include <filesystem>

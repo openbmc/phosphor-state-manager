@@ -7,6 +7,10 @@
 #include <gpiod.h>
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Dump/Create/client.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
+#include <xyz/openbmc_project/State/BMC/client.hpp>
 
 #include <chrono>
 #include <filesystem>
@@ -27,11 +31,9 @@ PHOSPHOR_LOG2_USING;
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-
-constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
-constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+
+using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 
 void subscribeToSystemdSignals(sdbusplus::bus_t& bus)
 {
@@ -58,8 +60,9 @@ void subscribeToSystemdSignals(sdbusplus::bus_t& bus)
 std::string getService(sdbusplus::bus_t& bus, std::string path,
                        std::string interface)
 {
-    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                      MAPPER_INTERFACE, "GetObject");
+    auto mapper = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetObject");
 
     mapper.append(path, std::vector<std::string>({interface}));
 
@@ -174,9 +177,12 @@ void createError(
         // Always add the _PID on for some extra logging debug
         additionalData.emplace("_PID", std::to_string(getpid()));
 
-        auto method = bus.new_method_call(
-            "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
-            "xyz.openbmc_project.Logging.Create", "Create");
+        using LoggingCreate =
+            sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+
+        auto method = bus.new_method_call(LoggingCreate::default_service,
+                                          LoggingCreate::instance_path,
+                                          LoggingCreate::interface, "Create");
 
         method.append(errorMsg, errLevel, additionalData);
         auto resp = bus.call(method);
@@ -199,9 +205,14 @@ void createError(
 
 void createBmcDump(sdbusplus::bus_t& bus)
 {
-    auto method = bus.new_method_call(
-        "xyz.openbmc_project.Dump.Manager", "/xyz/openbmc_project/dump/bmc",
-        "xyz.openbmc_project.Dump.Create", "CreateDump");
+    using DumpCreate = sdbusplus::client::xyz::openbmc_project::dump::Create<>;
+    auto dumpPath =
+        sdbusplus::message::object_path(DumpCreate::namespace_path::value) /
+        DumpCreate::namespace_path::bmc;
+
+    auto method = bus.new_method_call(DumpCreate::default_service,
+                                      dumpPath.str.c_str(),
+                                      DumpCreate::interface, "CreateDump");
     method.append(
         std::vector<
             std::pair<std::string, std::variant<std::string, uint64_t>>>());
@@ -233,10 +244,15 @@ bool checkACLoss(size_t& chassisId)
 
 bool isBmcReady(sdbusplus::bus_t& bus)
 {
-    auto bmcState = getProperty(bus, "/xyz/openbmc_project/state/bmc0",
-                                "xyz.openbmc_project.State.BMC",
+    using BMC = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
+    auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
+                   BMC::namespace_path::bmc;
+
+    auto bmcState = getProperty(bus, bmcPath.str.c_str(), BMC::interface,
                                 "CurrentBMCState");
-    if (bmcState != "xyz.openbmc_project.State.BMC.BMCState.Ready")
+
+    if (sdbusplus::message::convert_from_string<BMC::BMCState>(bmcState) !=
+        BMC::BMCState::Ready)
     {
         debug("BMC State is {BMC_STATE}", "BMC_STATE", bmcState);
         return false;

@@ -6,9 +6,9 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
-#include <xyz/openbmc_project/Logging/Create/server.hpp>
-#include <xyz/openbmc_project/Logging/Entry/server.hpp>
-#include <xyz/openbmc_project/State/Boot/Progress/server.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
+#include <xyz/openbmc_project/Logging/Entry/client.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/client.hpp>
 
 #include <cstdlib>
 #include <fstream>
@@ -23,15 +23,16 @@ namespace manager
 
 PHOSPHOR_LOG2_USING;
 
+using BootProgress =
+    sdbusplus::client::xyz::openbmc_project::state::boot::Progress<>;
+using LoggingCreate =
+    sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
+
 constexpr auto HOST_STATE_SVC = "xyz.openbmc_project.State.Host";
 constexpr auto HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
-constexpr auto BOOT_STATE_INTF = "xyz.openbmc_project.State.Boot.Progress";
 constexpr auto BOOT_PROGRESS_PROP = "BootProgress";
-
-constexpr auto LOGGING_SVC = "xyz.openbmc_project.Logging";
-constexpr auto LOGGING_PATH = "/xyz/openbmc_project/logging";
-constexpr auto LOGGING_CREATE_INTF = "xyz.openbmc_project.Logging.Create";
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
@@ -42,12 +43,11 @@ bool wasHostBooting(sdbusplus::bus_t& bus)
 {
     try
     {
-        using ProgressStages = sdbusplus::xyz::openbmc_project::State::Boot::
-            server::Progress::ProgressStages;
+        using ProgressStages = BootProgress::ProgressStages;
 
         auto method = bus.new_method_call(HOST_STATE_SVC, HOST_STATE_PATH,
                                           PROPERTY_INTERFACE, "Get");
-        method.append(BOOT_STATE_INTF, BOOT_PROGRESS_PROP);
+        method.append(BootProgress::interface, BOOT_PROGRESS_PROP);
 
         auto response = bus.call(method);
 
@@ -86,12 +86,10 @@ void createErrorLog(sdbusplus::bus_t& bus)
 
         static constexpr auto errorMessage =
             "xyz.openbmc_project.State.Error.HostNotRunning";
-        auto method = bus.new_method_call(LOGGING_SVC, LOGGING_PATH,
-                                          LOGGING_CREATE_INTF, "Create");
-        method.append(errorMessage,
-                      sdbusplus::server::xyz::openbmc_project::logging::Entry::
-                          Level::Error,
-                      additionalData);
+        auto method = bus.new_method_call(LoggingCreate::default_service,
+                                          LoggingCreate::instance_path,
+                                          LoggingCreate::interface, "Create");
+        method.append(errorMessage, LoggingEntry::Level::Error, additionalData);
         auto resp = bus.call(method);
     }
     catch (const sdbusplus::exception_t& e)
@@ -99,8 +97,8 @@ void createErrorLog(sdbusplus::bus_t& bus)
         error(
             "sdbusplus D-Bus call exception, error {ERROR}, objpath {OBJPATH}, "
             "interface {INTERFACE}",
-            "ERROR", e, "OBJPATH", LOGGING_PATH, "INTERFACE",
-            LOGGING_CREATE_INTF);
+            "ERROR", e, "OBJPATH", LoggingCreate::instance_path, "INTERFACE",
+            LoggingCreate::interface);
 
         throw std::runtime_error(
             "Error in invoking D-Bus logging create interface");

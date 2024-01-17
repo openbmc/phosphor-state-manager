@@ -15,6 +15,8 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/State/BMC/client.hpp>
+#include <xyz/openbmc_project/State/Host/client.hpp>
 
 #include <filesystem>
 #include <iostream>
@@ -44,7 +46,6 @@ int main(int argc, char** argv)
     using namespace phosphor::logging;
 
     size_t hostId = 0;
-    std::string hostPath = "/xyz/openbmc_project/state/host0";
     int arg;
     int optIndex = 0;
 
@@ -57,13 +58,16 @@ int main(int argc, char** argv)
         {
             case 'h':
                 hostId = std::stoul(optarg);
-                hostPath = std::string("/xyz/openbmc_project/state/host") +
-                           optarg;
                 break;
             default:
                 break;
         }
     }
+
+    using Host = sdbusplus::client::xyz::openbmc_project::state::Host<>;
+    std::string hostPath = std::string(Host::namespace_path::value) + "/" +
+                           std::string(Host::namespace_path::host) +
+                           std::to_string(hostId);
 
     auto bus = sdbusplus::bus::new_default();
 
@@ -77,17 +81,23 @@ int main(int argc, char** argv)
 
     // If the BMC was rebooted due to a user initiated pinhole reset, do not
     // implement any power restore policies
-    auto bmcRebootCause = phosphor::state::manager::utils::getProperty(
-        bus, "/xyz/openbmc_project/state/bmc0", BMC_BUSNAME, "LastRebootCause");
-    if (bmcRebootCause ==
-        "xyz.openbmc_project.State.BMC.RebootCause.PinholeReset")
+    using BMC = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
+    auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
+                   BMC::namespace_path::bmc;
+
+    auto bmcRebootCause =
+        sdbusplus::message::convert_from_string<BMC::RebootCause>(
+            phosphor::state::manager::utils::getProperty(
+                bus, bmcPath.str.c_str(), BMC_BUSNAME,
+                "LastRebootCause"));
+
+    if (bmcRebootCause == BMC::RebootCause::PinholeReset)
     {
         info(
             "BMC was reset due to pinhole reset, no power restore policy will be run");
         return 0;
     }
-    else if (bmcRebootCause ==
-             "xyz.openbmc_project.State.BMC.RebootCause.Watchdog")
+    else if (bmcRebootCause == BMC::RebootCause::Watchdog)
     {
         info(
             "BMC was reset due to cold reset, no power restore policy will be run");

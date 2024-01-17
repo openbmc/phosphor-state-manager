@@ -8,6 +8,8 @@
 #include <sdbusplus/server/manager.hpp>
 #include <sdeventplus/event.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
+#include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
 namespace phosphor
 {
@@ -20,6 +22,10 @@ using phosphor::logging::elog;
 PHOSPHOR_LOG2_USING;
 
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+
+using LoggingCreate =
+    sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 
 void SystemdTargetLogging::startBmcQuiesceTarget()
 {
@@ -49,15 +55,15 @@ void SystemdTargetLogging::logError(const std::string& errorLog,
                                     const std::string& result,
                                     const std::string& unit)
 {
-    auto method = this->bus.new_method_call(
-        "xyz.openbmc_project.Logging", "/xyz/openbmc_project/logging",
-        "xyz.openbmc_project.Logging.Create", "Create");
+    auto method = this->bus.new_method_call(LoggingCreate::default_service,
+                                            LoggingCreate::instance_path,
+                                            LoggingCreate::interface, "Create");
     // Signature is ssa{ss}
-    method.append(errorLog);
-    method.append("xyz.openbmc_project.Logging.Entry.Level.Critical");
-    method.append(std::array<std::pair<std::string, std::string>, 2>(
-        {std::pair<std::string, std::string>({"SYSTEMD_RESULT", result}),
-         std::pair<std::string, std::string>({"SYSTEMD_UNIT", unit})}));
+    method.append(
+        errorLog, LoggingEntry::Level::Critical,
+        std::array<std::pair<std::string, std::string>, 2>(
+            {std::pair<std::string, std::string>({"SYSTEMD_RESULT", result}),
+             std::pair<std::string, std::string>({"SYSTEMD_UNIT", unit})}));
     try
     {
         this->bus.call_noreply(method);
