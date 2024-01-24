@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23fa1bd6_c2da4c5c",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T12:33:47Z",
+      "side": 1,
+      "message": "How will this code be accomplished?  Is there some other daemon that you plan on writing into these properties?  The object should probably be hosted by that daemon.\n\nI suspect that many machines do not have exposure to this information.\n\nCurrently the only host for this interface appears to be in google-misc, but there is code in the IPMI daemon to write this property.\n\ngoogle-misc/subprojects/acpi-power-state-daemon/acpi_power_state.cpp\nphosphor-host-ipmid/apphandler.cpp\n\n@Andrew, do you have feedback on what you\u0027d like to see?",
+      "revId": "149a187942a6708b335cd57af82c96c57578c156",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
