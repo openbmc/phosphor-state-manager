@@ -16,6 +16,24 @@
       "message": "How will this code be accomplished?  Is there some other daemon that you plan on writing into these properties?  The object should probably be hosted by that daemon.\n\nI suspect that many machines do not have exposure to this information.\n\nCurrently the only host for this interface appears to be in google-misc, but there is code in the IPMI daemon to write this property.\n\ngoogle-misc/subprojects/acpi-power-state-daemon/acpi_power_state.cpp\nphosphor-host-ipmid/apphandler.cpp\n\n@Andrew, do you have feedback on what you\u0027d like to see?",
       "revId": "149a187942a6708b335cd57af82c96c57578c156",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2957db7_3b430054",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-01-26T20:06:03Z",
+      "side": 1,
+      "message": "We\u0027ve got a somewhat similar design here with boot:progress where other apps set the property hosted by PSM, but that was because the progress codes are pretty common in host implementations and we had multiple interfaces that could be getting the progress codes.\n\nThis property is not common and it\u0027s not clear if it will be sent via a variety of interfaces. If it\u0027s just one interface then lets just host it in the service that\u0027s receiving/reading it.",
+      "parentUuid": "23fa1bd6_c2da4c5c",
+      "revId": "149a187942a6708b335cd57af82c96c57578c156",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
