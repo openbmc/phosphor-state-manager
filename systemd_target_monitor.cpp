@@ -5,7 +5,6 @@
 #include <CLI/CLI.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
-#include <sdeventplus/event.hpp>
 
 #include <iostream>
 #include <vector>
@@ -44,8 +43,6 @@ void print_usage(void)
 int main(int argc, char* argv[])
 {
     auto bus = sdbusplus::bus::new_default();
-    auto event = sdeventplus::Event::get_default();
-    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     std::vector<std::string> targetFilePaths;
     std::vector<std::string> serviceFilePaths;
 
@@ -91,5 +88,6 @@ int main(int argc, char* argv[])
     // Subscribe to systemd D-bus signals indicating target completions
     targetMon.subscribeToSystemdSignals();
 
-    return event.loop();
+    bus.process_loop();
+    return 0;
 }

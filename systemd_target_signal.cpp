@@ -6,7 +6,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server/manager.hpp>
-#include <sdeventplus/event.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
