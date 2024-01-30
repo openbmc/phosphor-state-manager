@@ -4,7 +4,6 @@
 
 #include <unistd.h>
 
-#include <boost/range/adaptor/reversed.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
@@ -16,6 +15,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <ranges>
 #include <thread>
 #include <vector>
 
@@ -84,8 +84,7 @@ bool checkFirmwareConditionRunning(sdbusplus::bus_t& bus)
     // on D-Bus until it has checked with the host. Therefore it's most
     // efficient to call the PLDM interface first. Do that by going in reverse
     // of the interfaces returned to us (PLDM will be last if available)
-    for (const auto& [path, services] :
-         boost::adaptors::reverse(mapperResponse))
+    for (const auto& [path, services] : std::views::reverse(mapperResponse))
     {
         for (const auto& serviceIter : services)
         {

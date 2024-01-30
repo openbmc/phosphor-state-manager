@@ -2,7 +2,6 @@
 
 #include "host_condition.hpp"
 
-#include <boost/algorithm/string.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <cstdlib>
