@@ -34,6 +34,24 @@
       "parentUuid": "23fa1bd6_c2da4c5c",
       "revId": "149a187942a6708b335cd57af82c96c57578c156",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5074771_8d9e3d99",
+        "filename": "host_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-02-01T01:26:48Z",
+      "side": 1,
+      "message": "This property is modified by pldmd\u0027s Meta OEM command handler:\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/67061/2/oem/meta/libpldmresponder/oem_meta_file_io_type_power_status.cpp#31\n\nSince pldmd is unable to setup such Dbus property, we\u0027re planning to add Host\u0027s ACPI power status by phosphor-settingsd. If there is any concern, please let me know.",
+      "parentUuid": "c2957db7_3b430054",
+      "revId": "149a187942a6708b335cd57af82c96c57578c156",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
