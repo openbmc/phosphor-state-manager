@@ -35,6 +35,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8fe1b9_50ab8440",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-02-13T23:01:54Z",
+      "side": 1,
+      "message": "The `fmt.wrap` file I\u0027ve committed here is the result of running `meson wrap install fmt`, which I feel is easier than manually managing wrap files? The resulting file might be more complex, but we don\u0027t have to care about the content so much as long as we trust the contributors to the meson wrapdb.",
+      "parentUuid": "d973205a_066849ac",
+      "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e61e5d12_e315367b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-02-13T23:01:54Z",
+      "side": 1,
+      "message": "Sure, we can do that too. I\u0027ll defer to Andrew on how to move forward.",
+      "parentUuid": "f93e0205_f40fe8b8",
+      "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7c0497f_9cc16742",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-13T18:13:18Z",
       "side": 1,
       "message": "I don\u0027t really understand why moving them was helpful?  The lines right above also add dependencies, so why does it matter if this block is at the top or the bottom of the \"complex dependencies\"?",
+      "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f87883_ddf64d0a",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-02-13T23:01:54Z",
+      "side": 1,
+      "message": "It happens to be the case that neither `CLI11` nor `cereal` depend on `fmt`. However, `sdeventplus` depends on `stdplus`, which depends on `fmt`, so we need to specify `fmt` at least before `sdeventplus` for `phosphor-state-manager` to control the dependency. I moved the entire block so that the direct dependencies with the smallest transitive dependency tree are ordered first. It could be done more precisely.",
+      "parentUuid": "c7c0497f_9cc16742",
       "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
