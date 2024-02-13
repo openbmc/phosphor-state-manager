@@ -2,7 +2,6 @@
 
 #include "chassis_state_manager.hpp"
 
-#include <fmt/format.h>
 #include <getopt.h>
 
 #include <sdbusplus/bus.hpp>
@@ -10,6 +9,7 @@
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
+#include <format>
 #include <iostream>
 
 constexpr auto LEGACY_POH_COUNTER_PERSIST_PATH =
@@ -55,9 +55,9 @@ int main(int argc, char** argv)
 
         fs::path legacyPohPath{LEGACY_POH_COUNTER_PERSIST_PATH};
         fs::path legacyStateChangePath{LEGACY_STATE_CHANGE_PERSIST_PATH};
-        fs::path newPohPath{fmt::format(POH_COUNTER_PERSIST_PATH, chassisId)};
+        fs::path newPohPath{std::format(POH_COUNTER_PERSIST_PATH, chassisId)};
         fs::path newStateChangePath{
-            fmt::format(CHASSIS_STATE_CHANGE_PERSIST_PATH, chassisId)};
+            std::format(CHASSIS_STATE_CHANGE_PERSIST_PATH, chassisId)};
         if (fs::exists(legacyPohPath))
         {
             fs::rename(legacyPohPath, newPohPath);
