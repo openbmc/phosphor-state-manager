@@ -6,8 +6,6 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp"
 
-#include <fmt/format.h>
-#include <fmt/printf.h>
 #include <getopt.h>
 #include <systemd/sd-bus.h>
 

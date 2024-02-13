@@ -2,7 +2,6 @@
 
 #include "host_state_manager.hpp"
 
-#include <fmt/format.h>
 #include <getopt.h>
 
 #include <sdbusplus/bus.hpp>
@@ -10,6 +9,7 @@
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
+#include <format>
 #include <iostream>
 
 constexpr auto LEGACY_HOST_STATE_PERSIST_PATH =
@@ -53,7 +53,7 @@ int main(int argc, char** argv)
         // exist, rename it to the new file format of host0.
 
         fs::path legacyPath{LEGACY_HOST_STATE_PERSIST_PATH};
-        fs::path newPath{fmt::format(HOST_STATE_PERSIST_PATH, hostId)};
+        fs::path newPath{std::format(HOST_STATE_PERSIST_PATH, hostId)};
         if (fs::exists(legacyPath))
         {
             fs::rename(legacyPath, newPath);

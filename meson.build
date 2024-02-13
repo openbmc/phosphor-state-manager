@@ -75,10 +75,10 @@ conf.set_quoted(
     'BASE_FILE_DIR', '/run/openbmc/')
 
 conf.set_quoted(
-    'CHASSIS_LOST_POWER_FILE', '/run/openbmc/chassis@%d-lost-power')
+    'CHASSIS_LOST_POWER_FILE', '/run/openbmc/chassis@{}-lost-power')
 
 conf.set_quoted(
-    'HOST_RUNNING_FILE', '/run/openbmc/host@%d-on')
+    'HOST_RUNNING_FILE', '/run/openbmc/host@{}-on')
 
 conf.set_quoted(
     'CHASSIS_ON_FILE', '/run/openbmc/chassis@%d-on')
@@ -95,7 +95,6 @@ sdeventplus = dependency('sdeventplus')
 phosphorlogging = dependency('phosphor-logging')
 phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
 libgpiod = dependency('libgpiod', version : '>=1.4.1')
-fmt = dependency('fmt')
 
 if cpp.has_header('CLI/CLI.hpp')
     CLI11 = declare_dependency()
@@ -129,7 +128,6 @@ executable('phosphor-host-state-manager',
             'utils.cpp',
             dependencies: [
                 cereal,
-                fmt,
                 libgpiod,
                 phosphordbusinterfaces,
                 phosphorlogging,
@@ -160,7 +158,6 @@ executable('phosphor-chassis-state-manager',
             'utils.cpp',
             dependencies: [
                 cereal,
-                fmt,
                 libgpiod,
                 nlohmann_json_dep,
                 phosphordbusinterfaces,
@@ -176,7 +173,6 @@ executable('phosphor-chassis-check-power-status',
             'chassis_check_power_status.cpp',
             'utils.cpp',
             dependencies: [
-                fmt,
                 libgpiod,
                 phosphordbusinterfaces,
                 phosphorlogging,
@@ -191,7 +187,6 @@ executable('phosphor-bmc-state-manager',
             'bmc_state_manager_main.cpp',
             'utils.cpp',
             dependencies: [
-                fmt,
                 libgpiod,
                 phosphordbusinterfaces,
                 phosphorlogging,
@@ -208,7 +203,6 @@ executable('phosphor-discover-system-state',
             'utils.cpp',
             dependencies: [
                 cereal,
-                fmt,
                 libgpiod,
                 phosphorlogging,
                 sdbusplus,
@@ -264,7 +258,7 @@ executable('phosphor-secure-boot-check',
             'secure_boot_check.cpp',
             'utils.cpp',
             dependencies: [
-            fmt, sdbusplus,
+            sdbusplus,
             phosphorlogging, libgpiod
             ],
     implicit_include_directories: true,

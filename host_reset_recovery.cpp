@@ -11,6 +11,7 @@
 #include <xyz/openbmc_project/State/Boot/Progress/client.hpp>
 
 #include <cstdlib>
+#include <format>
 #include <fstream>
 #include <string>
 
@@ -114,12 +115,9 @@ void createErrorLog(sdbusplus::bus_t& bus)
 // completed and the phosphor-chassis-state-manager code has processed it.
 bool isChassisTargetComplete()
 {
-    auto size = std::snprintf(nullptr, 0, CHASSIS_ON_FILE, 0);
-    size++; // null
-    std::unique_ptr<char[]> buf(new char[size]);
-    std::snprintf(buf.get(), size, CHASSIS_ON_FILE, 0);
+    auto chassisFile = std::format(CHASSIS_ON_FILE, 0);
 
-    std::ifstream f(buf.get());
+    std::ifstream f(chassisFile);
     return !f.good();
 }
 
