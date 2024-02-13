@@ -140,6 +140,24 @@
       "parentUuid": "adeb608a_9eb3349c",
       "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d83cef81_87314fa0",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-13T23:48:16Z",
+      "side": 1,
+      "message": "Meson will always attempt to resolve subproject dependencies from the subprojects themselves. That\u0027s why you end up with indirect wrap files in some cases.\n\nMy reading of your problem is that some subprojects are depending on fmt without providing it. We probably should just get rid of fmt in those too, I guess. I went on a tear removing a lot of them when GCC 13 first came out but didn\u0027t do everything I guess.",
+      "parentUuid": "93e944a3_f70d95fa",
+      "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
