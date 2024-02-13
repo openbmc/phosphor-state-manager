@@ -16,6 +16,23 @@
       "message": "Thanks for the patch, I don\u0027t utilize these much, but is there any reason to not just use a simpler file like https://grok.openbmc.org/xref/openbmc/phosphor-power/subprojects/fmt.wrap?r\u003d888bebde?",
       "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7c0497f_9cc16742",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-13T18:13:18Z",
+      "side": 1,
+      "message": "I don\u0027t really understand why moving them was helpful?  The lines right above also add dependencies, so why does it matter if this block is at the top or the bottom of the \"complex dependencies\"?",
+      "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
