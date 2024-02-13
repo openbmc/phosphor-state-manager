@@ -122,6 +122,24 @@
       "parentUuid": "70f87883_ddf64d0a",
       "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e944a3_f70d95fa",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-02-13T23:28:19Z",
+      "side": 1,
+      "message": "Is there documentation somewhere that states that meson will \"do the right thing\" if the dependencies are sorted alphabetically? That hasn\u0027t been my experience, particularly around dependency version constraints. See e.g:\n\n[meson: Order dependencies as an approximate in-order tree traversal](https://gerrit.openbmc.org/c/openbmc/dbus-sensors/+/68618)\n\n(Note that I said `in-order` there where I should have said `pre-order`).",
+      "parentUuid": "adeb608a_9eb3349c",
+      "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
