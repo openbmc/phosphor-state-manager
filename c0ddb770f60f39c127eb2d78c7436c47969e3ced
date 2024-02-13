@@ -104,6 +104,24 @@
       "parentUuid": "c7c0497f_9cc16742",
       "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adeb608a_9eb3349c",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-13T23:24:12Z",
+      "side": 1,
+      "message": "Is that a problem with those other repos?  We should be able to sort the dependencies alphabetically (which is what I typically do) and Meson will do the right thing. This is assuming that the consuming repos aren\u0027t broken on their own.",
+      "parentUuid": "70f87883_ddf64d0a",
+      "revId": "c0ddb770f60f39c127eb2d78c7436c47969e3ced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
