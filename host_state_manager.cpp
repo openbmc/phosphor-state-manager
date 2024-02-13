@@ -5,7 +5,6 @@
 #include "host_check.hpp"
 #include "utils.hpp"
 
-#include <fmt/format.h>
 #include <stdio.h>
 #include <systemd/sd-bus.h>
 
@@ -23,6 +22,7 @@
 #include <xyz/openbmc_project/State/Host/error.hpp>
 
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -87,32 +87,32 @@ void Host::determineInitialState()
 void Host::createSystemdTargetMaps()
 {
     stateTargetTable = {
-        {HostState::Off, fmt::format("obmc-host-stop@{}.target", id)},
-        {HostState::Running, fmt::format("obmc-host-startmin@{}.target", id)},
-        {HostState::Quiesced, fmt::format("obmc-host-quiesce@{}.target", id)},
+        {HostState::Off, std::format("obmc-host-stop@{}.target", id)},
+        {HostState::Running, std::format("obmc-host-startmin@{}.target", id)},
+        {HostState::Quiesced, std::format("obmc-host-quiesce@{}.target", id)},
         {HostState::DiagnosticMode,
-         fmt::format("obmc-host-diagnostic-mode@{}.target", id)}};
+         std::format("obmc-host-diagnostic-mode@{}.target", id)}};
 
     transitionTargetTable = {
-        {Transition::Off, fmt::format("obmc-host-shutdown@{}.target", id)},
-        {Transition::On, fmt::format("obmc-host-start@{}.target", id)},
-        {Transition::Reboot, fmt::format("obmc-host-reboot@{}.target", id)},
+        {Transition::Off, std::format("obmc-host-shutdown@{}.target", id)},
+        {Transition::On, std::format("obmc-host-start@{}.target", id)},
+        {Transition::Reboot, std::format("obmc-host-reboot@{}.target", id)},
 // Some systems do not support a warm reboot so just map the reboot
 // requests to our normal cold reboot in that case
 #if ENABLE_WARM_REBOOT
         {Transition::GracefulWarmReboot,
-         fmt::format("obmc-host-warm-reboot@{}.target", id)},
+         std::format("obmc-host-warm-reboot@{}.target", id)},
         {Transition::ForceWarmReboot,
-         fmt::format("obmc-host-force-warm-reboot@{}.target", id)}
+         std::format("obmc-host-force-warm-reboot@{}.target", id)}
     };
 #else
         {Transition::GracefulWarmReboot,
-         fmt::format("obmc-host-reboot@{}.target", id)},
+         std::format("obmc-host-reboot@{}.target", id)},
         {Transition::ForceWarmReboot,
-         fmt::format("obmc-host-reboot@{}.target", id)}
+         std::format("obmc-host-reboot@{}.target", id)}
     };
 #endif
-    hostCrashTarget = fmt::format("obmc-host-crash@{}.target", id);
+    hostCrashTarget = std::format("obmc-host-crash@{}.target", id);
 }
 
 const std::string& Host::getTarget(HostState state)
@@ -298,13 +298,10 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         // This file is used to indicate to host related systemd services
         // that the host is already running and they should skip running.
         // Once the host state is back to running we can clear this file.
-        auto size = std::snprintf(nullptr, 0, HOST_RUNNING_FILE, 0);
-        size++; // null
-        std::unique_ptr<char[]> hostFile(new char[size]);
-        std::snprintf(hostFile.get(), size, HOST_RUNNING_FILE, 0);
-        if (std::filesystem::exists(hostFile.get()))
+        std::string hostFile = std::format(HOST_RUNNING_FILE, 0);
+        if (std::filesystem::exists(hostFile))
         {
-            std::filesystem::remove(hostFile.get());
+            std::filesystem::remove(hostFile);
         }
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Quiesced)) &&
@@ -366,7 +363,7 @@ uint32_t Host::decrementRebootCount()
 
 fs::path Host::serialize()
 {
-    fs::path path{fmt::format(HOST_STATE_PERSIST_PATH, id)};
+    fs::path path{std::format(HOST_STATE_PERSIST_PATH, id)};
     std::ofstream os(path.c_str(), std::ios::binary);
     cereal::JSONOutputArchive oarchive(os);
     oarchive(*this);
@@ -375,7 +372,7 @@ fs::path Host::serialize()
 
 bool Host::deserialize()
 {
-    fs::path path{fmt::format(HOST_STATE_PERSIST_PATH, id)};
+    fs::path path{std::format(HOST_STATE_PERSIST_PATH, id)};
     try
     {
         if (fs::exists(path))

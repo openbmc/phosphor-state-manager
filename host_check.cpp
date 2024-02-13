@@ -18,6 +18,7 @@
 #include <ranges>
 #include <thread>
 #include <vector>
+#include <format>
 
 namespace phosphor
 {
@@ -195,11 +196,8 @@ bool isHostRunning(size_t id)
             info("Host is running!");
             // Create file for host instance and create in filesystem to
             // indicate to services that host is running
-            auto size = std::snprintf(nullptr, 0, HOST_RUNNING_FILE, 0);
-            size++; // null
-            std::unique_ptr<char[]> buf(new char[size]);
-            std::snprintf(buf.get(), size, HOST_RUNNING_FILE, 0);
-            std::ofstream outfile(buf.get());
+            std::string hostFile = std::format(HOST_RUNNING_FILE, 0);
+            std::ofstream outfile(hostFile);
             outfile.close();
             return true;
         }

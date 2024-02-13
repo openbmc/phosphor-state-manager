@@ -2,8 +2,6 @@
 
 #include "utils.hpp"
 
-#include <fmt/format.h>
-#include <fmt/printf.h>
 #include <gpiod.h>
 
 #include <phosphor-logging/lg2.hpp>
@@ -14,6 +12,7 @@
 
 #include <chrono>
 #include <filesystem>
+#include <format>
 
 namespace phosphor
 {
@@ -230,8 +229,8 @@ void createBmcDump(sdbusplus::bus_t& bus)
 
 bool checkACLoss(size_t& chassisId)
 {
-    std::string chassisLostPowerFileFmt = fmt::sprintf(CHASSIS_LOST_POWER_FILE,
-                                                       chassisId);
+    std::string chassisLostPowerFileFmt = std::format(CHASSIS_LOST_POWER_FILE,
+                                                      chassisId);
 
     std::filesystem::path chassisPowerLossFile{chassisLostPowerFileFmt};
     if (std::filesystem::exists(chassisPowerLossFile))

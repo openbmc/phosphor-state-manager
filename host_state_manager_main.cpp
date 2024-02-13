@@ -2,7 +2,6 @@
 
 #include "host_state_manager.hpp"
 
-#include <fmt/format.h>
 #include <getopt.h>
 
 #include <sdbusplus/bus.hpp>
@@ -11,6 +10,7 @@
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <format>
 
 constexpr auto LEGACY_HOST_STATE_PERSIST_PATH =
     "/var/lib/phosphor-state-manager/requestedHostTransition";
@@ -53,7 +53,7 @@ int main(int argc, char** argv)
         // exist, rename it to the new file format of host0.
 
         fs::path legacyPath{LEGACY_HOST_STATE_PERSIST_PATH};
-        fs::path newPath{fmt::format(HOST_STATE_PERSIST_PATH, hostId)};
+        fs::path newPath{std::format(HOST_STATE_PERSIST_PATH, hostId)};
         if (fs::exists(legacyPath))
         {
             fs::rename(legacyPath, newPath);
