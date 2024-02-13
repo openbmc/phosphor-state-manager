@@ -89,14 +89,6 @@ if(get_option('warm-reboot').allowed())
     add_project_arguments('-DENABLE_WARM_REBOOT',language:'cpp')
 endif
 
-nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
-sdbusplus = dependency('sdbusplus')
-sdeventplus = dependency('sdeventplus')
-phosphorlogging = dependency('phosphor-logging')
-phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
-libgpiod = dependency('libgpiod', version : '>=1.4.1')
-fmt = dependency('fmt')
-
 if cpp.has_header('CLI/CLI.hpp')
     CLI11 = declare_dependency()
 else
@@ -120,6 +112,14 @@ if not has_cereal
     assert(cereal_proj.found(), 'cereal is required')
     cereal = cereal_proj.dependency('cereal')
 endif
+
+fmt = dependency('fmt')
+nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
+sdbusplus = dependency('sdbusplus')
+sdeventplus = dependency('sdeventplus')
+phosphorlogging = dependency('phosphor-logging')
+phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
+libgpiod = dependency('libgpiod', version : '>=1.4.1')
 
 executable('phosphor-host-state-manager',
             'host_state_manager.cpp',
