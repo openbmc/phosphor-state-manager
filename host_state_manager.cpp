@@ -84,6 +84,14 @@ void Host::determineInitialState()
     return;
 }
 
+void Host::setupSupportedTransitions()
+{
+    std::vector<Transition> supportedTransitions = {
+        Transition::On, Transition::Off, Transition::Reboot,
+        Transition::GracefulWarmReboot, Transition::ForceWarmReboot};
+    server::Host::allowedHostTransitions(supportedTransitions);
+}
+
 void Host::createSystemdTargetMaps()
 {
     stateTargetTable = {
