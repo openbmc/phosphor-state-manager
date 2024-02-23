@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b497a8fd_50a14320",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-23T20:41:35Z",
+      "side": 1,
+      "message": "Do you need `false` here to avoid signals on the property initialization?",
+      "range": {
+        "startLine": 96,
+        "startChar": 18,
+        "endLine": 96,
+        "endChar": 40
+      },
+      "revId": "da287836044797225e42b22b371849f28be860cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecf5713a_c834c6f0",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-23T20:41:35Z",
+      "side": 1,
+      "message": "Can\u0027t this be:\n\n```\nserver::Host::allowedHostTransitions({Transition::On, Transition::Off, ...});\n```\n\nAt least construct the vector in one go rather than using push_back.",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 63
+      },
+      "revId": "da287836044797225e42b22b371849f28be860cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
