@@ -26,6 +26,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <set>
 #include <string>
 
 // Register class version with Cereal
@@ -82,6 +83,14 @@ void Host::determineInitialState()
         server::Host::requestedHostTransition(Transition::Off);
     }
     return;
+}
+
+void Host::setupSupportedTransitions()
+{
+    std::set<Transition> supportedTransitions = {
+        Transition::On, Transition::Off, Transition::Reboot,
+        Transition::GracefulWarmReboot, Transition::ForceWarmReboot};
+    server::Host::allowedHostTransitions(supportedTransitions);
 }
 
 void Host::createSystemdTargetMaps()
