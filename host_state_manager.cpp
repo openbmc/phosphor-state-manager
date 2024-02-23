@@ -84,6 +84,18 @@ void Host::determineInitialState()
     return;
 }
 
+void Host::setupSupportedTransitions()
+{
+    std::vector<Transition> supportedTransitions;
+    supportedTransitions.push_back(Transition::On);
+    supportedTransitions.push_back(Transition::Off);
+    supportedTransitions.push_back(Transition::Reboot);
+    supportedTransitions.push_back(Transition::GracefulWarmReboot);
+    supportedTransitions.push_back(Transition::ForceWarmReboot);
+
+    server::Host::allowedHostTransitions(supportedTransitions);
+}
+
 void Host::createSystemdTargetMaps()
 {
     stateTargetTable = {
