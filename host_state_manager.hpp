@@ -78,6 +78,9 @@ class Host : public HostInherit
         // Will throw exception on fail
         determineInitialState();
 
+        // Setup supported transitions against this host object
+        setupSupportedTransitions();
+
         // Sets auto-reboot attempts to max-allowed
         attemptsLeft(sdbusplus::server::xyz::openbmc_project::control::boot::
                          RebootAttempts::retryAttempts());
@@ -158,6 +161,13 @@ class Host : public HostInherit
      * @return Will throw exceptions on failure
      **/
     void determineInitialState();
+
+    /**
+     * @brief Configure supported transitions for system
+     *
+     * @return Will throw exceptions on failure
+     **/
+    void setupSupportedTransitions();
 
     /**
      * create systemd target instance names and mapping table
