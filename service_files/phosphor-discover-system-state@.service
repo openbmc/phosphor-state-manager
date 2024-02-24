@@ -1,5 +1,5 @@
 [Unit]
-Description=Reboot If Enabled
+Description=Reboot Host %i If Enabled
 Wants=mapper-wait@-xyz-openbmc_project-control-host%i-power_restore_policy.service
 After=mapper-wait@-xyz-openbmc_project-control-host%i-power_restore_policy.service
 Wants=mapper-wait@-xyz-openbmc_project-state-host%i.service
