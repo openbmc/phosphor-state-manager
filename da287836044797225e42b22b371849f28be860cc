@@ -45,6 +45,54 @@
       },
       "revId": "da287836044797225e42b22b371849f28be860cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13abd485_3c954532",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-02-27T21:50:03Z",
+      "side": 1,
+      "message": "Yeah I just want an easy way to utilize a compile flag to disable certain one\u0027s. I\u0027ll at least init it all at once in the vector.",
+      "parentUuid": "ecf5713a_c834c6f0",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 63
+      },
+      "revId": "da287836044797225e42b22b371849f28be860cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae742b48_a7f5418f",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-02-27T21:50:03Z",
+      "side": 1,
+      "message": "Hmm, I haven\u0027t done that with any of the other properties, This is all called as a part of the constructor and I have a defer + \"emit_object_added()\" at the very end of that. I assumed that would keep everything off of dbus until that call?",
+      "parentUuid": "b497a8fd_50a14320",
+      "range": {
+        "startLine": 96,
+        "startChar": 18,
+        "endLine": 96,
+        "endChar": 40
+      },
+      "revId": "da287836044797225e42b22b371849f28be860cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
