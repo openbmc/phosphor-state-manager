@@ -88,7 +88,10 @@ void Host::setupSupportedTransitions()
 {
     std::vector<Transition> supportedTransitions = {
         Transition::On, Transition::Off, Transition::Reboot,
-        Transition::GracefulWarmReboot, Transition::ForceWarmReboot};
+        Transition::GracefulWarmReboot};
+#ifdef ENABLE_FORCE_WARM_REBOOT
+    supportedTransitions.push_back(Transition::ForceWarmReboot);
+#endif
     server::Host::allowedHostTransitions(supportedTransitions);
 }
 
