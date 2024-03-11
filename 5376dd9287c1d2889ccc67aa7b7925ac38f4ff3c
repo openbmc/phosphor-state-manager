@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd6ce351_f4c2f237",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-03-11T13:34:46Z",
+      "side": 1,
+      "message": "May be a few services that need some Conflicts updates but this seems like the right direction to me.",
+      "revId": "5376dd9287c1d2889ccc67aa7b7925ac38f4ff3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
