@@ -67,20 +67,20 @@ void Host::determineInitialState()
         isHostRunning(id))
     {
         info("Initial Host State will be Running");
-        server::Host::currentHostState(HostState::Running);
-        server::Host::requestedHostTransition(Transition::On);
+        server::Host::currentHostState(HostState::Running, true);
+        server::Host::requestedHostTransition(Transition::On, true);
     }
     else
     {
         info("Initial Host State will be Off");
-        server::Host::currentHostState(HostState::Off);
-        server::Host::requestedHostTransition(Transition::Off);
+        server::Host::currentHostState(HostState::Off, true);
+        server::Host::requestedHostTransition(Transition::Off, true);
     }
 
     if (!deserialize())
     {
         // set to default value.
-        server::Host::requestedHostTransition(Transition::Off);
+        server::Host::requestedHostTransition(Transition::Off, true);
     }
     return;
 }
