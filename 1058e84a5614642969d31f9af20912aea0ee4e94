@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06949849_6d673105",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T15:24:01Z",
+      "side": 1,
+      "message": "This title is very confusing.  The term \"DC\" doesn\u0027t show up in the entire phosphor-state-manager repository.  What is really going on?\n\nI suspect that:\n- There is code in another repository that listens for particular property-changed signals from PSM and then logs an event log as a side-effect?\n- PSM is incorrectly emitting signals when it should not.\n\nPlease improve the commit message to correctly explain what is going on, with respect to phosphor-state-manager, and perhaps give reference to the code which is emitting the \"fake DC event log\" in response to this incorrect behavior.",
+      "revId": "1058e84a5614642969d31f9af20912aea0ee4e94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b91cac5_f366f779",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T15:24:01Z",
+      "side": 1,
+      "message": "I would suggest that all properties we set the \"true\" parameter here.  We shouldn\u0027t be emitting signals for any of them.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 63
+      },
+      "revId": "1058e84a5614642969d31f9af20912aea0ee4e94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
