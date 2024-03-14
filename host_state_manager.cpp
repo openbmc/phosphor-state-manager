@@ -67,13 +67,13 @@ void Host::determineInitialState()
         isHostRunning(id))
     {
         info("Initial Host State will be Running");
-        server::Host::currentHostState(HostState::Running);
+        server::Host::currentHostState(HostState::Running, true);
         server::Host::requestedHostTransition(Transition::On);
     }
     else
     {
         info("Initial Host State will be Off");
-        server::Host::currentHostState(HostState::Off);
+        server::Host::currentHostState(HostState::Off, true);
         server::Host::requestedHostTransition(Transition::Off);
     }
 
