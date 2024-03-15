@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d2129b4_ce200fd3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-03-15T04:38:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06949849_6d673105",
+      "revId": "1058e84a5614642969d31f9af20912aea0ee4e94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b91cac5_f366f779",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-03-14T15:24:01Z",
       "side": 1,
       "message": "I would suggest that all properties we set the \"true\" parameter here.  We shouldn\u0027t be emitting signals for any of them.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 63
+      },
+      "revId": "1058e84a5614642969d31f9af20912aea0ee4e94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaabc845_c5c0d409",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-03-15T04:38:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b91cac5_f366f779",
       "range": {
         "startLine": 70,
         "startChar": 0,
