@@ -29,6 +29,10 @@
 #include <set>
 #include <string>
 
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
+#include <xyz/openbmc_project/Logging/Entry/client.hpp>
+
+
 // Register class version with Cereal
 CEREAL_CLASS_VERSION(phosphor::state::manager::Host, CLASS_VERSION)
 
@@ -40,6 +44,10 @@ namespace manager
 {
 
 PHOSPHOR_LOG2_USING;
+
+using LoggingCreate =
+    sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 
 // When you see server:: or reboot:: you know we're referencing our base class
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
@@ -140,6 +148,43 @@ const std::string& Host::getTarget(Transition tranReq)
     return transitionTargetTable[tranReq];
 };
 
+void Host::powerLogTransition(Transition tranReq)
+{
+    auto method_sel = this->bus.new_method_call(LoggingCreate::default_service,
+                                                 LoggingCreate::instance_path,
+                                                 LoggingCreate::interface, "Create");
+
+    std::string log_string;
+    switch (tranReq)
+    {
+        case Transition::Off:
+            log_string = "xyz.openbmc_project.State.Host.Off";
+            break;
+        case Transition::On:
+            log_string = "xyz.openbmc_project.State.Host.On";
+            break;
+        case Transition::Reboot:
+            log_string = "xyz.openbmc_project.State.Host.Reboot";
+            break;
+        case Transition::GracefulWarmReboot:
+            log_string = "xyz.openbmc_project.State.Host.GracefulWarmReboot";
+            break;
+        case Transition::ForceWarmReboot:
+            log_string = "xyz.openbmc_project.State.Host.ForceWarmReboot";
+            break;
+        default:
+            log_string = "Unknown";
+    }
+
+    // Host Send Command Log
+    method_sel.append(log_string, LoggingEntry::Level::Informational,
+                      std::array<std::pair<std::string, std::string>, 1>{
+                          std::make_pair("Host", std::to_string(id))
+                      });
+
+    this->bus.call_noreply(method_sel);
+}
+
 void Host::executeTransition(Transition tranReq)
 {
     auto& sysdUnit = getTarget(tranReq);
@@ -151,6 +196,8 @@ void Host::executeTransition(Transition tranReq)
     method.append("replace");
 
     this->bus.call_noreply(method);
+
+    powerLogTransition(tranReq);
 
     return;
 }

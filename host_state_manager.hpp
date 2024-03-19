@@ -324,6 +324,15 @@ class Host : public HostInherit
     const std::string& getTarget(HostState state);
 
     /**
+     * @brief Add Host transition command log
+     *
+     * @param[in] tranReq      -  Transition requested
+     *
+     * @return string - Host command string
+     */
+    void powerLogTransition(Transition tranReq);
+
+    /**
      * @brief Get target name of a TransitionRequest
      *
      * @param[in] tranReq      -  Transition requested
