@@ -17,6 +17,8 @@
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
 #include <xyz/openbmc_project/State/Chassis/error.hpp>
 #include <xyz/openbmc_project/State/Decorator/PowerSystemInputs/server.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
+#include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
 #include <filesystem>
 #include <format>
@@ -30,6 +32,10 @@ namespace manager
 {
 
 PHOSPHOR_LOG2_USING;
+
+using LoggingCreate =
+    sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
@@ -585,6 +591,37 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
     return 0;
 }
 
+void Chassis::powerLogTransition(Transition tranReq)
+{
+    auto method_sel = this->bus.new_method_call(LoggingCreate::default_service,
+                                                 LoggingCreate::instance_path,
+                                                 LoggingCreate::interface, "Create");
+
+    std::string log_string;
+    switch (tranReq)
+    {
+        case Transition::Off:
+            log_string = "xyz.openbmc_project.State.Chassis.Off";
+            break;
+        case Transition::On:
+            log_string = "xyz.openbmc_project.State.Chassis.On";
+            break;
+        case Transition::PowerCycle:
+            log_string = "xyz.openbmc_project.State.Chassis.PowerCycle";
+            break;
+        default:
+            log_string = "Unknown";
+    }
+
+    // Host Send Command Log
+    method_sel.append(log_string, LoggingEntry::Level::Informational,
+                      std::array<std::pair<std::string, std::string>, 1>{
+                          std::make_pair("Chassis", std::to_string(id))
+                      });
+
+    this->bus.call_noreply(method_sel);
+}
+
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
     info("Change to Chassis Requested Power State: {REQ_POWER_TRAN}",
@@ -598,6 +635,7 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
     }
 #endif
     startUnit(systemdTargetTable.find(value)->second);
+    powerLogTransition(value);
     return server::Chassis::requestedPowerTransition(value);
 }
 

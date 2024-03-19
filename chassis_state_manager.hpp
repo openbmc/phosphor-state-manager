@@ -89,6 +89,9 @@ class Chassis : public ChassisInherit
     void startPOHCounter();
 
   private:
+    /** @brief Add Chassis transition command log */
+    void powerLogTransition(Transition tranReq);
+
     /** @brief Create systemd target instance names and mapping table */
     void createSystemdTargetTable();
 
