@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c514c2bb_05f827b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-03-20T22:09:58Z",
+      "side": 1,
+      "message": "I\u0027m not sure I\u0027m really sold on this one. We did add https://github.com/openbmc/phosphor-state-manager/blob/master/service_files/phosphor-create-chassis-poweron-log%40.service at one point to log the chassis power on since that seemed to be a common use case but I\u0027m not all that interested in my system logging all of these logs (I just look at the journal). Is the journal not good enough?",
+      "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
