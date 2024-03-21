@@ -70,6 +70,24 @@
       "parentUuid": "5885cdeb_be2d4de7",
       "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3749046_05d4972c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-03-21T02:28:49Z",
+      "side": 1,
+      "message": "\u003e Hi Patrick,\n\u003e    Do you have any concerns about it if we don\u0027t have command event logs?",
+      "parentUuid": "8d6a7dc2_bc434efa",
+      "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
