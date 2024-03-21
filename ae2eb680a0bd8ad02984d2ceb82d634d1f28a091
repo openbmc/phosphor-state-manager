@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure I\u0027m really sold on this one. We did add https://github.com/openbmc/phosphor-state-manager/blob/master/service_files/phosphor-create-chassis-poweron-log%40.service at one point to log the chassis power on since that seemed to be a common use case but I\u0027m not all that interested in my system logging all of these logs (I just look at the journal). Is the journal not good enough?",
       "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cda5ee4_dcb54026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-03-21T01:31:59Z",
+      "side": 1,
+      "message": "Hi Andrew,\nThe journal is good, but it can\u0027t be remain after BMC reboot or power cycle, Can we add it in meson options?",
+      "parentUuid": "c514c2bb_05f827b3",
+      "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
