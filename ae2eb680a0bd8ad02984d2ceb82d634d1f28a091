@@ -88,6 +88,24 @@
       "parentUuid": "8d6a7dc2_bc434efa",
       "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29147f3b_e6d712ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-21T02:42:12Z",
+      "side": 1,
+      "message": "@Peter, please don\u0027t add dbus calls for phosphor-logging directly in code.  If there is an event you\u0027d like to see, let\u0027s discuss it and then get it added to phosphor-dbus-interfaces first (and get buy in from the maintainers).",
+      "parentUuid": "d3749046_05d4972c",
+      "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
