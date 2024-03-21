@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1ef7210_14a5b20b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-03-21T09:28:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d20d13bc_3b7cf8f5",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "06356e48e5316bf484819e83a7b2c21326053b5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcef7c28_b045bd5f",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-20T21:47:04Z",
       "side": 1,
       "message": "This whole section confuses me a bit. I\u0027d prefer something like this:\n\nA dbus event should not be generated when initializing the properties\nwithin the host state manager. The dbus events should only be generated\non actual state changes to prevent invalid state change logs.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 1
+      },
+      "revId": "06356e48e5316bf484819e83a7b2c21326053b5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ee3b9a_c3b2af10",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-03-21T09:28:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcef7c28_b045bd5f",
       "range": {
         "startLine": 11,
         "startChar": 0,
