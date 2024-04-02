@@ -142,6 +142,24 @@
       "parentUuid": "fdeb090c_4264b421",
       "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44d4d487_7418303f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-04-02T17:15:45Z",
+      "side": 1,
+      "message": "Hi Patrick,\n  I added PowerCycleLog to \"yaml/xyz/openbmc_project/State/Chassis.errors.yaml,\" and the log displays as xyz.openbmc_project.State.Chassis.Error.PowerCycleLog. Is there a method to remove the \"Error\" string, as it is a command log and not an error log?\n  \n  \n\"Severity\" : {\n    \"type\" : \"s\",\n    \"data\" : \"xyz.openbmc_project.Logging.Entry.Level.Informational\"\n    },\n\"Message\" : {\n    \"type\" : \"s\",\n    \"data\" : \"xyz.openbmc_project.State.Chassis.Error.PowerCycleLog\"\n   }\n\t\t\t},",
+      "parentUuid": "86e07100_a9f20823",
+      "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
