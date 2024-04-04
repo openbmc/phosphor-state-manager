@@ -13,7 +13,7 @@ After=obmc-host-stopped@%i.target
 # Since this is a part of the reboot target, call the startmin
 # target which does the minimum required to start the host if the reboot count
 # is not 0, otherwise it will quiesce the host.
-ExecStart=/usr/libexec/host-reboot %i
+ExecStart=/usr/libexec/phosphor-state-manager/host-reboot %i
 
 [Install]
 WantedBy=obmc-host-reboot@%i.target
