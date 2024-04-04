@@ -276,7 +276,7 @@ install_data('obmcutil',
 
 install_data('scripts/host-reboot',
         install_mode: 'rwxr-xr-x',
-        install_dir: get_option('libexecdir')
+        install_dir: get_option('libexecdir')/'phosphor-state-manager'
 )
 
 systemd = dependency('systemd')
