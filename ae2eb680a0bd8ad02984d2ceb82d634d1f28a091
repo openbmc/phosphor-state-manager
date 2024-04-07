@@ -195,6 +195,24 @@
       "message": "Hi Patrick/Andrew,\nI want to add debus interface in Chassis.errors.yaml\nxyz.openbmc_project.State.Chassis.Error.PowerOff\nxyz.openbmc_project.State.Chassis.Error.PowerCycleLog\n\nand Host.error.yaml\nxyz.openbmc_project.State.Host.Error.PowerOn\nxyz.openbmc_project.State.Host.Error.PowerOff",
       "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9f6fa5f_23e6e885",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2024-04-07T13:42:37Z",
+      "side": 1,
+      "message": "Hi Patrick/Andrew,\n\nI want to add dbus in Chassis.errors.yaml\nxyz.openbmc_project.State.Chassis.Error.PowerOff\nxyz.openbmc_project.State.Chassis.Error.PowerCycleLog\n \nand Host.error.yaml\nxyz.openbmc_project.State.Host.Error.PowerOn\nxyz.openbmc_project.State.Host.Error.PowerOff\nxyz.openbmc_project.State.Host.Error.PowerCycle\nxyz.openbmc_project.State.Host.Error.ForceRestart\nxyz.openbmc_project.State.Host.Error.GracefulRestart\n\nDo you have any concerns about the format or any other suggestions?",
+      "parentUuid": "ed62ae32_f4745a12",
+      "revId": "ae2eb680a0bd8ad02984d2ceb82d634d1f28a091",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
