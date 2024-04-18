@@ -40,6 +40,10 @@ unit_files = [
     'obmc-power-stop@.target',
 ]
 
+if get_option('rbmc-state-management').allowed()
+  unit_files += 'obmc-bmc-active.target'
+endif
+
 fs = import('fs')
 foreach u : unit_files
     fs.copyfile(
