@@ -107,7 +107,7 @@ option('force-warm-reboot', type : 'feature',
 )
 
 option('host-gpios', type : 'feature',
-    value : 'disabled',
+    value : 'enabled',
     description : 'Enable gpio mechanism to check host state.',
 )
 
