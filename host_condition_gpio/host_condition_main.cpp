@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     auto bus = sdbusplus::bus::new_default();
     std::string objGroupName = HOST_GPIOS_OBJPATH;
     std::string objPathInst = objGroupName + "/host" + hostId;
-    std::string busName = HOST_GPIOS_BUSNAME;
+    std::string busName = HOST_GPIOS_BUSNAME + hostId;
 
     // Add sdbusplus ObjectManager
     sdbusplus::server::manager_t objManager(bus, objGroupName.c_str());
