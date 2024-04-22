@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e361319_897f03f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-22T21:05:10Z",
+      "side": 1,
+      "message": "Focus on the \"why\" in the commit message. You can look at the change to know the \"what\". For example, \"Create the /run/openbmc directory on startup because other applications and services within phosphor-state-manager assume it has already been created. The chassis service is the best place to create the dir because it always runs first\"",
+      "revId": "14b7423fdd3353a441350aa3a4a40595a80852c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a45413a_284e950d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-22T21:05:10Z",
+      "side": 1,
+      "message": "nit: Please put a blank line between major blocks",
+      "revId": "14b7423fdd3353a441350aa3a4a40595a80852c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caa5bc4c_bf3af9b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-22T21:05:10Z",
+      "side": 1,
+      "message": "Github has a trick where if you put the following on a line it will link the issue to your commit and automatically close it when this change is merged:\nFixes openbmc/phosphor-state-manager#22",
+      "range": {
+        "startLine": 10,
+        "startChar": 26,
+        "endLine": 10,
+        "endChar": 66
+      },
+      "revId": "14b7423fdd3353a441350aa3a4a40595a80852c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bd674c4_5bec80d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-22T21:05:10Z",
+      "side": 1,
+      "message": "nit: another blank line above this one too please",
+      "revId": "14b7423fdd3353a441350aa3a4a40595a80852c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6b877ae_016ab468",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-22T21:05:10Z",
+      "side": 1,
+      "message": "Thanks for working on this one Anusha!",
+      "revId": "14b7423fdd3353a441350aa3a4a40595a80852c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
