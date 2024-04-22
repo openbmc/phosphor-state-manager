@@ -4,6 +4,7 @@ Before=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
 After=org.openbmc.control.Power@%i.service
 
 [Service]
+ExecStartPre=/bin/mkdir -p /run/openbmc/
 ExecStart=/usr/bin/phosphor-chassis-state-manager --chassis %i
 Restart=always
 Type=dbus
