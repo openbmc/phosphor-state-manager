@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a53666_b8005791",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-23T14:44:12Z",
+      "side": 1,
+      "message": "nit: first.",
+      "range": {
+        "startLine": 12,
+        "startChar": 23,
+        "endLine": 12,
+        "endChar": 28
+      },
+      "revId": "fc1b612f73b706e7e06647e08631f583e63f110c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25fef126_7777f629",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-23T14:44:12Z",
+      "side": 1,
+      "message": "Oops sorry, it\u0027s very specific syntax:\nFixes openbmc/phosphor-state-manager#22",
+      "revId": "fc1b612f73b706e7e06647e08631f583e63f110c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
