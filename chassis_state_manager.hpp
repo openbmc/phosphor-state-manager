@@ -55,10 +55,9 @@ class Chassis : public ChassisInherit
                 sdbusRule::path("/org/freedesktop/systemd1") +
                 sdbusRule::interface("org.freedesktop.systemd1.Manager"),
             [this](sdbusplus::message_t& m) { sysStateChange(m); }),
-        id(id),
-        pohTimer(
-            sdeventplus::Event::get_default(), [this](auto&) { pohCallback(); },
-            std::chrono::hours{1}, std::chrono::minutes{1})
+        id(id), pohTimer(sdeventplus::Event::get_default(), [this](auto&) {
+            pohCallback();
+        }, std::chrono::hours{1}, std::chrono::minutes{1})
     {
         utils::subscribeToSystemdSignals(bus);
 

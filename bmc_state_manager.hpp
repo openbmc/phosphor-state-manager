@@ -51,22 +51,22 @@ class BMC : public BMCInherit
                 "/org/freedesktop/systemd1/unit/time_2dsync_2etarget",
                 "org.freedesktop.systemd1.Unit"),
             [this](sdbusplus::message_t& m) {
-        std::string interface;
-        std::unordered_map<std::string, std::variant<std::string>>
-            propertyChanged;
-        m.read(interface, propertyChanged);
+                std::string interface;
+                std::unordered_map<std::string, std::variant<std::string>>
+                    propertyChanged;
+                m.read(interface, propertyChanged);
 
-        for (const auto& [key, value] : propertyChanged)
-        {
-            if (key == "ActiveState" &&
-                std::holds_alternative<std::string>(value) &&
-                std::get<std::string>(value) == "active")
-            {
-                updateLastRebootTime();
-                timeSyncSignal.reset();
-            }
-        }
-    }))
+                for (const auto& [key, value] : propertyChanged)
+                {
+                    if (key == "ActiveState" &&
+                        std::holds_alternative<std::string>(value) &&
+                        std::get<std::string>(value) == "active")
+                    {
+                        updateLastRebootTime();
+                        timeSyncSignal.reset();
+                    }
+                }
+            }))
     {
         utils::subscribeToSystemdSignals(bus);
         discoverInitialState();
