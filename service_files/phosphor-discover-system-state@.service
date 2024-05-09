@@ -11,6 +11,7 @@ After=mapper-wait@-xyz-openbmc_project-state-bmc0.service
 After=phosphor-reset-chassis-on@%i.service
 Wants=xyz.openbmc_project.Settings.service
 After=xyz.openbmc_project.Settings.service
+After=multi-user.target
 ConditionPathExists=!/run/openbmc/chassis@%i-on
 
 [Service]
