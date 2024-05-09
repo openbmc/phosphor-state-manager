@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f5f6475_d7521cc9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-05-09T14:28:55Z",
+      "side": 1,
+      "message": "Could you add a Tested section? It\u0027s not clear to me that systemd really supports a service being a part of a target, but also running after it?",
+      "revId": "ce475bab72bdc05de7b00def360b910ad8ba8a46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
