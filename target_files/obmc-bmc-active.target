@@ -1,2 +1,3 @@
 [Unit]
 Description=Active BMC Target
+BindsTo=phosphor-set-bmc-active-passive.service
