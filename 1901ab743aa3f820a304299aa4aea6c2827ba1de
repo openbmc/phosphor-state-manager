@@ -33,6 +33,24 @@
       "message": "Andrew, do you want us to change this service file to a `.in` and do this `After` based on the meson option?",
       "revId": "1901ab743aa3f820a304299aa4aea6c2827ba1de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0f4541_fd76bd2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-05-10T20:54:13Z",
+      "side": 1,
+      "message": "I don\u0027t know of anyone taking advantage of the BMC and host booting in parallel so I\u0027m ok just going with this as-is. If someone complains, we can do what you propose and tie it to the bmc-ready option.",
+      "parentUuid": "cf6ff5c5_f2cc9782",
+      "revId": "1901ab743aa3f820a304299aa4aea6c2827ba1de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
