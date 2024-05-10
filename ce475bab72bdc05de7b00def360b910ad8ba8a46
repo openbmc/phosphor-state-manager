@@ -16,6 +16,24 @@
       "message": "Could you add a Tested section? It\u0027s not clear to me that systemd really supports a service being a part of a target, but also running after it?",
       "revId": "ce475bab72bdc05de7b00def360b910ad8ba8a46",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd495ec3_f2c7a262",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-05-10T01:46:38Z",
+      "side": 1,
+      "message": "Below is part of our log:\n```\n....\nMay 09 18:18:49 bmc phosphor-bmc-state-manager[903]: BMC_READY\nMay 09 18:18:49 bmc phosphor-bmc-state-manager[903]: Setting the BMCState field to xyz.openbmc_project.State.BMC.BMCState.Ready\nMay 09 18:18:49 bmc systemd[1]: Started Reboot Host 1 If Enabled.\nMay 09 18:18:49 bmc systemd[1]: Started Reboot Host 2 If Enabled.\nMay 09 18:18:49 bmc systemd[1]: Started Reboot Host 3 If Enabled.\nMay 09 18:18:49 bmc systemd[1]: Started Reboot Host 4 If Enabled.\nMay 09 18:18:49 bmc systemd[1]: Started Reboot Host 5 If Enabled.\nMay 09 18:18:49 bmc phosphor-discover-system-state[1206]: The LastbootCause is a watchdog. Power policy execution is currently allowed\nMay 09 18:18:49 bmc systemd[1]: Started Reboot Host 6 If Enabled.\nMay 09 18:18:49 bmc phosphor-discover-system-state[1207]: The LastbootCause is a watchdog. Power policy execution is currently allowed\nMay 09 18:18:49 bmc phosphor-discover-system-state[1206]: One time not set, check user setting of power policy\nMay 09 18:18:49 bmc phosphor-discover-system-state[1206]: Host power is off, processing power policy xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn\nMay 09 18:18:49 bmc phosphor-discover-system-state[1206]: power_policy\u003dALWAYS_POWER_ON, powering host on (0s delay)\nMay 09 18:18:49 bmc phosphor-discover-system-state[1207]: One time not set, check user setting of power policy\nMay 09 18:18:50 bmc phosphor-discover-system-state[1208]: The LastbootCause is a watchdog. Power policy execution is currently allowed\nMay 09 18:18:50 bmc systemd[1]: Started Reboot Host 7 If Enabled.\nMay 09 18:18:50 bmc phosphor-discover-system-state[1207]: Host power is off, processing power policy xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn\nMay 09 18:18:50 bmc phosphor-discover-system-state[1207]: power_policy\u003dALWAYS_POWER_ON, powering host on (0s delay)\nMay 09 18:18:50 bmc phosphor-discover-system-state[1209]: The LastbootCause is a watchdog. Power policy execution is currently allowed\nMay 09 18:18:50 bmc phosphor-discover-system-state[1208]: One time not set, check user setting of power policy\nMay 09 18:18:50 bmc phosphor-host-state-manager[994]: Host state transition request of xyz.openbmc_project.State.Host.Transition.On\n....\n```\n\nThe phosphor-discover-system-state start to run after Multi-User.\nI also using systemd-analyze plot \u003ebootup.svg to check order, and phosphor-discover-system-state will start after multi-user.target.",
+      "parentUuid": "1f5f6475_d7521cc9",
+      "revId": "ce475bab72bdc05de7b00def360b910ad8ba8a46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
