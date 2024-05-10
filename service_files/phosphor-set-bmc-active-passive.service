@@ -1,0 +1,11 @@
+[Unit]
+Description=Start/Stop the active BMC target helper
+After=obmc-bmc-active.target
+PartOf=obmc-bmc-active.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=mkdir -p /run/openbmc/
+ExecStart=/bin/touch /run/openbmc/active-bmc
+ExecStop=/bin/rm -f /run/openbmc/active-bmc

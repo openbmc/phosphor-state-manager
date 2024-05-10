@@ -26,6 +26,12 @@ unit_files = [
     'phosphor-set-chassis-transition-to-off@.service'
 ]
 
+if get_option('rbmc-state-management').allowed()
+    unit_files += [
+        'phosphor-set-bmc-active-passive.service'
+    ]
+endif
+
 fs = import('fs')
 foreach u : unit_files
     fs.copyfile(
