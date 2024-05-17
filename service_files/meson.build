@@ -12,6 +12,7 @@ unit_files = [
     'phosphor-reset-host-running@.service',
     'phosphor-reset-sensor-states@.service',
     'xyz.openbmc_project.State.BMC.service',
+    'xyz.openbmc_project.State.BMC.Redundancy.service',
     'xyz.openbmc_project.State.Chassis@.service',
     'xyz.openbmc_project.State.Host@.service',
     'xyz.openbmc_project.State.Hypervisor.service',
