@@ -28,7 +28,8 @@ unit_files = [
 
 if get_option('rbmc-state-management').allowed()
     unit_files += [
-        'phosphor-set-bmc-active-passive.service'
+        'phosphor-set-bmc-active-passive.service',
+        'xyz.openbmc_project.State.BMC.Redundancy.service'
     ]
 endif
 

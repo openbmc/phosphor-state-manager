@@ -371,3 +371,7 @@ gmock = dependency('gmock', disabler: true, required: build_tests)
       )
   )
 endif
+
+if get_option('rbmc-state-management').allowed()
+  subdir('redundant-bmc')
+endif
