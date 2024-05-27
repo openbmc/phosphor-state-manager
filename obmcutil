@@ -41,7 +41,7 @@ G_VERBOSE=
 # Instance id, default 0
 G_INSTANCE_ID="0"
 
-function print_help()
+print_help()
 {
     echo "$USAGE"
     echo ""
@@ -63,6 +63,9 @@ function print_help()
     echo ""
     echo "obmcutil recoveryon     Enable handling boot watchdog timeout and host crash"
     echo "                        Also, enable BMC and Host auto reboots"
+    echo ""
+    echo "obmcutil recoverystatus Display the status of handling boot watchdog timeout and host crash"
+    echo "                        and also the status of BMC and Host auto reboots setting"
     echo ""
     echo "obmcutil listbootblock  Check for and list any errors blocking the boot"
     echo "                        of the system"
@@ -86,7 +89,7 @@ function print_help()
     exit 0
 }
 
-function run_timeout()
+run_timeout()
 {
     local timeout="$1"; shift
     local cmd="$*"
@@ -129,7 +132,7 @@ function run_timeout()
     fi
 }
 
-function run_cmd()
+run_cmd()
 {
     local cmd="$*";
 
@@ -140,44 +143,51 @@ function run_cmd()
     fi
 }
 
-function set_property()
+set_property()
 {
     run_cmd busctl set-property "$@"
 }
 
-function get_property()
+get_property()
 {
     G_WAIT=""
     run_cmd busctl get-property "$@"
 }
 
-function state_query()
+state_query()
 {
     local state
     state=$(get_property "$@" | cut -d '"' -f2)
     printf "%-20s: %s\n" "$4" "$state"
 }
 
-function print_usage_err()
+print_usage_err()
 {
     echo "ERROR: $1" >&2
     echo "$USAGE"
     exit 1
 }
 
-function mask_systemd_target()
+mask_systemd_target()
 {
     target="$*"
     systemctl mask "$target"
 }
 
-function unmask_systemd_target()
+unmask_systemd_target()
 {
     target="$*"
     systemctl unmask "$target"
 }
 
-function disable_bmc_reboot()
+get_systemd_target_state()
+{
+    target="$*"
+    enabled_state=$(systemctl is-enabled "$target")
+    echo "$enabled_state"
+}
+
+disable_bmc_reboot()
 {
     dir="/run/systemd/system/"
     file="reboot-guard.conf"
@@ -189,7 +199,7 @@ function disable_bmc_reboot()
     done
 }
 
-function enable_bmc_reboot()
+enable_bmc_reboot()
 {
     dir="/run/systemd/system/"
     file="reboot-guard.conf"
@@ -201,8 +211,34 @@ function enable_bmc_reboot()
     done
 }
 
+get_bmc_reboot_status()
+{
+    dir="/run/systemd/system/"
+    file="reboot-guard.conf"
+    units=("reboot" "poweroff" "halt")
+
+    # if file do
+    for unit in "${units[@]}"; do
+        if [ -e "${dir}${unit}.target.d/${file}" ]; then
+            echo "off"
+            return 0
+        fi
+    done
+    echo "on"
+    return 0
+}
+
+get_host_reboot_status()
+{
+    OBJECT=$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot
+    SERVICE=$(mapper get-service "$OBJECT")
+    INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
+    PROPERTY=AutoReboot
+    get_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY
+}
+
 # will write blocking errors to stdout
-function check_boot_block_errors()
+check_boot_block_errors()
 {
     # array of boot block objects
     blockArray=()
@@ -244,7 +280,7 @@ function check_boot_block_errors()
 }
 
 # helper function to check for boot block errors and notify user
-function check_and_warn_boot_block()
+check_and_warn_boot_block()
 {
     blockingErrors=$(check_boot_block_errors)
     if [ -n "$blockingErrors" ]; then
@@ -256,7 +292,7 @@ function check_and_warn_boot_block()
 }
 
 # list all phosphor-logging entries
-function list_logs()
+list_logs()
 {
     # Look for any objects under logging that implement the
     # xyz.openbmc_project.Logging.Entry
@@ -268,7 +304,7 @@ function list_logs()
 }
 
 # display input log details
-function show_log()
+show_log()
 {
     busctl -j call xyz.openbmc_project.Logging \
         "$1" \
@@ -277,7 +313,7 @@ function show_log()
 }
 
 # delete all phosphor-logging entries
-function delete_logs()
+delete_logs()
 {
     busctl call xyz.openbmc_project.Logging \
         /xyz/openbmc_project/logging \
@@ -285,7 +321,7 @@ function delete_logs()
 }
 
 # stop all targets associated with powering off a system
-function stop_off_targets()
+stop_off_targets()
 {
     systemctl stop \
         obmc-chassis-powered-off@0.target \
@@ -297,7 +333,7 @@ function stop_off_targets()
         obmc-power-stop@0.target
 }
 
-function handle_cmd()
+handle_cmd()
 {
     case "$1" in
         chassisoff)
@@ -441,6 +477,52 @@ function handle_cmd()
             handle_cmd bmcrebooton
             unmask_systemd_target $HOST_TIMEOUT_TARGET
             unmask_systemd_target $HOST_CRASH_TARGET
+            ;;
+        recoverystatus)
+            host_reboot_state=$(get_host_reboot_status)
+            if [[ $host_reboot_state == "b true" ]]; then
+                host_reboot_status=1
+            else
+                host_reboot_status=0
+            fi
+
+            bmc_reboot_state=$(get_bmc_reboot_status)
+            if [[ $bmc_reboot_state == "on" ]]; then
+                bmc_reboot_status=1
+            else
+                bmc_reboot_status=0
+            fi
+
+            host_timeout_target_state=$(get_systemd_target_state $HOST_TIMEOUT_TARGET)
+            if [[ $host_timeout_target_state == "masked" ]]; then
+                host_timeout_status=0
+            else
+                host_timeout_status=1
+            fi
+
+            host_crash_target_state=$(get_systemd_target_state $HOST_CRASH_TARGET)
+            if [[ $host_crash_target_state == "masked" ]]; then
+                host_crash_status=0
+            else
+                host_crash_status=1
+            fi
+
+            if (( host_reboot_status && bmc_reboot_status && host_timeout_status && host_crash_status )); then
+                echo "recovery: On"
+            elif (( !host_reboot_status && !bmc_reboot_status && !host_timeout_status && !host_crash_status )); then
+                echo "recovery: Off"
+            else
+                echo "recovery: Undefined"
+            fi
+
+            declare -A status
+            status[0]="Off"
+            status[1]="On"
+
+            printf "  %-11s: %s\n" "hostReboot" "${status[$host_reboot_status]}"
+            printf "  %-11s: %s\n" "bmcReboot" "${status[$bmc_reboot_status]}"
+            printf "  %-11s: %s\n" "hostTimeout" "${status[$host_timeout_status]}"
+            printf "  %-11s: %s\n" "hostCrash" "${status[$host_crash_status]}"
             ;;
         listbootblock)
             blockingErrors=$(check_boot_block_errors)
