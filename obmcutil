@@ -1,275 +1,3 @@
-#!/bin/bash -e
-
-set -euo pipefail
-
-OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
-osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs, stopofftargets"
-
-USAGE="Usage: obmcutil [-h] [--wait] [--verbose] [--id=<INSTANCE_ID>]
-{$OPTS}"
-
-INTERFACE_ROOT=xyz.openbmc_project
-STATE_INTERFACE=$INTERFACE_ROOT.State
-CONTROL_INTERFACE=$INTERFACE_ROOT.Control
-
-OBJECT_ROOT=/xyz/openbmc_project
-STATE_OBJECT=$OBJECT_ROOT/state
-CONTROL_OBJECT=$OBJECT_ROOT/control
-
-HOST_TIMEOUT_TARGET=obmc-host-timeout@0.target
-HOST_CRASH_TARGET=obmc-host-crash@0.target
-
-## NOTE: The following global variables are used only in the run_timeout cmd.
-## By declaring these globally instead of passing them through the
-## intermediary functions, which may not be "best practice", the readability
-## and cleanliness of the code should at least be increased.
-
-# The command passed in to be executed (e.g. poweron/off, status, etc.)
-# This will be be used in some instances of error reporting
-G_ORIG_CMD=
-# The state an interface should be in after executing the requested command.
-G_REQUESTED_STATE=
-# The query to run during a poweron/off or chassison/off to check that
-# the requested state (G_REQUESTED_STATE) of the interface has been reached.
-G_QUERY=
-# Wait the set period of time for state transitions to be successful before
-# continuing on with the program or reporting an error if timeout reached.
-G_WAIT=
-# Print the journal to the console
-G_VERBOSE=
-# Instance id, default 0
-G_INSTANCE_ID="0"
-
-function print_help()
-{
-    echo "$USAGE"
-    echo ""
-    echo "positional arguments:"
-    echo "  {$OPTS}"
-    echo ""
-    echo "Examples:"
-    echo ""
-    echo "obmcutil hostrebootoff Disable auto reboot of Host from Quiesce state"
-    echo "obmcutil hostrebootoffonetime Disable auto reboot of Host from"
-    echo "                              Quiesce state for a single boot"
-    echo "obmcutil hostrebooton   Enable auto reboot of Host from Quiesce state"
-    echo ""
-    echo "obmcutil bmcrebootoff   Disable reboot of BMC"
-    echo "obmcutil bmcrebooton    Enable reboot of BMC"
-    echo ""
-    echo "obmcutil recoveryoff    Disable handling boot watchdog timeout and host crash"
-    echo "                        Also, disable BMC and Host auto reboots"
-    echo ""
-    echo "obmcutil recoveryon     Enable handling boot watchdog timeout and host crash"
-    echo "                        Also, enable BMC and Host auto reboots"
-    echo ""
-    echo "obmcutil listbootblock  Check for and list any errors blocking the boot"
-    echo "                        of the system"
-    echo ""
-    echo "obmcutil listlogs       List all phosphor-logging entries on the"
-    echo "                        system"
-    echo ""
-    echo "obmcutil showlog <log>  Display details of input log. Format of <log>"
-    echo "                        should match listlogs output"
-    echo ""
-    echo "obmcutil deletelogs     Delete all phosphor-logging entries from"
-    echo "                        system"
-    echo "obmcutil stopofftargets Manually stop all obmc targets in power off"
-    echo "                        path"
-    echo ""
-    echo "optional arguments (must precede the positional options above):"
-    echo "  -h, --help          show this help message and exit"
-    echo "  -w, --wait          block until state transition succeeds or fails"
-    echo "  -v, --verbose       print the journal to stdout if --wait is supplied"
-    echo "  -i, -id             instance id, default 0"
-    exit 0
-}
-
-function run_timeout()
-{
-    local timeout="$1"; shift
-    local cmd="$*"
-    local verbose_child=
-
-    if [ -n "$G_VERBOSE" ]; then
-        journalctl -f &
-        verbose_child=$!
-    fi
-
-    $cmd
-
-    # Run a background query for the transition to the expected state
-    # This will be killed if the transition doesn't succeed within
-    # a timeout period.
-    (
-        while ! grep -q "$G_REQUESTED_STATE" <<< "$(handle_cmd "$G_QUERY")" ; do
-            sleep 1
-        done
-    ) &
-    wait_child=$!
-
-    # Could be bad if process is killed before 'timeout' occurs if
-    # transition doesn't succeed.
-    trap -- "" SIGTERM
-
-    # Workaround for lack of 'timeout' command.
-    (
-        sleep "$timeout"
-        kill $wait_child
-    ) > /dev/null 2>&1 &
-
-    if ! wait $wait_child; then
-        echo "Unable to confirm '$G_ORIG_CMD' success" \
-            "within timeout period (${timeout}s)"
-    fi
-
-    if [ -n "$verbose_child" ]; then
-        kill $verbose_child
-    fi
-}
-
-function run_cmd()
-{
-    local cmd="$*";
-
-    if [ -n "$G_WAIT" ]; then
-        run_timeout "$G_WAIT" "$cmd"
-    else
-        $cmd
-    fi
-}
-
-function set_property()
-{
-    run_cmd busctl set-property "$@"
-}
-
-function get_property()
-{
-    G_WAIT=""
-    run_cmd busctl get-property "$@"
-}
-
-function state_query()
-{
-    local state
-    state=$(get_property "$@" | cut -d '"' -f2)
-    printf "%-20s: %s\n" "$4" "$state"
-}
-
-function print_usage_err()
-{
-    echo "ERROR: $1" >&2
-    echo "$USAGE"
-    exit 1
-}
-
-function mask_systemd_target()
-{
-    target="$*"
-    systemctl mask "$target"
-}
-
-function unmask_systemd_target()
-{
-    target="$*"
-    systemctl unmask "$target"
-}
-
-function disable_bmc_reboot()
-{
-    dir="/run/systemd/system/"
-    file="reboot-guard.conf"
-    units=("reboot" "poweroff" "halt")
-
-    for unit in "${units[@]}"; do
-        mkdir -p "${dir}${unit}.target.d"
-        echo -e "[Unit]\nRefuseManualStart=yes" >> "${dir}${unit}.target.d/${file}"
-    done
-}
-
-function enable_bmc_reboot()
-{
-    dir="/run/systemd/system/"
-    file="reboot-guard.conf"
-    units=("reboot" "poweroff" "halt")
-
-    for unit in "${units[@]}"; do
-        rm -rf "${dir}${unit}.target.d/${file}"
-        rm -rf "${dir}${unit}.target.d"
-    done
-}
-
-# will write blocking errors to stdout
-function check_boot_block_errors()
-{
-    # array of boot block objects
-    blockArray=()
-
-    # Look for any objects under logging that implement the
-    # xyz.openbmc_project.Logging.ErrorBlocksTransition
-    subtree="$(busctl call xyz.openbmc_project.ObjectMapper \
-               /xyz/openbmc_project/object_mapper \
-               xyz.openbmc_project.ObjectMapper \
-               GetSubTree sias "/xyz/openbmc_project/logging/" 0 1 \
-               xyz.openbmc_project.Logging.ErrorBlocksTransition)"
-
-    # remove quotation marks
-    # shellcheck disable=SC2001
-    subtree="$(echo "$subtree" | sed 's/\"//g')"
-
-    for entry in $subtree; do
-        if [[ ${entry} =~ "xyz/openbmc_project/logging/block"* ]]; then
-            blockArray+=( "$entry" )
-        fi
-    done
-
-    # now find associated error log for each boot block error
-    for berror in "${blockArray[@]}"; do
-        assocs="$(busctl call xyz.openbmc_project.Logging "$berror" \
-                  org.freedesktop.DBus.Properties Get \
-                  ss xyz.openbmc_project.Association.Definitions Associations)"
-
-        # remove quotation marks
-        # shellcheck disable=SC2001
-        assocs="$(echo "$assocs" | sed 's/\"//g')"
-
-        for entry in $assocs; do
-            if [[ ${entry} =~ "xyz/openbmc_project/logging/entry"* ]]; then
-                echo "Blocking Error: $entry"
-            fi
-        done
-    done
-}
-
-# helper function to check for boot block errors and notify user
-function check_and_warn_boot_block()
-{
-    blockingErrors=$(check_boot_block_errors)
-    if [ -n "$blockingErrors" ]; then
-        echo !!!!!!!!!!
-        echo "WARNING! System has blocking errors that will prevent boot"
-        echo "$blockingErrors"
-        echo !!!!!!!!!!
-    fi
-}
-
-# list all phosphor-logging entries
-function list_logs()
-{
-    # Look for any objects under logging that implement the
-    # xyz.openbmc_project.Logging.Entry
-    busctl -j call xyz.openbmc_project.ObjectMapper \
-        /xyz/openbmc_project/object_mapper \
-        xyz.openbmc_project.ObjectMapper \
-        GetSubTreePaths sias "/xyz/openbmc_project/logging/" 0 1 \
-        xyz.openbmc_project.Logging.Entry
-}
-
-# display input log details
-function show_log()
-{
     busctl -j call xyz.openbmc_project.Logging \
         "$1" \
         org.freedesktop.DBus.Properties \
@@ -441,6 +169,52 @@ function handle_cmd()
             handle_cmd bmcrebooton
             unmask_systemd_target $HOST_TIMEOUT_TARGET
             unmask_systemd_target $HOST_CRASH_TARGET
+            ;;
+        recoverystatus)
+            host_reboot_state=$(get_host_reboot_status)
+            if [[ $host_reboot_state == "b true" ]]; then
+                host_reboot_status=1
+            else
+                host_reboot_status=0
+            fi
+
+            bmc_reboot_state=$(get_bmc_reboot_status)
+            if [[ $bmc_reboot_state == "on" ]]; then
+                bmc_reboot_status=1
+            else
+                bmc_reboot_status=0
+            fi
+
+            host_timeout_target_state=$(get_systemd_target_state $HOST_TIMEOUT_TARGET)
+            if [[ $host_timeout_target_state == "masked" ]]; then
+                host_timeout_status=0
+            else
+                host_timeout_status=1
+            fi
+
+            host_crash_target_state=$(get_systemd_target_state $HOST_CRASH_TARGET)
+            if [[ $host_crash_target_state == "masked" ]]; then
+                host_crash_status=0
+            else
+                host_crash_status=1
+            fi
+
+            if (( host_reboot_status && bmc_reboot_status && host_timeout_status && host_crash_status )); then
+                echo "recovery: On"
+            elif (( !host_reboot_status && !bmc_reboot_status && !host_timeout_status && !host_crash_status )); then
+                echo "recovery: Off"
+            else
+                echo "recovery: Undefined"
+            fi
+
+            declare -A status
+            status[0]="Off"
+            status[1]="On"
+
+            printf "  %-11s: %s\n" "hostReboot" "${status[$host_reboot_status]}"
+            printf "  %-11s: %s\n" "bmcReboot" "${status[$bmc_reboot_status]}"
+            printf "  %-11s: %s\n" "hostTimeout" "${status[$host_timeout_status]}"
+            printf "  %-11s: %s\n" "hostCrash" "${status[$host_crash_status]}"
             ;;
         listbootblock)
             blockingErrors=$(check_boot_block_errors)
