@@ -16,6 +16,23 @@
       "message": "This issue occurs after this commit https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/70042",
       "revId": "e1cb9e8eaac93ac8d8f962c6da1e93da0c1cf6f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59005754_1d878599",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-05-28T13:37:16Z",
+      "side": 1,
+      "message": "Seems like we have conflicting requirements here",
+      "revId": "e1cb9e8eaac93ac8d8f962c6da1e93da0c1cf6f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
