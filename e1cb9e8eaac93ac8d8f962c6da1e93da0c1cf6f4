@@ -33,6 +33,24 @@
       "message": "Seems like we have conflicting requirements here",
       "revId": "e1cb9e8eaac93ac8d8f962c6da1e93da0c1cf6f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afb214db_ba28903c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-05-29T03:45:57Z",
+      "side": 1,
+      "message": "In my opinions, if the phosphor-host-state-manager does not emit `propertieschanged` signal in the initialization phase, so many services shall be impacted.  if the phosphor-sel-logger don\u0027t want to log the initialization value of Host\u0027state, you can skip the first `propertieschanged` signal.\n\nIf you don\u0027t agree with my solution, we can fix that by adding one more match to monitor `interfaceadded` signal, but it impact to so much service.",
+      "parentUuid": "59005754_1d878599",
+      "revId": "e1cb9e8eaac93ac8d8f962c6da1e93da0c1cf6f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
