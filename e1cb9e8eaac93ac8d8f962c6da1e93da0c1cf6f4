@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "45778da9_99919644",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-30T12:20:53Z",
+      "side": 1,
+      "message": "FWIW, I\u0027m planning on making it so that the async-server code **cannot** emit signals until the busname has been obtained.  This, hopefully, avoids a lot of this necessity of adding the \"false\" flag and ambiguity around signals.\n\nI cannot easily change the sync-server code (which this daemon currently uses) partially because of introducing untestable changes throughout the whole project.",
+      "parentUuid": "892cb2de_c69745f4",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 64
+      },
+      "revId": "e1cb9e8eaac93ac8d8f962c6da1e93da0c1cf6f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "73294098_a73359fd",
