@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "892cb2de_c69745f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-30T12:18:24Z",
+      "side": 1,
+      "message": "No dbus applications are suppose to emit signals for their initial state.  If you\u0027re exclusively monitoring for dbus signals, this is wrong.\n\nAt one point, the dbus-broker actually prevented signals from going anywhere until you obtained a bus-name.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 64
+      },
+      "revId": "e1cb9e8eaac93ac8d8f962c6da1e93da0c1cf6f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "73294098_a73359fd",
