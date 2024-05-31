@@ -64,6 +64,9 @@ function print_help()
     echo "obmcutil recoveryon     Enable handling boot watchdog timeout and host crash"
     echo "                        Also, enable BMC and Host auto reboots"
     echo ""
+    echo "obmcutil recoverystatus Display the status of handling boot watchdog timeout and host crash"
+    echo "                        and also the status of BMC and Host auto reboots setting"
+    echo ""
     echo "obmcutil listbootblock  Check for and list any errors blocking the boot"
     echo "                        of the system"
     echo ""
@@ -177,6 +180,13 @@ function unmask_systemd_target()
     systemctl unmask "$target"
 }
 
+function get_systemd_target_state()
+{
+    target="$*"
+    enabled_state=$(systemctl is-enabled "$target")
+    echo "$enabled_state"
+}
+
 function disable_bmc_reboot()
 {
     dir="/run/systemd/system/"
@@ -199,6 +209,33 @@ function enable_bmc_reboot()
         rm -rf "${dir}${unit}.target.d/${file}"
         rm -rf "${dir}${unit}.target.d"
     done
+}
+
+function get_bmc_reboot_status()
+{
+    dir="/run/systemd/system/"
+    file="reboot-guard.conf"
+    units=("reboot" "poweroff" "halt")
+
+    # if file do
+    for unit in "${units[@]}"; do
+        if [ -e "${dir}${unit}.target.d/${file}" ]; then
+            echo "off"
+            return 0
+        fi
+    done
+    echo "on"
+    return 0
+}
+
+function get_host_reboot_status()
+{
+    OBJECT=$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot
+    SERVICE=$(mapper get-service "$OBJECT")
+    INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
+    PROPERTY=AutoReboot
+    output="$(get_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY)"
+    echo "${output//b /}"
 }
 
 # will write blocking errors to stdout
@@ -441,6 +478,52 @@ function handle_cmd()
             handle_cmd bmcrebooton
             unmask_systemd_target $HOST_TIMEOUT_TARGET
             unmask_systemd_target $HOST_CRASH_TARGET
+            ;;
+        recoverystatus)
+            host_reboot_state=$(get_host_reboot_status)
+            if [[ $host_reboot_state == "true" ]]; then
+                host_reboot_status=1
+            else
+                host_reboot_status=0
+            fi
+
+            bmc_reboot_state=$(get_bmc_reboot_status)
+            if [[ $bmc_reboot_state == "on" ]]; then
+                bmc_reboot_status=1
+            else
+                bmc_reboot_status=0
+            fi
+
+            host_timeout_target_state=$(get_systemd_target_state $HOST_TIMEOUT_TARGET)
+            if [[ $host_timeout_target_state == "masked" ]]; then
+                host_timeout_status=0
+            else
+                host_timeout_status=1
+            fi
+
+            host_crash_target_state=$(get_systemd_target_state $HOST_CRASH_TARGET)
+            if [[ $host_crash_target_state == "masked" ]]; then
+                host_crash_status=0
+            else
+                host_crash_status=1
+            fi
+
+            if (( host_reboot_status && bmc_reboot_status && host_timeout_status && host_crash_status )); then
+                echo "recovery: On"
+            elif (( !host_reboot_status && !bmc_reboot_status && !host_timeout_status && !host_crash_status )); then
+                echo "recovery: Off"
+            else
+                echo "recovery: Undefined"
+            fi
+
+            declare -A status
+            status[0]="Off"
+            status[1]="On"
+
+            printf "  %-11s: %s\n" "hostReboot" "${status[$host_reboot_status]}"
+            printf "  %-11s: %s\n" "bmcReboot" "${status[$bmc_reboot_status]}"
+            printf "  %-11s: %s\n" "hostTimeout" "${status[$host_timeout_status]}"
+            printf "  %-11s: %s\n" "hostCrash" "${status[$host_crash_status]}"
             ;;
         listbootblock)
             blockingErrors=$(check_boot_block_errors)
