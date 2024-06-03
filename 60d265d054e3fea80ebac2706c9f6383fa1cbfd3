@@ -66,6 +66,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fc17816b_41d0ced3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-06-03T21:58:04Z",
+      "side": 1,
+      "message": "For IBM this is the MPIPL path. So if off then no MPIPL and we just stop in host quiesce. Hostboot TI\u0027s are just driven off of the hostReboot parameter and that determines whether we stay in quiesce or reboot.",
+      "parentUuid": "b1650744_a1539b49",
+      "revId": "60d265d054e3fea80ebac2706c9f6383fa1cbfd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "39ff80bc_6156783c",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
