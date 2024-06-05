@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11145f50_449af004",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000358
+      },
+      "writtenOn": "2024-06-05T09:39:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a67c47f_00986d6f",
+      "range": {
+        "startLine": 9,
+        "startChar": 30,
+        "endLine": 9,
+        "endChar": 32
+      },
+      "revId": "60d265d054e3fea80ebac2706c9f6383fa1cbfd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc588ae_55298376",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000358
+      },
+      "writtenOn": "2024-06-05T09:39:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "107eef37_177b5526",
+      "range": {
+        "startLine": 9,
+        "startChar": 6,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "60d265d054e3fea80ebac2706c9f6383fa1cbfd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1650744_a1539b49",
@@ -129,6 +177,30 @@
       "writtenOn": "2024-05-31T15:45:41Z",
       "side": 1,
       "message": "Let trim the \"b\" out in the get_host_reboot_status to abstract this function from the details of the dbus response. Should be able to just pipe to sed and replace the \"b \" with nothing. Then this is just \"\u003d\u003d true\"",
+      "range": {
+        "startLine": 483,
+        "startChar": 41,
+        "endLine": 483,
+        "endChar": 47
+      },
+      "revId": "60d265d054e3fea80ebac2706c9f6383fa1cbfd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80466699_7aab2a2a",
+        "filename": "obmcutil",
+        "patchSetId": 3
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000358
+      },
+      "writtenOn": "2024-06-05T09:39:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47435c3d_cf68674f",
       "range": {
         "startLine": 483,
         "startChar": 41,
