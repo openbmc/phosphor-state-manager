@@ -307,7 +307,7 @@ class Host : public HostInherit
      */
     fs::path serialize();
 
-    /** @brief Deserialze a persisted requested host state.
+    /** @brief Deserialize a persisted requested host state.
      *
      *  @return bool - true if the deserialization was successful, false
      *                 otherwise.

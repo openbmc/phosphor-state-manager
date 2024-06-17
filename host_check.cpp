@@ -180,7 +180,7 @@ bool isHostRunning(size_t id)
     // we have a condition where the interface may be on D-Bus but not stored
     // within mapper yet. There are five built in retries to check if it's
     // found the host is not up. This service is only called if chassis power
-    // is on when the BMC comes up, so this wont impact most normal cases
+    // is on when the BMC comes up, so this won't impact most normal cases
     // where the BMC is rebooted with chassis power off. In cases where
     // chassis power is on, the host is likely running so we want to be sure
     // we check all interfaces

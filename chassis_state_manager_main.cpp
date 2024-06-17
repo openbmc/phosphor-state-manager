@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     {
         // Chassis State Manager was only support single-chassis and there only
         // two file to store persist values(POH and state change time), to
-        // support multi-chassis state mamagement, each service access new file
+        // support multi-chassis state management, each service access new file
         // paths with prefix 'chassisN', if any legacy persist file is exist,
         // rename it to the new file format of chassis0.
 

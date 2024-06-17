@@ -48,7 +48,7 @@ constexpr auto PROPERTY_RESTART_CAUSE = "RestartCause";
 
 uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
 {
-    info("A scheduled host transtion request has been made for {TIME}", "TIME",
+    info("A scheduled host transition request has been made for {TIME}", "TIME",
          value);
     if (value == 0)
     {
@@ -129,7 +129,7 @@ void ScheduledHostTransition::callback()
 void ScheduledHostTransition::initialize()
 {
     // Subscribe time change event
-    // Choose the MAX time that is possible to avoid mis fires.
+    // Choose the MAX time that is possible to avoid misfires.
     constexpr itimerspec maxTime = {
         {0, 0},                                     // it_interval
         {system_clock::duration::max().count(), 0}, // it_value
