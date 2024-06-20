@@ -1,5 +1,6 @@
 inc_dirs = [ include_directories('../') ]
 
+filesystem = import('fs')
 gpioplus = dependency('gpioplus')
 gpiodcxx = dependency(
     'libgpiodcxx',
@@ -19,10 +20,8 @@ executable(
     install: true
 )
 
-configure_file(
-    input: 'phosphor-host-condition-gpio@.service',
-    output: 'phosphor-host-condition-gpio@.service',
-    copy: true,
-    install_dir: systemd_system_unit_dir,
-    install: true,
+filesystem.copyfile(
+  'phosphor-host-condition-gpio@.service',
+  install_dir: systemd_system_unit_dir,
+  install: true
 )
