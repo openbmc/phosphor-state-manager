@@ -1,0 +1,7 @@
+[wrap-git]
+url = https://github.com/openbmc/gpioplus.git
+revision = HEAD
+
+[provide]
+gpioplus = gpioplus_dep
+
