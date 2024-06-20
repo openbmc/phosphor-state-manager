@@ -8,14 +8,14 @@
 #include <xyz/openbmc_project/State/Host/server.hpp>
 #include <xyz/openbmc_project/State/ScheduledHostTransition/server.hpp>
 
-class TestScheduledHostTransition;
-
 namespace phosphor
 {
 namespace state
 {
 namespace manager
 {
+
+class TestScheduledHostTransition;
 
 using Transition =
     sdbusplus::server::xyz::openbmc_project::state::Host::Transition;
