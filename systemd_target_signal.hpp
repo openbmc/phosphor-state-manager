@@ -65,8 +65,8 @@ class SystemdTargetLogging
      *
      * @return valid pointer to error to log, otherwise nullptr
      */
-    const std::string processError(const std::string& unit,
-                                   const std::string& result);
+    std::string processError(const std::string& unit,
+                             const std::string& result);
 
   private:
     /** @brief Start BMC Quiesce Target to indicate critical service failure */
