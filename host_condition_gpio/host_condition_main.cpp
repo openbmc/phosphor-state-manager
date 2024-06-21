@@ -29,8 +29,8 @@ int main(int argc, char** argv)
     sdbusplus::server::manager_t objManager(bus, objGroupName.c_str());
 
     // For now, we only support checking Host0 status
-    auto host = std::make_unique<phosphor::condition::Host>(
-        bus, objPathInst.c_str(), hostId);
+    std::make_unique<phosphor::condition::Host>(bus, objPathInst.c_str(),
+                                                hostId);
 
     bus.request_name(busName.c_str());
 
