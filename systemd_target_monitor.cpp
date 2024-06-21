@@ -20,7 +20,7 @@ void dump_targets(const TargetErrorData& targetData)
     {
         std::cout << target << " " << value.errorToLog << std::endl;
         std::cout << "    ";
-        for (auto& eToMonitor : value.errorsToMonitor)
+        for (const auto& eToMonitor : value.errorsToMonitor)
         {
             std::cout << eToMonitor << ", ";
         }

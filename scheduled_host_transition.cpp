@@ -241,7 +241,7 @@ int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
                                           uint32_t /* revents */,
                                           void* userdata)
 {
-    auto schedHostTran = static_cast<ScheduledHostTransition*>(userdata);
+    auto* schedHostTran = static_cast<ScheduledHostTransition*>(userdata);
 
     std::array<char, 64> time{};
 

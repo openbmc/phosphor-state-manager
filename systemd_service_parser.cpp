@@ -15,7 +15,7 @@ ServiceMonitorData parseServiceFiles(const std::vector<std::string>& filePaths)
         std::ifstream fileStream(jsonFile);
         auto j = json::parse(fileStream);
 
-        for (auto& service : j["services"].items())
+        for (const auto& service : j["services"].items())
         {
             if (gVerbose)
             {
