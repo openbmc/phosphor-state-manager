@@ -47,8 +47,8 @@ int main(int argc, char** argv)
     int arg;
     int optIndex = 0;
 
-    static struct option longOpts[] = {{"host", required_argument, 0, 'h'},
-                                       {0, 0, 0, 0}};
+    static struct option longOpts[] = {
+        {"host", required_argument, nullptr, 'h'}, {nullptr, 0, nullptr, 0}};
 
     while ((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
     {

@@ -26,8 +26,8 @@ int main(int argc, char** argv)
     int arg;
     int optIndex = 0;
 
-    static struct option longOpts[] = {{"chassis", required_argument, 0, 'c'},
-                                       {0, 0, 0, 0}};
+    static struct option longOpts[] = {
+        {"chassis", required_argument, nullptr, 'c'}, {nullptr, 0, nullptr, 0}};
 
     while ((arg = getopt_long(argc, argv, "c:", longOpts, &optIndex)) != -1)
     {
