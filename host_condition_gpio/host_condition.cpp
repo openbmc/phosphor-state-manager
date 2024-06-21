@@ -49,10 +49,9 @@ Host::FirmwareCondition Host::currentFirmwareCondition() const
         {
             int32_t gpioVal = 0;
 
-            line.request({lineName, gpiod::line_request::DIRECTION_INPUT,
-                          (true == isActHigh)
-                              ? 0
-                              : gpiod::line_request::FLAG_ACTIVE_LOW});
+            line.request(
+                {lineName, gpiod::line_request::DIRECTION_INPUT,
+                 (isActHigh) ? 0 : gpiod::line_request::FLAG_ACTIVE_LOW});
 
             gpioVal = line.get_value();
             line.release();

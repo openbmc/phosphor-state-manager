@@ -280,7 +280,7 @@ bool Chassis::determineStatusOfUPSPower()
                     continue;
                 }
 
-                if (std::get<bool>(properties["IsPresent"]) != true)
+                if (!std::get<bool>(properties["IsPresent"]))
                 {
                     // There is a UPS detected but it is not officially
                     // "present" yet. Monitor it for state change.
