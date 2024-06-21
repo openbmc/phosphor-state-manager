@@ -141,7 +141,7 @@ const std::string& Host::getTarget(Transition tranReq)
 
 void Host::executeTransition(Transition tranReq)
 {
-    auto& sysdUnit = getTarget(tranReq);
+    const auto& sysdUnit = getTarget(tranReq);
 
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                             SYSTEMD_INTERFACE, "StartUnit");
