@@ -31,9 +31,9 @@ void validateErrorsToMonitor(std::vector<std::string>& errorsToMonitor)
         }
         // delete "default" and insert defaults
         errorsToMonitor.erase(errorItr);
-        errorsToMonitor.push_back("timeout");
-        errorsToMonitor.push_back("failed");
-        errorsToMonitor.push_back("dependency");
+        errorsToMonitor.emplace_back("timeout");
+        errorsToMonitor.emplace_back("failed");
+        errorsToMonitor.emplace_back("dependency");
     }
 }
 

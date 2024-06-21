@@ -49,8 +49,8 @@ TEST(TargetJsonParser, BasicGoodPath)
     std::fclose(tmpf);
 
     std::vector<std::string> filePaths;
-    filePaths.push_back("/tmp/good_file1.json");
-    filePaths.push_back("/tmp/good_file2.json");
+    filePaths.emplace_back("/tmp/good_file1.json");
+    filePaths.emplace_back("/tmp/good_file2.json");
 
     TargetErrorData targetData = parseFiles(filePaths);
 
@@ -89,7 +89,7 @@ TEST(TargetJsonParser, InvalidErrorToMonitor)
     std::fclose(tmpf);
 
     std::vector<std::string> filePaths;
-    filePaths.push_back("/tmp/invalid_error_file.json");
+    filePaths.emplace_back("/tmp/invalid_error_file.json");
 
     // Verify exception thrown on invalid errorsToMonitor
     EXPECT_THROW(TargetErrorData targetData = parseFiles(filePaths),
@@ -104,7 +104,7 @@ TEST(TargetJsonParser, InvalidFileFormat)
     fclose(tmpf);
 
     std::vector<std::string> filePaths;
-    filePaths.push_back("/tmp/invalid_json_file.json");
+    filePaths.emplace_back("/tmp/invalid_json_file.json");
 
     // Verify exception thrown on invalid json file format
     EXPECT_THROW(TargetErrorData targetData = parseFiles(filePaths),
@@ -129,7 +129,7 @@ TEST(TargetJsonParser, NotJustDefault)
     std::fclose(tmpf);
 
     std::vector<std::string> filePaths;
-    filePaths.push_back("/tmp/not_just_default_file.json");
+    filePaths.emplace_back("/tmp/not_just_default_file.json");
 
     // Verify exception thrown on invalid errorsToMonitor
     EXPECT_THROW(TargetErrorData targetData = parseFiles(filePaths),
