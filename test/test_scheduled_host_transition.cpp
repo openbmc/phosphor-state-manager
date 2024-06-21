@@ -36,9 +36,9 @@ class TestScheduledHostTransition : public testing::Test
         // Empty
     }
 
-    seconds getCurrentTime()
+    static seconds getCurrentTime()
     {
-        return scheduledHostTransition.getTime();
+        return ScheduledHostTransition::getTime();
     }
 
     bool isTimerEnabled()
@@ -60,18 +60,20 @@ TEST_F(TestScheduledHostTransition, disableHostTransition)
 
 TEST_F(TestScheduledHostTransition, invalidScheduledTime)
 {
+    seconds currentTime = getCurrentTime();
     // scheduled time is 1 min earlier than current time
     uint64_t schTime =
-        static_cast<uint64_t>((getCurrentTime() - seconds(60)).count());
+        static_cast<uint64_t>((currentTime - seconds(60)).count());
     EXPECT_THROW(scheduledHostTransition.scheduledTime(schTime),
                  InvalidTimeError);
 }
 
 TEST_F(TestScheduledHostTransition, validScheduledTime)
 {
+    seconds currentTime = getCurrentTime();
     // scheduled time is 1 min later than current time
     uint64_t schTime =
-        static_cast<uint64_t>((getCurrentTime() + seconds(60)).count());
+        static_cast<uint64_t>((currentTime + seconds(60)).count());
     EXPECT_EQ(scheduledHostTransition.scheduledTime(schTime), schTime);
     EXPECT_TRUE(isTimerEnabled());
 }
@@ -99,9 +101,10 @@ TEST_F(TestScheduledHostTransition, bmcTimeChangeWithDisabledHostTransition)
 
 TEST_F(TestScheduledHostTransition, bmcTimeChangeBackward)
 {
+    seconds currentTime = getCurrentTime();
     // Current time is earlier than scheduled time due to BMC time changing
     uint64_t schTime =
-        static_cast<uint64_t>((getCurrentTime() + seconds(60)).count());
+        static_cast<uint64_t>((currentTime + seconds(60)).count());
     // Set scheduled time, which is the same as bmc time is changed.
     // But can't use this method to write another case like
     // bmcTimeChangeForward, because set a scheduled time earlier than current
