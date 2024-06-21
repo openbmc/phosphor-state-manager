@@ -36,7 +36,7 @@ class Hypervisor : public HypervisorInherit
     Hypervisor& operator=(const Hypervisor&) = delete;
     Hypervisor(Hypervisor&&) = delete;
     Hypervisor& operator=(Hypervisor&&) = delete;
-    virtual ~Hypervisor() = default;
+    ~Hypervisor() override = default;
 
     /** @brief Constructs Hypervisor State Manager
      *

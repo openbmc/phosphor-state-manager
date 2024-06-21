@@ -45,7 +45,7 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
         this->emit_object_added();
     }
 
-    ~ScheduledHostTransition();
+    ~ScheduledHostTransition() override;
 
     /**
      * @brief Handle with scheduled time
