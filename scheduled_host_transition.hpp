@@ -107,7 +107,7 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
     /** @brief The deleter of sd_event_source */
     std::function<void(sd_event_source*)> sdEventSourceDeleter =
         [](sd_event_source* p) {
-        if (p)
+        if (p != nullptr)
         {
             sd_event_source_unref(p);
         }
