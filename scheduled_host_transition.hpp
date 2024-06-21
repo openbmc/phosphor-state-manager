@@ -79,7 +79,7 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
      *
      *  @return - return current epoch time
      */
-    std::chrono::seconds getTime();
+    static std::chrono::seconds getTime();
 
     /** @brief Implement host transition
      *
@@ -132,7 +132,7 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
      *
      *  @return bool - true if successful, false otherwise
      */
-    bool deserializeScheduledValues(uint64_t& time, Transition& trans);
+    static bool deserializeScheduledValues(uint64_t& time, Transition& trans);
 
     /** @brief Restore scheduled time and requested transition from persisted
      * file */
