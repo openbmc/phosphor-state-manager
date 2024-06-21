@@ -5,7 +5,6 @@
 #include "host_check.hpp"
 #include "utils.hpp"
 
-#include <stdio.h>
 #include <systemd/sd-bus.h>
 
 #include <cereal/archives/json.hpp>
