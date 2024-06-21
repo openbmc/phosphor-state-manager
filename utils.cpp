@@ -242,7 +242,7 @@ bool isBmcReady(sdbusplus::bus_t& bus)
     auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
                    BMC::namespace_path::bmc;
 
-    auto bmcState = getProperty(bus, bmcPath.str.c_str(), BMC::interface,
+    auto bmcState = getProperty(bus, bmcPath.str, BMC::interface,
                                 "CurrentBMCState");
 
     if (sdbusplus::message::convert_from_string<BMC::BMCState>(bmcState) !=
