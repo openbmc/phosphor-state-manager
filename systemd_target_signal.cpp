@@ -75,8 +75,8 @@ void SystemdTargetLogging::logError(const std::string& errorLog,
     }
 }
 
-const std::string SystemdTargetLogging::processError(const std::string& unit,
-                                                     const std::string& result)
+std::string SystemdTargetLogging::processError(const std::string& unit,
+                                               const std::string& result)
 {
     auto targetEntry = this->targetData.find(unit);
     if (targetEntry != this->targetData.end())
