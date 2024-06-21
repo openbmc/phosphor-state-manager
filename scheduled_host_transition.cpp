@@ -248,7 +248,7 @@ int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
     // We are not interested in the data here.
     // So read until there is no new data here in the FD
     while (read(fd, time.data(), time.max_size()) > 0)
-        ;
+    {}
 
     debug("BMC system time is changed");
     schedHostTran->handleTimeUpdates();
