@@ -233,12 +233,7 @@ bool checkACLoss(size_t& chassisId)
                                                       chassisId);
 
     std::filesystem::path chassisPowerLossFile{chassisLostPowerFileFmt};
-    if (std::filesystem::exists(chassisPowerLossFile))
-    {
-        return true;
-    }
-
-    return false;
+    return std::filesystem::exists(chassisPowerLossFile);
 }
 
 bool isBmcReady(sdbusplus::bus_t& bus)
