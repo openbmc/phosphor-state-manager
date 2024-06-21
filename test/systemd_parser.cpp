@@ -100,7 +100,7 @@ TEST(TargetJsonParser, InvalidErrorToMonitor)
 TEST(TargetJsonParser, InvalidFileFormat)
 {
     std::FILE* tmpf = fopen("/tmp/invalid_json_file.json", "w");
-    std::fputs("{\"targets\":{\"missing closing quote}}", tmpf);
+    std::fputs(R"({"targets":{"missing closing quote}})", tmpf);
     fclose(tmpf);
 
     std::vector<std::string> filePaths;
