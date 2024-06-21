@@ -141,7 +141,9 @@ void BMC::executeTransition(const Transition tranReq)
         // Check to make sure it can be found
         auto iter = SYSTEMD_TABLE.find(tranReq);
         if (iter == SYSTEMD_TABLE.end())
+        {
             return;
+        }
 
         const auto& sysdUnit = iter->second;
 
