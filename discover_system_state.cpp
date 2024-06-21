@@ -86,7 +86,7 @@ int main(int argc, char** argv)
     auto bmcRebootCause =
         sdbusplus::message::convert_from_string<BMC::RebootCause>(
             phosphor::state::manager::utils::getProperty(
-                bus, bmcPath.str.c_str(), BMC_BUSNAME, "LastRebootCause"));
+                bus, bmcPath.str, BMC_BUSNAME, "LastRebootCause"));
 
     if (bmcRebootCause == BMC::RebootCause::PinholeReset)
     {
@@ -141,8 +141,8 @@ int main(int argc, char** argv)
             // to default for next time.
             info("One time set, use it and reset to default");
             phosphor::state::manager::utils::setProperty(
-                bus, settings.powerRestorePolicyOneTime.c_str(),
-                powerRestoreIntf, "PowerRestorePolicy",
+                bus, settings.powerRestorePolicyOneTime, powerRestoreIntf,
+                "PowerRestorePolicy",
                 convertForMessage(RestorePolicy::Policy::None));
         }
 
