@@ -34,6 +34,24 @@
       "parentUuid": "288645bc_d6971edf",
       "revId": "21adb641fb17afb84b1455a97531c3f4fdc7170a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a788a9b_fabf7afa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-06-25T21:35:10Z",
+      "side": 1,
+      "message": "Yeah, this is certainly not a \"dead store\".  If we don\u0027t save the unique_ptr it will immediately get destructed.",
+      "parentUuid": "48aecb62_577fdefa",
+      "revId": "21adb641fb17afb84b1455a97531c3f4fdc7170a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
