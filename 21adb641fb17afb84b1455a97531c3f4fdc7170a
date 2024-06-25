@@ -16,6 +16,24 @@
       "message": "I\u0027m struggling a bit with this one. If we don\u0027t assign the unique ptr to something, what keeps it instantiated? Under the covers it must get assigned to the bus object?",
       "revId": "21adb641fb17afb84b1455a97531c3f4fdc7170a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48aecb62_577fdefa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2024-06-25T14:29:57Z",
+      "side": 1,
+      "message": "It may be better to just create the object on the stack.",
+      "parentUuid": "288645bc_d6971edf",
+      "revId": "21adb641fb17afb84b1455a97531c3f4fdc7170a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
