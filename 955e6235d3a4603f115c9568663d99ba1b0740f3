@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26ab09fd_71699aa8",
+        "filename": "host_condition_gpio/host_condition_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-04T19:43:17Z",
+      "side": 1,
+      "message": "Can you try making this a stack variable rather than a unique_ptr?  Based on clang\u0027s own test cases, it looks like this should work.  It seems like they don\u0027t like the unused unique_ptr specifically rather than the unused class instance.\n\nhttps://github.com/llvm-mirror/clang/blob/master/test/Analysis/dead-stores.cpp#L51",
+      "revId": "955e6235d3a4603f115c9568663d99ba1b0740f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
