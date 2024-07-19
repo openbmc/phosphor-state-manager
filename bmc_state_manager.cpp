@@ -12,6 +12,11 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <cstdio>
 
 namespace phosphor
 {
@@ -41,6 +46,12 @@ constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
+
+/* Identify BMC reboot cause */
+#define AST_G6_SRST                            0x1e6e2000
+#define AST_G6_SRST_OFFSET                     0x74
+#define BMC_PWR_ON_RESET(base, offset)         *((uint32_t *)(base + (offset)))
+#define PAGE_SIZE              0x1000
 
 std::string BMC::getUnitState(const std::string& unitToCheck)
 {
@@ -234,10 +245,78 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
     return server::BMC::currentBMCState(value);
 }
 
+uint32_t BMC::getRegRebootCause()
+{
+    int mem_fd;
+    uint8_t *addr_srst;
+    uint32_t power_on_reset_flag = 0;
+    uint32_t bmc_reset_event_log_base = 0x0;
+    uint32_t bmc_reset_event_log_offset = 0x0;
+
+    bmc_reset_event_log_base = AST_G6_SRST;
+    bmc_reset_event_log_offset = AST_G6_SRST_OFFSET;
+
+    mem_fd = open("/dev/mem", O_RDWR | O_SYNC);
+    if (mem_fd < 0) {
+        syslog(LOG_CRIT, "devmem open failed");
+        lg2::error("getRegRebootCause - devmem open failed");
+        return 0;
+    }
+
+    addr_srst = static_cast<uint8_t *>(mmap(NULL, PAGE_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, mem_fd, bmc_reset_event_log_base));
+    if (addr_srst == NULL) {
+        syslog(LOG_CRIT, "Mapping addr_srst failed");
+        lg2::error("getRegRebootCause - Mapping addr_srst failed");
+        close(mem_fd);
+        return 0;
+    }
+
+    power_on_reset_flag = BMC_PWR_ON_RESET(addr_srst, bmc_reset_event_log_offset);
+
+    munmap(addr_srst, PAGE_SIZE);
+    close(mem_fd);
+
+    return power_on_reset_flag;
+}
+
+void BMC::addSEL()
+{
+    uint32_t reboot_cause_raw = 0;
+
+    reboot_cause_raw = getRegRebootCause();
+
+    //todo: Analyze raw data and send different sel based on reboot reasons
+
+    // Generate log
+    std::string errorMsg = "";
+    std::stringstream hex_raw_data;
+
+    hex_raw_data << std::hex << std::setw(8) << std::setfill('0') << reboot_cause_raw;
+    std::string hex_str = hex_raw_data.str();
+
+    // Add to journal and SEL
+    lg2::error("Last BMC reboot raw data: 0x{RAW_DATA}",
+                "RAW_DATA", hex_str);
+
+    errorMsg="Last BMC reboot raw data: 0x" + hex_str;
+
+    phosphor::state::manager::utils::createError(
+        this->bus, errorMsg,
+        sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
+        Notice);
+}
+
 BMC::RebootCause BMC::lastRebootCause(RebootCause value)
 {
     info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
          "LAST_REBOOT_CAUSE", value);
+
+    /* In order to avoid duplicate records,
+    SEL is only added for situations other than unknown causes*/
+    if(value != RebootCause::Unknown)
+    {
+        this->addSEL();
+    }
 
     return server::BMC::lastRebootCause(value);
 }
@@ -326,7 +405,12 @@ void BMC::discoverLastRebootCause()
     if (phosphor::state::manager::utils::checkACLoss(chassisId))
     {
         this->lastRebootCause(RebootCause::POR);
+
+        return;
     }
+
+    // If none of above, Add SEL of Unknown
+    this->addSEL();
 
     return;
 }
