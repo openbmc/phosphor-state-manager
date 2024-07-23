@@ -34,6 +34,8 @@ PHOSPHOR_LOG2_USING;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 using namespace sdbusplus::server::xyz::openbmc_project::control::power;
+using HostState = sdbusplus::client::xyz::openbmc_project::state::Host<>;
+using BMCState = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
 
 } // namespace manager
 } // namespace state
@@ -86,7 +88,7 @@ int main(int argc, char** argv)
     auto bmcRebootCause =
         sdbusplus::message::convert_from_string<BMC::RebootCause>(
             phosphor::state::manager::utils::getProperty(
-                bus, bmcPath.str, BMC_BUSNAME, "LastRebootCause"));
+                bus, bmcPath.str, BMCState::interface, "LastRebootCause"));
 
     if (bmcRebootCause == BMC::RebootCause::PinholeReset)
     {
@@ -175,11 +177,11 @@ int main(int argc, char** argv)
                 "DELAY", powerRestoreDelaySec.count());
             utils::waitBmcReady(bus, powerRestoreDelaySec);
             phosphor::state::manager::utils::setProperty(
-                bus, hostPath, HOST_BUSNAME, "RestartCause",
+                bus, hostPath, HostState::interface, "RestartCause",
                 convertForMessage(
                     server::Host::RestartCause::PowerPolicyAlwaysOn));
             phosphor::state::manager::utils::setProperty(
-                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                bus, hostPath, HostState::interface, "RequestedHostTransition",
                 convertForMessage(server::Host::Transition::On));
         }
         // Always execute power on if AlwaysOn is set, otherwise check config
@@ -202,12 +204,13 @@ int main(int argc, char** argv)
             utils::waitBmcReady(bus, powerRestoreDelaySec);
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
-                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
+                bus, hostPath, HostState::interface, "RequestedHostTransition");
             if (hostReqState !=
                 convertForMessage(server::Host::Transition::Off))
             {
                 phosphor::state::manager::utils::setProperty(
-                    bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                    bus, hostPath, HostState::interface,
+                    "RequestedHostTransition",
                     convertForMessage(server::Host::Transition::Off));
             }
         }
@@ -219,18 +222,19 @@ int main(int argc, char** argv)
             utils::waitBmcReady(bus, powerRestoreDelaySec);
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
-                bus, hostPath, HOST_BUSNAME, "RequestedHostTransition");
+                bus, hostPath, HostState::interface, "RequestedHostTransition");
 
             // As long as the host transition is not 'Off' power on host state.
             if (hostReqState !=
                 convertForMessage(server::Host::Transition::Off))
             {
                 phosphor::state::manager::utils::setProperty(
-                    bus, hostPath, HOST_BUSNAME, "RestartCause",
+                    bus, hostPath, HostState::interface, "RestartCause",
                     convertForMessage(
                         server::Host::RestartCause::PowerPolicyPreviousState));
                 phosphor::state::manager::utils::setProperty(
-                    bus, hostPath, HOST_BUSNAME, "RequestedHostTransition",
+                    bus, hostPath, HostState::interface,
+                    "RequestedHostTransition",
                     convertForMessage(server::Host::Transition::On));
             }
         }
