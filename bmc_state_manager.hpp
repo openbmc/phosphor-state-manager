@@ -95,6 +95,12 @@ class BMC : public BMCInherit
     /** @brief Set value of LastRebootCause **/
     RebootCause lastRebootCause(RebootCause value) override;
 
+    /** @brief Add SEL when BMC Reboot **/
+    void addSEL();
+
+    /** @brief Get raw data of BMC reboot cause register**/
+    uint32_t getRegRebootCause();
+
   private:
     /**
      * @brief Retrieve input systemd unit state
