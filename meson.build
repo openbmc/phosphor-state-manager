@@ -16,23 +16,11 @@ build_host_gpios = get_option('host-gpios')
 
 conf = configuration_data()
 conf.set_quoted(
-    'HOST_BUSNAME', get_option('host-busname'))
-conf.set_quoted(
-    'HOST_OBJPATH', get_option('host-objpath'))
-conf.set_quoted(
     'HOST_SCHED_OBJPATH', get_option('host-sched-objpath'))
 conf.set_quoted(
     'HYPERVISOR_BUSNAME', get_option('hypervisor-busname'))
 conf.set_quoted(
     'HYPERVISOR_OBJPATH', get_option('hypervisor-objpath'))
-conf.set_quoted(
-    'CHASSIS_BUSNAME', get_option('chassis-busname'))
-conf.set_quoted(
-    'CHASSIS_OBJPATH', get_option('chassis-objpath'))
-conf.set_quoted(
-    'BMC_BUSNAME', get_option('bmc-busname'))
-conf.set_quoted(
-    'BMC_OBJPATH', get_option('bmc-objpath'))
 conf.set_quoted(
     'HOST_STATE_PERSIST_PATH', get_option('host-state-persist-path'))
 conf.set_quoted(
@@ -41,8 +29,6 @@ conf.set_quoted(
     'CHASSIS_STATE_CHANGE_PERSIST_PATH', get_option('chassis-state-change-persist-path'))
 conf.set_quoted(
     'SCHEDULED_HOST_TRANSITION_PERSIST_PATH', get_option('scheduled-host-transition-persist-path'))
-conf.set_quoted(
-    'SCHEDULED_HOST_TRANSITION_BUSNAME', get_option('scheduled-host-transition-busname'))
 conf.set(
     'BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
 conf.set(
