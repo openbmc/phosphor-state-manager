@@ -16,10 +16,6 @@ build_host_gpios = get_option('host-gpios')
 
 conf = configuration_data()
 conf.set_quoted(
-    'HOST_BUSNAME', get_option('host-busname'))
-conf.set_quoted(
-    'HOST_OBJPATH', get_option('host-objpath'))
-conf.set_quoted(
     'HOST_SCHED_OBJPATH', get_option('host-sched-objpath'))
 conf.set_quoted(
     'HYPERVISOR_BUSNAME', get_option('hypervisor-busname'))

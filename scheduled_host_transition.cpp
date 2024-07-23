@@ -94,14 +94,15 @@ seconds ScheduledHostTransition::getTime()
 
 void ScheduledHostTransition::hostTransition()
 {
-    auto hostPath = std::string{HOST_OBJPATH} + std::to_string(id);
+    auto hostPath = std::string(HostState::namespace_path::value) + "/" +
+                    HostState::namespace_path::host + std::to_string(id);
 
     auto reqTrans = convertForMessage(HostTransition::scheduledTransition());
 
     info("Trying to set requestedTransition to {REQUESTED_TRANSITION}",
          "REQUESTED_TRANSITION", reqTrans);
 
-    utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_TRANSITION,
+    utils::setProperty(bus, hostPath, HostState::interface, PROPERTY_TRANSITION,
                        reqTrans);
 
     // Set RestartCause to indicate this transition is occurring due to a
@@ -111,8 +112,8 @@ void ScheduledHostTransition::hostTransition()
         info("Set RestartCause to scheduled power on reason");
         auto resCause =
             convertForMessage(HostState::RestartCause::ScheduledPowerOn);
-        utils::setProperty(bus, hostPath, HOST_BUSNAME, PROPERTY_RESTART_CAUSE,
-                           resCause);
+        utils::setProperty(bus, hostPath, HostState::interface,
+                           PROPERTY_RESTART_CAUSE, resCause);
     }
 }
 
