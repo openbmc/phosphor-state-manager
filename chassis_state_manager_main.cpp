@@ -17,6 +17,8 @@ constexpr auto LEGACY_POH_COUNTER_PERSIST_PATH =
 constexpr auto LEGACY_STATE_CHANGE_PERSIST_PATH =
     "/var/lib/phosphor-state-manager/chassisStateChangeTime";
 
+using ChassisState = sdbusplus::server::xyz::openbmc_project::state::Chassis;
+
 int main(int argc, char** argv)
 {
     size_t chassisId = 0;
@@ -41,9 +43,12 @@ int main(int argc, char** argv)
 
     auto bus = sdbusplus::bus::new_default();
 
-    auto chassisBusName = std::string{CHASSIS_BUSNAME} +
-                          std::to_string(chassisId);
-    auto objPathInst = std::string{CHASSIS_OBJPATH} + std::to_string(chassisId);
+    auto chassisBusName = ChassisState::interface + std::to_string(chassisId);
+    auto objPath = ChassisState::namespace_path::value;
+    auto chassisName = std::string(ChassisState::namespace_path::chassis) +
+                       std::to_string(chassisId);
+    std::string objPathInst = sdbusplus::message::object_path(objPath) /
+                              chassisName;
 
     if (chassisId == 0)
     {
@@ -77,7 +82,7 @@ int main(int argc, char** argv)
     // input id is 0.
     if (chassisId == 0)
     {
-        bus.request_name(CHASSIS_BUSNAME);
+        bus.request_name(ChassisState::interface);
     }
 
     bus.request_name(chassisBusName.c_str());
