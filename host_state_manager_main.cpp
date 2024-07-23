@@ -15,6 +15,10 @@
 constexpr auto LEGACY_HOST_STATE_PERSIST_PATH =
     "/var/lib/phosphor-state-manager/requestedHostTransition";
 
+constexpr auto HOST_STATE_OBJMGR_PATH = "/xyz/openbmc_project/state";
+
+using HostState = sdbusplus::server::xyz::openbmc_project::state::Host;
+
 int main(int argc, char** argv)
 {
     size_t hostId = 0;
@@ -41,8 +45,10 @@ int main(int argc, char** argv)
 
     auto bus = sdbusplus::bus::new_default();
 
-    auto hostBusName = std::string{HOST_BUSNAME} + std::to_string(hostId);
-    auto objPathInst = std::string{HOST_OBJPATH} + std::to_string(hostId);
+    auto hostBusName = HostState::interface + std::to_string(hostId);
+    auto objPath = std::string(HostState::namespace_path::value);
+    auto objPathInst = objPath + "/" + HostState::namespace_path::host +
+                       std::to_string(hostId);
 
     if (hostId == 0)
     {
@@ -61,7 +67,7 @@ int main(int argc, char** argv)
     }
 
     // Add sdbusplus ObjectManager.
-    sdbusplus::server::manager_t objManager(bus, objPathInst.c_str());
+    sdbusplus::server::manager_t objManager(bus, objPath.c_str());
 
     phosphor::state::manager::Host manager(bus, objPathInst.c_str(), hostId);
 
@@ -72,7 +78,7 @@ int main(int argc, char** argv)
     // input id is 0.
     if (hostId == 0)
     {
-        bus.request_name(HOST_BUSNAME);
+        bus.request_name(HostState::interface);
     }
 
     bus.request_name(hostBusName.c_str());
