@@ -4,20 +4,25 @@
 
 #include <sdbusplus/bus.hpp>
 
+using BMCState = sdbusplus::server::xyz::openbmc_project::state::BMC;
+
 int main()
 {
     auto bus = sdbusplus::bus::new_default();
 
     // For now, we only have one instance of the BMC
     // 0 is for the current instance
-    auto objPathInst = std::string(BMC_OBJPATH) + '0';
+    auto BMCName = BMCState::namespace_path::bmc;
+    auto objPath = BMCState::namespace_path::value;
+    std::string objPathInst =
+        sdbusplus::message::object_path(objPath) / BMCName;
 
     // Add sdbusplus ObjectManager.
     sdbusplus::server::manager_t objManager(bus, objPathInst.c_str());
 
     phosphor::state::manager::BMC manager(bus, objPathInst.c_str());
 
-    bus.request_name(BMC_BUSNAME);
+    bus.request_name(BMCState::interface);
 
     while (true)
     {
