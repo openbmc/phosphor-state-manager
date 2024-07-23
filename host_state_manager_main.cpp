@@ -15,6 +15,9 @@
 constexpr auto LEGACY_HOST_STATE_PERSIST_PATH =
     "/var/lib/phosphor-state-manager/requestedHostTransition";
 
+constexpr auto HOST_STATE_OBJMGR_PATH =
+    "/xyz/openbmc_project/state";
+
 int main(int argc, char** argv)
 {
     size_t hostId = 0;
@@ -61,7 +64,7 @@ int main(int argc, char** argv)
     }
 
     // Add sdbusplus ObjectManager.
-    sdbusplus::server::manager_t objManager(bus, objPathInst.c_str());
+    sdbusplus::server::manager_t objManager(bus, HOST_STATE_OBJMGR_PATH);
 
     phosphor::state::manager::Host manager(bus, objPathInst.c_str(), hostId);
 
