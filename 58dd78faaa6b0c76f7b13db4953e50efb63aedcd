@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d559c2ca_a301530b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-07-23T07:17:37Z",
+      "side": 1,
+      "message": "Does this commit relate to this issue https://discord.com/channels/775381525260664832/775381525260664836/1251022871258468432?",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5900024_53643c2d",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-07-23T07:17:37Z",
+      "side": 1,
+      "message": "Could we change this MACRO to the configuration option and the `host-objpath` value should be removed?",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
