@@ -15,6 +15,8 @@
 constexpr auto LEGACY_HOST_STATE_PERSIST_PATH =
     "/var/lib/phosphor-state-manager/requestedHostTransition";
 
+using HostState = sdbusplus::server::xyz::openbmc_project::state::Host;
+
 int main(int argc, char** argv)
 {
     size_t hostId = 0;
@@ -41,8 +43,12 @@ int main(int argc, char** argv)
 
     auto bus = sdbusplus::bus::new_default();
 
-    auto hostBusName = std::string{HOST_BUSNAME} + std::to_string(hostId);
-    auto objPathInst = std::string{HOST_OBJPATH} + std::to_string(hostId);
+    auto hostBusName = HostState::interface + std::to_string(hostId);
+    auto hostName = std::string(HostState::namespace_path::host) +
+                    std::to_string(hostId);
+    const auto* objPath = HostState::namespace_path::value;
+    std::string objPathInst =
+        sdbusplus::message::object_path(objPath) / hostName;
 
     if (hostId == 0)
     {
@@ -72,7 +78,7 @@ int main(int argc, char** argv)
     // input id is 0.
     if (hostId == 0)
     {
-        bus.request_name(HOST_BUSNAME);
+        bus.request_name(HostState::interface);
     }
 
     bus.request_name(hostBusName.c_str());

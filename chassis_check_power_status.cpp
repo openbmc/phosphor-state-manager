@@ -10,6 +10,7 @@
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/State/Chassis/client.hpp>
 
 #include <iostream>
 #include <map>
@@ -20,9 +21,13 @@ PHOSPHOR_LOG2_USING;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
+using ChassisState = sdbusplus::client::xyz::openbmc_project::state::Chassis<>;
+
 int main(int argc, char** argv)
 {
-    std::string chassisPath = "/xyz/openbmc_project/state/chassis0";
+    size_t chassisId = 0;
+    const auto* objPath = ChassisState::namespace_path::value;
+    auto chassisBusName = ChassisState::interface + std::to_string(chassisId);
     int arg;
     int optIndex = 0;
 
@@ -34,20 +39,23 @@ int main(int argc, char** argv)
         switch (arg)
         {
             case 'c':
-                chassisPath =
-                    std::string("/xyz/openbmc_project/state/chassis") + optarg;
+                chassisId = std::stoul(optarg);
                 break;
             default:
                 break;
         }
     }
 
+    auto chassisName = std::string(ChassisState::namespace_path::chassis) +
+                       std::to_string(chassisId);
+    std::string chassisPath =
+        sdbusplus::message::object_path(objPath) / chassisName;
     auto bus = sdbusplus::bus::new_default();
 
     // If the chassis power status is not good, log an error and exit with
     // a non-zero rc so the system does not power on
     auto currentPowerStatus = phosphor::state::manager::utils::getProperty(
-        bus, chassisPath, CHASSIS_BUSNAME, "CurrentPowerStatus");
+        bus, chassisPath, ChassisState::interface, "CurrentPowerStatus");
     if (currentPowerStatus !=
         "xyz.openbmc_project.State.Chassis.PowerStatus.Good")
     {
