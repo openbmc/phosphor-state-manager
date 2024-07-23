@@ -10,6 +10,8 @@
 #include <exception>
 #include <filesystem>
 
+using ScheduledHostTransition = sdbusplus::server::xyz::openbmc_project::state::ScheduledHostTransition;
+
 int main(int argc, char** argv)
 {
     size_t hostId = 0;
@@ -60,10 +62,10 @@ int main(int argc, char** argv)
     // input id is 0.
     if (hostId == 0)
     {
-        bus.request_name(SCHEDULED_HOST_TRANSITION_BUSNAME);
+        bus.request_name(ScheduledHostTransition::interface);
     }
 
-    bus.request_name((std::string{SCHEDULED_HOST_TRANSITION_BUSNAME} +
+    bus.request_name((std::string{ScheduledHostTransition::interface} +
                       std::to_string(hostId))
                          .c_str());
 
