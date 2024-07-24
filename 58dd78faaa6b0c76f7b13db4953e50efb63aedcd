@@ -69,6 +69,24 @@
       "parentUuid": "e5900024_53643c2d",
       "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98247f52_080037ae",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-07-24T17:15:33Z",
+      "side": 1,
+      "message": "\u003cdid not mean to resolve\u003e\nThanks for the hint, I see there are other state managers in the repo and they all have the same issue. Example, bmc_state_manager, chassis_state_manager, etc. They all have options in meson to configure the path. So, this commit by itself is incomplete, I should fix all those either in this commit or follow ups.\n\nI see multiple options here:\n(1) We could do a dirname(objPathInst) and that would reuse meson configuration all across the board.\n(2) Convert all the meson configuration to provide just the name, for example,\n```\n    \u0027host-objpath\u0027, type: \u0027string\u0027,\n    value: \u0027/xyz/openbmc_project/state/host\u0027,\n```\nCould be\n```\n    \u0027host-objpath\u0027, type: \u0027string\u0027,\n    value: \u0027host\u0027,\n```\nAnd the source would have a macro for \u0027/xyz/openbmc_project/state\u0027 and we can infer objPathInst\n```\nauto objPathInst \u003d std::string(HOST_STATE_OBJMGR_PATH) + \"/\" + std::string{HOST_OBJPATH} + std::to_string(hostId); \n```\nI need to check how consistent this is across all the state managers.",
+      "parentUuid": "26d808e0_8747205d",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
