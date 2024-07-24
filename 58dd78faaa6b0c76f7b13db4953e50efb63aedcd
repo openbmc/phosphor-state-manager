@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1538ccc0_cda8eec7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-07-24T16:43:06Z",
+      "side": 1,
+      "message": "Yes! I am working on resolving the other units as well.",
+      "parentUuid": "d559c2ca_a301530b",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5900024_53643c2d",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-07-23T07:17:37Z",
       "side": 1,
       "message": "Could we change this MACRO to the configuration option and the `host-objpath` value should be removed?",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26d808e0_8747205d",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-07-24T16:43:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e5900024_53643c2d",
       "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
