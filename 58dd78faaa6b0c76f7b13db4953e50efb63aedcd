@@ -87,6 +87,24 @@
       "parentUuid": "26d808e0_8747205d",
       "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2568ef06_1aaac0ce",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-26T13:31:01Z",
+      "side": 1,
+      "message": "Don\u0027t use Meson for this.  We need to get away from using it for these dbus configurations.\n\n\nThe phosphor-dbus-interfaces already defines the appropriate path to use here.\n\n```\nsdbusplus::server::xyz::openbmc_project::state::Host::namespace_path::value\n```\n\nThis is probably the same thing as: `phosphor::state::manager::Host::namespace_path::value` ?",
+      "parentUuid": "98247f52_080037ae",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
