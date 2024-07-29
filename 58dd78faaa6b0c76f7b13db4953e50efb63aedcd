@@ -105,6 +105,24 @@
       "parentUuid": "98247f52_080037ae",
       "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63735fcc_99fe4a1c",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-07-29T20:01:58Z",
+      "side": 1,
+      "message": "Even better. Thanks. I was wondering how it would even work if I compiled it with arbitrary paths",
+      "parentUuid": "2568ef06_1aaac0ce",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
