@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6984c40c_70218c92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:05:27Z",
+      "side": 1,
+      "message": "A few nits, but generally all correct.",
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c315b79a_64b91437",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:05:27Z",
+      "side": 1,
+      "message": "Using a dbus interface name as the base part of the service name isn\u0027t an intentional design point, but this is effectively what was already being done, so I think we can leave that as-is now.",
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d99fc719_01e8312a",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:05:27Z",
+      "side": 1,
+      "message": "nit (since this was already done this way):\n\nIt is better to use `sdbusplus::object_path(HostState::namespace_path) / (...::host + std::to_string(hostId))`.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 46
+      },
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bfcbb98_52846288",
+        "filename": "scheduled_host_transition.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:05:27Z",
+      "side": 1,
+      "message": "nit: `operator/` on `object_path` could be used here too.",
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
