@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf35b9b_e8fa7f67",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:14:48Z",
+      "side": 1,
+      "message": "This is not a commit in openbmc/openbmc.  I _think_ you want this commit to apply everywhere.  By adding \"meta-facebook\" you probably hit the maintainer\u0027s email filter and he\u0027ll never see this commit.",
+      "revId": "173748fce763cedc66cfdf6afb5ff6685866b1c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b65fbcc0_cebf2eb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:14:48Z",
+      "side": 1,
+      "message": "A few major issues with this commit which make it inappropriate in its current state.",
+      "revId": "173748fce763cedc66cfdf6afb5ff6685866b1c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4256fa8_683359b8",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:14:48Z",
+      "side": 1,
+      "message": "We cannot put AST2600-specific code into a common daemon.  Plus, this code only works for people who enabled `devmem` which is a big security gap and should not be standard behavior for most systems.\n\nI think what you need to do here is extend the watchdog driver to expose this information.  My understanding is that Nuvoton does this already.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 24
+      },
+      "revId": "173748fce763cedc66cfdf6afb5ff6685866b1c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cda2126_fc62b3c5",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-30T22:14:48Z",
+      "side": 1,
+      "message": "We should not be adding random printf-style events to phosphor-logging (especially not in general code).  \n\nOnce https://gerrit.openbmc.org/c/openbmc/docs/+/71489 is implemented you can define a new event in phosphor-dbus-interfaces and leverage that here.",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 311,
+        "endChar": 1
+      },
+      "revId": "173748fce763cedc66cfdf6afb5ff6685866b1c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
