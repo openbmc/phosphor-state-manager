@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d7cd4aa_da7c6138",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-07-30T17:44:53Z",
+      "side": 1,
+      "message": "Yes. This would be needed for all of them. Once we settle on the direction, I will get those patches up.",
+      "parentUuid": "0a5398d9_7cf4e729",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d559c2ca_a301530b",
@@ -138,6 +156,24 @@
       "side": 1,
       "message": "Even better. Thanks. I was wondering how it would even work if I compiled it with arbitrary paths",
       "parentUuid": "2568ef06_1aaac0ce",
+      "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e188d206_41eefb5a",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-07-30T17:44:53Z",
+      "side": 1,
+      "message": "Worked through this and used properties from phosphor-dbus-interfaces instead of meson build objects. Checked that no machine in openbmc/openbmc is setting host-objpath, host-busname, so, it is safe to remove. If this is the direction we want to go in, I can probably split this patch up and work on the other interfaces in this repo, like chassis-state.",
+      "parentUuid": "63735fcc_99fe4a1c",
       "revId": "58dd78faaa6b0c76f7b13db4953e50efb63aedcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
