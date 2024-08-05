@@ -8,4 +8,4 @@ Wants=obmc-power-start-pre@%i.target
 Wants=obmc-power-start@%i.target
 Wants=obmc-power-on@%i.target
 OnFailure=obmc-chassis-poweroff@%i.target
-OnFailureJobMode=fail
+OnFailureJobMode=flush

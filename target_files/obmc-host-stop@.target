@@ -7,4 +7,4 @@ Wants=obmc-host-stop-pre@%i.target
 Wants=obmc-host-stopping@%i.target
 Wants=obmc-host-stopped@%i.target
 OnFailure=obmc-chassis-poweroff@%i.target
-OnFailureJobMode=fail
+OnFailureJobMode=flush

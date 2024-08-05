@@ -2,4 +2,4 @@
 Description=Power%i Host Off
 After=multi-user.target
 OnFailure=obmc-chassis-poweroff@%i.target
-OnFailureJobMode=fail
+OnFailureJobMode=flush
