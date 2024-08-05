@@ -5,13 +5,18 @@
 
 #include <gpiod.h>
 
+#include <boost/container/flat_map.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+
+using variantValues =
+    std::variant<bool, uint, uint64_t, std::string, std::vector<std::string>>;
 
 namespace phosphor
 {
@@ -41,6 +46,8 @@ constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
+constexpr auto ACT_BLOCK_TRANS_INTERFACE =
+    "xyz.openbmc_project.Software.ActivationBlocksTransition";
 
 std::string BMC::getUnitState(const std::string& unitToCheck)
 {
@@ -112,6 +119,41 @@ void BMC::discoverInitialState()
     }
 
     return;
+}
+
+void BMC::firmwareIsUpdating(sdbusplus::message_t& msg)
+{
+    sdbusplus::message::object_path objPath;
+    boost::container::flat_map<
+        std::string, boost::container::flat_map<std::string, variantValues>>
+        interfaces;
+    msg.read(objPath, interfaces);
+
+    /*
+     * Update the BMC state to UpdateInProgress if ActivationBlocksTransition
+     * interface is added.
+     */
+    if (interfaces.find(ACT_BLOCK_TRANS_INTERFACE) != interfaces.end())
+    {
+        this->currentBMCState(BMCState::UpdateInProgress);
+    }
+}
+
+void BMC::firmwareIsUpdated(sdbusplus::message_t& msg)
+{
+    sdbusplus::message::object_path objPath;
+    std::vector<std::string> interfaces;
+    msg.read(objPath, interfaces);
+
+    /*
+     * Update the BMC state to Ready if ActivationBlocksTransition interface is
+     * removed.
+     */
+    if (std::find(interfaces.begin(), interfaces.end(),
+                  ACT_BLOCK_TRANS_INTERFACE) != interfaces.end())
+    {
+        this->discoverInitialState();
+    }
 }
 
 void BMC::executeTransition(const Transition tranReq)

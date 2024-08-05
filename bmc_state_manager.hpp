@@ -66,7 +66,19 @@ class BMC : public BMCInherit
                 timeSyncSignal.reset();
             }
         }
-    }))
+    })),
+
+        fwUpdatingSignal(
+            std::make_unique<decltype(fwUpdatingSignal)::element_type>(
+                bus,
+                sdbusRule::interfacesAdded("/xyz/openbmc_project/software"),
+                [this](sdbusplus::message_t& m) { firmwareIsUpdating(m); })),
+
+        fwUpdatedSignal(
+            std::make_unique<decltype(fwUpdatedSignal)::element_type>(
+                bus,
+                sdbusRule::interfacesRemoved("/xyz/openbmc_project/software"),
+                [this](sdbusplus::message_t& m) { firmwareIsUpdated(m); }))
     {
         utils::subscribeToSystemdSignals(bus);
         discoverInitialState();
@@ -121,6 +133,24 @@ class BMC : public BMCInherit
      */
     int bmcStateChange(sdbusplus::message_t& msg);
 
+    /** @brief Callback function when BMC in update mode
+     *
+     * Update the BMC's state to UpdateInProgress while BMC in update mode
+     *
+     * @param[in]  msg       - Data associated with subscribed signal
+     *
+     */
+    void firmwareIsUpdating(sdbusplus::message_t& msg);
+
+    /** @brief Callback function on BMC updated firmware
+     *
+     * Update the BMC's state to Ready when update is done
+     *
+     * @param[in]  msg       - Data associated with subscribed signal
+     *
+     */
+    void firmwareIsUpdated(sdbusplus::message_t& msg);
+
     /** @brief Persistent sdbusplus DBus bus connection. **/
     sdbusplus::bus_t& bus;
 
@@ -129,6 +159,12 @@ class BMC : public BMCInherit
 
     /** @brief Used to subscribe to timesync **/
     std::unique_ptr<sdbusplus::bus::match_t> timeSyncSignal;
+
+    /** @brief Used to subscribe to BMC is in update mode **/
+    std::unique_ptr<sdbusplus::bus::match_t> fwUpdatingSignal;
+
+    /** @brief Used to subscribe to BMC updated firmware **/
+    std::unique_ptr<sdbusplus::bus::match_t> fwUpdatedSignal;
 
     /**
      * @brief discover the last reboot cause of the bmc
