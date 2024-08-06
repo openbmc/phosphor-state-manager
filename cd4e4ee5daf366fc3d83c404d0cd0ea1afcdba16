@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "58982658_3c8bcb01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-06T12:49:50Z",
+      "side": 1,
+      "message": "nit: I know we\u0027re just trying to copy paste here from the spec but no reason we can\u0027t just line wrap at 72 chars here to keep the commit message cleaner.",
+      "range": {
+        "startLine": 19,
+        "startChar": 71,
+        "endLine": 19,
+        "endChar": 75
+      },
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6984c40c_70218c92",
@@ -31,6 +54,23 @@
       "writtenOn": "2024-08-06T08:04:03Z",
       "side": 1,
       "message": "LGTM",
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e2ebe6_35361b2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-06T12:49:50Z",
+      "side": 1,
+      "message": "Thanks for the fixes Amithash. I\u0027ll let you decide what you want to do with the remaining \"nit\" comments.",
       "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
