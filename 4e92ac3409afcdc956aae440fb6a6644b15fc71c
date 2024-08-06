@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28affd32_a5c8edf1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-06T14:09:10Z",
+      "side": 1,
+      "message": "The bmcweb logic over in https://github.com/openbmc/bmcweb/blob/master/redfish-core/lib/managers.hpp#L2121 will also need to be updated to look for this new state.",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7bea285_cb674cea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-06T14:09:10Z",
+      "side": 1,
+      "message": "The ambiguity to me is that I felt like when the BMC State is UpdateInProgress, then that means the BMC flash itself is being updated. If we\u0027re updating host firmware, or some other flash chip in the system, we don\u0027t want the BMC state to go to UpdateInProgress.",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeea8081_0e048f45",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-06T14:09:10Z",
+      "side": 1,
+      "message": "Is this interface only when a BMC update is occurring or could it be any type of firmware update?",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cdb1673_5d1bfdda",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-06T14:09:10Z",
+      "side": 1,
+      "message": "We\u0027ll need to redetect this. What if BMC was in NotReady or Quiesced prior to start of code update? Or went to Quiesce during update. Can hopefully just call discoverInitialState()",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
