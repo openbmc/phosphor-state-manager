@@ -178,7 +178,9 @@ void BMC::executeTransition(const Transition tranReq)
             info("Error in HardReboot: {ERROR}", "ERROR", e);
         }
     }
-    else
+    // Prevent BMC rebooting if BMC is in update mode.
+    else if ((server::BMC::Transition::Reboot == tranReq) &&
+             (server::BMC::currentBMCState() != BMCState::UpdateInProgress))
     {
         // Check to make sure it can be found
         auto iter = SYSTEMD_TABLE.find(tranReq);
