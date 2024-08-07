@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4453d32_90cdbd6c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-07T13:31:42Z",
+      "side": 1,
+      "message": "Yeah, we\u0027ll want the Redfish API to correctly report when the BMC state is updating.",
+      "parentUuid": "278b3c00_1755fe44",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7bea285_cb674cea",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -67,6 +85,41 @@
       "side": 1,
       "message": "I asked your concern on the Discord to get more view. https://discord.com/channels/775381525260664832/775381525260664836/1270596296474103859",
       "parentUuid": "f7bea285_cb674cea",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0c40df7_a038afbd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-07T13:31:42Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "c388c394_fc567a9d",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c48b803_c44fcd67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-07T13:31:42Z",
+      "side": 1,
+      "message": "Thanks for working on this Thang. It\u0027s always been on the TODO list to get that state properly supported.",
       "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
