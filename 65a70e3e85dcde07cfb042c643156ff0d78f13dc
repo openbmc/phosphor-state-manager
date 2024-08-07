@@ -16,6 +16,24 @@
       "message": "The goal is to avoid checks like this in the code and instead do things like are done in https://github.com/openbmc/phosphor-bmc-code-mgmt/blob/master/reboot-guard-enable.service.in. Code update should already be disabling BMC reboots using that above service.",
       "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d36ef4f7_ee7bf9a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-07T02:47:41Z",
+      "side": 1,
+      "message": "When I try to test reboot preventing while BIOS is updating, I see a issue as below:\n- Request to flash new BIOS.\n- Try to reboot BMC -\u003e It is fail as my expectation.\n- When Flashing done, try to turn on the Host -\u003e I expect it is success, but it is fail.\n\nI see that the BMC\u0027s state is `NotReady` at this point and I enabled `only-allow-boot-when-bmc-ready` option in https://github.com/openbmc/phosphor-state-manager/blob/master/meson.options#L149, that why I can not turn on the Host at step 3.\n\nI see that the `reboot-guard-enable.service` is used to prevent the `reboot.target` is called, but it can not prevent BMC\u0027s state change to `NotReady` (https://github.com/openbmc/phosphor-state-manager/blob/master/bmc_state_manager.cpp#L159).\n\nThat why I need to check BMC\u0027s state before Reboot.\n\nI have plan to create another commit on the phosphor-bmc-code-mgmt repo to remove reboot preventing in that repo after this commit is approved.",
+      "parentUuid": "d4ff3c2d_489e7643",
+      "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
