@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "278b3c00_1755fe44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-07T07:51:31Z",
+      "side": 1,
+      "message": "Do you mean that the `asyncResp-\u003eres.jsonValue[\"Status\"][\"State\"]` property should be set to `Updating`?",
+      "parentUuid": "28affd32_a5c8edf1",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7bea285_cb674cea",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-08-06T14:09:10Z",
       "side": 1,
       "message": "The ambiguity to me is that I felt like when the BMC State is UpdateInProgress, then that means the BMC flash itself is being updated. If we\u0027re updating host firmware, or some other flash chip in the system, we don\u0027t want the BMC state to go to UpdateInProgress.",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c388c394_fc567a9d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-07T07:51:31Z",
+      "side": 1,
+      "message": "I asked your concern on the Discord to get more view. https://discord.com/channels/775381525260664832/775381525260664836/1270596296474103859",
+      "parentUuid": "f7bea285_cb674cea",
       "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -65,6 +101,24 @@
       "writtenOn": "2024-08-06T14:09:10Z",
       "side": 1,
       "message": "We\u0027ll need to redetect this. What if BMC was in NotReady or Quiesced prior to start of code update? Or went to Quiesce during update. Can hopefully just call discoverInitialState()",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27383a50_60c971fb",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-07T07:51:31Z",
+      "side": 1,
+      "message": "I will update this point",
+      "parentUuid": "5cdb1673_5d1bfdda",
       "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
