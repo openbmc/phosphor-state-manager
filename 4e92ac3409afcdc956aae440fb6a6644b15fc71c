@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47742b5d_44821dec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-08T06:55:06Z",
+      "side": 1,
+      "message": "I see that we have a discussion about how to update this property https://discord.com/channels/775381525260664832/1027583818783264841, should we change this one?",
+      "parentUuid": "a4453d32_90cdbd6c",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7bea285_cb674cea",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -107,6 +125,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3631df8_ec6c10a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-08T06:55:06Z",
+      "side": 1,
+      "message": "I seem that when BMC is updating BIOS firmwares, the BMC\u0027s state can be set to UpdateInProgress, but not all of them need to change this. But I think we should make a common solution for all of them to make more safe for system.",
+      "parentUuid": "f0c40df7_a038afbd",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5c48b803_c44fcd67",
@@ -120,6 +156,24 @@
       "writtenOn": "2024-08-07T13:31:42Z",
       "side": 1,
       "message": "Thanks for working on this Thang. It\u0027s always been on the TODO list to get that state properly supported.",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6eca7bc_94dc88f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-08T06:55:06Z",
+      "side": 1,
+      "message": "Make OpenBmc better day by day 😄",
+      "parentUuid": "5c48b803_c44fcd67",
       "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -159,6 +213,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "775c22aa_8cd6aa63",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-08T06:55:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae330c18_a0397a45",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cdb1673_5d1bfdda",
@@ -190,6 +262,24 @@
       "side": 1,
       "message": "I will update this point",
       "parentUuid": "5cdb1673_5d1bfdda",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "040d2c9c_9d1442e9",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-08T06:55:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27383a50_60c971fb",
       "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
