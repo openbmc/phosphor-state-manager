@@ -34,6 +34,24 @@
       "parentUuid": "d4ff3c2d_489e7643",
       "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "282584f8_a926e12c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2024-08-08T13:24:29Z",
+      "side": 1,
+      "message": "The advantage of the reboot-guard is that it prevents reboots from other sources other than d-bus, such as issuing \u0027reboot\u0027 from the command line, so we probably don\u0027t have a justification to approve getting it removed.\n\nHow did you request to flash the new BIOS, did you use the \u0027host-bios-upgrade\u0027 option from the phosphor-bmc-code-mgmt repo? If that was the case, maybe we could enable the reboot-guard only for bmc updates and not the bios one. This will not solve the issue where the bmc state remains in NotReady state after a failed reboot attempt, but at least won\u0027t prevent the host from powering on.\n\nAddressing the issue that the bmc is set to NotReady and the reboot fails (could be because of the reboot guard or some other reason) would require a separate solution.",
+      "parentUuid": "d36ef4f7_ee7bf9a7",
+      "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
