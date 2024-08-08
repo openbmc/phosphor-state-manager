@@ -52,6 +52,24 @@
       "parentUuid": "d36ef4f7_ee7bf9a7",
       "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60c5a82c_ad0ab7b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2024-08-08T13:30:49Z",
+      "side": 1,
+      "message": "An option could be in executeTransition() to set the bmc state back to Ready (or the state value when the reboot was issued) after issuing the reboot call via \"this-\u003ebus.call(method);\", even after a short delay. Because theoretically, if the bmc reboots, the function won\u0027t have a chance to set it back to Ready state, and if the reboot fails, then the bmc state would be back to its previous state. This can also be done in the error case (if the bus.call() fails).",
+      "parentUuid": "282584f8_a926e12c",
+      "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
