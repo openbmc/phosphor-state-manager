@@ -70,6 +70,24 @@
       "parentUuid": "282584f8_a926e12c",
       "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2a7a6e3_0f6e2b42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-09T02:44:05Z",
+      "side": 1,
+      "message": "Thank you for your information @Adriana, I think we can keep the current implementation of `reboot-guard`, beside that, we can add this commit to phosphor-state-manager. I think it is correct when BMC prevents reboot request while it is in Update mode.",
+      "parentUuid": "60c5a82c_ad0ab7b4",
+      "revId": "65a70e3e85dcde07cfb042c643156ff0d78f13dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
