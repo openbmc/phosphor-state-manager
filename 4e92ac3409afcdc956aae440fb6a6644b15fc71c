@@ -179,6 +179,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "34e6aaa1_ddf800e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-13T18:54:55Z",
+      "side": 1,
+      "message": "I\u0027m not sure we\u0027ve resolved this one yet. A quick grok shows this interface is added for PSU code update, PNOR code updates, and BMC code updates. I understand why PSU and PNOR want to block BMC reboots during this time (avoid corruption of the devices) but the BMC itself is not being updated during those steps so we shouldn\u0027t say the BMC state is UpdateInProgress. Is there something specific we can look up to know that the BMC itself is being updated?\nhttps://grok.openbmc.org/search?full\u003d%22xyz.openbmc_project.Software.ActivationBlocksTransition%22\u0026defs\u003d\u0026refs\u003d\u0026path\u003d\u0026hist\u003d\u0026type\u003d\u0026xrd\u003d\u0026nn\u003d1\u0026si\u003dfull\u0026searchall\u003dtrue\u0026si\u003dfull",
+      "parentUuid": "4b115b5b_b4cc3a87",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5c48b803_c44fcd67",
