@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c8f981_c4bb6310",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-13T10:12:47Z",
+      "side": 1,
+      "message": "About the bmcweb, I think we can update is later. I believe this commit does not change the behavior of bmcweb.",
+      "parentUuid": "47742b5d_44821dec",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7bea285_cb674cea",
@@ -139,6 +157,24 @@
       "side": 1,
       "message": "I seem that when BMC is updating BIOS firmwares, the BMC\u0027s state can be set to UpdateInProgress, but not all of them need to change this. But I think we should make a common solution for all of them to make more safe for system.",
       "parentUuid": "f0c40df7_a038afbd",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b115b5b_b4cc3a87",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-13T10:12:47Z",
+      "side": 1,
+      "message": "I think that we can use ActivationBlocksTransition interface to indicate that the BMC is in Update mode.",
+      "parentUuid": "f3631df8_ec6c10a2",
       "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
