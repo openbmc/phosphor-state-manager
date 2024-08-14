@@ -6,6 +6,8 @@
 
 #include <cstdlib>
 
+using HostState = sdbusplus::server::xyz::openbmc_project::state::Host;
+
 int main()
 {
     auto bus = sdbusplus::bus::new_default();
@@ -14,7 +16,8 @@ int main()
     auto objPathInst = std::string{HYPERVISOR_OBJPATH} + '0';
 
     // Add sdbusplus ObjectManager.
-    sdbusplus::server::manager_t objManager(bus, objPathInst.c_str());
+    sdbusplus::server::manager_t objManager(bus,
+                                            HostState::namespace_path::value);
 
     phosphor::state::manager::Hypervisor manager(bus, objPathInst.c_str());
 
