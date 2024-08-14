@@ -74,7 +74,7 @@ int main(int argc, char** argv)
     }
 
     // Add sdbusplus ObjectManager.
-    sdbusplus::server::manager_t objManager(bus, objPathInst.c_str());
+    sdbusplus::server::manager_t objManager(bus, objPath);
     phosphor::state::manager::Chassis manager(bus, objPathInst.c_str(),
                                               chassisId);
 
