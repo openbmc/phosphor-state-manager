@@ -17,7 +17,7 @@ int main()
     std::string objPathInst = sdbusplus::message::object_path(objPath) / BMCName;
 
     // Add sdbusplus ObjectManager.
-    sdbusplus::server::manager_t objManager(bus, objPathInst.c_str());
+    sdbusplus::server::manager_t objManager(bus, objPath);
 
     phosphor::state::manager::BMC manager(bus, objPathInst.c_str());
 
