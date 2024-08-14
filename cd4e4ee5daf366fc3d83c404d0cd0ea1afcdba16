@@ -157,6 +157,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba92e96d_50e61d5c",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-08-14T21:18:07Z",
+      "side": 1,
+      "message": "Done. It goes into the previous diff.",
+      "parentUuid": "d99fc719_01e8312a",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 46
+      },
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bfcbb98_52846288",
@@ -170,6 +194,24 @@
       "writtenOn": "2024-07-30T22:05:27Z",
       "side": 1,
       "message": "nit: `operator/` on `object_path` could be used here too.",
+      "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c92ab43_be02e301",
+        "filename": "scheduled_host_transition.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-08-14T21:18:07Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "6bfcbb98_52846288",
       "revId": "cd4e4ee5daf366fc3d83c404d0cd0ea1afcdba16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
