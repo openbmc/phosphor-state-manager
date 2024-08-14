@@ -197,6 +197,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6feb4078_aa6f7afa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-14T02:45:53Z",
+      "side": 1,
+      "message": "The phosphor-bmc-code-mgmt is creating ActivationBlocksTransition interface to prevent reboot action while copying `img-*` files from `/tmp/images` folder to `/run/initramfs` folder if user request to flash new BMC https://github.com/openbmc/phosphor-bmc-code-mgmt/blob/master/static/flash.cpp#L54. BMC does not write data to itself flash until user request BMC rebooting. During copying time, I think the BMC could be set to Update Mode.\n\nWhen users reboot BMC, the BMC looks for `/run/initramfs/img-\u003cbmc|kernel|ubbot-|...\u003e` files, if those files are available, BMC flashes they to according to `mtd-*` devices https://github.com/openbmc/openbmc/blob/master/meta-phosphor/recipes-phosphor/initrdscripts/files/obmc-shutdown.sh#L40. This is how BMC is flashing itself.",
+      "parentUuid": "34e6aaa1_ddf800e5",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5c48b803_c44fcd67",
