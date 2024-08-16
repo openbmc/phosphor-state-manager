@@ -251,6 +251,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3630500_f1cb3923",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2024-08-16T14:16:45Z",
+      "side": 1,
+      "message": "Copying to /run/initramfs is like writing to flash, because on reboot whatever is on /run/initramfs will be written to flash. Therefore if the copy is interrupted and only a partial image-u-boot file is copied for example, that partial file will be written during the reboot and corrupt the BMC, same as if a write operation to the flash was interrupted.",
+      "parentUuid": "f992f3e8_add1c0a7",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5c48b803_c44fcd67",
