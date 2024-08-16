@@ -269,6 +269,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5886de7_9a727ef4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2024-08-16T14:16:58Z",
+      "side": 1,
+      "message": "\u003e During copying time, I think the BMC could be set to Update Mode.\n\nI\u0027m trying to understand this comment. Is the proposal that the code update app, when it starts a BMC activation, sets the BMC state to \"UpdateInProgress\"?",
+      "parentUuid": "f3630500_f1cb3923",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5c48b803_c44fcd67",
