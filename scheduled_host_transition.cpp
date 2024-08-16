@@ -237,9 +237,8 @@ void ScheduledHostTransition::handleTimeUpdates()
     }
 }
 
-int ScheduledHostTransition::onTimeChange(sd_event_source* /* es */, int fd,
-                                          uint32_t /* revents */,
-                                          void* userdata)
+int ScheduledHostTransition::onTimeChange(
+    sd_event_source* /* es */, int fd, uint32_t /* revents */, void* userdata)
 {
     auto* schedHostTran = static_cast<ScheduledHostTransition*>(userdata);
 

@@ -117,14 +117,12 @@ void Host::createSystemdTargetMaps()
         {Transition::GracefulWarmReboot,
          std::format("obmc-host-warm-reboot@{}.target", id)},
         {Transition::ForceWarmReboot,
-         std::format("obmc-host-force-warm-reboot@{}.target", id)}
-    };
+         std::format("obmc-host-force-warm-reboot@{}.target", id)}};
 #else
         {Transition::GracefulWarmReboot,
          std::format("obmc-host-reboot@{}.target", id)},
         {Transition::ForceWarmReboot,
-         std::format("obmc-host-reboot@{}.target", id)}
-    };
+         std::format("obmc-host-reboot@{}.target", id)}};
 #endif
     hostCrashTarget = std::format("obmc-host-crash@{}.target", id);
 }

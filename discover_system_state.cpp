@@ -63,9 +63,9 @@ int main(int argc, char** argv)
     }
 
     using Host = sdbusplus::client::xyz::openbmc_project::state::Host<>;
-    std::string hostPath = std::string(Host::namespace_path::value) + "/" +
-                           std::string(Host::namespace_path::host) +
-                           std::to_string(hostId);
+    std::string hostPath =
+        std::string(Host::namespace_path::value) + "/" +
+        std::string(Host::namespace_path::host) + std::to_string(hostId);
 
     auto bus = sdbusplus::bus::new_default();
 

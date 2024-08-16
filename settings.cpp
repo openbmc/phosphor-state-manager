@@ -100,9 +100,9 @@ Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
 Service Objects::service(const Path& path, const Interface& interface) const
 {
     using Interfaces = std::vector<Interface>;
-    auto mapperCall = bus.new_method_call(ObjectMapper::default_service,
-                                          ObjectMapper::instance_path,
-                                          ObjectMapper::interface, "GetObject");
+    auto mapperCall = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, "GetObject");
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 

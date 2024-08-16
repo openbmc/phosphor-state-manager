@@ -122,8 +122,8 @@ int main()
     int secureBootVal = -1;
     int abrImage = -1;
 
-    dbgFile.exceptions(std::ifstream::failbit | std::ifstream::badbit |
-                       std::ifstream::eofbit);
+    dbgFile.exceptions(
+        std::ifstream::failbit | std::ifstream::badbit | std::ifstream::eofbit);
 
     if (std::filesystem::exists(SYSFS_SECURE_BOOT_PATH))
     {

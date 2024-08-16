@@ -28,8 +28,8 @@ TEST(TargetSignalData, BasicPaths)
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
-    phosphor::state::manager::SystemdTargetLogging targetMon(targetData,
-                                                             serviceData, bus);
+    phosphor::state::manager::SystemdTargetLogging targetMon(
+        targetData, serviceData, bus);
 
     std::string invalidUnit = "invalid_unit";
     std::string validError = "timeout";
