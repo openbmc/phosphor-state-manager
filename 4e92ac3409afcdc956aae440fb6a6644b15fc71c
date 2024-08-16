@@ -287,6 +287,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bd5328e_bdeea8ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-16T16:13:11Z",
+      "side": 1,
+      "message": "I means while copying files to /run/initramfs, BMC\u0027s state should be set to \"UpdateInProgress\"",
+      "parentUuid": "e5886de7_9a727ef4",
+      "revId": "4e92ac3409afcdc956aae440fb6a6644b15fc71c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5c48b803_c44fcd67",
