@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8df8a30d_9d91ed47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-08-16T14:37:16Z",
+      "side": 1,
+      "message": "This certainly breaks all multi-host systems.  It seems like we either need to switch systemd back to the default and/or we have some incorrect OnFailures.",
+      "revId": "8838db5e9126faa44c137074001afe3b3e7e8c8b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
