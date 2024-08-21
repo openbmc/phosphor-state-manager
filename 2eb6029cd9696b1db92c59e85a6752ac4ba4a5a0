@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5b5a6cf_7c745b36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-08-21T13:36:14Z",
+      "side": 1,
+      "message": "All of the commands below look good with this change, but this specific call still doesn\u0027t work with this change. Is it supposed to?\n\nroot@p10bmc:~# busctl call xyz.openbmc_project.State.Host \\\n\u003e /xyz/openbmc_project/state/host0 org.freedesktop.DBus.ObjectManager \\\n\u003e GetManagedObjects\nCall failed: Unknown method GetManagedObjects or interface org.freedesktop.DBus.ObjectManager.",
+      "revId": "2eb6029cd9696b1db92c59e85a6752ac4ba4a5a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
