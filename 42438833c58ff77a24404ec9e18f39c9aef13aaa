@@ -16,6 +16,40 @@
       "message": "Do you have any comment?",
       "revId": "42438833c58ff77a24404ec9e18f39c9aef13aaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bec32f90_9f644991",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2024-08-28T17:09:47Z",
+      "side": 1,
+      "message": "Does discoverInitialState means no update in progress? If yes, isn\u0027t it suppose to be the case when NO ACT_BLOCK_TRANS_INTERFACE is found?",
+      "revId": "42438833c58ff77a24404ec9e18f39c9aef13aaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e19213_825ba374",
+        "filename": "bmc_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2024-08-28T17:09:47Z",
+      "side": 1,
+      "message": "I suppose this matcher will watch for any interfaces on subtree paths as well, for example /xyz/openbmc_project/software/\u003cxxx\u003e?",
+      "revId": "42438833c58ff77a24404ec9e18f39c9aef13aaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
