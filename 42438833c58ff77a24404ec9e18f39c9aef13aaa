@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cce1f3a_9008a113",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-29T00:14:02Z",
+      "side": 1,
+      "message": "The discoverInitialState method checks the obmc-bmc-service-quiesce@0.target and multi-user.target to get the BMC state, it can be Ready/NotReady/Quiesce.\n\nWhen NO ActivationBlocksTransition is found, it means other interfaces are added, not ActivationBlocksTransition, firmwareIsUpdated method does nothing.",
+      "parentUuid": "bec32f90_9f644991",
+      "revId": "42438833c58ff77a24404ec9e18f39c9aef13aaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55e19213_825ba374",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-08-28T17:09:47Z",
       "side": 1,
       "message": "I suppose this matcher will watch for any interfaces on subtree paths as well, for example /xyz/openbmc_project/software/\u003cxxx\u003e?",
+      "revId": "42438833c58ff77a24404ec9e18f39c9aef13aaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88d86131_7224d513",
+        "filename": "bmc_state_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-08-29T00:14:02Z",
+      "side": 1,
+      "message": "Yes, this matcher monitors all `InterfaceAdded` signal with the prefix `/xyz/openbmc_project/software` not only for `ActivationBlocksTransition` interface. In the firmwareIsUpdating method, we will check this interface later.",
+      "parentUuid": "55e19213_825ba374",
       "revId": "42438833c58ff77a24404ec9e18f39c9aef13aaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
