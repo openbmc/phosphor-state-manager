@@ -288,13 +288,13 @@ void BMC::discoverLastRebootCause()
     switch (bootReason)
     {
         case WDIOF_EXTERN1:
-            this->lastRebootCause(RebootCause::Watchdog);
+            this->lastRebootCause(RebootCause::Software);
             return;
         case WDIOF_CARDRESET:
-            this->lastRebootCause(RebootCause::POR);
+            this->lastRebootCause(RebootCause::Watchdog);
             return;
         default:
-            this->lastRebootCause(RebootCause::Unknown);
+            this->lastRebootCause(RebootCause::POR);
             // Continue below to see if more details can be found
             // on reason for reboot
             break;
