@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70911786_bf3e4ade",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2024-09-05T02:44:24Z",
+      "side": 1,
+      "message": "The FAILURE could be fixed after another commit #74318 be merged then trigger CI.\n\nState: add new RebootCause value for supporting Software reset\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/74318",
+      "revId": "64e5672eac65752a12255defc62705fe2dd21856",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
