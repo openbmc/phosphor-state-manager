@@ -108,3 +108,8 @@ option('only-allow-boot-when-bmc-ready', type : 'boolean',
     value : false,
     description : 'Only allow chassis and host power on operations when BMC is Ready.'
 )
+
+option('rbmc-state-management', type: 'feature',
+    value : 'enabled',
+    description : 'Enable redundant BMC state management'
+)
