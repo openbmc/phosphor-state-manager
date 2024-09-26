@@ -16,6 +16,23 @@
       "message": "Hi Andrew,\nCould you help to re-trigger this commit and review after below commit be merged? Thanks. https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/74318\n\nWe\u0027ve followed and tested according new design as below:\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/73678 (merged)\n\nTested:\n```\nPower ON:\nroot@evb-npcm845:~# cat /sys/class/watchdog/watchdog0/bootstatus\n0\nroot@evb-npcm845:~# busctl get-property xyz.openbmc_project.State.BMC \\\n/xyz/openbmc_project/state/bmc0 \\\nxyz.openbmc_project.State.BMC LastRebootCause\ns \"xyz.openbmc_project.State.BMC.RebootCause.POR\"\n\nWatchdog:\nroot@evb-npcm845:~# echo c \u003e /proc/sysrq-trigger\nroot@evb-npcm845:~# cat /sys/class/watchdog/watchdog0/bootstatus\n32\nroot@evb-npcm845:~# busctl get-property xyz.openbmc_project.State.BMC \\\n/xyz/openbmc_project/state/bmc0 \\\nxyz.openbmc_project.State.BMC LastRebootCause\ns \"xyz.openbmc_project.State.BMC.RebootCause.Watchdog\"\n \nSoftware:\nroot@evb-npcm845:~# reboot\nroot@evb-npcm845:~# cat /sys/class/watchdog/watchdog0/bootstatus\n4\nroot@evb-npcm845:~# busctl get-property xyz.openbmc_project.State.BMC \\\n/xyz/openbmc_project/state/bmc0 \\\nxyz.openbmc_project.State.BMC LastRebootCause\ns \"xyz.openbmc_project.State.BMC.RebootCause.Software\"\n```",
       "revId": "e14e96f8c61e650911f760f7b1e18c5f1db6852a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8bd485a_916de30f",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-09-26T13:26:21Z",
+      "side": 1,
+      "message": "I\u0027m still struggling a bit with the backwards compatibility aspect of this change. For this new code to work, it requires a kernel driver update from both Nuvoton and Aspeed right? Do we list that as a pre-req to this change? Will it work on all versions of our BMC chips?",
+      "revId": "e14e96f8c61e650911f760f7b1e18c5f1db6852a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
