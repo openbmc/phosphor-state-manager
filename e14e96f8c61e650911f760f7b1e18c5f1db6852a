@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a2fb626_bbee59cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-10-02T19:42:53Z",
+      "side": 1,
+      "message": "Our systems only support the \"PinholeReset\" path so I went with that commit because I assumed it was how other non-IBM systems were supposed to behave.\n\nHigh level, since there is an APR policy to AlwaysOn, and we only run it when chassis power is off, we want to lean towards running APR in most cases.\n\nSounds like we need to revisit that commit Thang. A \"Watchdog\" reason doesn\u0027t seem to match well with a \"cold reset\". And it doesn\u0027t sound like other systems want to skip APR in this path.",
+      "parentUuid": "dfa18bea_d0f64581",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 44
+      },
+      "revId": "e14e96f8c61e650911f760f7b1e18c5f1db6852a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f28fc4dd_a3e3b2a5",
