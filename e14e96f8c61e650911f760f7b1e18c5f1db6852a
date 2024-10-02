@@ -164,6 +164,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c0d41c0_a4057f6e",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000994
+      },
+      "writtenOn": "2024-10-02T15:43:15Z",
+      "side": 1,
+      "message": "Hi @Tim,\n\nI haven\u0027t seen any watchdog driver updates following the new design from both Nuvoton and Aspeed (I\u0027m checking at https://github.com/openbmc/linux/tree/dev-6.6/drivers/watchdog)\n\nFollow https://github.com/openbmc/docs/blob/master/designs/bmc-reboot-cause-update.md#proposed-design , the driver set /sys/class/watchdog/watchdog0/bootstatus\n\u003d\u003e phosphor-state-manager get the flag from /sys/class/watchdog/watchdog0/bootstatus\n\nSo I think we need to wait for Aspeed/Nuvoton to complete the upstream watchdog driver with the new design, and then we\u0027ll support the phosphor-state-manager. \n\nThanks,\nChanh",
+      "parentUuid": "f670a06f_77c37800",
+      "revId": "e14e96f8c61e650911f760f7b1e18c5f1db6852a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdbf5ad5_d48ca733",
