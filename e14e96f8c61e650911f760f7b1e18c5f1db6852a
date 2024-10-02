@@ -182,6 +182,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f33a6ed_08f828fa",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-02T16:42:09Z",
+      "side": 1,
+      "message": "\u003e So I think we need to wait for Aspeed/Nuvoton to complete the upstream watchdog driver with the new design, and then we\u0027ll support the phosphor-state-manager.\n\nBut there isn\u0027t any support with the \"old design\" either.  So, is there harm in this?  The new design is at least following the overall Linux watchdog design.",
+      "parentUuid": "3c0d41c0_a4057f6e",
+      "revId": "e14e96f8c61e650911f760f7b1e18c5f1db6852a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdbf5ad5_d48ca733",
