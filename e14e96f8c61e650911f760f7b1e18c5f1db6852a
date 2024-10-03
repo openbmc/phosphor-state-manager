@@ -286,6 +286,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc024c07_7e9dfb04",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000994
+      },
+      "writtenOn": "2024-10-03T03:22:53Z",
+      "side": 1,
+      "message": "Hi @Tim,\n\nDo you have any information from Aspeed\u0027s plan to upstream this support? I would like to follow that. If it\u0027s convenient, it\u0027s a pleasure to add me to this discussion.\n\nI\u0027m using the Aspeed chip, I can help review and test the upstream patch from Aspeed. I think it will help upstream progress quickly.\n\nThanks,\nChanh",
+      "parentUuid": "c7f6c41a_2362d372",
+      "revId": "e14e96f8c61e650911f760f7b1e18c5f1db6852a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fdbf5ad5_d48ca733",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 3
