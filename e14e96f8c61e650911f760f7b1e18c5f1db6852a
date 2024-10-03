@@ -302,6 +302,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc4323f9_2fb465f2",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2024-10-03T06:20:03Z",
+      "side": 1,
+      "message": "Hi @Chanh,\n\nThanks for your review and suggestion. We didn\u0027t get any progress from Aspeed\u0027s plan to upstream it so far. Initially, Wiwynn request this \"Software\" reboot cause support to Nuvoton and Aspeed from Sept 4. We have provided our driver patch and test result to WW and Aspeed refer it.\n\nSorry, I cannot loop you in the mail thread due to this mail was initialed by WW, not sure whether is it suitable.\n\nI have verified our watchdog driver as I mentioned before, and Nuvoton watchdog driver is upstreaming by Nuvoton Tomer. Personally, I think this state-manager commit could be merged then you can test it when you got upstream patch from Aspeed. WW is asking the response from Aspeed/Aaron. Thanks.",
+      "parentUuid": "dc024c07_7e9dfb04",
+      "revId": "e14e96f8c61e650911f760f7b1e18c5f1db6852a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdbf5ad5_d48ca733",
