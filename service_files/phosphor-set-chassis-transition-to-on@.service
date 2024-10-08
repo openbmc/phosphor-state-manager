@@ -9,6 +9,7 @@ ConditionPathExists=!/run/openbmc/chassis@%i-on
 [Service]
 Restart=no
 Type=oneshot
+RemainAfterExit=yes
 SyslogIdentifier=phosphor-set-chassis-transition-to-on
 ExecStart=/bin/sh -c "busctl set-property `mapper get-service /xyz/openbmc_project/state/chassis%i` /xyz/openbmc_project/state/chassis%i xyz.openbmc_project.State.Chassis CurrentPowerState s xyz.openbmc_project.State.Chassis.PowerState.TransitioningToOn"
 
