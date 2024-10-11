@@ -96,12 +96,20 @@ int main(int argc, char** argv)
             "BMC was reset due to pinhole reset, no power restore policy will be run");
         return 0;
     }
+#if ONLY_RUN_APR_ON_POWER_LOSS
     else if (bmcRebootCause == BMC::RebootCause::Watchdog)
+    {
+        info(
+            "BMC was reset due to watchdog, no power restore policy will be run");
+        return 0;
+    }
+    else if (bmcRebootCause == BMC::RebootCause::Software)
     {
         info(
             "BMC was reset due to cold reset, no power restore policy will be run");
         return 0;
     }
+#endif
 
     /* The logic here is to first check the one-time PowerRestorePolicy setting.
      * If this property is not the default then look at the persistent
@@ -184,17 +192,6 @@ int main(int argc, char** argv)
                 bus, hostPath, HostState::interface, "RequestedHostTransition",
                 convertForMessage(server::Host::Transition::On));
         }
-        // Always execute power on if AlwaysOn is set, otherwise check config
-        // option (and AC loss status) on whether to execute other policy
-        // settings
-#if ONLY_RUN_APR_ON_POWER_LOSS
-        else if (!phosphor::state::manager::utils::checkACLoss(hostId))
-        {
-            info(
-                "Chassis power was not on prior to BMC reboot so do not run any further power policy");
-            return 0;
-        }
-#endif
         else if (RestorePolicy::Policy::AlwaysOff ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
