@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2874feaf_34a7c9a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2024-10-11T01:41:28Z",
+      "side": 1,
+      "message": "Thanks for your review. Indeed, the #51436 seems need to change. From my viewpoint, should be changed to bmcRebootCause \u003d\u003d \"xyz.openbmc_project.State.BMC.RebootCause.Software\" when user initiates a BMC reboot via reboot command from BMC console. If I have misunderstood your meaning, please correct me. Thank you.",
+      "revId": "4ab59214a794acaa674069b4af11975442b8055c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
