@@ -99,6 +99,12 @@ int main(int argc, char** argv)
     else if (bmcRebootCause == BMC::RebootCause::Watchdog)
     {
         info(
+            "BMC was reset due to watchdog, no power restore policy will be run");
+        return 0;
+    }
+    else if (bmcRebootCause == BMC::RebootCause::Software)
+    {
+        info(
             "BMC was reset due to cold reset, no power restore policy will be run");
         return 0;
     }
