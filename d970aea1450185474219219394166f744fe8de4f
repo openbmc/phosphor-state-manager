@@ -16,6 +16,23 @@
       "message": "Hi @Andrew and @Tim, I add this commit fix the issue we discussed before https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/74319/comments/39da96e1_0359d8a7",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be0d959_8a7050ed",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-10-13T16:15:08Z",
+      "side": 1,
+      "message": "I think it\u0027s time to update https://github.com/openbmc/docs/blob/master/designs/power-recovery.md for both of these (similar to what was done for PinholeReset) because I\u0027m not sure we want these. The argument seems to be to only run APR when something unexpected happens (like an AC loss) but I think some want the Always Power On option to be always run after a BMC reset.",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
