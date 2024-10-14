@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0bcfd35_24537304",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2024-10-14T06:27:03Z",
+      "side": 1,
+      "message": "Hi @Thang,\nFrom the IPMI Specification v2.0 revision 1.1. \"The power restore policy determines how the system or chassis behaves when AC power returns after an AC power loss.\"\n\nIt seems both `Watchdog` and `Software` are not caused by AC power loss like `PinholeReset`.\nTherefore, checking the `PinholeReset` reason and not running power restore policy seems reasonable.\n\nSince it is a manual mechanism for the user to force a hard reset to the BMC in situations where it is hung or not responding, should we keep the hard reset `PinholeReset` and remove the software reset regardless of whether it is Watchdog or Software?\n\nHi @Andrew,\nIf I am wrong, please correct me. Thanks.",
+      "parentUuid": "122db244_36696f0e",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2be0d959_8a7050ed",
