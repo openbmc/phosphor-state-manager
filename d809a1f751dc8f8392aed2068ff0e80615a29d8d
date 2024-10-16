@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba22e627_6286b2a3",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "this reads like it\u0027s enabling management of the redundant BMC \u0027s state \n\npossible alternatives:\n - Enable BMC Redundancy\n - Enable management of Redundant BMC State\n - Enable Active BMC Role (Management)",
+      "revId": "d809a1f751dc8f8392aed2068ff0e80615a29d8d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6387f678_87e21432",
+        "filename": "redundant-bmc/manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "cts -\u003e ctx",
+      "revId": "d809a1f751dc8f8392aed2068ff0e80615a29d8d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d1e2a6b_9f2920be",
+        "filename": "redundant-bmc/manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "void?  is it intended to set the role via some other interface?   can this be in the description?\n\n(Reads implementation) oh it asks for the role, logs it, and calls the interface set.  it doesn\u0027t\n\ndetermines -\u003e Requests and Publishes the Role\nor determinr and publish\n(I don\u0027t know if passive to active will call this or another interface, which may influence the preferred wording)",
+      "revId": "d809a1f751dc8f8392aed2068ff0e80615a29d8d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c88320a5_5576f5fb",
+        "filename": "redundant-bmc/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "I don\u0027t know if this project has a style guide regarding include but I know some frown on including the top level in \"include\u003c\u003e\"\n\nssuming this is just because of includes to support gtest, can the source be in a src subdirectory?  (or if apis an include directory).",
+      "revId": "d809a1f751dc8f8392aed2068ff0e80615a29d8d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c8247ef_6255d9fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "just some feedback on this initial patch.  I\u0027m still a c++ novice and some of these may be established patterns or otherwise not apply especially as this is wip.",
+      "revId": "581b3db4e4fa04ceff4bf63498122e167209a409",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc653e26_a9adbbb9",
+        "filename": "redundant-bmc/manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "so we were spawned in an async context only to immediately spawn another  context annd do nothing?  is this a pattern?",
+      "revId": "581b3db4e4fa04ceff4bf63498122e167209a409",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a149115f_5d79f817",
+        "filename": "redundant-bmc/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "placing most objects seems to be related to alternate main gtest vs any api correct?",
+      "revId": "581b3db4e4fa04ceff4bf63498122e167209a409",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6469e3f8_1cbd36e0",
+        "filename": "redundant-bmc/rbmc_state_manager_main.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "i missed the defintion of default_service",
+      "revId": "581b3db4e4fa04ceff4bf63498122e167209a409",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2911674_c23d9c2f",
+        "filename": "redundant-bmc/role_determination.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-10-16T20:32:23Z",
+      "side": 1,
+      "message": "so `role_determination:run` is the chosen name?   `run` seems misleading out of context of class namespace (eg `using role_determination`);\n\nsomething like `determine` or `probe`?\n\n(maybe run was chose because you intend to make it a context later but this is the reuslting role not the establishing / monitoring of the service).",
+      "revId": "581b3db4e4fa04ceff4bf63498122e167209a409",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
