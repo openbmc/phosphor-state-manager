@@ -424,6 +424,17 @@ Host::Transition Host::requestedHostTransition(Transition value)
     // check of this count will occur
     if (value != server::Host::Transition::Off)
     {
+#ifdef CHECK_FWUPDATE_BEFORE_DO_TRANSITION
+        /*
+         * Do not do transition when the any firmware being updated
+         */
+        if (phosphor::state::manager::utils::isFirmwareUpdating(this->bus))
+        {
+            info("Firmware being updated, reject the transition request");
+            throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+        }
+#endif // CHECK_FWUPDATE_BEFORE_DO_TRANSITION
+
         decrementRebootCount();
     }
 

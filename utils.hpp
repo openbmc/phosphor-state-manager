@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
@@ -101,6 +103,14 @@ bool isBmcReady(sdbusplus::bus_t& bus);
  * @param[in] timeout      - Timeout in second
  */
 bool waitBmcReady(sdbusplus::bus_t& bus, std::chrono::seconds timeout);
+
+#ifdef CHECK_FWUPDATE_BEFORE_DO_TRANSITION
+/** @brief Determine if any firmware being updated
+ *
+ * @param[in] bus          - The Dbus bus object
+ */
+bool isFirmwareUpdating(sdbusplus::bus_t& bus);
+#endif // CHECK_FWUPDATE_BEFORE_DO_TRANSITION
 
 } // namespace utils
 } // namespace manager
