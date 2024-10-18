@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "bmc_state_manager.hpp"
 
 #include "utils.hpp"
@@ -223,6 +225,18 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
     info("Setting the RequestedBMCTransition field to "
          "{REQUESTED_BMC_TRANSITION}",
          "REQUESTED_BMC_TRANSITION", value);
+
+#ifdef CHECK_FWUPDATE_BEFORE_DO_TRANSITION
+    /*
+     * Do not do transition when the any firmware being updated
+     */
+    if ((server::BMC::Transition::Reboot == value) &&
+        (phosphor::state::manager::utils::isFirmwareUpdating(this->bus)))
+    {
+        info("Firmware being updated, reject the transition request");
+        throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+    }
+#endif // CHECK_FWUPDATE_BEFORE_DO_TRANSITION
 
     executeTransition(value);
     return server::BMC::requestedBMCTransition(value);
