@@ -69,6 +69,9 @@ conf.set_quoted(
 conf.set_quoted(
     'CHASSIS_ON_FILE', '/run/openbmc/chassis@{}-on')
 
+conf.set(
+    'CHECK_FWUPDATE_BEFORE_DO_TRANSITION', get_option('check-fwupdate-before-do-transition').enabled())
+
 configure_file(output: 'config.h', configuration: conf)
 
 if(get_option('warm-reboot').allowed())
