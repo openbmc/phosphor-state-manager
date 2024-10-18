@@ -8,6 +8,7 @@
 #include <xyz/openbmc_project/Dump/Create/client.hpp>
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
+#include <xyz/openbmc_project/Software/ActivationBlocksTransition/client.hpp>
 #include <xyz/openbmc_project/State/BMC/client.hpp>
 
 #include <chrono>
@@ -33,6 +34,8 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
+using ActBlockTrans = sdbusplus::client::xyz::openbmc_project::software::
+    ActivationBlocksTransition<>;
 
 void subscribeToSystemdSignals(sdbusplus::bus_t& bus)
 {
@@ -267,6 +270,40 @@ bool waitBmcReady(sdbusplus::bus_t& bus, std::chrono::seconds timeout)
     }
     return false;
 }
+
+#ifdef CHECK_PERMISSION_BEFORE_DO_TRANSITION
+bool isTransitionPrevented(sdbusplus::bus_t& bus)
+{
+    /*
+     * This method looks for ActivationBlocksTransition interface, if any object
+     * path is including this interface, the Transition action should be
+     * prevented.
+     */
+    auto mapper = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, "GetSubTreePaths");
+
+    mapper.append("/", 0, std::vector<std::string>({ActBlockTrans::interface}));
+
+    std::vector<std::string> mapperResponse;
+
+    try
+    {
+        auto mapperResponseMsg = bus.call(mapper);
+
+        mapperResponseMsg.read(mapperResponse);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error in mapper call with root path, interface "
+              "ActivationBlocksTransition, and exception {ERROR}",
+              "ERROR", e);
+        return false;
+    }
+
+    return !mapperResponse.empty();
+}
+#endif // CHECK_PERMISSION_BEFORE_DO_TRANSITION
 
 } // namespace utils
 } // namespace manager

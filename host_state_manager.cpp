@@ -424,6 +424,17 @@ Host::Transition Host::requestedHostTransition(Transition value)
     // check of this count will occur
     if (value != server::Host::Transition::Off)
     {
+#ifdef CHECK_PERMISSION_BEFORE_DO_TRANSITION
+        /*
+         * Do not do transition when the ActivationBlocksTransition interface
+         * exit.
+         */
+        if (phosphor::state::manager::utils::isTransitionPrevented(this->bus))
+        {
+            throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+        }
+#endif // CHECK_PERMISSION_BEFORE_DO_TRANSITION
+
         decrementRebootCount();
     }
 

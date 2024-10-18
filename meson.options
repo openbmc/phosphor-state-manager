@@ -108,3 +108,8 @@ option('only-allow-boot-when-bmc-ready', type : 'boolean',
     value : false,
     description : 'Only allow chassis and host power on operations when BMC is Ready.'
 )
+
+option('check-permission-before-do-transition', type : 'feature',
+    value : 'enabled',
+    description : 'Check ActivateBlcockTranstion interface, if it exits, reject the transition request'
+)

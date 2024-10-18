@@ -597,6 +597,18 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
             BMCNotReady();
     }
 #endif
+
+#ifdef CHECK_PERMISSION_BEFORE_DO_TRANSITION
+    /*
+     * Do not do transition when the ActivationBlocksTransition interface exit
+     */
+    if ((value != Transition::Off) &&
+        (phosphor::state::manager::utils::isTransitionPrevented(this->bus)))
+    {
+        throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+    }
+#endif // CHECK_PERMISSION_BEFORE_DO_TRANSITION
+
     startUnit(systemdTargetTable.find(value)->second);
     return server::Chassis::requestedPowerTransition(value);
 }
