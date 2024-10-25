@@ -252,6 +252,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c41a322_d69a9784",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-10-25T07:35:05Z",
+      "side": 1,
+      "message": "Hi @Andrew, in the PDIs, the ARP can be run when Power Loss or BMC reboot https://github.com/openbmc/phosphor-dbus-interfaces/blob/73c931fb942daa714bfff17e950b9d5622a25842/yaml/xyz/openbmc_project/Control/Power/RestorePolicy.interface.yaml#L1. But I see that in the current inplementation, the BMC always tunrs on the Host if the Policy is `AlwaysOn` even we enbaled `only-run-apr-on-power-loss` option or not (From your commit https://github.com/openbmc/phosphor-state-manager/commit/70b48f31368b8a23df152840bfc34d8805bef8ca).\n\nIt is inconsistent, could we update that code https://github.com/openbmc/phosphor-state-manager/blob/master/discover_system_state.cpp#L190",
+      "parentUuid": "cc1a0085_41d45c00",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2be0d959_8a7050ed",
