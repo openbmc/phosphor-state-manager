@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06284903_e8ffdb27",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-11-05T22:20:48Z",
+      "side": 1,
+      "message": "\"permission\" seems a bit vague. Maybe something more specific like \"fwupdate\"?",
+      "range": {
+        "startLine": 112,
+        "startChar": 14,
+        "endLine": 112,
+        "endChar": 24
+      },
+      "revId": "12ca9ef74f9fb8896147e56ffc1f72477482bfce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28a6b6d9_0ba40c64",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-11-05T22:20:48Z",
+      "side": 1,
+      "message": "I\u0027d prefer we keep the current default, so make this disabled.",
+      "range": {
+        "startLine": 113,
+        "startChar": 13,
+        "endLine": 113,
+        "endChar": 20
+      },
+      "revId": "12ca9ef74f9fb8896147e56ffc1f72477482bfce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5228100_4e03ac70",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-11-05T22:20:48Z",
+      "side": 1,
+      "message": "Spelling - ActivateBlockTransition",
+      "range": {
+        "startLine": 114,
+        "startChar": 25,
+        "endLine": 114,
+        "endChar": 49
+      },
+      "revId": "12ca9ef74f9fb8896147e56ffc1f72477482bfce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
