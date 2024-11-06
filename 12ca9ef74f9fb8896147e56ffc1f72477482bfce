@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe36efa_01b10f6d",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-06T02:42:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06284903_e8ffdb27",
+      "range": {
+        "startLine": 112,
+        "startChar": 14,
+        "endLine": 112,
+        "endChar": 24
+      },
+      "revId": "12ca9ef74f9fb8896147e56ffc1f72477482bfce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28a6b6d9_0ba40c64",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cfa773f_90b32bff",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-06T02:42:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28a6b6d9_0ba40c64",
+      "range": {
+        "startLine": 113,
+        "startChar": 13,
+        "endLine": 113,
+        "endChar": 20
+      },
+      "revId": "12ca9ef74f9fb8896147e56ffc1f72477482bfce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5228100_4e03ac70",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-11-05T22:20:48Z",
       "side": 1,
       "message": "Spelling - ActivateBlockTransition",
+      "range": {
+        "startLine": 114,
+        "startChar": 25,
+        "endLine": 114,
+        "endChar": 49
+      },
+      "revId": "12ca9ef74f9fb8896147e56ffc1f72477482bfce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0f033a1_a6857889",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-06T02:42:13Z",
+      "side": 1,
+      "message": "I updated description to `Only do transition request when no firmware being updated`",
+      "parentUuid": "e5228100_4e03ac70",
       "range": {
         "startLine": 114,
         "startChar": 25,
