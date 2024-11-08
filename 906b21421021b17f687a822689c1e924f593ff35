@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5670a99c_63d3ed8a",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-08T02:38:02Z",
+      "side": 1,
+      "message": "I want to set this feature to disabled by deafult to avoid impact to other platforms that follow old implementation.",
+      "parentUuid": "f240586d_1300796e",
+      "revId": "906b21421021b17f687a822689c1e924f593ff35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e262bcdf_c18118f5",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-11-07T18:10:12Z",
       "side": 1,
       "message": "Is there any way to know if this activation is appropriate for this device?  For multi-host, we can be updating one compute card while another compute card is asking for a reboot.  This code currently just looks for any ActivationBlocksTransition.",
+      "revId": "906b21421021b17f687a822689c1e924f593ff35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56d0e91b_e297150e",
+        "filename": "utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-08T02:38:02Z",
+      "side": 1,
+      "message": "Unfortunately, the `Purpose` property of the https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Software/Version.interface.yaml interface does not show the Host\u0027s Index. I do not know any way to get the Host\u0027s Index when a firmware is flashed.",
+      "parentUuid": "e262bcdf_c18118f5",
       "revId": "906b21421021b17f687a822689c1e924f593ff35",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
