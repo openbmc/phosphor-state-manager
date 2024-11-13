@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65d17a9b_705d895e",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-13T02:37:30Z",
+      "side": 1,
+      "message": "@Patrick,Thank you for your sharing.\n\n@Andrew, I updated the default value of `check-fwupdate-before-do-transition` to `enabled` in this repo. I will disable this option by default in the .bb file later.",
+      "parentUuid": "9c3a32fa_a634d599",
+      "revId": "906b21421021b17f687a822689c1e924f593ff35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e262bcdf_c18118f5",
