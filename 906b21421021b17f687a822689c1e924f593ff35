@@ -89,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28c647ab_a1efa85a",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-11-13T16:13:38Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "65d17a9b_705d895e",
+      "revId": "906b21421021b17f687a822689c1e924f593ff35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e262bcdf_c18118f5",
