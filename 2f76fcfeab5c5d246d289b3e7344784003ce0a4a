@@ -16,6 +16,23 @@
       "message": "I encountered the chassis power state being set to the wrong state under the circumstances mentioned in the commit message. Please help review this change. If you have any concerns, please let me know.",
       "revId": "2f76fcfeab5c5d246d289b3e7344784003ce0a4a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0773f99d_fd6aa888",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002130
+      },
+      "writtenOn": "2024-11-15T08:38:58Z",
+      "side": 1,
+      "message": "Hi Andrew and Patrick：Please help review this change. If you have any concerns, please let me know.",
+      "revId": "2f76fcfeab5c5d246d289b3e7344784003ce0a4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
