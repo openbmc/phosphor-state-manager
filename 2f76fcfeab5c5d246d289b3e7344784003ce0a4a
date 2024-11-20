@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e1cac4b_e96d422b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002130
+      },
+      "writtenOn": "2024-11-20T08:39:59Z",
+      "side": 1,
+      "message": "Refers to executing chassis-powercycle in chassis-poweroff state.\nWhen we execute chassis-poweron, we will use the phosphor-discover-system-state service to confirm whether to power on the host.",
+      "parentUuid": "b3c9fbae_c1d02896",
+      "revId": "2f76fcfeab5c5d246d289b3e7344784003ce0a4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59257df6_98b92393",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-11-19T13:14:52Z",
       "side": 1,
       "message": "Is something out stopping these targets?",
+      "revId": "2f76fcfeab5c5d246d289b3e7344784003ce0a4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00da00a0_28b05ec6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002130
+      },
+      "writtenOn": "2024-11-20T08:39:59Z",
+      "side": 1,
+      "message": "When the host power-on, obmc-chassis-poweroff target and obmc-host-stop target will be stopped.",
+      "parentUuid": "59257df6_98b92393",
       "revId": "2f76fcfeab5c5d246d289b3e7344784003ce0a4a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -99,6 +135,24 @@
       "writtenOn": "2024-11-19T13:14:52Z",
       "side": 1,
       "message": "This is a very touchy area of the code, and the complexity of these checks were added over time to cover a variety of corner cases. The main issue being that systemd seems to issue events multiple times for targets. I\u0027ve got a lot of concerns with changing this code.",
+      "revId": "2f76fcfeab5c5d246d289b3e7344784003ce0a4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a79b7ee6_27f7d8c2",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1002130
+      },
+      "writtenOn": "2024-11-20T08:39:59Z",
+      "side": 1,
+      "message": "We will discuss internally to see if there are other solutions.",
+      "parentUuid": "db2769ad_d51f92e9",
       "revId": "2f76fcfeab5c5d246d289b3e7344784003ce0a4a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
