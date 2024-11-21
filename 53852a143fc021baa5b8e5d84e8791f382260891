@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f1f198_9b999fec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002130
+      },
+      "writtenOn": "2024-11-21T08:00:20Z",
+      "side": 1,
+      "message": "After discussion, we thought this modification might have many corner cases, so we modified the design and abandoned this gerrit.",
+      "revId": "53852a143fc021baa5b8e5d84e8791f382260891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
