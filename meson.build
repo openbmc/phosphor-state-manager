@@ -84,7 +84,7 @@ sdbusplus = dependency('sdbusplus')
 sdeventplus = dependency('sdeventplus')
 phosphorlogging = dependency('phosphor-logging')
 phosphordbusinterfaces = dependency('phosphor-dbus-interfaces')
-libgpiod = dependency('libgpiod', version : '>=1.4.1')
+libgpiod = dependency('libgpiod', version : '>=1.4.1', default_options: ['bindings=cxx'])
 
 if cpp.has_header('CLI/CLI.hpp')
     CLI11 = declare_dependency()
