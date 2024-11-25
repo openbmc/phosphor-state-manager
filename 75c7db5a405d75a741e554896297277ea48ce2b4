@@ -16,6 +16,24 @@
       "message": "Actually, I\u0027m not confident this is fixing it. I saw some projects used it this way, but I think this needs to be applied to the gpiod dependency, not the gpiodcxx dependency. gpiod is the thing that provides gpiodcxx.",
       "revId": "75c7db5a405d75a741e554896297277ea48ce2b4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61fe8296_98e41d22",
+        "filename": "host_condition_gpio/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001289
+      },
+      "writtenOn": "2024-11-25T22:21:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75c4170e_9381d28f",
+      "revId": "75c7db5a405d75a741e554896297277ea48ce2b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
