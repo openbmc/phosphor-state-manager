@@ -4,6 +4,7 @@ filesystem = import('fs')
 gpioplus = dependency('gpioplus')
 gpiodcxx = dependency(
     'libgpiodcxx',
+    default_options: ['bindings=cxx'],
     fallback: ['libgpiod', 'gpiodcxx_dep']
 )
 
