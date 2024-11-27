@@ -212,6 +212,24 @@
       "parentUuid": "587209c9_565dd862",
       "revId": "906b21421021b17f687a822689c1e924f593ff35",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec96451c_69bb96c5",
+        "filename": "utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2024-11-27T19:04:45Z",
+      "side": 1,
+      "message": "@Thang, The new Code Update design is at https://github.com/openbmc/docs/blob/master/designs/code-update.md#association. There is a proposed association activating, activated_on which needs to be implemented.\nSo, my suggestion is for you to go ahead with this patch and i can raise a patch new week to implement this association in phosphor-bmc-code-mgmt. Once that is done you can raise a flow up patch in phosphor-state-manager. Please let me know if there are any concerns?",
+      "parentUuid": "4340e3cd_8ab79966",
+      "revId": "906b21421021b17f687a822689c1e924f593ff35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
