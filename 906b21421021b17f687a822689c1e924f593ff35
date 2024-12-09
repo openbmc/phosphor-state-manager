@@ -248,6 +248,24 @@
       "parentUuid": "ec96451c_69bb96c5",
       "revId": "906b21421021b17f687a822689c1e924f593ff35",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e023694f_f1765ed8",
+        "filename": "utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-12-09T06:22:10Z",
+      "side": 1,
+      "message": "Hi @Andrew, can you +2 to this commit? I will update the solution to support multiple host platform later.",
+      "parentUuid": "a796c973_b9d5476b",
+      "revId": "906b21421021b17f687a822689c1e924f593ff35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
