@@ -16,6 +16,24 @@
       "message": "@Adriana, \nWould this monitoring fail if the mentioned service was never run? If thats true then \"xyz.openbmc_project.Software.BMC.Updater.service\" would need to be dropped, isn\u0027t it and the diffs would need to be merged in some order?\nIf thats not true, then i suppose its fine.",
       "revId": "56e26894d7a2671dd030cbb3fef1b0d430862406",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "999fab56_be0d9a1a",
+        "filename": "data/phosphor-service-monitor-default.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2024-12-09T20:06:55Z",
+      "side": 1,
+      "message": "Seems it will just subscribe to the service and monitor if it exits with an error code, but doesn\u0027t care if a service doesn\u0027t exist. At least I see this monitor service running ok on a system with your commit that removes the old code update services by default.\nLet\u0027s have Andrew confirm.",
+      "parentUuid": "85969543_356844bd",
+      "revId": "56e26894d7a2671dd030cbb3fef1b0d430862406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
