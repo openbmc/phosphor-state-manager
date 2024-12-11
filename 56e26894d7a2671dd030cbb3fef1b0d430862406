@@ -34,6 +34,24 @@
       "parentUuid": "85969543_356844bd",
       "revId": "56e26894d7a2671dd030cbb3fef1b0d430862406",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24f96ef7_4af25ff4",
+        "filename": "data/phosphor-service-monitor-default.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-12-11T02:06:59Z",
+      "side": 1,
+      "message": "Yep, it wont hurt anything if the service is not present. It will just never see it fail.",
+      "parentUuid": "999fab56_be0d9a1a",
+      "revId": "56e26894d7a2671dd030cbb3fef1b0d430862406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
