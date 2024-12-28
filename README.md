@@ -160,6 +160,8 @@ The host@0-on file is removed once the obmc-host-start\@0.target and
 obmc-host-startmin\@0.target become active (i.e. all service have been
 successfully started which are wanted or required by these targets).
 
+This is a test commit for new gerrit
+
 ## Building the Code
 
 To build this package, do the following steps:
