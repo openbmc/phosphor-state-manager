@@ -10,6 +10,7 @@
 
 #include <cassert>
 #include <chrono>
+#include <optional>
 
 namespace phosphor
 {
@@ -144,6 +145,18 @@ class BMC : public BMCInherit
      * @brief the lastRebootTime calcuated at startup.
      **/
     uint64_t rebootTime;
+
+    /**
+     * @brief check for the existance of readResetFlag
+     **/
+    std::optional<RebootCause> readResetFlag();
+
+    /**
+     * @brief writes the ResetFlag
+     **/
+    void writeResetFlag();
+
+
 };
 
 } // namespace manager

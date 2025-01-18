@@ -12,6 +12,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <optional>
+
 
 namespace phosphor
 {
@@ -20,6 +22,8 @@ namespace state
 namespace manager
 {
 
+constexpr std::string_view flag_file =
+    "/var/google/phosphor-state-manager-reboot.flag";
 PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
@@ -151,6 +155,16 @@ void BMC::executeTransition(const Transition tranReq)
         // needs to be irreversible once started
 
         method.append(sysdUnit, "replace-irreversibly");
+
+        // Explain cause of reboot to be discovered
+       try
+       {
+           writeResetFlag();
+       }
+       catch (const std::exception& e)
+       {
+           info("Unable to write flag file {ERROR}", "ERROR", e);
+       }
 
         // Put BMC state not NotReady when issuing a BMC reboot
         // and stop monitoring for state changes
@@ -328,7 +342,39 @@ void BMC::discoverLastRebootCause()
         this->lastRebootCause(RebootCause::POR);
     }
 
+    // If the reason is not above check the rwfs file for a reason
+    try
+    {
+        auto res = readResetFlag();
+        this->lastRebootCause(res.value_or(RebootCause::Unknown));
+    }
+    catch (const std::exception& e)
+    {
+        info("Unable to read flag file {ERROR}", "ERROR", e);
+    }
     return;
+}
+
+void BMC::writeResetFlag()
+{
+    if(std::filesystem::exists(flag_file))
+    {
+        error("Reset flag is already present");
+        return;
+    }
+    // create a symlink to dev null to show graceful intent
+    std::filesystem::create_symlink("/dev/null", flag_file);
+}
+
+std::optional<BMC::RebootCause> BMC::readResetFlag()
+{
+    if(!std::filesystem::exists(flag_file))
+    {
+       return std::nullopt;
+    }
+    info("Rest flag file found");
+    std::filesystem::remove(flag_file);
+    return RebootCause::Software;
 }
 
 } // namespace manager
