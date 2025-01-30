@@ -70,7 +70,7 @@ conf.set_quoted(
     'CHASSIS_ON_FILE', '/run/openbmc/chassis@{}-on')
 
 conf.set(
-    'CHECK_FWUPDATE_BEFORE_DO_TRANSITION', get_option('check-fwupdate-before-do-transition').enabled())
+    'CHECK_FWUPDATE_BEFORE_DO_TRANSITION', get_option('check-fwupdate-before-do-transition').allowed())
 
 configure_file(output: 'config.h', configuration: conf)
 
@@ -288,7 +288,7 @@ build_tests = get_option('tests')
 
 # If test coverage of source files within the root directory are wanted,
 # need to define and build the tests from here
-if not build_tests.disabled()
+if build_tests.allowed()
 gtest = dependency('gtest', main: true, disabler: true, required: build_tests)
 gmock = dependency('gmock', disabler: true, required: build_tests)
   test(
