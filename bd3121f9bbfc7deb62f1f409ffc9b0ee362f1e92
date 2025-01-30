@@ -22,6 +22,30 @@
       },
       "revId": "bd3121f9bbfc7deb62f1f409ffc9b0ee362f1e92",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecf8660c_d88f790c",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000593
+      },
+      "writtenOn": "2025-01-30T00:56:03Z",
+      "side": 1,
+      "message": "anything that request a transition to `server::BMC::Transition::Reboot` should be considered a graceful reboot. (and that is check on like 146) This is called on the dbus with replace-irreversibly\n\n let me know if that is insufficient?",
+      "parentUuid": "48a45834_299e088e",
+      "range": {
+        "startLine": 162,
+        "startChar": 11,
+        "endLine": 162,
+        "endChar": 25
+      },
+      "revId": "bd3121f9bbfc7deb62f1f409ffc9b0ee362f1e92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
