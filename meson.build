@@ -67,6 +67,11 @@ conf.set(
     get_option('check-fwupdate-before-do-transition').allowed(),
 )
 
+conf.set10(
+    'APPLY_POWER_POLICY_WHEN_BMC_READY',
+    get_option('apply-power-policy-bmc-ready').allowed(),
+)
+
 configure_file(output: 'config.h', configuration: conf)
 
 if (get_option('warm-reboot').allowed())
