@@ -77,6 +77,10 @@ if (get_option('force-warm-reboot').allowed())
     add_project_arguments('-DENABLE_FORCE_WARM_REBOOT', language: 'cpp')
 endif
 
+if(get_option('apply-power-policy-bmc-ready').allowed())
+    add_project_arguments('-DAPPLY_POWER_POLICY_WHEN_BMC_READY', language:'cpp')
+endif
+
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 sdbusplus = dependency('sdbusplus')
 sdeventplus = dependency('sdeventplus')
