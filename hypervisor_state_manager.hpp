@@ -55,12 +55,12 @@ class Hypervisor : public HypervisorInherit
     {}
 
     /** @brief Set value of HostTransition */
-    server::Host::Transition
-        requestedHostTransition(server::Host::Transition value) override;
+    server::Host::Transition requestedHostTransition(
+        server::Host::Transition value) override;
 
     /** @brief Set value of CurrentHostState */
-    server::Host::HostState
-        currentHostState(server::Host::HostState value) override;
+    server::Host::HostState currentHostState(
+        server::Host::HostState value) override;
 
     /** @brief Return value of CurrentHostState */
     server::Host::HostState currentHostState() const override;
