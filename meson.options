@@ -146,3 +146,10 @@ option(
     value: 'enabled',
     description: 'Only do transition request when no firmware being updated',
 )
+
+option(
+    'apply-power-policy-bmc-ready',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Apply the Power policy right after BMC_READY',
+)
