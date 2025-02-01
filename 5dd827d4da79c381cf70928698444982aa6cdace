@@ -33,6 +33,24 @@
       "message": "BMC READY and Uptime are two different things. The patch does not read uptime. Might need to rephrase it.",
       "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "359c280c_ce3407a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2025-02-01T17:59:12Z",
+      "side": 1,
+      "message": "also this patch makes wait for ready to also wait for the transition timeout.   \nplease create a new utility function to enforce add the minimum time delay",
+      "parentUuid": "fa10ae8d_d4efb7e1",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
