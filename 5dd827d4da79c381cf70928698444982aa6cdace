@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4605d891_e66cf41a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001486
+      },
+      "writtenOn": "2025-02-01T11:45:14Z",
+      "side": 1,
+      "message": "wrap body at 72 chars.",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa10ae8d_d4efb7e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001486
+      },
+      "writtenOn": "2025-02-01T11:45:14Z",
+      "side": 1,
+      "message": "BMC READY and Uptime are two different things. The patch does not read uptime. Might need to rephrase it.",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
