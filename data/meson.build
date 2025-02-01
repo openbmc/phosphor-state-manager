@@ -4,8 +4,5 @@ data = [
 ]
 
 foreach d : data
-    install_data(
-        d,
-        install_dir: datadir
-        )
+    install_data(d, install_dir: datadir)
 endforeach

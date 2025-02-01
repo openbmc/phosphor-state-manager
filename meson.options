@@ -1,115 +1,148 @@
 option('tests', type: 'feature', description: 'Build tests')
 
 option(
-    'host-sched-objpath', type: 'string',
+    'host-sched-objpath',
+    type: 'string',
     value: '/xyz/openbmc_project/scheduled/host',
     description: 'The scheduled host Dbus root.',
 )
 
 option(
-    'hypervisor-busname', type: 'string',
+    'hypervisor-busname',
+    type: 'string',
     value: 'xyz.openbmc_project.State.Hypervisor',
     description: 'The Hypervisor DBus busname to own.',
 )
 
 option(
-    'hypervisor-objpath', type: 'string',
+    'hypervisor-objpath',
+    type: 'string',
     value: '/xyz/openbmc_project/state/hypervisor',
     description: 'The hypervisor state manager Dbus root.',
 )
 
 option(
-    'host-state-persist-path', type: 'string',
+    'host-state-persist-path',
+    type: 'string',
     value: '/var/lib/phosphor-state-manager/host{}-PersistData',
     description: 'Path format of file for storing requested HostState,boot progress and os status.',
 )
 
 option(
-    'poh-counter-persist-path', type: 'string',
+    'poh-counter-persist-path',
+    type: 'string',
     value: '/var/lib/phosphor-state-manager/chassis{}-POHCounter',
     description: 'Path format of file for storing POH counter.',
 )
 
 option(
-    'chassis-state-change-persist-path', type: 'string',
+    'chassis-state-change-persist-path',
+    type: 'string',
     value: '/var/lib/phosphor-state-manager/chassis{}-StateChangeTime',
     description: 'Path format of file for storing the state change time.',
 )
 
 option(
-    'scheduled-host-transition-persist-path', type: 'string',
+    'scheduled-host-transition-persist-path',
+    type: 'string',
     value: '/var/lib/phosphor-state-manager/scheduledHostTransition',
     description: 'Path of file for storing the scheduled time and the requested transition.',
 )
 
 option(
-    'boot-count-max-allowed', type: 'integer',
+    'boot-count-max-allowed',
+    type: 'integer',
     value: 3,
     description: 'The maximum allowed reboot count.',
 )
 
 option(
-    'class-version', type: 'integer',
+    'class-version',
+    type: 'integer',
     value: 2,
     description: 'Class version to register with Cereal.',
 )
 
-option('warm-reboot', type : 'feature',
-    value : 'enabled',
-    description : 'Enable warm reboots of the system',
+option(
+    'warm-reboot',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable warm reboots of the system',
 )
 
-option('force-warm-reboot', type : 'feature',
-    value : 'enabled',
-    description : 'Enable forced warm reboots of the system',
+option(
+    'force-warm-reboot',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable forced warm reboots of the system',
 )
 
-option('host-gpios', type : 'feature',
-    value : 'enabled',
-    description : 'Enable gpio mechanism to check host state.',
+option(
+    'host-gpios',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable gpio mechanism to check host state.',
 )
 
-option('host-gpios-busname', type : 'string',
-    value : 'xyz.openbmc_project.State.HostCondition.Gpio',
-    description : 'The host gpios Dbus busname to own.',
+option(
+    'host-gpios-busname',
+    type: 'string',
+    value: 'xyz.openbmc_project.State.HostCondition.Gpio',
+    description: 'The host gpios Dbus busname to own.',
 )
 
-option('host-gpios-objpath', type : 'string',
-    value : '/xyz/openbmc_project/Gpios',
-    description : 'The host gpios Dbus root.',
+option(
+    'host-gpios-objpath',
+    type: 'string',
+    value: '/xyz/openbmc_project/Gpios',
+    description: 'The host gpios Dbus root.',
 )
 
-option('sysfs-secure-boot-path', type : 'string',
-    value : '/sys/kernel/debug/aspeed/sbc/secure_boot',
-    description : 'The sysfs path to the secure boot value.',
+option(
+    'sysfs-secure-boot-path',
+    type: 'string',
+    value: '/sys/kernel/debug/aspeed/sbc/secure_boot',
+    description: 'The sysfs path to the secure boot value.',
 )
 
-option('sysfs-abr-image-path', type : 'string',
-    value : '/sys/kernel/debug/aspeed/sbc/abr_image',
-    description : 'The sysfs path to the abr image value.',
+option(
+    'sysfs-abr-image-path',
+    type: 'string',
+    value: '/sys/kernel/debug/aspeed/sbc/abr_image',
+    description: 'The sysfs path to the abr image value.',
 )
 
-option('only-run-apr-on-power-loss', type : 'boolean',
-    value : false,
-    description : 'Only run automatic restore policy due to loss of AC power.'
+option(
+    'only-run-apr-on-power-loss',
+    type: 'boolean',
+    value: false,
+    description: 'Only run automatic restore policy due to loss of AC power.',
 )
 
-option('sysfs-tpm-device-path', type : 'string',
-    value : '/sys/firmware/devicetree/base/ahb/apb@1e780000/bus@1e78a000/i2c@680/tpm@2e',
-    description : 'The sysfs path to the tpm device.',
+option(
+    'sysfs-tpm-device-path',
+    type: 'string',
+    value: '/sys/firmware/devicetree/base/ahb/apb@1e780000/bus@1e78a000/i2c@680/tpm@2e',
+    description: 'The sysfs path to the tpm device.',
 )
 
-option('sysfs-tpm-measurement-path', type : 'string',
-    value : '/sys/class/tpm/tpm0/pcr-sha256/0',
-    description : 'The sysfs path to the tpm measurement value.',
+option(
+    'sysfs-tpm-measurement-path',
+    type: 'string',
+    value: '/sys/class/tpm/tpm0/pcr-sha256/0',
+    description: 'The sysfs path to the tpm measurement value.',
 )
 
-option('only-allow-boot-when-bmc-ready', type : 'boolean',
-    value : false,
-    description : 'Only allow chassis and host power on operations when BMC is Ready.'
+option(
+    'only-allow-boot-when-bmc-ready',
+    type: 'boolean',
+    value: false,
+    description: 'Only allow chassis and host power on operations when BMC is Ready.',
 )
 
-option('check-fwupdate-before-do-transition', type : 'feature',
-    value : 'enabled',
-    description : 'Only do transition request when no firmware being updated'
+option(
+    'check-fwupdate-before-do-transition',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Only do transition request when no firmware being updated',
 )

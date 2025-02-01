@@ -23,14 +23,10 @@ unit_files = [
     'phosphor-bmc-security-check.service',
     'phosphor-create-chassis-poweron-log@.service',
     'phosphor-set-chassis-transition-to-on@.service',
-    'phosphor-set-chassis-transition-to-off@.service'
+    'phosphor-set-chassis-transition-to-off@.service',
 ]
 
 fs = import('fs')
 foreach u : unit_files
-    fs.copyfile(
-        u,
-        install: true,
-        install_dir: systemd_system_unit_dir
-    )
+    fs.copyfile(u, install: true, install_dir: systemd_system_unit_dir)
 endforeach
