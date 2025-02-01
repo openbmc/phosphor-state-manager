@@ -259,11 +259,16 @@ bool isBmcReady(sdbusplus::bus_t& bus)
 
 bool waitBmcReady(sdbusplus::bus_t& bus, std::chrono::seconds timeout)
 {
+    auto timeoutCopy = timeout;
     while (timeout.count() != 0)
     {
         timeout--;
         if (isBmcReady(bus))
         {
+            if (timeout.count() > 0)
+            {
+                std::this_thread::sleep_for(timeoutCopy - timeout);
+            }
             return true;
         }
         std::this_thread::sleep_for(std::chrono::seconds(1));
