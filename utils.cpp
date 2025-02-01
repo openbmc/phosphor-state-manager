@@ -257,16 +257,13 @@ bool isBmcReady(sdbusplus::bus_t& bus)
     return true;
 }
 
-bool waitBmcReady(sdbusplus::bus_t& bus, std::chrono::seconds timeout)
+bool waitForPowerDelayRestore(sdbusplus::bus_t& bus,
+                              std::chrono::seconds timeout)
 {
-    while (timeout.count() != 0)
+    std::this_thread::sleep_for(timeout);
+    if (isBmcReady(bus))
     {
-        timeout--;
-        if (isBmcReady(bus))
-        {
-            return true;
-        }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        return true;
     }
     return false;
 }
