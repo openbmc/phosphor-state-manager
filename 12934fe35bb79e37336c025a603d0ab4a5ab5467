@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53b71536_bdac131d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-02-03T21:53:18Z",
+      "side": 1,
+      "message": "Please don\u0027t do this kind of indirection for our project, especially not something like a github issue.  If this URL shortener goes out of business we lose all record of what you\u0027re pointing at.\n\nAnyhow, use `Resolves openbmc/phosphor-state-manager#30` and github would automatically close the issue if this were merged (and Gerrit also turns it into the appropriate URL).",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc795667_c62d02fa",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -31,6 +48,23 @@
       "writtenOn": "2025-02-03T19:37:41Z",
       "side": 1,
       "message": "Hi Prithvi, please work with Deepak or Ed at your company to get added to the CLA and then added to the approved CI group.",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1e4221c_86c36a55",
+        "filename": "utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-02-03T21:53:18Z",
+      "side": 1,
+      "message": "This seems like it only explicitly makes things worse.  Now instead of waiting for up to N seconds we\u0027re always waiting for N seconds.",
       "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
