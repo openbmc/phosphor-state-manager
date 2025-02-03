@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c64c20fd_c215f66a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-03T19:37:41Z",
+      "side": 1,
+      "message": "I think there\u0027s a bit of confusion here. The way the code currently works is once the discovery application starts, it begins waiting for BMC Ready, using the PowerRestoreDelay value for the maximum amount of time it will wait for BMC Ready. It checks every 1s, so as soon as BMC Ready is hit, the host boot will be started. Although the discover service actually doesn\u0027t run until BMC Ready so it all kind of just happens at the same time (BMC Ready hit, APR policy enforced).\n\nMy understanding is you wanted the boot to start even sooner then BMC Ready. i.e. start once the bare minimum of BMC services are running. In that case we need to go back to https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/71085 where we changed the discover app to wait for BMC Ready (After\u003dmulti-user.target) and put that behind a meson feature (only-allow-boot-when-bmc-ready). So on your system, you set the PowerRestoreDelay to 0, and don\u0027t enable only-allow-boot-when-bmc-ready.",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc795667_c62d02fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-03T19:37:41Z",
+      "side": 1,
+      "message": "Hi Prithvi, please work with Deepak or Ed at your company to get added to the CLA and then added to the approved CI group.",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
