@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6c36e0e_b7a767a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-03T05:25:49Z",
+      "side": 1,
+      "message": "Addressed the comment",
+      "parentUuid": "4605d891_e66cf41a",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa10ae8d_d4efb7e1",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "also this patch makes wait for ready to also wait for the transition timeout.   \nplease create a new utility function to enforce add the minimum time delay",
       "parentUuid": "fa10ae8d_d4efb7e1",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22e62926_620ab69e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-03T05:25:49Z",
+      "side": 1,
+      "message": "@rohitpai77@gmail.com rephrased the commit message as suggested",
+      "parentUuid": "359c280c_ce3407a3",
       "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
