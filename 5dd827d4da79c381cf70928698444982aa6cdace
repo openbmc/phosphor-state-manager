@@ -68,6 +68,24 @@
       "message": "I think you should update the name of this function to waitForPowerDelayRestore. Beside that, the `while` loop is redundant now, you just have to `sleep_for(timeout)` then check BMC state.",
       "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd05d3e9_e2271c4b",
+        "filename": "utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-03T05:14:40Z",
+      "side": 1,
+      "message": "Yes the reason for having delay inside the while is because there was one MR which went in couple of months ago to wait for BMC_READY. https://github.com/openbmc/phosphor-state-manager/commit/0886545d42088fbe6241309577a4f11451325cc0",
+      "parentUuid": "3039f146_4f3f141b",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
