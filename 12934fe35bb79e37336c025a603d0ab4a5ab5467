@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eeeb8bb5_5fb831c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-04T05:09:27Z",
+      "side": 1,
+      "message": "I found a bug while working on this feature. The bug:\n1) User sets PowerRestorePolicy as AlwaysOn\n2) User sets PowerRestoreDelay as 120 seconds\n3) User performs GracefulShutdown\n4) User does AC power cycle\nOnce, the BMC is up the expectation is to apply Power Policy that is AlwaysOn after 120 seconds. But, in our case we would hit BMC_READY within ~10 seconds. And then we would apply the restore policy. \n\nHence, this patch ensures that we wait for the time defined by the user.",
+      "parentUuid": "c64c20fd_c215f66a",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53b71536_bdac131d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2025-02-03T21:53:18Z",
       "side": 1,
       "message": "Please don\u0027t do this kind of indirection for our project, especially not something like a github issue.  If this URL shortener goes out of business we lose all record of what you\u0027re pointing at.\n\nAnyhow, use `Resolves openbmc/phosphor-state-manager#30` and github would automatically close the issue if this were merged (and Gerrit also turns it into the appropriate URL).",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00706e3b_6f91ef9c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-04T05:09:27Z",
+      "side": 1,
+      "message": "sure I will change that in commit message",
+      "parentUuid": "53b71536_bdac131d",
       "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0d7cb40_cc83d5e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-04T05:09:27Z",
+      "side": 1,
+      "message": "sure I will do that.",
+      "parentUuid": "cc795667_c62d02fa",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1e4221c_86c36a55",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-02-03T21:53:18Z",
       "side": 1,
       "message": "This seems like it only explicitly makes things worse.  Now instead of waiting for up to N seconds we\u0027re always waiting for N seconds.",
+      "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdc342a7_53c4c05b",
+        "filename": "utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-04T05:09:27Z",
+      "side": 1,
+      "message": "I found a bug while working on this feature. The bug:\n1) User sets PowerRestorePolicy as AlwaysOn\n2) User sets PowerRestoreDelay as 120 seconds\n3) User performs GracefulShutdown \n4) User does AC power cycle\nOnce, the BMC is up the expectation is to apply Power Policy that is AlwaysOn after 120 seconds. But, in our case we would hit BMC_READY within ~10 seconds.",
+      "parentUuid": "d1e4221c_86c36a55",
       "revId": "12934fe35bb79e37336c025a603d0ab4a5ab5467",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

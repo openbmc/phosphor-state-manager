@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7114ba5_d8f7378c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-04T05:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6c36e0e_b7a767a7",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa10ae8d_d4efb7e1",
@@ -107,6 +125,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "224dba93_c903b70c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-04T05:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6009f731_f9174158",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3039f146_4f3f141b",
@@ -156,6 +192,24 @@
       "side": 1,
       "message": "@thuutran@amperecomputing.com Addressed your comment",
       "parentUuid": "cd05d3e9_e2271c4b",
+      "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cde087e2_7ec854e0",
+        "filename": "utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-04T05:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0d971e6_8600409a",
       "revId": "5dd827d4da79c381cf70928698444982aa6cdace",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
