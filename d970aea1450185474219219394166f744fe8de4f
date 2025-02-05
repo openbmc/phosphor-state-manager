@@ -357,6 +357,24 @@
       "parentUuid": "c0a8370a_540556d0",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "990681cf_faa68533",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-05T19:00:15Z",
+      "side": 1,
+      "message": "I don\u0027t think APR policy should be tied to the reason the BMC is rebooted. It just causes too many corner cases on systems because the RebootCause is not consistent across all systems.",
+      "parentUuid": "5c8b751a_001fc59e",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
