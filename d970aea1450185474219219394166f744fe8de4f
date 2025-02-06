@@ -393,6 +393,24 @@
       "parentUuid": "990681cf_faa68533",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26f66639_3d916cc4",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-06T22:23:46Z",
+      "side": 1,
+      "message": "Yeah, I\u0027d be ok if you use a build option for your logic. I think the other 2 in here (PinholeReset, and Watchdog) should also be behind build flags to stay consistent.",
+      "parentUuid": "f5057ff3_ec4abb52",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
