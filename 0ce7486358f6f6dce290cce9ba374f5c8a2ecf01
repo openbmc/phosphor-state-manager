@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbf9fe8f_7f33961c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-07T17:38:16Z",
+      "side": 1,
+      "message": "Please update commit msg to match the code now (new config option to just always wait for APR time and start boot).",
+      "revId": "0ce7486358f6f6dce290cce9ba374f5c8a2ecf01",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4db07239_7e022925",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-07T17:38:16Z",
+      "side": 1,
+      "message": "Seems reasonable to me. Please update commit msg and resolve open comments in gerrit.",
+      "revId": "0ce7486358f6f6dce290cce9ba374f5c8a2ecf01",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
