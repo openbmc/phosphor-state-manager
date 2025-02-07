@@ -411,6 +411,24 @@
       "parentUuid": "f5057ff3_ec4abb52",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b3b0689_0d08fd3f",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000294
+      },
+      "writtenOn": "2025-02-07T01:56:10Z",
+      "side": 1,
+      "message": "Yes, I\u0027d be okay with using a build option to stay consistent. Thanks.",
+      "parentUuid": "26f66639_3d916cc4",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
