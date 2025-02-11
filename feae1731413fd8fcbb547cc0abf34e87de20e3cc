@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e427fbe5_3db151b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-11T06:11:07Z",
+      "side": 1,
+      "message": "sure will include Tested section",
+      "parentUuid": "aadcc4e5_9376717b",
+      "revId": "feae1731413fd8fcbb547cc0abf34e87de20e3cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82568e38_d97f71d2",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-02-10T16:48:00Z",
       "side": 1,
       "message": "nit: extra line feed",
+      "revId": "feae1731413fd8fcbb547cc0abf34e87de20e3cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd5fed86_539c72ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-02-11T06:11:07Z",
+      "side": 1,
+      "message": "yes removed the extra line",
+      "parentUuid": "82568e38_d97f71d2",
       "revId": "feae1731413fd8fcbb547cc0abf34e87de20e3cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
