@@ -429,6 +429,24 @@
       "parentUuid": "26f66639_3d916cc4",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1601c4c5_b151509f",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-02-12T03:32:13Z",
+      "side": 1,
+      "message": "Hi @geissonator@yahoo.com \u0026 @chli30@nuvoton.com,\nI update checking bmcRebootCase under \"only-run-apr-on-power-loss\" option. By default, BMC only runs APR when Power Loss (As mention in the Redfish and IPMI specification).\nIf you want to run APR when both BMC reboot and Power Loss cases, you have to disable \"only-run-apr-on-power-loss\" option. Is it ok with your case @geissonator@yahoo.com?",
+      "parentUuid": "7b3b0689_0d08fd3f",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
