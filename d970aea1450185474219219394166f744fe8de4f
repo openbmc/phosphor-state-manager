@@ -447,6 +447,24 @@
       "parentUuid": "7b3b0689_0d08fd3f",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb77d3b5_ef7fb045",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-15T17:23:34Z",
+      "side": 1,
+      "message": "I\u0027m not really seeing how those correlate. Lets leave the run-apr-on-power-loss check where it is and do what we discussed above, new compile options for checking the different types of BMC reboots.",
+      "parentUuid": "1601c4c5_b151509f",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
