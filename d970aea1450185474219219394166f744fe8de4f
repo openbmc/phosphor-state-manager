@@ -465,6 +465,24 @@
       "parentUuid": "1601c4c5_b151509f",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59bd1e55_f62dec10",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-02-17T02:45:18Z",
+      "side": 1,
+      "message": "Hi @geissonator@yahoo.com,\nWhen I try to define new build option, I realize that `only-run-apr-on-power-loss` option is used to prevent BMC run APR when users reboot BMC (https://github.com/openbmc/phosphor-state-manager/blob/master/meson.options#L119). \nBut the current implementation is checking `checkACLoss` after handling `Always-on` policy. BMC always run APR after reboot if the power policy is `Always-on` even users enabled `only-run-apr-on-power-loss`.\nThat why I move checking Power status before policy handing and remove redundat `checkACLoss` checking. I think we don\u0027t have to define new build option while `only-run-apr-on-power-loss` already exit.",
+      "parentUuid": "bb77d3b5_ef7fb045",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
