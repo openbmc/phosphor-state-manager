@@ -16,6 +16,24 @@
       "message": "This is just setting a property, not sure how a system could have timeout issues. Is it the mapper call? I\u0027d be ok if remove that and just hard code the service name at this point.",
       "revId": "2cb692e3506fa12418224327de624d62c963382d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03abe4ec_58e6b977",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002173
+      },
+      "writtenOn": "2025-03-04T03:18:41Z",
+      "side": 1,
+      "message": "Hi, we have taken some time to verify if hard-coding the service name works. However, there is still a chance it results in a timeout. Given that our system has eight server boards, each with an expansion board, I think it might be too busy, which could be causing the busctl command to time out.",
+      "parentUuid": "bbd1b251_eb304324",
+      "revId": "2cb692e3506fa12418224327de624d62c963382d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
