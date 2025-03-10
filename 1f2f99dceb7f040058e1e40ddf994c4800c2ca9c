@@ -50,6 +50,24 @@
       "message": "As long as the bitbake keeps the default enabled I\u0027m okay with this patch.\n\nYou didn\u0027t state if you also needed to check for ready without waiting.\n\nHave you tested to ensure the boolean set10 is converted tdefine/undef",
       "revId": "1f2f99dceb7f040058e1e40ddf994c4800c2ca9c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c29937f_2715592b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002307
+      },
+      "writtenOn": "2025-03-10T05:59:39Z",
+      "side": 1,
+      "message": "yes, I did test and moved to add_project_arguments for uniformity.",
+      "parentUuid": "0b19fefc_d503b113",
+      "revId": "1f2f99dceb7f040058e1e40ddf994c4800c2ca9c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
