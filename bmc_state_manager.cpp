@@ -252,8 +252,31 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
 
 BMC::RebootCause BMC::lastRebootCause(RebootCause value)
 {
+    std::string errorMsg;
+
     info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
          "LAST_REBOOT_CAUSE", value);
+
+    switch (value)
+    {
+        case RebootCause::Software:
+            errorMsg = "xyz.openbmc_project.State.SoftwareReset";
+            break;
+        case RebootCause::Watchdog:
+            errorMsg = "xyz.openbmc_project.State.WatchdogReset";
+            break;
+        case RebootCause::PinholeReset:
+            errorMsg = "xyz.openbmc_project.State.PinholeReset";
+            break;
+        case RebootCause::POR:
+        default:
+            errorMsg = "xyz.openbmc_project.State.PowerOnReset";
+            break;
+    }
+
+    phosphor::state::manager::utils::createError(
+            this->bus, errorMsg,
+            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::Notice);
 
     return server::BMC::lastRebootCause(value);
 }
@@ -322,15 +345,10 @@ void BMC::discoverLastRebootCause()
     // A 0 indicates a pinhole reset occurred
     if (0 == gpioval)
     {
+        // Generate log telling user a pinhole reset has occurred
         info("The BMC reset was caused by a pinhole reset");
         this->lastRebootCause(RebootCause::PinholeReset);
 
-        // Generate log telling user a pinhole reset has occurred
-        const std::string errorMsg = "xyz.openbmc_project.State.PinholeReset";
-        phosphor::state::manager::utils::createError(
-            this->bus, errorMsg,
-            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
-                Notice);
         return;
     }
 
