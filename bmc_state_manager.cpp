@@ -7,9 +7,11 @@
 
 #include <gpiod.h>
 
+#include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/State/BMC/event.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -255,6 +257,9 @@ BMC::RebootCause BMC::lastRebootCause(RebootCause value)
     info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
          "LAST_REBOOT_CAUSE", value);
 
+    lg2::commit(sdbusplus::event::xyz::openbmc_project::state::BMC::RebootCause(
+        "CAUSE", value));
+
     return server::BMC::lastRebootCause(value);
 }
 
@@ -325,12 +330,6 @@ void BMC::discoverLastRebootCause()
         info("The BMC reset was caused by a pinhole reset");
         this->lastRebootCause(RebootCause::PinholeReset);
 
-        // Generate log telling user a pinhole reset has occurred
-        const std::string errorMsg = "xyz.openbmc_project.State.PinholeReset";
-        phosphor::state::manager::utils::createError(
-            this->bus, errorMsg,
-            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
-                Notice);
         return;
     }
 
