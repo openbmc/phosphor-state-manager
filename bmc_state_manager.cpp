@@ -3,13 +3,14 @@
 #include "bmc_state_manager.hpp"
 
 #include "utils.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <gpiod.h>
 
+#include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/State/BMC/event.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -24,11 +25,10 @@ namespace manager
 
 PHOSPHOR_LOG2_USING;
 
-// When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
+namespace event = sdbusplus::event::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
-using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 constexpr auto obmcQuiesceTarget = "obmc-bmc-service-quiesce@0.target";
 constexpr auto obmcStandbyTarget = "multi-user.target";
@@ -255,6 +255,8 @@ BMC::RebootCause BMC::lastRebootCause(RebootCause value)
     info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
          "LAST_REBOOT_CAUSE", value);
 
+    lg2::commit(event::BMC::RebootCause("CAUSE", value));
+
     return server::BMC::lastRebootCause(value);
 }
 
@@ -325,12 +327,6 @@ void BMC::discoverLastRebootCause()
         info("The BMC reset was caused by a pinhole reset");
         this->lastRebootCause(RebootCause::PinholeReset);
 
-        // Generate log telling user a pinhole reset has occurred
-        const std::string errorMsg = "xyz.openbmc_project.State.PinholeReset";
-        phosphor::state::manager::utils::createError(
-            this->bus, errorMsg,
-            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
-                Notice);
         return;
     }
 
