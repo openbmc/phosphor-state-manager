@@ -22,6 +22,30 @@
       },
       "revId": "11eb6574a6858604a8b2648eaf67b3eb5d314ed4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5e16a6e_a43fd293",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1002129
+      },
+      "writtenOn": "2025-03-19T01:22:15Z",
+      "side": 1,
+      "message": "Hi @geissonator@yahoo.com,\nWe believe that an event log should be generated for all types of BMC reboots, regardless of whether it is a normal reboot or an error-related reboot. As for how to distinguish between normal and error reboots, we are currently discussing the best approach with other maintainers. Once we reach a conclusion, we will provide an update.\n\nIn the meantime, you can refer to the ongoing discussion at the following link: https://gerrit.openbmc.org/c/openbmc/docs/+/76410\nhttps://lore.kernel.org/all/9565c496-44d8-4214-8038-931926210d0f@roeck-us.net/",
+      "parentUuid": "1d005243_56ea3335",
+      "range": {
+        "startLine": 279,
+        "startChar": 72,
+        "endLine": 279,
+        "endChar": 78
+      },
+      "revId": "11eb6574a6858604a8b2648eaf67b3eb5d314ed4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
