@@ -483,6 +483,24 @@
       "parentUuid": "bb77d3b5_ef7fb045",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334bea37_b2644e1d",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-03-25T13:11:42Z",
+      "side": 1,
+      "message": "I find the above comment very confusing. I think to keep things clean all 3 checks here should have their own compile option. \nrun-apr-on-pinhole-reset, run-apr-on-watchdog-reset, run-apr-on-software-reset.",
+      "parentUuid": "59bd1e55_f62dec10",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
