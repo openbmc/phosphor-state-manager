@@ -153,3 +153,10 @@ option(
     value: 'enabled',
     description: 'Apply the Power policy right after BMC_READY',
 )
+
+option(
+    'retry_attempts',
+    type: 'integer',
+    value: 0,
+    description: 'Number of retry attempts for GetSubTree',
+)
