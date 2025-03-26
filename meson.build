@@ -67,6 +67,8 @@ conf.set(
     get_option('check-fwupdate-before-do-transition').allowed(),
 )
 
+conf.set('RETRY_ATTEMPTS', get_option('retry_attempts'))
+
 configure_file(output: 'config.h', configuration: conf)
 
 if (get_option('warm-reboot').allowed())

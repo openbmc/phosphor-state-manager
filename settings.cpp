@@ -17,37 +17,51 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 
-Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
+/**
+ * @brief Constructs Objects with retry mechanism for GetSubTree calls
+ */
+Objects::Objects(sdbusplus::bus_t& bus, const Path& root, int retries) :
+    bus(bus)
 {
     std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
     auto depth = 0;
-
-    auto mapperCall = bus.new_method_call(
-        ObjectMapper::default_service, ObjectMapper::instance_path,
-        ObjectMapper::interface, "GetSubTree");
-    mapperCall.append(root);
-    mapperCall.append(depth);
-    mapperCall.append(settingsIntfs);
 
     using Interfaces = std::vector<Interface>;
     using MapperResponse = std::map<Path, std::map<Service, Interfaces>>;
     MapperResponse result;
 
-    try
+    for (int attempt = 1; attempt <= retries + 1; ++attempt)
     {
-        auto response = bus.call(mapperCall);
-
-        response.read(result);
-        if (result.empty())
+        try
         {
-            error("Invalid response from mapper");
-            elog<InternalFailure>();
+            result.clear();
+            auto mapperCall = bus.new_method_call(
+                ObjectMapper::default_service, ObjectMapper::instance_path,
+                ObjectMapper::interface, "GetSubTree");
+            mapperCall.append(root);
+            mapperCall.append(depth);
+            mapperCall.append(settingsIntfs);
+
+            auto response = bus.call(mapperCall);
+            response.read(result);
+
+            if (result.empty())
+            {
+                error("Invalid response from mapper");
+                elog<InternalFailure>();
+            }
+            break;
         }
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Error in mapper GetSubTree: {ERROR}", "ERROR", e);
-        elog<InternalFailure>();
+        catch (const sdbusplus::exception_t& e)
+        {
+            error("Error in mapper GetSubTree at attempt {ATTEMPT}: {ERROR}",
+                  "ATTEMPT", attempt, "ERROR", e);
+
+            if (attempt == retries + 1)
+            {
+                elog<InternalFailure>();
+            }
+        }
     }
 
     for (const auto& iter : result)
@@ -128,8 +142,12 @@ Service Objects::service(const Path& path, const Interface& interface) const
     return result.begin()->first;
 }
 
-HostObjects::HostObjects(sdbusplus::bus_t& bus, size_t id) :
-    Objects(bus, Path("/xyz/openbmc_project/control/host") + std::to_string(id))
+/**
+ * @brief Constructs HostObjects with retry mechanism
+ */
+HostObjects::HostObjects(sdbusplus::bus_t& bus, size_t id, int retries) :
+    Objects(bus, Path("/xyz/openbmc_project/control/host") + std::to_string(id),
+            retries)
 {}
 
 } // namespace settings
