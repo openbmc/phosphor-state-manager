@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Control/Boot/RebootPolicy/client.hpp>
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/client.hpp>
@@ -29,8 +31,11 @@ struct Objects
      *
      * @param[in] bus  - The Dbus bus object
      * @param[in] root - The root object path
+     * @param[in] retries - Maximum retry attempts (default: RETRY_ATTEMPTS from
+     * config.h)
      */
-    explicit Objects(sdbusplus::bus_t& bus, const Path& root = defaultRoot);
+    explicit Objects(sdbusplus::bus_t& bus, const Path& root = defaultRoot,
+                     int retries = RETRY_ATTEMPTS);
     Objects(const Objects&) = delete;
     Objects& operator=(const Objects&) = delete;
     Objects(Objects&&) = delete;
@@ -76,8 +81,10 @@ struct HostObjects : public Objects
      *
      * @param[in] bus - The Dbus bus object
      * @param[in] id  - The Host id
+     * @param[in] retries - Maximum retry attempts (default: RETRY_ATTEMPTS from
+     * config.h)
      */
-    HostObjects(sdbusplus::bus_t& bus, size_t id);
+    HostObjects(sdbusplus::bus_t& bus, size_t id, int retries = RETRY_ATTEMPTS);
 };
 
 } // namespace settings
