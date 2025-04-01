@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c17e261f_8887a469",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-04-01T20:06:05Z",
+      "side": 1,
+      "message": "This feels like more of your \"large system\" performance workarounds :) \nAs noted elsewhere you either need to provide a really good reason why we should do these, or ideally address your performance issues elsewhere. You could look into a global change for your system increasing dbus timeouts. You could play with service dependencies to give mapper some more time. I don\u0027t think going into specific pieces of code and adding retries is the answer.",
+      "revId": "1a3f0dc3752da384b37545ad2ee1d76d9c708b49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
