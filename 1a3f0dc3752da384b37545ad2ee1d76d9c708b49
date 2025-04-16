@@ -16,6 +16,24 @@
       "message": "This feels like more of your \"large system\" performance workarounds :) \nAs noted elsewhere you either need to provide a really good reason why we should do these, or ideally address your performance issues elsewhere. You could look into a global change for your system increasing dbus timeouts. You could play with service dependencies to give mapper some more time. I don\u0027t think going into specific pieces of code and adding retries is the answer.",
       "revId": "1a3f0dc3752da384b37545ad2ee1d76d9c708b49",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d575887_186f0703",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-04-16T10:04:33Z",
+      "side": 1,
+      "message": "\u003eThis feels like more of your \"large system\" performance workarounds :)\n\u003e\nDue to our multi-host system, where one BMC needs to manage 8 hosts and monitor over 2000 sensors, I believe the GetSubtree connection timed out because the dbus was too busy during the boot phase, with many services initializing and performing tasks simultaneously.\nThis GetSubtree failure prevents us from completing the host power on process.\n\nI am currently attempting to increase the dbus timeout for the entire system to try to resolve these issues.\n\nThank you very much for your guidance.",
+      "parentUuid": "c17e261f_8887a469",
+      "revId": "1a3f0dc3752da384b37545ad2ee1d76d9c708b49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
