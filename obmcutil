@@ -20,8 +20,7 @@ CONTROL_OBJECT=$OBJECT_ROOT/control
 HOST_TIMEOUT_TARGET=obmc-host-timeout@0.target
 HOST_CRASH_TARGET=obmc-host-crash@0.target
 
-## NOTE: The following global variables are used only in the run_timeout cmd.
-## By declaring these globally instead of passing them through the
+## NOTE: By declaring these globally instead of passing them through the
 ## intermediary functions, which may not be "best practice", the readability
 ## and cleanliness of the code should at least be increased.
 
@@ -40,6 +39,8 @@ G_WAIT=
 G_VERBOSE=
 # Instance id, default 0
 G_INSTANCE_ID="0"
+# Force a command even if system state is not correct
+G_FORCE=
 
 function print_help()
 {
@@ -86,6 +87,7 @@ function print_help()
     echo "  -w, --wait          block until state transition succeeds or fails"
     echo "  -v, --verbose       print the journal to stdout if --wait is supplied"
     echo "  -i, -id             instance id, default 0"
+    echo "  -f, --force         force issuing the command ignoring preconditions (use with caution)"
     exit 0
 }
 
@@ -280,6 +282,36 @@ function check_boot_block_errors()
     done
 }
 
+# check if system is in transitioning state for chassis or host and
+# reject request if it is (if force option not set)
+function check_chassis_host_states()
+{
+    # If user has --force enabled, no check
+    if [ -n "$G_FORCE" ]; then
+        return 0
+    fi
+
+    OBJECT=$STATE_OBJECT/chassis$G_INSTANCE_ID
+    SERVICE=$(mapper get-service "$OBJECT")
+    INTERFACE=$STATE_INTERFACE.Chassis
+    PROPERTY=CurrentPowerState
+    state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE $PROPERTY" | cut -d '"' -f2)
+    if [[ ${state} =~ "xyz.openbmc_project.State.Chassis.PowerState.Transitioning"* ]]; then
+        echo "Chassis is $state, request rejected, use --force to override"
+        exit 1
+    fi
+
+    OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
+    SERVICE=$(mapper get-service "$OBJECT")
+    INTERFACE=$STATE_INTERFACE.Host
+    PROPERTY=CurrentHostState
+    state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE $PROPERTY" | cut -d '"' -f2)
+    if [[ ${state} =~ "xyz.openbmc_project.State.Host.HostState.Transitioning"* ]]; then
+        echo "Host is $state, request rejected, use --force to override"
+        exit 1
+    fi
+}
+
 # helper function to check for boot block errors and notify user
 function check_and_warn_boot_block()
 {
@@ -338,6 +370,7 @@ function handle_cmd()
 {
     case "$1" in
         chassisoff)
+            check_chassis_host_states
             OBJECT=$STATE_OBJECT/chassis$G_INSTANCE_ID
             SERVICE=$(mapper get-service "$OBJECT")
             INTERFACE=$STATE_INTERFACE.Chassis
@@ -348,6 +381,7 @@ function handle_cmd()
             set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "s" $VALUE
             ;;
         chassison)
+            check_chassis_host_states
             check_and_warn_boot_block
             OBJECT=$STATE_OBJECT/chassis$G_INSTANCE_ID
             SERVICE=$(mapper get-service "$OBJECT")
@@ -359,6 +393,7 @@ function handle_cmd()
             set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweroff)
+            check_chassis_host_states
             OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
             SERVICE=$(mapper get-service "$OBJECT")
             INTERFACE=$STATE_INTERFACE.Host
@@ -369,6 +404,7 @@ function handle_cmd()
             set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "s" $VALUE
             ;;
         poweron)
+            check_chassis_host_states
             check_and_warn_boot_block
             OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
             SERVICE=$(mapper get-service "$OBJECT")
@@ -568,6 +604,10 @@ for arg in "$@"; do
             ;;
         -i=*|--id=*)
             G_INSTANCE_ID="${arg#*=}"
+            shiftcnt=$((shiftcnt+1))
+            ;;
+        -f|--force)
+            G_FORCE=y
             shiftcnt=$((shiftcnt+1))
             ;;
         -*)
