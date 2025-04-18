@@ -519,6 +519,24 @@
       "parentUuid": "334bea37_b2644e1d",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "033106c4_b245c679",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-04-18T02:36:52Z",
+      "side": 1,
+      "message": "Sorry for late respond, I missed your comment @geissonator@yahoo.com.\nI will add 3 options as your suggestion @geissonator@yahoo.com.",
+      "parentUuid": "ab817c05_2f38510d",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
