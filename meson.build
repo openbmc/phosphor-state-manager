@@ -253,11 +253,13 @@ executable(
     install: true,
 )
 
-install_data(
-    'obmcutil',
-    install_mode: 'rwxr-xr-x',
-    install_dir: get_option('bindir'),
-)
+if get_option('install-utils').allowed()
+    install_data(
+        'obmcutil',
+        install_mode: 'rwxr-xr-x',
+        install_dir: get_option('bindir'),
+    )
+endif
 
 install_data(
     'scripts/host-reboot',

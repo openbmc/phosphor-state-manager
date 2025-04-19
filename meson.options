@@ -153,3 +153,10 @@ option(
     value: 'enabled',
     description: 'Apply the Power policy right after BMC_READY',
 )
+
+option(
+    'install-utils',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Install the obmcutil script',
+)
