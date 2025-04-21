@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "368edf07_a2f9ba0c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2025-04-21T18:59:31Z",
+      "side": 1,
+      "message": "i remember all too many times of prior systems getting stuck in a transition state requiring requiring a power disruption or similar drastic behavior.\n\noften it was a crash of the host while a soft power off had been requested, rejecting a hard power off request.\n\nyou haven\u0027t said what failures you are observing,  is it impatience causing power on to fail because it\u0027s still powering off?",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4881c712_01b070e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2025-04-21T18:59:31Z",
+      "side": 1,
+      "message": "how can you ensure the transition I never stable?\n\ninterfere with the host while requesting a soft power off \n\nwhy should a potential host state interfere with chassis transition requests?\n\ntest a hard power off when a soft power off had been requested.",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bc51a8f0_bfe1ff75",
@@ -20,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5bedeae1_72b83604",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2025-04-21T18:59:31Z",
+      "side": 1,
+      "message": "force a comment though what?\n\nforce issuing the command ignoring preconditions.",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93b0fa88_355508fc",
         "filename": "obmcutil",
         "patchSetId": 1
@@ -31,6 +82,24 @@
       "writtenOn": "2025-04-21T17:01:54Z",
       "side": 1,
       "message": "I worry that when people initially hit this, they will read the suggestion and blindly add `--force` to their automated test scripts.\n\nShould this warn that use of force is an unsupported use case and can lead to unexpected errors and behavior?",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53baf262_13a00b22",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2025-04-21T18:59:31Z",
+      "side": 1,
+      "message": "how about \n use --force to override.",
+      "parentUuid": "93b0fa88_355508fc",
       "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
