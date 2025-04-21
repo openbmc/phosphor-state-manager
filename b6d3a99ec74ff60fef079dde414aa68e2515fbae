@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc51a8f0_bfe1ff75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2025-04-21T17:01:54Z",
+      "side": 1,
+      "message": "Appreciate this change; I think this will be very beneficial.",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93b0fa88_355508fc",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2025-04-21T17:01:54Z",
+      "side": 1,
+      "message": "I worry that when people initially hit this, they will read the suggestion and blindly add `--force` to their automated test scripts.\n\nShould this warn that use of force is an unsupported use case and can lead to unexpected errors and behavior?",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
