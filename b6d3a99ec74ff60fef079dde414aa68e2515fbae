@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cf2435c_4c21f78f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-04-28T16:07:51Z",
+      "side": 1,
+      "message": "Yes, the primary use case is someone not waiting for a power off before they start a power on(POWER based servers have hw procedures they run during power off, and SPI mux configurations).",
+      "parentUuid": "368edf07_a2f9ba0c",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4881c712_01b070e4",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2025-04-21T18:59:31Z",
       "side": 1,
       "message": "how can you ensure the transition I never stable?\n\ninterfere with the host while requesting a soft power off \n\nwhy should a potential host state interfere with chassis transition requests?\n\ntest a hard power off when a soft power off had been requested.",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ce1842e_d0e5c42d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-04-28T16:07:51Z",
+      "side": 1,
+      "message": "This host and chassis states are very intertwined. One valid use case is what you describe, the user has started a soft power off (wait for host firmware to properly shutdown) and they decide they do not want to wait so they issue a chassisoff to just skip to the hard power off. This will now require the user pass in the --force. The goal with this commit is to keep things very simple, obmcutil could quickly get out of control if it really starts trying to enforce state machine transitions.",
+      "parentUuid": "4881c712_01b070e4",
       "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84d88d7b_e026df28",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-04-28T16:07:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bedeae1_72b83604",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93b0fa88_355508fc",
@@ -100,6 +154,24 @@
       "side": 1,
       "message": "how about \n use --force to override.",
       "parentUuid": "93b0fa88_355508fc",
+      "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a0d08f0_87382a18",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-04-28T16:07:51Z",
+      "side": 1,
+      "message": "Yeah, I agree. I added the \"to override\" to make it clear this is an override. I also added a \"use with caution\" to the --help.",
+      "parentUuid": "53baf262_13a00b22",
       "revId": "b6d3a99ec74ff60fef079dde414aa68e2515fbae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
