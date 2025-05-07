@@ -85,23 +85,40 @@ int main(int argc, char** argv)
     auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
                    BMC::namespace_path::bmc;
 
+#if !(RUN_APR_ON_PINHOLE_RESET && RUN_APR_ON_WATCHDOG_RESET &&                 \
+      RUN_APR_ON_SOFTWARE_RESET)
     auto bmcRebootCause =
         sdbusplus::message::convert_from_string<BMC::RebootCause>(
             phosphor::state::manager::utils::getProperty(
                 bus, bmcPath.str, BMCState::interface, "LastRebootCause"));
 
+#if !RUN_APR_ON_PINHOLE_RESET
     if (bmcRebootCause == BMC::RebootCause::PinholeReset)
     {
         info(
             "BMC was reset due to pinhole reset, no power restore policy will be run");
         return 0;
     }
-    else if (bmcRebootCause == BMC::RebootCause::Watchdog)
+#endif // RUN_APR_ON_PINHOLE_RESET
+
+#if !RUN_APR_ON_WATCHDOG_RESET
+    if (bmcRebootCause == BMC::RebootCause::Watchdog)
+    {
+        info(
+            "BMC was reset due to watchdog, no power restore policy will be run");
+        return 0;
+    }
+#endif // RUN_APR_ON_WATCHDOG_RESET
+
+#if !RUN_APR_ON_SOFTWARE_RESET
+    if (bmcRebootCause == BMC::RebootCause::Software)
     {
         info(
             "BMC was reset due to cold reset, no power restore policy will be run");
         return 0;
     }
+#endif // RUN_APR_ON_SOFTWARE_RESET
+#endif
 
     /* The logic here is to first check the one-time PowerRestorePolicy setting.
      * If this property is not the default then look at the persistent
