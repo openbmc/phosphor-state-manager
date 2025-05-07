@@ -160,3 +160,24 @@ option(
     value: 'enabled',
     description: 'Install the obmcutil script',
 )
+
+option(
+    'run-apr-on-pinhole-reset',
+    type: 'boolean',
+    value: true,
+    description: 'run APR when BMC has been rebooted due to pinhole action',
+)
+
+option(
+    'run-apr-on-watchdog-reset',
+    type: 'boolean',
+    value: true,
+    description: 'run APR when BMC has been rebooted due to watchdog',
+)
+
+option(
+    'run-apr-on-software-reset',
+    type: 'boolean',
+    value: true,
+    description: 'run APR when BMC has been rebooted due to software request',
+)

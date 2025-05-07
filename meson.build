@@ -41,6 +41,12 @@ conf.set10(
     get_option('only-run-apr-on-power-loss'),
 )
 
+conf.set10('RUN_APR_ON_PINHOLE_RESET', get_option('run-apr-on-pinhole-reset'))
+
+conf.set10('RUN_APR_ON_WATCHDOG_RESET', get_option('run-apr-on-watchdog-reset'))
+
+conf.set10('RUN_APR_ON_SOFTWARE_RESET', get_option('run-apr-on-software-reset'))
+
 conf.set_quoted('SYSFS_TPM_DEVICE_PATH', get_option('sysfs-tpm-device-path'))
 
 conf.set_quoted(
