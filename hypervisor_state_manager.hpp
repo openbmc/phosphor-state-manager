@@ -46,7 +46,6 @@ class Hypervisor : public HypervisorInherit
     Hypervisor(sdbusplus::bus_t& bus, const char* objPath) :
         HypervisorInherit(bus, objPath,
                           HypervisorInherit::action::emit_object_added),
-        bus(bus),
         bootProgressChangeSignal(
             bus,
             sdbusRule::propertiesChanged("/xyz/openbmc_project/state/host0",
@@ -82,9 +81,6 @@ class Hypervisor : public HypervisorInherit
      *
      */
     void bootProgressChangeEvent(sdbusplus::message_t& msg);
-
-    /** @brief Persistent sdbusplus DBus bus connection. */
-    sdbusplus::bus_t& bus;
 
     /** @brief Watch BootProgress changes to know hypervisor state **/
     sdbusplus::bus::match_t bootProgressChangeSignal;
