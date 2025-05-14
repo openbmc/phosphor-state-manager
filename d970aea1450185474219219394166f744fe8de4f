@@ -537,6 +537,24 @@
       "parentUuid": "ab817c05_2f38510d",
       "revId": "d970aea1450185474219219394166f744fe8de4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61c26406_cd16edaa",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2025-05-14T03:34:40Z",
+      "side": 1,
+      "message": "I added run-apr-on-pinhole-reset, run-apr-on-watchdog-reset, run-apr-on-software-reset options to cover BMC reset cases. Please help me check again @chli30@nuvoton.com @geissonator@yahoo.com",
+      "parentUuid": "033106c4_b245c679",
+      "revId": "d970aea1450185474219219394166f744fe8de4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
