@@ -44,6 +44,28 @@ constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
+void BMC::bmcIsQuiesced()
+{
+    this->currentBMCState(BMCState::Quiesced);
+
+    // There is no getting out of Quiesced once entered (other then BMC
+    // reboot) so stop watching for signals
+    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                            SYSTEMD_INTERFACE, "Unsubscribe");
+
+    try
+    {
+        this->bus.call(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        info("Error in Unsubscribe: {ERROR}", "ERROR", e);
+    }
+
+    // disable the system state change object as well
+    this->stateSignal.reset();
+}
+
 std::string BMC::getUnitState(const std::string& unitToCheck)
 {
     std::variant<std::string> currentState;
@@ -96,7 +118,7 @@ void BMC::discoverInitialState()
     if (currentStateStr == activeState)
     {
         info("Setting the BMCState field to BMC_QUIESCED");
-        this->currentBMCState(BMCState::Quiesced);
+        bmcIsQuiesced();
         return;
     }
 
@@ -187,26 +209,7 @@ int BMC::bmcStateChange(sdbusplus::message_t& msg)
     if ((newStateUnit == obmcQuiesceTarget) && (newStateResult == signalDone))
     {
         error("BMC has entered BMC_QUIESCED state");
-        this->currentBMCState(BMCState::Quiesced);
-
-        // There is no getting out of Quiesced once entered (other then BMC
-        // reboot) so stop watching for signals
-        auto method =
-            this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                      SYSTEMD_INTERFACE, "Unsubscribe");
-
-        try
-        {
-            this->bus.call(method);
-        }
-        catch (const sdbusplus::exception_t& e)
-        {
-            info("Error in Unsubscribe: {ERROR}", "ERROR", e);
-        }
-
-        // disable the system state change object as well
-        this->stateSignal.reset();
-
+        bmcIsQuiesced();
         return 0;
     }
 
