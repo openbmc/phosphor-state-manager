@@ -97,6 +97,11 @@ class BMC : public BMCInherit
 
   private:
     /**
+     * @brief Put BMC into quiesced state and disable all state monitoring
+     **/
+    void bmcIsQuiesced();
+
+    /**
      * @brief Retrieve input systemd unit state
      **/
     std::string getUnitState(const std::string& unitToCheck);
