@@ -33,6 +33,24 @@
       "message": "So if on my systems I only want the pinhole reset event to be logged (i.e. the way this code was originally written) with a \"Notice\" level, I can do that via new system specific phosphor-logging overrides?",
       "revId": "be1276e4a329a9697885d0f135fd97e775929de0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "562ae527_8f97eba1",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-11T18:54:58Z",
+      "side": 1,
+      "message": "No, you wouldn\u0027t be able to filter on a per-argument basis like that.  You\u0027d either get all RebootCause events or none of them.\n\nIf the pinhole one is something we still need to keep, we should probably keep that event code (lines ~328) for now.",
+      "parentUuid": "b6150769_ff4e1bff",
+      "revId": "be1276e4a329a9697885d0f135fd97e775929de0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
