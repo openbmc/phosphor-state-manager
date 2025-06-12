@@ -24,8 +24,8 @@ state to/by the end user.
 
 ## State Tracking and Control
 
-phosphor-state-manager makes extensive use of systemd. There is a writeup
-[here][1] with an overview of systemd and its use by OpenBMC.
+phosphor-state-manager makes extensive use of systemd. There is a [writeup][1]
+with an overview of systemd and its use by OpenBMC.
 
 phosphor-state-manager monitors for systemd targets to complete as a trigger to
 updating the its corresponding D-Bus property. When using PSM, a user must
