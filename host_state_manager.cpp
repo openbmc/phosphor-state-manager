@@ -68,6 +68,11 @@ void Host::determineInitialState()
         info("Initial Host State will be Running");
         server::Host::currentHostState(HostState::Running, true);
         server::Host::requestedHostTransition(Transition::On, true);
+        std::string hostFile = std::format(HOST_RUNNING_FILE, 0);
+        if (std::filesystem::exists(hostFile))
+        {
+            std::filesystem::remove(hostFile);
+        }
     }
     else
     {
