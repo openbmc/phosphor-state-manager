@@ -52,6 +52,24 @@
       "parentUuid": "59d5c1d2_444112b4",
       "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddd64d0e_4a8b2a33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-24T13:01:59Z",
+      "side": 1,
+      "message": "Hey Peter, I think I\u0027m just a bit confused on your use case. You say in the commit message \"unexpected BMC reboot causes the host-on condition to remain uncleared\". If the BMC is rebooted, the file in /run should be deleted due to the tmpfs nature of the filesystem.",
+      "parentUuid": "5977ed18_21414d34",
+      "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
