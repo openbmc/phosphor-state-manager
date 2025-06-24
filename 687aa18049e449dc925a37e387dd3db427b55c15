@@ -34,6 +34,24 @@
       "parentUuid": "155361c0_5260a79a",
       "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5977ed18_21414d34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-06-24T02:06:03Z",
+      "side": 1,
+      "message": "The file should be created by this code.\nhttps://github.com/openbmc/phosphor-state-manager/blob/master/host_check.cpp#L199",
+      "parentUuid": "59d5c1d2_444112b4",
+      "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
