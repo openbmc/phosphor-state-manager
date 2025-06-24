@@ -16,6 +16,24 @@
       "message": "Interesting. So on our systems, /run is a tmpfs that is cleared on any BMC reboot. Is that not the case on your system?",
       "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59d5c1d2_444112b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-06-24T01:43:30Z",
+      "side": 1,
+      "message": "/run is a tmpfs file system in our system, and the file in question should be created by this code.\n\nIn the AC power-on case, the host-on file can be removed by startmin. However, in the BMC reboot case, we noticed that the file was not removed. During that time, if we execute a DC cycle or the on/off command, the power-on service will be blocked or ignored due to the condition ConditionPathExists\u003d!/run/openbmc/host@%i-on, which is included in most services.\n\nShould the host-on flag be removed after the power-on initialization is complete? I’m not entirely sure what this flag is used for.",
+      "parentUuid": "155361c0_5260a79a",
+      "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
