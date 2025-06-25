@@ -70,6 +70,24 @@
       "parentUuid": "5977ed18_21414d34",
       "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7d71e4b_25f121a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-06-25T02:25:43Z",
+      "side": 1,
+      "message": "Yes, this file is deleted by a reboot or watchdog, but the host@%i-on file is created by isHostRunning(). So I did a test: I deleted the file and then restarted xyz.openbmc_project.State.Host@0.service, and we can find the host@%i-on again.",
+      "parentUuid": "ddd64d0e_4a8b2a33",
+      "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
