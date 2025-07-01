@@ -88,6 +88,24 @@
       "parentUuid": "ddd64d0e_4a8b2a33",
       "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a30afc9_a6445246",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-07-01T20:35:03Z",
+      "side": 1,
+      "message": "Ok, that sounds legitimate. So if the host service is restarted while the host is running, that file would get recreated and not cleared until we boot the host again. Please update the commit message with this use case.",
+      "parentUuid": "a7d71e4b_25f121a2",
+      "revId": "687aa18049e449dc925a37e387dd3db427b55c15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
