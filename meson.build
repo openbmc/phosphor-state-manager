@@ -274,7 +274,7 @@ install_data(
 )
 
 systemd = dependency('systemd')
-systemd_system_unit_dir = systemd.get_variable('systemdsystemunitdir')
+systemd_system_unit_dir = systemd.get_variable('systemd_system_unit_dir')
 subdir('service_files')
 subdir('target_files')
 
