@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cbee782_cf6aea9d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-07-09T20:36:25Z",
+      "side": 1,
+      "message": "Still talking about a BMC reboot here. The file would have already been removed if the host is running.",
+      "revId": "b6ed086c1c4987c7ebc15e4d4054fb1e1ccdab8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ae4c93_d0b4958b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-07-09T20:36:25Z",
+      "side": 1,
+      "message": "I tested this on my system and found that the file is not created in this case. I did find a side issue (https://gerrit.openbmc.org/c/openbmc/openbmc/+/81825) but the file is not created because of this check:\n```\n    if (stateActive(getTarget(server::Host::HostState::Running)) ||\n        isHostRunning(id))\n    {\n        info(\"Initial Host State will be Running\");\n        server::Host::currentHostState(HostState::Running, true);\n        server::Host::requestedHostTransition(Transition::On, true);\n    }\n```\nThat first check in the if statement looks at the systemd state so as long as it\u0027s running (which it will be at runtime), we don\u0027t go into the second call isHostRunning(id) which is where that file would get created.\n\nSo TLDR, I\u0027m still struggling to understand how you\u0027re hitting this issue.",
+      "revId": "b6ed086c1c4987c7ebc15e4d4054fb1e1ccdab8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
