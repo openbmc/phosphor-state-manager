@@ -314,6 +314,18 @@ class Host : public HostInherit
      */
     bool deserialize();
 
+    /** @brief Check whether a transition is valid from a given host state
+     *
+     *  This function determines if the host is allowed to transition from
+     *  the specified current state to the requested transition state.
+     *
+     *  @param[in] state - The current state of the host
+     *  @param[in] value - The requested transition
+     *
+     *  @return bool - true if the transition is valid, false otherwise
+     */
+    bool isTransitionAllowed(HostState state, Transition value);
+
     /**
      * @brief Get target name of a HostState
      *
