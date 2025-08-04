@@ -57,6 +57,10 @@ constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
+constexpr auto HOST_STATE_POWEROFF_SRV_FMT = "host-poweroff@{}.service";
+constexpr auto HOST_STATE_POWERON_SRV_FMT = "host-poweron@{}.service";
+constexpr auto HOST_STATE_CYCLE_SRV_FMT = "host-powercycle@{}.service";
+
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
@@ -404,6 +408,41 @@ bool Host::deserialize()
     }
 }
 
+bool Host::isTransitionAllowed(HostState state, Transition value)
+{
+    switch (state)
+    {
+        case HostState::Running:
+            if (stateActive(std::format(HOST_STATE_POWERON_SRV_FMT, id)) ||
+                stateActive(std::format(HOST_STATE_CYCLE_SRV_FMT, id)))
+            {
+                info(
+                    "HostState::On, host-poweron/powercycle@{}.service active -> block");
+                return false;
+            }
+
+            return value != Transition::On;
+        case HostState::Off:
+            if (stateActive(std::format(HOST_STATE_POWEROFF_SRV_FMT, id)) ||
+                stateActive(std::format(HOST_STATE_CYCLE_SRV_FMT, id)))
+            {
+                info(
+                    "HostState::On, host-poweroff/powercycle@{}.service active -> block");
+                return false;
+            }
+
+            return value != Transition::Off;
+        case HostState::Quiesced:
+            return value != Transition::On;
+        case HostState::TransitioningToRunning:
+            return false;
+        case HostState::TransitioningToOff:
+            return false;
+        default:
+            return true;
+    }
+}
+
 Host::Transition Host::requestedHostTransition(Transition value)
 {
     info("Host state transition request of {REQ}", "REQ", value);
@@ -436,6 +475,18 @@ Host::Transition Host::requestedHostTransition(Transition value)
 #endif // CHECK_FWUPDATE_BEFORE_DO_TRANSITION
 
         decrementRebootCount();
+    }
+
+    Host::HostState state = server::Host::currentHostState();
+    info(
+        "Host: {ID}, CurrentHostState: {STATE}, requestTransition: {TRANSITION}",
+        "ID", id, "STATE", state, "TRANSITION", value);
+
+    if (!isTransitionAllowed(state, value))
+    {
+        info(
+            "Current state is not applicable to the request, reject the transition request");
+        throw sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed();
     }
 
     executeTransition(value);

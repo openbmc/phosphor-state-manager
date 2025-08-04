@@ -131,6 +131,18 @@ class Chassis : public ChassisInherit
      */
     void restartUnit(const std::string& sysdUnit);
 
+    /** @brief Check whether a transition is valid from a given chassis state
+     *
+     *  This function determines if the chassis is allowed to transition from
+     *  the specified current state to the requested transition state.
+     *
+     *  @param[in] state - The current state of the chassis
+     *  @param[in] value - The requested transition
+     *
+     *  @return bool - true if the transition is valid, false otherwise
+     */
+    bool isTransitionAllowed(PowerState state, Transition value);
+
     /**
      * @brief Determine if target is active
      *
