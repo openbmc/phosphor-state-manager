@@ -51,6 +51,10 @@ constexpr auto CHASSIS_STATE_POWERON_TGT_FMT = "obmc-chassis-poweron@{}.target";
 constexpr auto CHASSIS_BLACKOUT_TGT_FMT = "obmc-chassis-blackout@{}.target";
 constexpr auto CHASSIS_STATE_POWERCYCLE_TGT_FMT =
     "obmc-chassis-powercycle@{}.target";
+constexpr auto CHASSIS_STATE_POWEROFF_SRV_FMT = "chassis-poweroff@{}.service";
+constexpr auto CHASSIS_STATE_POWERON_SRV_FMT = "chassis-poweron@{}.service";
+constexpr auto CHASSIS_STATE_CYCLE_SRV_FMT = "chassis-powercycle@{}.service";
+
 constexpr auto AUTO_POWER_RESTORE_SVC_FMT =
     "phosphor-discover-system-state@{}.service";
 constexpr auto ACTIVE_STATE = "active";
@@ -585,6 +589,36 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
     return 0;
 }
 
+bool Chassis::isTransitionAllowed(PowerState state, Transition tsVal)
+{
+    switch (state)
+    {
+        case PowerState::On:
+            if (stateActive(std::format(CHASSIS_STATE_POWERON_SRV_FMT, id)) ||
+                stateActive(std::format(CHASSIS_STATE_CYCLE_SRV_FMT, id)))
+            {
+                info(
+                    "Current PowerState::On, chassis-poweron/powercycle@{}.service active -> block");
+                return false;
+            }
+            return tsVal != Transition::On;
+        case PowerState::Off:
+            if (stateActive(std::format(CHASSIS_STATE_POWEROFF_SRV_FMT, id)) ||
+                stateActive(std::format(CHASSIS_STATE_CYCLE_SRV_FMT, id)))
+            {
+                info(
+                    "Current PowerState::Off, chassis-poweroff/powercycle@{}.service active -> block");
+                return false;
+            }
+            return tsVal != Transition::Off;
+        case PowerState::TransitioningToOn:
+        case PowerState::TransitioningToOff:
+            return false;
+        default:
+            return true;
+    }
+}
+
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
     info("Change to Chassis Requested Power State: {REQ_POWER_TRAN}",
@@ -609,6 +643,18 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
 #endif // CHECK_FWUPDATE_BEFORE_DO_TRANSITION
+
+    PowerState state = server::Chassis::currentPowerState();
+    info(
+        "Chassis: {ID}, CurrentChassisState: {STATE}, requestTransition: {TRANSITION}",
+        "ID", id, "STATE", state, "TRANSITION", value);
+
+    if (!isTransitionAllowed(state, value))
+    {
+        info(
+            "Current state is not applicable to the request, reject the transition request");
+        throw sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed();
+    }
 
     startUnit(systemdTargetTable.find(value)->second);
     return server::Chassis::requestedPowerTransition(value);
