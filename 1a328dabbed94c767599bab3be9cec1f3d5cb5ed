@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01b7d8e1_abddcf6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-08-05T12:41:39Z",
+      "side": 1,
+      "message": "Thanks for the contribution Howard but it\u0027s going to take a lot of convincing to get this one in. PSM has always been designed to be simple and act as a systemd wrapper. It\u0027s always been a conscious decision to not put state machine logic in it and instead trust the user. If they want to power off, run the systemd target to power off. If they want to power on, run that target. Any state \"rules\" has been left to the external interfaces if they so desire (for example I believe the OpenBMC GUI has some rules similar to what you have in this code).",
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
