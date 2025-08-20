@@ -33,6 +33,69 @@
       "message": "@patrick@stwcx.xyz\nWould it make more sense to modify the code in mfg-tool instead?\n\nJira: YV4T1M-1898",
       "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b028a74d_22a4e299",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-20T20:32:14Z",
+      "side": 1,
+      "message": "Why would cycle not be allowed when we are already on?  A cycle should be an off + on.",
+      "range": {
+        "startLine": 598,
+        "startChar": 0,
+        "endLine": 598,
+        "endChar": 74
+      },
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d82fb2df_ee65b668",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-20T20:32:14Z",
+      "side": 1,
+      "message": "Why is a cycle not allowed in off state?  Wouldn\u0027t this just turn into an \u0027on\u0027?",
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5f58b4a_6521e417",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-20T20:32:14Z",
+      "side": 1,
+      "message": "We absolutely want to be able to abort / stop a power operation in progress.  This is not right.",
+      "range": {
+        "startLine": 614,
+        "startChar": 0,
+        "endLine": 616,
+        "endChar": 25
+      },
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
