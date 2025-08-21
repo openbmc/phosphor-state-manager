@@ -35,6 +35,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb49e61_c66e1440",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002353
+      },
+      "writtenOn": "2025-08-21T05:34:18Z",
+      "side": 1,
+      "message": "After today\u0027s discussion, this feature will not be applied.",
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b028a74d_22a4e299",
@@ -48,6 +65,30 @@
       "writtenOn": "2025-08-20T20:32:14Z",
       "side": 1,
       "message": "Why would cycle not be allowed when we are already on?  A cycle should be an off + on.",
+      "range": {
+        "startLine": 598,
+        "startChar": 0,
+        "endLine": 598,
+        "endChar": 74
+      },
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51b3cae4_246707c8",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1002353
+      },
+      "writtenOn": "2025-08-21T05:34:18Z",
+      "side": 1,
+      "message": "It checks the state of chassis-power-cycle@{}.service, which is active only during the BMC power cycle process and becomes inactive once the process is finished.\n\nIn the power-on state, the system verifies if the power-on or power-cycle service is still active. If so, any incoming command is denied until the service completes.",
+      "parentUuid": "b028a74d_22a4e299",
       "range": {
         "startLine": 598,
         "startChar": 0,
@@ -75,6 +116,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed198cdb_e62774ad",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1002353
+      },
+      "writtenOn": "2025-08-21T05:34:18Z",
+      "side": 1,
+      "message": "It checks the state of chassis-power-cycle@{}.service, which is active only during the BMC power cycle process and becomes inactive once the process is finished.\n\nIn the power-off state, the system verifies if the power-off or power-cycle service is still active. If so, any incoming command is denied until the service completes.",
+      "parentUuid": "d82fb2df_ee65b668",
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5f58b4a_6521e417",
@@ -88,6 +147,30 @@
       "writtenOn": "2025-08-20T20:32:14Z",
       "side": 1,
       "message": "We absolutely want to be able to abort / stop a power operation in progress.  This is not right.",
+      "range": {
+        "startLine": 614,
+        "startChar": 0,
+        "endLine": 616,
+        "endChar": 25
+      },
+      "revId": "1a328dabbed94c767599bab3be9cec1f3d5cb5ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d0ad929_f3bfd3d6",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1002353
+      },
+      "writtenOn": "2025-08-21T05:34:18Z",
+      "side": 1,
+      "message": "Sure, I will fix it.",
+      "parentUuid": "f5f58b4a_6521e417",
       "range": {
         "startLine": 614,
         "startChar": 0,
