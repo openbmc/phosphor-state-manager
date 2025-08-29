@@ -183,15 +183,15 @@ int main(int argc, char** argv)
             std::chrono::duration_cast<std::chrono::seconds>(
                 powerRestoreDelayUsec);
 
-        info("Host power is off, processing power policy {POWER_POLICY}",
-             "POWER_POLICY", powerPolicy);
+        info("Host{HOST_ID} power is off, processing power policy {POWER_POLICY}",
+             "HOST_ID", hostId ,"POWER_POLICY", powerPolicy);
 
         if (RestorePolicy::Policy::AlwaysOn ==
             RestorePolicy::convertPolicyFromString(powerPolicy))
         {
             info(
-                "power_policy=ALWAYS_POWER_ON, powering host on ({DELAY}s delay)",
-                "DELAY", powerRestoreDelaySec.count());
+                "power_policy=ALWAYS_POWER_ON, powering host{HOST_ID} on ({DELAY}s delay)",
+                "HOST_ID", hostId , "DELAY", powerRestoreDelaySec.count());
 #ifdef APPLY_POWER_POLICY_WHEN_BMC_READY
             utils::waitBmcReady(bus, powerRestoreDelaySec);
 #else
