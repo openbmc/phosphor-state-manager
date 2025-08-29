@@ -406,7 +406,8 @@ bool Host::deserialize()
 
 Host::Transition Host::requestedHostTransition(Transition value)
 {
-    info("Host state transition request of {REQ}", "REQ", value);
+    info("Host{HOST_ID} state transition request of {REQ}", "HOST_ID", id,
+         "REQ", value);
 
 #if ONLY_ALLOW_BOOT_WHEN_BMC_READY
     if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
@@ -462,7 +463,8 @@ Host::OSStatus Host::operatingSystemState(OSStatus value)
 
 Host::HostState Host::currentHostState(HostState value)
 {
-    info("Change to Host State: {STATE}", "STATE", value);
+    info("Change to Host{HOST_ID} State: {STATE}", "HOST_ID", id, "STATE",
+         value);
     return server::Host::currentHostState(value);
 }
 
