@@ -587,8 +587,8 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
 
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
-    info("Change to Chassis Requested Power State: {REQ_POWER_TRAN}",
-         "REQ_POWER_TRAN", value);
+    info("Change to Chassis{CHASSIS_ID} Requested Power State: {REQ_POWER_TRAN}",
+          "CHASSIS_ID", id , "REQ_POWER_TRAN", value);
 #if ONLY_ALLOW_BOOT_WHEN_BMC_READY
     if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
     {
@@ -617,8 +617,8 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 Chassis::PowerState Chassis::currentPowerState(PowerState value)
 {
     PowerState chassisPowerState;
-    info("Change to Chassis Power State: {CUR_POWER_STATE}", "CUR_POWER_STATE",
-         value);
+    info("Change to Chassis{CHASSIS_ID} Power State: {CUR_POWER_STATE}", "CHASSIS_ID",
+         id , "CUR_POWER_STATE", value);
 
     chassisPowerState = server::Chassis::currentPowerState(value);
     if (chassisPowerState == PowerState::On)
