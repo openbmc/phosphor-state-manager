@@ -10,6 +10,7 @@ ConditionPathExists=!/run/openbmc/chassis@%i-on
 Restart=no
 Type=oneshot
 RemainAfterExit=yes
+ExecStartPre=/bin/bash -c 'until busctl call org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus NameHasOwner s xyz.openbmc_project.Logging 2>/dev/null | grep -q "true"; do sleep 1; done'
 ExecStart=/bin/sh -c \
   "busctl call xyz.openbmc_project.Logging /xyz/openbmc_project/logging \
    xyz.openbmc_project.Logging.Create Create ssa{ss} \
