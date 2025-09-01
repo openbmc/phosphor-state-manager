@@ -3,6 +3,7 @@ Description=Create info log indicating chassis%i poweron has started
 Wants=obmc-power-start-pre@%i.target
 Before=obmc-power-start-pre@%i.target
 Before=phosphor-regulators-config.service
+After=xyz.openbmc_project.Logging.service
 Conflicts=obmc-chassis-poweroff@%i.target
 ConditionPathExists=!/run/openbmc/chassis@%i-on
 
@@ -10,6 +11,7 @@ ConditionPathExists=!/run/openbmc/chassis@%i-on
 Restart=no
 Type=oneshot
 RemainAfterExit=yes
+ExecStartPre=/bin/bash -c 'sleep 5; if [ `systemctl is-active xyz.openbmc_project.Logging` == "active" ]; then exit 0; else exit 1; fi'
 ExecStart=/bin/sh -c \
   "busctl call xyz.openbmc_project.Logging /xyz/openbmc_project/logging \
    xyz.openbmc_project.Logging.Create Create ssa{ss} \
