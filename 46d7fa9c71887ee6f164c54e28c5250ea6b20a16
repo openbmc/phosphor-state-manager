@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d0babc_7170552e",
+        "filename": "service_files/phosphor-create-chassis-poweron-log@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2025-09-02T13:13:16Z",
+      "side": 1,
+      "message": "why is this needed?   shouldn\u0027t after be enough?\nid not is there a stronger assertion?\n\nthe sleep is unnecessary with the proper types.   systemd will wait until the service is registered to start the dependent.",
+      "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
