@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a62767f_a62c9f39",
+        "filename": "service_files/phosphor-create-chassis-poweron-log@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-09-02T14:28:37Z",
+      "side": 1,
+      "message": "This commit shouldn\u0027t be needed. The xyz.openbmc_project.Logging.service is dbus activated (similar to the mapper service). It\u0027s automatically loaded when called.",
+      "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67d0babc_7170552e",
         "filename": "service_files/phosphor-create-chassis-poweron-log@.service",
         "patchSetId": 1
