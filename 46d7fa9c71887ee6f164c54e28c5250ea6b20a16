@@ -69,6 +69,24 @@
       "parentUuid": "67d0babc_7170552e",
       "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82d6de8b_e3208baf",
+        "filename": "service_files/phosphor-create-chassis-poweron-log@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-09-03T18:10:32Z",
+      "side": 1,
+      "message": "This indicates your phosphor-logging is listing itself as available on d-bus, but it\u0027s not actually ready (i.e. it seems to still be initializing even after it has told system it has Started). The fix should be in phosphor-logging to not put it\u0027s object on d-bus until it\u0027s fully ready.",
+      "parentUuid": "bf62532b_4223ff55",
+      "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
