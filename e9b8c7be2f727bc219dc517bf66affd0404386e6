@@ -34,6 +34,24 @@
       "parentUuid": "c37e2b9b_b3763263",
       "revId": "e9b8c7be2f727bc219dc517bf66affd0404386e6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "560662b8_afc9e47d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002132
+      },
+      "writtenOn": "2025-09-03T17:28:54Z",
+      "side": 1,
+      "message": "I have provided the failure log in the unresolved comment - https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/83242/comments/c37e2b9b_b3763263?tab\u003dcomments",
+      "parentUuid": "b5674a80_b958b467",
+      "revId": "e9b8c7be2f727bc219dc517bf66affd0404386e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
