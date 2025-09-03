@@ -16,6 +16,24 @@
       "message": "I think my comment was misunderstood before, it wasn\u0027t about that one line. This commit in general should not be needed. When a call to phosphor-logging is made, systemd will automatically start it for you (dbus activation). Please be sure you\u0027re based on upstream code if you\u0027re not seeing this behavior.",
       "revId": "e9b8c7be2f727bc219dc517bf66affd0404386e6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5674a80_b958b467",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002132
+      },
+      "writtenOn": "2025-09-03T17:19:16Z",
+      "side": 1,
+      "message": "I see. I could see the `xyz.openbmc_project.Logging.service` automatically run before `phosphor-create-chassis-poweron-log@0.service` even if we don\u0027t have the \"After\" dependency in systemd service. So I removed that change because it is indeed not needed.\n\nHowever, there is still a D-Bus service timing that needs to be resolved, so I have force-updated this change to have the fix. Could you please help take a look? Thanks!",
+      "parentUuid": "c37e2b9b_b3763263",
+      "revId": "e9b8c7be2f727bc219dc517bf66affd0404386e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
