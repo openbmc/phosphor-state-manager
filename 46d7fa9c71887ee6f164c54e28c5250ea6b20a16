@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c180b78_f9972b60",
+        "filename": "service_files/phosphor-create-chassis-poweron-log@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002132
+      },
+      "writtenOn": "2025-09-03T17:04:28Z",
+      "side": 1,
+      "message": "Understood. Thanks for the explanation. I have removed this dependency in the change.",
+      "parentUuid": "5a62767f_a62c9f39",
+      "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67d0babc_7170552e",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-09-02T13:13:16Z",
       "side": 1,
       "message": "why is this needed?   shouldn\u0027t after be enough?\nid not is there a stronger assertion?\n\nthe sleep is unnecessary with the proper types.   systemd will wait until the service is registered to start the dependent.",
+      "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf62532b_4223ff55",
+        "filename": "service_files/phosphor-create-chassis-poweron-log@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002132
+      },
+      "writtenOn": "2025-09-03T17:04:28Z",
+      "side": 1,
+      "message": "There is a timing issue due to the service readiness.\n\nHere are the logs for \"normal\" and \"abnormal\" running. In the abnormal cycle, we could see that the phosphor-create-chassis-poweron-log ran before phosphor-log-manager ready, so the busctl command could not be executed successfully.\n\nI provided this way to make sure phosphor-log-manager is ready. Or could you please see if\n```\nExecStartPre\u003d/bin/bash -c \u0027until busctl call org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus NameHasOwner s xyz.openbmc_project.Logging 2\u003e/dev/null | grep -q \"true\"; do sleep 1; done\u0027\n```\nthis way will be more suitable to check if the D-Bus can be used?\nPlease help advise. Thanks!\n\nLog for reference:\n// normal\n```\nTue 2025-07-01 19:08:56 UTC bmc systemd[1]: Started Phosphor Log Manager.\nTue 2025-07-01 19:08:57 UTC bmc phosphor-log-manager[1064]: parseRWConfigJson /etc/phosphor-logging/conf/rw-config.json\nTue 2025-07-01 19:08:57 UTC bmc phosphor-log-manager[1064]: Persistent R/W config file /etc/phosphor-logging/conf/rw-config.json doesn\u0027t exist. Using default values.\nTue 2025-07-01 19:08:58 UTC bmc phosphor-log-manager[1064]: Exception occured while converting filename to long. File name is old.txt.\nTue 2025-07-01 19:08:58 UTC bmc phosphor-log-manager[1064]: Pruning Namespace: Baseboard_0\nTue 2025-07-01 19:08:58 UTC bmc phosphor-log-manager[1064]: Pruning Namespace: FWUpdate\nTue 2025-07-01 19:08:58 UTC bmc phosphor-log-manager[1064]: Pruning Namespace: Manager\nTue 2025-07-01 19:08:58 UTC bmc phosphor-log-manager[1064]: Pruning Namespace: SEL\nTue 2025-07-01 19:08:58 UTC bmc phosphor-log-manager[1064]: Pruning Namespace: default\nTue 2025-07-01 19:12:29 UTC bmc systemd[1]: Starting Create info log indicating chassis0 poweron has started...\nTue 2025-07-01 19:12:30 UTC bmc systemd[1]: Finished Create info log indicating chassis0 poweron has started.\n```\n\n// abnormal\n```\nTue 2025-07-01 19:34:22 UTC bmc systemd[1]: Started Phosphor Log Manager.\nTue 2025-07-01 19:34:25 UTC bmc systemd[1]: Starting Create info log indicating chassis0 poweron has started...\nTue 2025-07-01 19:34:26 UTC bmc phosphor-log-manager[1417]: parseRWConfigJson /etc/phosphor-logging/conf/rw-config.json\nTue 2025-07-01 19:34:26 UTC bmc phosphor-log-manager[1417]: Persistent R/W config file /etc/phosphor-logging/conf/rw-config.json doesn\u0027t exist. Using default values.\nTue 2025-07-01 19:34:27 UTC bmc systemd[1]: phosphor-create-chassis-poweron-log@0.service: Main process exited, code\u003dexited, status\u003d1/FAILURE\nTue 2025-07-01 19:34:27 UTC bmc systemd[1]: phosphor-create-chassis-poweron-log@0.service: Failed with result \u0027exit-code\u0027.\nTue 2025-07-01 19:34:27 UTC bmc systemd[1]: Failed to start Create info log indicating chassis0 poweron has started.\nTue 2025-07-01 19:34:32 UTC bmc phosphor-log-manager[1417]: Exception occured while converting filename to long. File name is old.txt.\nTue 2025-07-01 19:34:32 UTC bmc phosphor-log-manager[1417]: Pruning Namespace: Baseboard_0\nTue 2025-07-01 19:34:32 UTC bmc phosphor-log-manager[1417]: Pruning Namespace: FWUpdate\nTue 2025-07-01 19:34:32 UTC bmc phosphor-log-manager[1417]: Pruning Namespace: Manager\nTue 2025-07-01 19:34:32 UTC bmc phosphor-log-manager[1417]: Pruning Namespace: SEL\nTue 2025-07-01 19:34:32 UTC bmc phosphor-log-manager[1417]: Pruning Namespace: default\n```",
+      "parentUuid": "67d0babc_7170552e",
       "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
