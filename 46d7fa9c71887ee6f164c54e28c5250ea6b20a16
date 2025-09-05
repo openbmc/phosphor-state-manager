@@ -123,6 +123,24 @@
       "parentUuid": "6113feb2_ae0f6d12",
       "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e2490ed_157a4980",
+        "filename": "service_files/phosphor-create-chassis-poweron-log@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002132
+      },
+      "writtenOn": "2025-09-05T01:50:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dd1dd69_324bce8d",
+      "revId": "46d7fa9c71887ee6f164c54e28c5250ea6b20a16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
