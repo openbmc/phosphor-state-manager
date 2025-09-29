@@ -4,8 +4,8 @@ Wants=obmc-power-stop@%i.target
 Before=obmc-power-stop@%i.target
 Wants=obmc-power-stop-pre@%i.target
 After=obmc-power-stop-pre@%i.target
-Wants=mapper-wait@-org-openbmc-control-power%i.service
-After=mapper-wait@-org-openbmc-control-power%i.service
+After=org.openbmc.control.Power@%i.service
+After=phosphor-power-control.service
 Conflicts=obmc-chassis-poweron@%i.target
 
 [Service]

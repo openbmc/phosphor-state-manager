@@ -1,7 +1,7 @@
 [Unit]
 Description=Check Chassis%i pgood and create a file to indicate it
-Wants=mapper-wait@-org-openbmc-control-power%i.service
-After=mapper-wait@-org-openbmc-control-power%i.service
+After=org.openbmc.control.Power@%i.service
+After=phosphor-power-control.service
 Wants=obmc-power-reset-on@%i.target
 Before=obmc-power-reset-on@%i.target
 Conflicts=obmc-chassis-poweroff@%i.target

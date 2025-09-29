@@ -1,7 +1,7 @@
 [Unit]
 Description=Set host state to transition to off
-Wants=mapper-wait@-xyz-openbmc_project-state-host%i.service
-After=mapper-wait@-xyz-openbmc_project-state-host%i.service
+Wants=xyz.openbmc_project.State.Host@%i.service
+After=xyz.openbmc_project.State.Host@%i.service
 Wants=obmc-host-stop-pre@%i.target
 Before=obmc-host-stop-pre@%i.target
 Conflicts=obmc-host-startmin@%i.target
