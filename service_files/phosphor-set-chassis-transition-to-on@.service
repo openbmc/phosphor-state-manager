@@ -1,8 +1,8 @@
 [Unit]
 Description=Set Chassis state to transition to on
 Before=obmc-power-start@%i.service
-Wants=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
-After=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
+Wants=xyz.openbmc_project.State.Chassis@%i.service
+After=xyz.openbmc_project.State.Chassis@%i.service
 Conflicts=obmc-chassis-poweroff@%i.target
 ConditionPathExists=!/run/openbmc/chassis@%i-on
 

@@ -5,8 +5,7 @@ Before=obmc-power-start@%i.target
 Wants=obmc-power-start-pre@%i.target
 After=obmc-power-start-pre@%i.target
 After=obmc-fan-control.target
-Wants=mapper-wait@-org-openbmc-control-power%i.service
-After=mapper-wait@-org-openbmc-control-power%i.service
+After=phosphor-power-control.service
 Conflicts=obmc-chassis-poweroff@%i.target
 ConditionPathExists=!/run/openbmc/chassis@%i-on
 

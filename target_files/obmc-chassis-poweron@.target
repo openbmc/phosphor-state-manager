@@ -1,8 +1,8 @@
 [Unit]
 Description=Chassis%i (Power On)
 After=multi-user.target
-Wants=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
-After=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
+Wants=xyz.openbmc_project.State.Chassis@%i.service
+After=xyz.openbmc_project.State.Chassis@%i.service
 Conflicts=obmc-chassis-poweroff@%i.target
 Wants=obmc-power-start-pre@%i.target
 Wants=obmc-power-start@%i.target
