@@ -291,14 +291,15 @@ class Host : public HostInherit
         // When restoring, set the requested state with persistent value
         // but don't call the override which would execute it
         sdbusplus::server::xyz::openbmc_project::state::Host::
-            requestedHostTransition(reqTran);
+            requestedHostTransition(reqTran, true);
         sdbusplus::server::xyz::openbmc_project::state::boot::Progress::
-            bootProgress(Host::convertProgressStagesFromString(bootProgress));
+            bootProgress(Host::convertProgressStagesFromString(bootProgress),
+                         true);
         sdbusplus::server::xyz::openbmc_project::state::operating_system::
             Status::operatingSystemState(
-                Host::convertOSStatusFromString(osState));
+                Host::convertOSStatusFromString(osState), true);
         sdbusplus::server::xyz::openbmc_project::control::boot::RebootAttempts::
-            retryAttempts(retryAttempts);
+            retryAttempts(retryAttempts, true);
     }
 
     /** @brief Serialize and persist requested host state
