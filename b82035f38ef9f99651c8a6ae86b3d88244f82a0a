@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea140877_9947e8f0",
+        "filename": "service_files/obmc-power-start@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-30T20:53:19Z",
+      "side": 1,
+      "message": "This one doesn\u0027t seem appropriate to me.  Almost no systems actually make this service outside of IBM.  Maybe we just patch it?\n\nWhy do we have 2 dependencies now?",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8f0de65_bc24d9e8",
+        "filename": "service_files/phosphor-chassis-check-power-status@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-30T20:53:19Z",
+      "side": 1,
+      "message": "I wonder if any (all?) of these can be eliminated now with dbus-activation?  Is the code doing direct dbus lookups or is it doing mapper lookups anyhow?  If we\u0027re doing direct dbus calls, then we can probably handle many of these through dbus activation.",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1510fd30_2893cc27",
+        "filename": "service_files/phosphor-clear-one-time@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-30T20:53:19Z",
+      "side": 1,
+      "message": "Is this actually done by Settings everywhere or is it done by the bios settings manager sometimes?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 42
+      },
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
