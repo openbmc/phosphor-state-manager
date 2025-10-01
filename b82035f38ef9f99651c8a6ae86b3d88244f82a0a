@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b607fae9_5647fef3",
+        "filename": "service_files/obmc-power-start@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-10-01T21:09:42Z",
+      "side": 1,
+      "message": "oh, I only added this one because I thought others were still using the skeleton implementation. All of our upstream IBM systems use the one hosted by phosphor-power-control so I\u0027m fine with just using that here.",
+      "parentUuid": "ea140877_9947e8f0",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8f0de65_bc24d9e8",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b055de_99baefd0",
+        "filename": "service_files/phosphor-chassis-check-power-status@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-10-01T21:09:42Z",
+      "side": 1,
+      "message": "Currently we\u0027re still using mapper for the most part. I\u0027d prefer to tackle converting PSM over to dbus activation as a separate set of commits. I\u0027m still not totally sold on dbus-activation as it causes all sorts of issues when the service being activated is broken (i.e. it just keeps starting it over and over). Feel free to unresolve if you don\u0027t agree.",
+      "parentUuid": "d8f0de65_bc24d9e8",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1510fd30_2893cc27",
@@ -48,6 +84,30 @@
       "writtenOn": "2025-09-30T20:53:19Z",
       "side": 1,
       "message": "Is this actually done by Settings everywhere or is it done by the bios settings manager sometimes?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 42
+      },
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddfccf44_ae86894c",
+        "filename": "service_files/phosphor-clear-one-time@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-10-01T21:09:42Z",
+      "side": 1,
+      "message": "To my knowledge AutoReboot is always phosphor-settings and a quick grep seems to confirm that. Let me know if you find something else.",
+      "parentUuid": "1510fd30_2893cc27",
       "range": {
         "startLine": 3,
         "startChar": 0,
