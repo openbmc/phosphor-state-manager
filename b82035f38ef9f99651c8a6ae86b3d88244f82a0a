@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "94bf2835_57e2f823",
+        "filename": "service_files/obmc-power-start@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T02:36:01Z",
+      "side": 1,
+      "message": "Uh... you have Romulus, Witherspoon, etc. all ported over to phosphor-power-control?  That\u0027s news to me.\n\nThis is a prime example to me of why the mapper call exists.  Only IBM uses phosphor-power-control also.  Right now I think most platforms are doing some hacky systemd.service append to cut out these dependencies and insert their own shell script, but with the new platform-init repo, I was hoping that most of that code could actually go there.\n\nI think we need to figure out a more consistent way to figure out \"where is the power control object(s) implemented\" if that\u0027s what are necessary.",
+      "parentUuid": "b607fae9_5647fef3",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d8f0de65_bc24d9e8",
         "filename": "service_files/phosphor-chassis-check-power-status@.service",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Currently we\u0027re still using mapper for the most part. I\u0027d prefer to tackle converting PSM over to dbus activation as a separate set of commits. I\u0027m still not totally sold on dbus-activation as it causes all sorts of issues when the service being activated is broken (i.e. it just keeps starting it over and over). Feel free to unresolve if you don\u0027t agree.",
       "parentUuid": "d8f0de65_bc24d9e8",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e51f0fc0_4b91d527",
+        "filename": "service_files/phosphor-chassis-check-power-status@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T02:36:01Z",
+      "side": 1,
+      "message": "I must be missing how explicit service dependencies is better than dbus-activation.  Don\u0027t they turn into the same thing?\n\nHonestly, I don\u0027t really like any of this \"move away from mapper\" but it seems like dbus-activation is at least slightly more replaceable than explicit service names because an implementation can provide a different service as the replacement for the \"well known service name\" (as you are effectively going that direction).",
+      "parentUuid": "a1b055de_99baefd0",
       "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
