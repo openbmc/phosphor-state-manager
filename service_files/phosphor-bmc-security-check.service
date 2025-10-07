@@ -2,6 +2,8 @@
 Description=Phosphor BMC Security Check
 Wants=xyz.openbmc_project.Settings.service
 After=xyz.openbmc_project.Settings.service
+Wants=mapper-wait@-xyz-openbmc_project-logging-settings.service
+After=mapper-wait@-xyz-openbmc_project-logging-settings.service
 
 
 [Service]
