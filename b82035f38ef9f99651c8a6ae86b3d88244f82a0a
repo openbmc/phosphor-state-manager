@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be490085_a0cab7ea",
+        "filename": "service_files/obmc-power-start@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-10-07T19:16:31Z",
+      "side": 1,
+      "message": "Yeah, this discussion has convinced me that there is still merit in making mapper-wait continue to work. I believe I have a solution using Matt\u0027s new redundant BMC class to identify services that should only be run on the passive BMC (I can use it for the specific mapper-wait services that should only be run on the active). I will abandon this review. Thanks for the feedback.",
+      "parentUuid": "94bf2835_57e2f823",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8f0de65_bc24d9e8",
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "I must be missing how explicit service dependencies is better than dbus-activation.  Don\u0027t they turn into the same thing?\n\nHonestly, I don\u0027t really like any of this \"move away from mapper\" but it seems like dbus-activation is at least slightly more replaceable than explicit service names because an implementation can provide a different service as the replacement for the \"well known service name\" (as you are effectively going that direction).",
       "parentUuid": "a1b055de_99baefd0",
+      "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1477b3a_4574de16",
+        "filename": "service_files/phosphor-chassis-check-power-status@.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-10-07T19:16:31Z",
+      "side": 1,
+      "message": "I verified that if I kill mapper twice, it does go to the fail state and the BMC goes to Quiesce (so my previous assumptions that dbus-activation caused services to endless restart was incorrect). The journal gets filled up with everyone trying to dbus-activate mapper but it correctly is not started. I\u0027m going to stick with mapper-wait (see above comment) and abandon this commit.",
+      "parentUuid": "e51f0fc0_4b91d527",
       "revId": "b82035f38ef9f99651c8a6ae86b3d88244f82a0a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
