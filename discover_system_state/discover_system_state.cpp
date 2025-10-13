@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include "host_state_manager.hpp"
+#include "host_state_manager/host_state_manager.hpp"
 #include "settings.hpp"
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
