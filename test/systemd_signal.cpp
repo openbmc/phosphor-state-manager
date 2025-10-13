@@ -1,6 +1,6 @@
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
-#include <systemd_target_signal.hpp>
+#include "systemd_target_monitor/systemd_target_signal.hpp"
 
 #include <iostream>
 

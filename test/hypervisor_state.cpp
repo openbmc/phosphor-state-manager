@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include <hypervisor_state_manager.hpp>
+#include "hypervisor_state_manager/hypervisor_state_manager.hpp"
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
 

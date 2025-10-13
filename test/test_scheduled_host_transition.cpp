@@ -1,4 +1,4 @@
-#include "scheduled_host_transition.hpp"
+#include "scheduled_host_transition/scheduled_host_transition.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/test/sdbus_mock.hpp>

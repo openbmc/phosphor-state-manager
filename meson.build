@@ -126,138 +126,32 @@ if not has_cereal
     cereal = cereal_proj.dependency('cereal')
 endif
 
-executable(
-    'phosphor-host-state-manager',
-    'host_state_manager.cpp',
-    'host_state_manager_main.cpp',
+src_inc = include_directories('.')
+
+settings_lib = static_library(
+    'settings',
     'settings.cpp',
-    'host_check.cpp',
+    include_directories: [src_inc],
+    dependencies: [sdbusplus, phosphorlogging, phosphordbusinterfaces]
+)
+
+utils_lib = static_library(
+    'utils',
     'utils.cpp',
-    dependencies: [
-        cereal,
-        libgpiod,
-        phosphordbusinterfaces,
-        phosphorlogging,
-        sdbusplus,
-        sdeventplus,
-    ],
-    implicit_include_directories: true,
-    install: true,
+    include_directories: [src_inc],
+    dependencies: [sdbusplus, phosphorlogging, phosphordbusinterfaces, libgpiod]
 )
 
-executable(
-    'phosphor-hypervisor-state-manager',
-    'hypervisor_state_manager.cpp',
-    'hypervisor_state_manager_main.cpp',
-    'settings.cpp',
-    dependencies: [
-        phosphordbusinterfaces,
-        phosphorlogging,
-        sdbusplus,
-        sdeventplus,
-    ],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-chassis-state-manager',
-    'chassis_state_manager.cpp',
-    'chassis_state_manager_main.cpp',
-    'utils.cpp',
-    dependencies: [
-        cereal,
-        libgpiod,
-        nlohmann_json_dep,
-        phosphordbusinterfaces,
-        phosphorlogging,
-        sdbusplus,
-        sdeventplus,
-    ],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-chassis-check-power-status',
-    'chassis_check_power_status.cpp',
-    'utils.cpp',
-    dependencies: [libgpiod, phosphordbusinterfaces, phosphorlogging, sdbusplus],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-bmc-state-manager',
-    'bmc_state_manager.cpp',
-    'bmc_state_manager_main.cpp',
-    'utils.cpp',
-    dependencies: [
-        libgpiod,
-        phosphordbusinterfaces,
-        phosphorlogging,
-        sdbusplus,
-        sdeventplus,
-    ],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-discover-system-state',
-    'discover_system_state.cpp',
-    'settings.cpp',
-    'utils.cpp',
-    dependencies: [cereal, libgpiod, phosphorlogging, sdbusplus],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-systemd-target-monitor',
-    'systemd_service_parser.cpp',
-    'systemd_target_monitor.cpp',
-    'systemd_target_parser.cpp',
-    'systemd_target_signal.cpp',
-    'utils.cpp',
-    dependencies: [
-        CLI11,
-        libgpiod,
-        nlohmann_json_dep,
-        phosphorlogging,
-        sdbusplus,
-        sdeventplus,
-    ],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-scheduled-host-transition',
-    'scheduled_host_transition_main.cpp',
-    'scheduled_host_transition.cpp',
-    'utils.cpp',
-    dependencies: [cereal, libgpiod, phosphorlogging, sdbusplus, sdeventplus],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-host-reset-recovery',
-    'host_reset_recovery.cpp',
-    dependencies: [phosphorlogging, sdbusplus],
-    implicit_include_directories: true,
-    install: true,
-)
-
-executable(
-    'phosphor-secure-boot-check',
-    'secure_boot_check.cpp',
-    'utils.cpp',
-    dependencies: [sdbusplus, phosphorlogging, libgpiod],
-    implicit_include_directories: true,
-    install: true,
-)
+subdir('host_state_manager')
+subdir('hypervisor_state_manager')
+subdir('chassis_state_manager')
+subdir('chassis_check_power_status')
+subdir('bmc_state_manager')
+subdir('discover_system_state')
+subdir('systemd_target_monitor')
+subdir('scheduled_host_transition')
+subdir('host_reset_recovery')
+subdir('secure_boot_check')
 
 if get_option('install-utils').allowed()
     install_data(
