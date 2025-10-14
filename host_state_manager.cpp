@@ -20,6 +20,7 @@
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
 #include <xyz/openbmc_project/State/Host/error.hpp>
 
+#include <chrono>
 #include <filesystem>
 #include <format>
 #include <fstream>
@@ -450,6 +451,19 @@ Host::Transition Host::requestedHostTransition(Transition value)
 Host::ProgressStages Host::bootProgress(ProgressStages value)
 {
     auto retVal = bootprogress::Progress::bootProgress(value);
+
+    // Update the BootProgressLastUpdate anytime BootProgress is updated
+    auto timeStamp = std::chrono::duration_cast<std::chrono::microseconds>(
+                         std::chrono::system_clock::now().time_since_epoch())
+                         .count();
+    this->bootProgressLastUpdate(timeStamp);
+    serialize();
+    return retVal;
+}
+
+uint64_t Host::bootProgressLastUpdate(uint64_t value)
+{
+    auto retVal = bootprogress::Progress::bootProgressLastUpdate(value);
     serialize();
     return retVal;
 }

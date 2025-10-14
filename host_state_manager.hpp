@@ -95,6 +95,9 @@ class Host : public HostInherit
     /** @brief Set Value for boot progress */
     ProgressStages bootProgress(ProgressStages value) override;
 
+    /** @brief Updated whenever BootProgress is updated */
+    uint64_t bootProgressLastUpdate(uint64_t value) override;
+
     /** @brief Set Value for Operating System Status */
     OSStatus operatingSystemState(OSStatus value) override;
 
