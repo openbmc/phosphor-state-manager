@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31207560_cdf167c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-10-15T19:30:16Z",
+      "side": 1,
+      "message": "Thanks for the clean up! I do agree that the base dir has gotten cluttered but I\u0027m not loving the idea of a directory for each app (it feels like we swung the pendulum all the way to the other side of things). Could we group them, maybe the main state apps (bmc, chassis, host, hypervisor) in one dir and then the other apps in their own dirs?\n\nAlso, I\u0027d prefer the move to a static util library be a separate commit as it feels like a distinct change in itself.",
+      "revId": "6edd9186b216c1095c0879eabfc1e54d00a36e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
