@@ -17,7 +17,6 @@ test(
         'test_systemd_signal',
         'systemd_signal.cpp',
         '../systemd_target_signal.cpp',
-        '../utils.cpp',
         dependencies: [
             gtest,
             libgpiod,
@@ -26,6 +25,7 @@ test(
             sdbusplus,
             sdeventplus,
         ],
+        link_with: [utils_lib],
         implicit_include_directories: true,
         include_directories: '../',
     ),
@@ -37,7 +37,6 @@ test(
         'test_scheduled_host_transition',
         'test_scheduled_host_transition.cpp',
         '../scheduled_host_transition.cpp',
-        '../utils.cpp',
         dependencies: [
             cereal,
             gmock,
@@ -47,6 +46,7 @@ test(
             sdbusplus,
             sdeventplus,
         ],
+        link_with: [utils_lib],
         implicit_include_directories: true,
         include_directories: '../',
     ),
