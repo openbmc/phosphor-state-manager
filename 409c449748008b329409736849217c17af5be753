@@ -34,6 +34,24 @@
       "parentUuid": "4c47b3c8_c5126dbb",
       "revId": "409c449748008b329409736849217c17af5be753",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a14457e1_4643b10b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2025-10-21T13:25:28Z",
+      "side": 1,
+      "message": "I believe the static lib will not be installed by default\n\nhttps://mesonbuild.com/Reference-manual_functions.html#static_library_install",
+      "parentUuid": "4c47b3c8_c5126dbb",
+      "revId": "409c449748008b329409736849217c17af5be753",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
