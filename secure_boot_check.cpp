@@ -72,7 +72,8 @@ bool isMfgModeEnabled()
     auto bus = sdbusplus::bus::new_default();
     std::string path = "/xyz/openbmc_project/logging/settings";
     std::string interface = LoggingSettings::interface;
-    std::string propertyName = "QuiesceOnHwError";
+    const std::string propertyName =
+        LoggingSettings::property_names::quiesce_on_hw_error;
     std::variant<bool> mfgModeEnabled;
 
     std::string service =
