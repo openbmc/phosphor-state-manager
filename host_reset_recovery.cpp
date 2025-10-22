@@ -33,7 +33,6 @@ using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 constexpr auto HOST_STATE_SVC = "xyz.openbmc_project.State.Host";
 constexpr auto HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
-constexpr auto BOOT_PROGRESS_PROP = "BootProgress";
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
@@ -48,7 +47,8 @@ bool wasHostBooting(sdbusplus::bus_t& bus)
 
         auto method = bus.new_method_call(HOST_STATE_SVC, HOST_STATE_PATH,
                                           PROPERTY_INTERFACE, "Get");
-        method.append(BootProgress::interface, BOOT_PROGRESS_PROP);
+        method.append(BootProgress::interface,
+                      BootProgress::property_names::boot_progress);
 
         auto response = bus.call(method);
 
@@ -87,9 +87,9 @@ void createErrorLog(sdbusplus::bus_t& bus)
 
         static constexpr auto errorMessage =
             "xyz.openbmc_project.State.Error.HostNotRunning";
-        auto method = bus.new_method_call(LoggingCreate::default_service,
-                                          LoggingCreate::instance_path,
-                                          LoggingCreate::interface, "Create");
+        auto method = bus.new_method_call(
+            LoggingCreate::default_service, LoggingCreate::instance_path,
+            LoggingCreate::interface, LoggingCreate::method_names::create);
         method.append(errorMessage, LoggingEntry::Level::Error, additionalData);
         auto resp = bus.call(method);
     }
