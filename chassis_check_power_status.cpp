@@ -55,9 +55,10 @@ int main(int argc, char** argv)
     // If the chassis power status is not good, log an error and exit with
     // a non-zero rc so the system does not power on
     auto currentPowerStatus = phosphor::state::manager::utils::getProperty(
-        bus, chassisPath, ChassisState::interface, "CurrentPowerStatus");
-    if (currentPowerStatus !=
-        "xyz.openbmc_project.State.Chassis.PowerStatus.Good")
+        bus, chassisPath, ChassisState::interface,
+        ChassisState::property_names::current_power_status);
+    if (currentPowerStatus != ChassisState::convertPowerStatusToString(
+                                  ChassisState::PowerStatus::Good))
     {
         error("Chassis power status is not good: {CURRENT_PWR_STATUS}",
               "CURRENT_PWR_STATUS", currentPowerStatus);
