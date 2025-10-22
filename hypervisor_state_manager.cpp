@@ -63,18 +63,18 @@ void Hypervisor::updateCurrentHostState(std::string& bootProgress)
 {
     debug("New BootProgress: {BOOTPROGRESS}", "BOOTPROGRESS", bootProgress);
 
-    if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
-                        "ProgressStages.SystemInitComplete")
+    if (bootProgress == BootProgress::convertProgressStagesToString(
+                            BootProgress::ProgressStages::SystemInitComplete))
     {
         currentHostState(server::Host::HostState::Standby);
     }
-    else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
-                             "ProgressStages.OSRunning")
+    else if (bootProgress == BootProgress::convertProgressStagesToString(
+                                 BootProgress::ProgressStages::OSRunning))
     {
         currentHostState(server::Host::HostState::Running);
     }
-    else if (bootProgress == "xyz.openbmc_project.State.Boot.Progress."
-                             "ProgressStages.Unspecified")
+    else if (bootProgress == BootProgress::convertProgressStagesToString(
+                                 BootProgress::ProgressStages::Unspecified))
     {
         // Unspecified is set when the system is powered off so
         // set the state to off and reset the requested host state
