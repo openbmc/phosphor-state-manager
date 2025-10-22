@@ -43,9 +43,6 @@ using HostTransition =
     sdbusplus::server::xyz::openbmc_project::state::ScheduledHostTransition;
 using HostState = sdbusplus::server::xyz::openbmc_project::state::Host;
 
-constexpr auto PROPERTY_TRANSITION = "RequestedHostTransition";
-constexpr auto PROPERTY_RESTART_CAUSE = "RestartCause";
-
 uint64_t ScheduledHostTransition::scheduledTime(uint64_t value)
 {
     info("A scheduled host transition request has been made for {TIME}", "TIME",
@@ -105,7 +102,8 @@ void ScheduledHostTransition::hostTransition()
     info("Trying to set requestedTransition to {REQUESTED_TRANSITION}",
          "REQUESTED_TRANSITION", reqTrans);
 
-    utils::setProperty(bus, hostPath, HostState::interface, PROPERTY_TRANSITION,
+    utils::setProperty(bus, hostPath, HostState::interface,
+                       HostState::property_names::requested_host_transition,
                        reqTrans);
 
     // Set RestartCause to indicate this transition is occurring due to a
@@ -116,7 +114,7 @@ void ScheduledHostTransition::hostTransition()
         auto resCause =
             convertForMessage(HostState::RestartCause::ScheduledPowerOn);
         utils::setProperty(bus, hostPath, HostState::interface,
-                           PROPERTY_RESTART_CAUSE, resCause);
+                           HostState::property_names::restart_cause, resCause);
     }
 }
 
