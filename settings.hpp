@@ -16,8 +16,9 @@ using Interface = std::string;
 constexpr auto defaultRoot = "/";
 constexpr auto autoRebootIntf = sdbusplus::client::xyz::openbmc_project::
     control::boot::RebootPolicy<>::interface;
-constexpr auto powerRestoreIntf = sdbusplus::client::xyz::openbmc_project::
-    control::power::RestorePolicy<>::interface;
+using PowerRestorePolicy =
+    sdbusplus::common::xyz::openbmc_project::control::power::RestorePolicy;
+constexpr auto powerRestoreIntf = PowerRestorePolicy::interface;
 
 /** @class Objects
  *  @brief Fetch paths of settings d-bus objects of interest, upon construction
