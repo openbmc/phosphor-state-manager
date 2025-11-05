@@ -52,8 +52,8 @@ bool wasHostBooting(sdbusplus::bus_t& bus)
 
         auto response = bus.call(method);
 
-        std::variant<ProgressStages> bootProgressV;
-        response.read(bootProgressV);
+        auto bootProgressV = response.unpack<std::variant<ProgressStages>>();
+
         auto bootProgress = std::get<ProgressStages>(bootProgressV);
 
         if (bootProgress == ProgressStages::Unspecified)

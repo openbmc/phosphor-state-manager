@@ -270,8 +270,7 @@ bool Chassis::determineStatusOfUPSPower()
                 using Property = std::string;
                 using Value = std::variant<bool, uint>;
                 using PropertyMap = std::map<Property, Value>;
-                PropertyMap properties;
-                response.read(properties);
+                auto properties = response.unpack<PropertyMap>();
 
                 if (std::get<uint>(properties["Type"]) != TYPE_UPS)
                 {
@@ -374,8 +373,7 @@ bool Chassis::determineStatusOfPSUPower()
                 using Property = std::string;
                 using Value = std::variant<std::string>;
                 using PropertyMap = std::map<Property, Value>;
-                PropertyMap properties;
-                response.read(properties);
+                auto properties = response.unpack<PropertyMap>();
 
                 auto statusStr = std::get<std::string>(properties["Status"]);
                 auto status =

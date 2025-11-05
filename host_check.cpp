@@ -98,8 +98,9 @@ bool checkFirmwareConditionRunning(sdbusplus::bus_t& bus)
                     HostFirmware::property_names::current_firmware_condition);
 
                 auto response = bus.call(method);
-                std::variant<HostFirmware::FirmwareCondition> currentFwCondV;
-                response.read(currentFwCondV);
+                auto currentFwCondV = response.unpack<
+                    std::variant<HostFirmware::FirmwareCondition>>();
+
                 auto currentFwCond =
                     std::get<HostFirmware::FirmwareCondition>(currentFwCondV);
 
@@ -141,8 +142,8 @@ bool isChassiPowerOn(sdbusplus::bus_t& bus, size_t id)
                       Chassis::property_names::current_power_state);
 
         auto response = bus.call(method);
-        std::variant<Chassis::PowerState> currentPowerStateV;
-        response.read(currentPowerStateV);
+        auto currentPowerStateV =
+            response.unpack<std::variant<Chassis::PowerState>>();
 
         auto currentPowerState =
             std::get<Chassis::PowerState>(currentPowerStateV);

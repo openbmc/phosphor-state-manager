@@ -219,8 +219,8 @@ bool Host::isAutoReboot()
     try
     {
         auto reply = bus.call(methodOneTime);
-        std::variant<bool> result;
-        reply.read(result);
+        auto result = reply.unpack<std::variant<bool>>();
+
         auto autoReboot = std::get<bool>(result);
 
         if (!autoReboot)
