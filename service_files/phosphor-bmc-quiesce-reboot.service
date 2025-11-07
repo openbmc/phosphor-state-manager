@@ -1,0 +1,7 @@
+[Unit]
+Description=Reboot BMC after entering BMC Quiesced
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl reboot

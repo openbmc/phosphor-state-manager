@@ -44,3 +44,12 @@ fs = import('fs')
 foreach u : unit_files
     fs.copyfile(u, install: true, install_dir: systemd_system_unit_dir)
 endforeach
+
+if get_option('auto-reboot-on-bmc-quiesce').enabled()
+    wants_dir = systemd_system_unit_dir / 'obmc-bmc-service-quiesce@0.target.wants'
+    install_symlink(
+      'phosphor-bmc-quiesce-reboot.service',
+      install_dir: wants_dir,
+      pointing_to: '../phosphor-bmc-quiesce-reboot.service',
+    )
+endif
