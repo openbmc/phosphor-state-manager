@@ -68,6 +68,24 @@
       "message": "Should this be /sbin/reboot or should it be a dependency on the reboot.target or start the reboot.target?  Should we run `systemctl reboot` instead?",
       "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "442617c9_0b175fb7",
+        "filename": "service_files/phosphor-bmc-quiesce-reboot.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-07T14:20:05Z",
+      "side": 1,
+      "message": "`/sbin/reboot` is a symlink to `systemctl reboot` anyhow on systemd installs.",
+      "parentUuid": "69f0bea0_f475d83c",
+      "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
