@@ -16,6 +16,24 @@
       "message": "I\u0027m considering adding a short delay (e.g., sleep 60) before executing the reboot, to provide a window for users to capture diagnostics in case the system repeatedly enters the BMC Quiesced state and would otherwise fall into a reboot loop.",
       "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d4e434_408cb0ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-07T14:15:51Z",
+      "side": 1,
+      "message": "Why wouldn\u0027t we run the reboot target (or an openbmc-specific target that calls reboot) and if people want to add diagnostics inside there, they can do that?  Or, I guess people can add Before/Wants to this service if they want to run things?  \n\nI\u0027m not sure why we\u0027d want to add an arbitrary delay.  These things can be solved with systemd dependencies.",
+      "parentUuid": "427faf9a_bcf2f3ff",
+      "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
