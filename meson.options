@@ -181,3 +181,11 @@ option(
     value: true,
     description: 'run APR when BMC has been rebooted due to software request',
 )
+
+option(
+    'auto-reboot-on-bmc-quiesce',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Link phosphor-bmc-quiesce-reboot.service into obmc-bmc-service-quiesce@0.target.wants to automatically
+reboot when BMC enters Quiesced',
+)
