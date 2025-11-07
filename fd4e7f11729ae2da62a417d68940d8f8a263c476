@@ -34,6 +34,40 @@
       "parentUuid": "427faf9a_bcf2f3ff",
       "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "406c9c87_5f5ba6fd",
+        "filename": "service_files/phosphor-bmc-quiesce-reboot.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-07T14:18:43Z",
+      "side": 1,
+      "message": "Where is the code to trigger this?",
+      "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69f0bea0_f475d83c",
+        "filename": "service_files/phosphor-bmc-quiesce-reboot.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-07T14:18:43Z",
+      "side": 1,
+      "message": "Should this be /sbin/reboot or should it be a dependency on the reboot.target or start the reboot.target?  Should we run `systemctl reboot` instead?",
+      "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
