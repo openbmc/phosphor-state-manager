@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e50d8592_867f8028",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-11-11T20:55:45Z",
+      "side": 1,
+      "message": "Please provide \"Tested\" section in commit message indicating what type of testing you were able to do (using romulus qemu should be fine if no other options).",
+      "revId": "599baecfc6995b5be6ba4b84c8e9aa580aaa0745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "898fde21_1cdf222b",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-11-11T20:55:45Z",
+      "side": 1,
+      "message": "Lets just use the defined \"reboot\" namespace for this section to stay consistent.",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 62
+      },
+      "revId": "599baecfc6995b5be6ba4b84c8e9aa580aaa0745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
