@@ -7,7 +7,6 @@ unit_files = [
     'phosphor-reboot-host@.service',
     'phosphor-reset-chassis-on@.service',
     'phosphor-reset-chassis-running@.service',
-    'phosphor-reset-host-reboot-attempts@.service',
     'phosphor-reset-host-recovery@.service',
     'phosphor-reset-host-running@.service',
     'phosphor-reset-sensor-states@.service',
@@ -30,3 +29,14 @@ fs = import('fs')
 foreach u : unit_files
     fs.copyfile(u, install: true, install_dir: systemd_system_unit_dir)
 endforeach
+
+
+configure_file(
+    input: 'phosphor-reset-host-reboot-attempts@.service.in',
+    output: 'phosphor-reset-host-reboot-attempts@.service',
+    install_dir: systemd_system_unit_dir,
+    install: true,
+    configuration: configuration_data(
+        {'BOOT_COUNT_MAX_ALLOWED': get_option('boot-count-max-allowed')},
+    ),
+)
