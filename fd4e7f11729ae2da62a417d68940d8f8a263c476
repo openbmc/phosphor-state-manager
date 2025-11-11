@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce11e38f_e083f6f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-11-11T12:15:14Z",
+      "side": 1,
+      "message": "Understood. Platforms can add a drop-in (e.g., ExecStartPre or a service with Before\u003dreboot.target and Wants/Requires) to run pre-reboot diagnostics. Thanks for the suggestion.",
+      "parentUuid": "d9d4e434_408cb0ca",
+      "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "406c9c87_5f5ba6fd",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-11-07T14:18:43Z",
       "side": 1,
       "message": "Where is the code to trigger this?",
+      "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15067d77_313ed6c5",
+        "filename": "service_files/phosphor-bmc-quiesce-reboot.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-11-11T12:15:14Z",
+      "side": 1,
+      "message": "I added a Meson option “auto-reboot-on-bmc-quiesce” (disabled by default) that installs a wants symlink so entering Quiesced pulls in the reboot service (scoped to @0).",
+      "parentUuid": "406c9c87_5f5ba6fd",
       "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -84,6 +120,24 @@
       "side": 1,
       "message": "`/sbin/reboot` is a symlink to `systemctl reboot` anyhow on systemd installs.",
       "parentUuid": "69f0bea0_f475d83c",
+      "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f988d4d_a86cf243",
+        "filename": "service_files/phosphor-bmc-quiesce-reboot.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-11-11T12:15:14Z",
+      "side": 1,
+      "message": "I switched the unit to use:\n```\nExecStart\u003d/usr/bin/systemctl reboot\n```\nas it’s more explicit than /sbin/reboot. If preferred, I can change it to start reboot.target instead.",
+      "parentUuid": "442617c9_0b175fb7",
       "revId": "fd4e7f11729ae2da62a417d68940d8f8a263c476",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
