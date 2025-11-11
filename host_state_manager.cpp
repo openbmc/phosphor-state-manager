@@ -81,6 +81,8 @@ void Host::determineInitialState()
     {
         // set to default value.
         server::Host::requestedHostTransition(Transition::Off, true);
+	sdbusplus::server::xyz::openbmc_project::control::boot::RebootAttempts::
+            retryAttempts(BOOT_COUNT_MAX_ALLOWED);
     }
     return;
 }
