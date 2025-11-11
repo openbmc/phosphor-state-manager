@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7afdeed9_c3315080",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002071
+      },
+      "writtenOn": "2025-11-11T21:23:30Z",
+      "side": 1,
+      "message": "I\u0027ve tested only with our downstream machine. will try with Romulus and update the commit with the results",
+      "parentUuid": "e50d8592_867f8028",
+      "revId": "599baecfc6995b5be6ba4b84c8e9aa580aaa0745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "898fde21_1cdf222b",
         "filename": "host_state_manager.cpp",
         "patchSetId": 4
