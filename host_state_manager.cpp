@@ -81,6 +81,7 @@ void Host::determineInitialState()
     {
         // set to default value.
         server::Host::requestedHostTransition(Transition::Off, true);
+        reboot::RebootAttempts::retryAttempts(BOOT_COUNT_MAX_ALLOWED);
     }
     return;
 }
