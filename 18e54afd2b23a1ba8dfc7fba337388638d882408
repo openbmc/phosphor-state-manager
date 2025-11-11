@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152345ac_9e118230",
+        "filename": "meson.options",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-11-11T20:45:30Z",
+      "side": 1,
+      "message": "So for CI purposes we like to default everything to enabled here. Then in the bitbake recipe we default the PACKAGECONFIG for this to false. CI wont test a whole lot with this feature enabled but it will at least make sure there\u0027s no typos on the service and it\u0027s installation.",
+      "revId": "18e54afd2b23a1ba8dfc7fba337388638d882408",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
