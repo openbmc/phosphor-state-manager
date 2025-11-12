@@ -75,6 +75,30 @@
       },
       "revId": "599baecfc6995b5be6ba4b84c8e9aa580aaa0745",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93e0af37_dfc1e949",
+        "filename": "host_state_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1002071
+      },
+      "writtenOn": "2025-11-12T14:31:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "898fde21_1cdf222b",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 62
+      },
+      "revId": "599baecfc6995b5be6ba4b84c8e9aa580aaa0745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
