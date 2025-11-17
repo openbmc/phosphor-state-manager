@@ -34,6 +34,24 @@
       "parentUuid": "31207560_cdf167c6",
       "revId": "6edd9186b216c1095c0879eabfc1e54d00a36e2a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a37cf2_7cd7d381",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2025-11-17T15:09:42Z",
+      "side": 1,
+      "message": "Changed my mind on this one. I know too little about this repo and it\u0027s architecture to re-structure things appropriately. Thanks anyways for looking into my patch!",
+      "parentUuid": "f005ecca_94142676",
+      "revId": "6edd9186b216c1095c0879eabfc1e54d00a36e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
