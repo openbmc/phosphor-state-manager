@@ -2,23 +2,44 @@
 
 set -euo pipefail
 
-OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
+# ============================================================================
+# Constants - D-Bus Interfaces and Objects
+# ============================================================================
+readonly INTERFACE_ROOT="xyz.openbmc_project"
+readonly STATE_INTERFACE="${INTERFACE_ROOT}.State"
+readonly CONTROL_INTERFACE="${INTERFACE_ROOT}.Control"
+
+readonly OBJECT_ROOT="/xyz/openbmc_project"
+readonly STATE_OBJECT="${OBJECT_ROOT}/state"
+readonly CONTROL_OBJECT="${OBJECT_ROOT}/control"
+
+# ============================================================================
+# Constants - Systemd Targets and Directories
+# ============================================================================
+readonly BMC_SYSTEMD_RUN_DIR="/run/systemd/system/"
+readonly HOST_TIMEOUT_TARGET="obmc-host-timeout@0.target"
+readonly HOST_CRASH_TARGET="obmc-host-crash@0.target"
+
+# ============================================================================
+# Constants - BMC Reboot Guard
+# ============================================================================
+readonly BMC_REBOOT_GUARD_FILE="reboot-guard.conf"
+readonly BMC_REBOOT_GUARD_UNITS=("reboot" "poweroff" "halt")
+
+# ============================================================================
+# Constants - Default Values
+# ============================================================================
+readonly DEFAULT_WAIT_TIMEOUT=30
+
+# ============================================================================
+# Usage and Help
+# ============================================================================
+readonly OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
 osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
 bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs, stopofftargets"
 
-USAGE="Usage: obmcutil [-h] [--wait] [--verbose] [--id=<INSTANCE_ID>]
+readonly USAGE="Usage: obmcutil [-h] [--wait] [--verbose] [--id=<INSTANCE_ID>]
 {$OPTS}"
-
-INTERFACE_ROOT=xyz.openbmc_project
-STATE_INTERFACE=$INTERFACE_ROOT.State
-CONTROL_INTERFACE=$INTERFACE_ROOT.Control
-
-OBJECT_ROOT=/xyz/openbmc_project
-STATE_OBJECT=$OBJECT_ROOT/state
-CONTROL_OBJECT=$OBJECT_ROOT/control
-
-HOST_TIMEOUT_TARGET=obmc-host-timeout@0.target
-HOST_CRASH_TARGET=obmc-host-crash@0.target
 
 ## NOTE: By declaring these globally instead of passing them through the
 ## intermediary functions, which may not be "best practice", the readability
@@ -191,37 +212,27 @@ function get_systemd_target_state()
 
 function disable_bmc_reboot()
 {
-    dir="/run/systemd/system/"
-    file="reboot-guard.conf"
-    units=("reboot" "poweroff" "halt")
-
-    for unit in "${units[@]}"; do
-        mkdir -p "${dir}${unit}.target.d"
-        echo -e "[Unit]\nRefuseManualStart=yes" >> "${dir}${unit}.target.d/${file}"
+    local unit
+    for unit in "${BMC_REBOOT_GUARD_UNITS[@]}"; do
+        mkdir -p "${BMC_SYSTEMD_RUN_DIR}${unit}.target.d"
+        echo -e "[Unit]\nRefuseManualStart=yes" >> "${BMC_SYSTEMD_RUN_DIR}${unit}.target.d/${BMC_REBOOT_GUARD_FILE}"
     done
 }
 
 function enable_bmc_reboot()
 {
-    dir="/run/systemd/system/"
-    file="reboot-guard.conf"
-    units=("reboot" "poweroff" "halt")
-
-    for unit in "${units[@]}"; do
-        rm -rf "${dir}${unit}.target.d/${file}"
-        rm -rf "${dir}${unit}.target.d"
+    local unit
+    for unit in "${BMC_REBOOT_GUARD_UNITS[@]}"; do
+        rm -rf "${BMC_SYSTEMD_RUN_DIR}${unit}.target.d/${BMC_REBOOT_GUARD_FILE}"
+        rm -rf "${BMC_SYSTEMD_RUN_DIR}${unit}.target.d"
     done
 }
 
 function get_bmc_reboot_status()
 {
-    dir="/run/systemd/system/"
-    file="reboot-guard.conf"
-    units=("reboot" "poweroff" "halt")
-
-    # if file do
-    for unit in "${units[@]}"; do
-        if [ -e "${dir}${unit}.target.d/${file}" ]; then
+    local unit
+    for unit in "${BMC_REBOOT_GUARD_UNITS[@]}"; do
+        if [ -e "${BMC_SYSTEMD_RUN_DIR}${unit}.target.d/${BMC_REBOOT_GUARD_FILE}" ]; then
             echo "off"
             return 0
         fi
@@ -591,7 +602,7 @@ shiftcnt=0
 for arg in "$@"; do
     case $arg in
         -w|--wait)
-            G_WAIT=30
+            G_WAIT=$DEFAULT_WAIT_TIMEOUT
             shiftcnt=$((shiftcnt+1))
             continue
             ;;
