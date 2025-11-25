@@ -267,20 +267,27 @@ function print_usage_err()
 
 function mask_systemd_target()
 {
-    target="$*"
-    systemctl mask "$target"
+    local target="$*"
+    systemctl mask "$target" || {
+        echo "ERROR: Failed to mask systemd target: $target" >&2
+        return 1
+    }
 }
 
 function unmask_systemd_target()
 {
-    target="$*"
-    systemctl unmask "$target"
+    local target="$*"
+    systemctl unmask "$target" || {
+        echo "ERROR: Failed to unmask systemd target: $target" >&2
+        return 1
+    }
 }
 
 function get_systemd_target_state()
 {
-    target="$*"
-    enabled_state=$(systemctl is-enabled "$target")
+    local target="$*"
+    local enabled_state
+    enabled_state=$(systemctl is-enabled "$target" 2>/dev/null) || enabled_state="unknown"
     echo "$enabled_state"
 }
 
@@ -613,6 +620,9 @@ function handle_cmd()
             list_logs
             ;;
         showlog)
+            if [ -z "${2:-}" ]; then
+                print_usage_err "showlog requires a log path argument"
+            fi
             show_log "$2"
             ;;
         deletelogs)
@@ -626,6 +636,11 @@ function handle_cmd()
             ;;
     esac
 }
+
+# Validate at least one argument is provided
+if [ $# -eq 0 ]; then
+    print_usage_err "No command specified"
+fi
 
 shiftcnt=0
 for arg in "$@"; do
@@ -644,6 +659,10 @@ for arg in "$@"; do
             ;;
         -i=*|--id=*)
             G_INSTANCE_ID="${arg#*=}"
+            # Validate instance ID is a number
+            if ! [[ "$G_INSTANCE_ID" =~ ^[0-9]+$ ]]; then
+                print_usage_err "Instance ID must be a number: $G_INSTANCE_ID"
+            fi
             shiftcnt=$((shiftcnt+1))
             ;;
         -f|--force)
@@ -664,3 +683,8 @@ for arg in "$@"; do
             ;;
     esac
 done
+
+# If we got here without executing a command, only options were provided
+if [ -z "$G_ORIG_CMD" ]; then
+    print_usage_err "No command specified"
+fi
