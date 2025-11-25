@@ -297,7 +297,6 @@ function enable_bmc_reboot()
 {
     local unit
     for unit in "${BMC_REBOOT_GUARD_UNITS[@]}"; do
-        rm -rf "${BMC_SYSTEMD_RUN_DIR}${unit}.target.d/${BMC_REBOOT_GUARD_FILE}"
         rm -rf "${BMC_SYSTEMD_RUN_DIR}${unit}.target.d"
     done
 }
@@ -330,8 +329,8 @@ function get_host_reboot_status()
 # will write blocking errors to stdout
 function check_boot_block_errors()
 {
-    # array of boot block objects
-    blockArray=()
+    local blockArray=()
+    local subtree assocs entry berror
 
     # Look for any objects under logging that implement the
     # xyz.openbmc_project.Logging.ErrorBlocksTransition
@@ -341,12 +340,10 @@ function check_boot_block_errors()
                GetSubTree sias "/xyz/openbmc_project/logging/" 0 1 \
                xyz.openbmc_project.Logging.ErrorBlocksTransition)"
 
-    # remove quotation marks
-    # shellcheck disable=SC2001
-    subtree="$(echo "$subtree" | sed 's/\"//g')"
+    subtree="${subtree//\"/}"
 
     for entry in $subtree; do
-        if [[ ${entry} =~ "xyz/openbmc_project/logging/block"* ]]; then
+        if [[ ${entry} == xyz/openbmc_project/logging/block* ]]; then
             blockArray+=( "$entry" )
         fi
     done
@@ -357,12 +354,10 @@ function check_boot_block_errors()
                   org.freedesktop.DBus.Properties Get \
                   ss xyz.openbmc_project.Association.Definitions Associations)"
 
-        # remove quotation marks
-        # shellcheck disable=SC2001
-        assocs="$(echo "$assocs" | sed 's/\"//g')"
+        assocs="${assocs//\"/}"
 
         for entry in $assocs; do
-            if [[ ${entry} =~ "xyz/openbmc_project/logging/entry"* ]]; then
+            if [[ ${entry} == xyz/openbmc_project/logging/entry* ]]; then
                 echo "Blocking Error: $entry"
             fi
         done
@@ -511,16 +506,20 @@ function handle_cmd()
             query_state "host" "$STATE_INTERFACE.Boot.Progress" "BootProgress"
             ;;
         power)
-            OBJECT=/org/openbmc/control/power0
-            SERVICE=$(get_service $OBJECT)
-            INTERFACE=org.openbmc.control.Power
+            local OBJECT=/org/openbmc/control/power0
+            local SERVICE
+            SERVICE=$(get_service "$OBJECT")
+            local INTERFACE=org.openbmc.control.Power
+            local property STATE
             for property in pgood state pgood_timeout; do
                 # get_property can potentially return several
                 # different formats of values, so we do the parsing outside
                 # of get_property depending on the query. These queries
                 # return 'i VALUE' formatted strings.
-                STATE=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$property" | sed 's/i[ ^I]*//')
-                printf "%s = %s\n" $property "$STATE"
+                STATE=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$property")
+                STATE="${STATE#i }"
+                STATE="${STATE#i	}"
+                printf "%s = %s\n" "$property" "$STATE"
             done
             ;;
         chassiskill)
