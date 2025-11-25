@@ -207,11 +207,55 @@ function get_property()
     run_cmd busctl get-property "$@"
 }
 
+# Generic function to query and display state properties
 function state_query()
 {
     local state
     state=$(get_property "$@" | cut -d '"' -f2)
     printf "%-20s: %s\n" "$4" "$state"
+}
+
+# Helper to query state for a given object type
+function query_state()
+{
+    local object_type="$1"
+    local interface="$2"
+    local property="$3"
+    local instance="${4:-$G_INSTANCE_ID}"
+
+    local object="${STATE_OBJECT}/${object_type}${instance}"
+    local service
+    service=$(get_service "$object")
+    state_query "$service" "$object" "$interface" "$property"
+}
+
+# Helper to set a state transition property
+function set_state_transition()
+{
+    local object_type="$1"
+    local interface="$2"
+    local property="$3"
+    local value="$4"
+    local instance="${5:-$G_INSTANCE_ID}"
+
+    local object="${STATE_OBJECT}/${object_type}${instance}"
+    local service
+    service=$(get_service "$object")
+    set_property "$service" "$object" "$interface" "$property" "s" "$value"
+}
+
+# Helper to set a control property
+function set_control_property()
+{
+    local object_path="$1"
+    local interface="$2"
+    local property="$3"
+    local type="$4"
+    local value="$5"
+
+    local service
+    service=$(get_service "$object_path")
+    set_property "$service" "$object_path" "$interface" "$property" "$type" "$value"
 }
 
 function print_usage_err()
@@ -416,77 +460,45 @@ function handle_cmd()
     case "$1" in
         chassisoff)
             check_chassis_host_states
-            OBJECT=$STATE_OBJECT/chassis$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.Chassis
-            PROPERTY=RequestedPowerTransition
-            VALUE=$INTERFACE.Transition.Off
+            local INTERFACE=$STATE_INTERFACE.Chassis
             G_REQUESTED_STATE=$INTERFACE.PowerState.Off
             G_QUERY="chassisstate"
-            set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "s" $VALUE
+            set_state_transition "chassis" "$INTERFACE" "RequestedPowerTransition" "$INTERFACE.Transition.Off"
             ;;
         chassison)
             check_chassis_host_states
             check_and_warn_boot_block
-            OBJECT=$STATE_OBJECT/chassis$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.Chassis
-            PROPERTY=RequestedPowerTransition
-            VALUE=$INTERFACE.Transition.On
+            local INTERFACE=$STATE_INTERFACE.Chassis
             G_REQUESTED_STATE=$INTERFACE.PowerState.On
             G_QUERY="chassisstate"
-            set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "s" $VALUE
+            set_state_transition "chassis" "$INTERFACE" "RequestedPowerTransition" "$INTERFACE.Transition.On"
             ;;
         poweroff)
             check_chassis_host_states
-            OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.Host
-            PROPERTY=RequestedHostTransition
-            VALUE=$INTERFACE.Transition.Off
+            local INTERFACE=$STATE_INTERFACE.Host
             G_REQUESTED_STATE=$INTERFACE.HostState.Off
             G_QUERY="hoststate"
-            set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "s" $VALUE
+            set_state_transition "host" "$INTERFACE" "RequestedHostTransition" "$INTERFACE.Transition.Off"
             ;;
         poweron)
             check_chassis_host_states
             check_and_warn_boot_block
-            OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.Host
-            PROPERTY=RequestedHostTransition
-            VALUE=$INTERFACE.Transition.On
+            local INTERFACE=$STATE_INTERFACE.Host
             G_REQUESTED_STATE=$INTERFACE.HostState.Running
             G_QUERY="hoststate"
-            set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "s" $VALUE
+            set_state_transition "host" "$INTERFACE" "RequestedHostTransition" "$INTERFACE.Transition.On"
             ;;
         bmcstate)
-            OBJECT=$STATE_OBJECT/bmc0
-            SERVICE=$(get_service $OBJECT)
-            INTERFACE=$STATE_INTERFACE.BMC
-            PROPERTY=CurrentBMCState
-            state_query "$SERVICE" $OBJECT $INTERFACE $PROPERTY
+            query_state "bmc" "$STATE_INTERFACE.BMC" "CurrentBMCState" "0"
             ;;
         chassisstate)
-            OBJECT=$STATE_OBJECT/chassis$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.Chassis
-            PROPERTY=CurrentPowerState
-            state_query "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY
+            query_state "chassis" "$STATE_INTERFACE.Chassis" "CurrentPowerState"
             ;;
         hoststate)
-            OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.Host
-            PROPERTY=CurrentHostState
-            state_query "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY
+            query_state "host" "$STATE_INTERFACE.Host" "CurrentHostState"
             ;;
         osstate)
-            OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.OperatingSystem.Status
-            PROPERTY=OperatingSystemState
-            state_query "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY
+            query_state "host" "$STATE_INTERFACE.OperatingSystem.Status" "OperatingSystemState"
             ;;
         state|status)
             for query in bmcstate chassisstate hoststate bootprogress osstate
@@ -496,11 +508,7 @@ function handle_cmd()
             check_and_warn_boot_block
             ;;
         bootprogress)
-            OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$STATE_INTERFACE.Boot.Progress
-            PROPERTY=BootProgress
-            state_query "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY
+            query_state "host" "$STATE_INTERFACE.Boot.Progress" "BootProgress"
             ;;
         power)
             OBJECT=/org/openbmc/control/power0
@@ -519,28 +527,16 @@ function handle_cmd()
             /usr/libexec/chassiskill
             ;;
         hostrebootoff)
-            OBJECT=$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
-            PROPERTY=AutoReboot
-            VALUE=false
-            set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "b" $VALUE
+            set_control_property "$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot" \
+                "$CONTROL_INTERFACE.Boot.RebootPolicy" "AutoReboot" "b" "false"
             ;;
         hostrebootoffonetime)
-            OBJECT=$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot/one_time
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
-            PROPERTY=AutoReboot
-            VALUE=false
-            set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "b" $VALUE
+            set_control_property "$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot/one_time" \
+                "$CONTROL_INTERFACE.Boot.RebootPolicy" "AutoReboot" "b" "false"
             ;;
         hostrebooton)
-            OBJECT=$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot
-            SERVICE=$(get_service "$OBJECT")
-            INTERFACE=$CONTROL_INTERFACE.Boot.RebootPolicy
-            PROPERTY=AutoReboot
-            VALUE=true
-            set_property "$SERVICE" "$OBJECT" $INTERFACE $PROPERTY "b" $VALUE
+            set_control_property "$CONTROL_OBJECT/host$G_INSTANCE_ID/auto_reboot" \
+                "$CONTROL_INTERFACE.Boot.RebootPolicy" "AutoReboot" "b" "true"
             ;;
         bmcrebootoff)
             disable_bmc_reboot
