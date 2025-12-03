@@ -13,4 +13,4 @@ ExecStart=/bin/sh -c "if [ $(busctl get-property `mapper get-service /org/openbm
 SyslogIdentifier=phosphor-reset-chassis-running
 
 [Install]
-WantedBy=obmc-chassis-powerreset@%i.target
+# Handled by bitbake recipe

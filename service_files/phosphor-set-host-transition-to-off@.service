@@ -13,4 +13,4 @@ RemainAfterExit=yes
 ExecStart=/bin/sh -c "busctl set-property `mapper get-service /xyz/openbmc_project/state/host%i` /xyz/openbmc_project/state/host%i xyz.openbmc_project.State.Host CurrentHostState s xyz.openbmc_project.State.Host.HostState.TransitioningToOff"
 
 [Install]
-WantedBy=obmc-host-stop@%i.target
+# Handled by bitbake recipe

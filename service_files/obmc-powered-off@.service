@@ -18,4 +18,4 @@ SyslogIdentifier=phosphor-powered-off
 
 
 [Install]
-WantedBy=obmc-chassis-poweroff@%i.target
+# Handled by bitbake recipe
