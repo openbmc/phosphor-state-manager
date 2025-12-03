@@ -17,4 +17,4 @@ ExecStart=/bin/sh -c "busctl call `mapper get-service /org/openbmc/control/power
 SyslogIdentifier=phosphor-power-start
 
 [Install]
-WantedBy=obmc-chassis-poweron@%i.target
+# Handled by bitbake recipe

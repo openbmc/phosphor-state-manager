@@ -17,4 +17,4 @@ ExecStart=/usr/bin/phosphor-host-reset-recovery
 
 
 [Install]
-WantedBy=obmc-chassis-poweron@%i.target
+# Handled by bitbake recipe

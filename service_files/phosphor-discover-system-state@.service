@@ -21,4 +21,4 @@ RemainAfterExit=yes
 ExecStart=/usr/bin/phosphor-discover-system-state --host %i
 
 [Install]
-WantedBy=multi-user.target
+# Handled by bitbake recipe

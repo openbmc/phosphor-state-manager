@@ -11,4 +11,4 @@ Type=dbus
 BusName=xyz.openbmc_project.State.Chassis%i
 
 [Install]
-WantedBy=multi-user.target
+# Handled by bitbake recipe

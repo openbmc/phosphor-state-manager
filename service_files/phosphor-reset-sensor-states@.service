@@ -14,4 +14,4 @@ ExecStart=/bin/sh -c "busctl set-property `mapper get-service /xyz/openbmc_proje
 
 
 [Install]
-WantedBy=multi-user.target
+# Handled by bitbake recipe

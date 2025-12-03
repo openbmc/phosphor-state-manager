@@ -12,4 +12,4 @@ ExecStart=/bin/systemctl start obmc-chassis-poweron@%i.target
 SyslogIdentifier=phosphor-reset-chassis-on
 
 [Install]
-WantedBy=obmc-chassis-powerreset@%i.target
+# Handled by bitbake recipe

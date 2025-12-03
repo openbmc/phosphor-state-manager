@@ -14,4 +14,4 @@ ExecStart=/bin/sh -c "busctl call `mapper get-service /org/openbmc/control/power
 SyslogIdentifier=obmc-power-stop
 
 [Install]
-WantedBy=obmc-chassis-poweroff@%i.target
+# Handled by bitbake recipe

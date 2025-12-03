@@ -15,4 +15,4 @@ RemainAfterExit=yes
 ExecStart=/usr/bin/phosphor-chassis-check-power-status --chassis %i
 
 [Install]
-RequiredBy=obmc-chassis-poweron@%i.target
+# Handled by bitbake recipe
