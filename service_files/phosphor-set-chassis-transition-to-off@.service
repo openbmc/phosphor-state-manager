@@ -13,4 +13,4 @@ SyslogIdentifier=phosphor-set-chassis-transition-to-off
 ExecStart=/bin/sh -c "busctl set-property `mapper get-service /xyz/openbmc_project/state/chassis%i` /xyz/openbmc_project/state/chassis%i xyz.openbmc_project.State.Chassis CurrentPowerState s xyz.openbmc_project.State.Chassis.PowerState.TransitioningToOff"
 
 [Install]
-WantedBy=obmc-chassis-poweroff@%i.target
+# Handled by bitbake recipe

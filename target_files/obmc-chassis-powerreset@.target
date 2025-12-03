@@ -3,4 +3,4 @@ Description=Chassis%i (Reset Check)
 Conflicts=obmc-chassis-poweroff@%i.target
 
 [Install]
-WantedBy=multi-user.target
+# Handled by bitbake recipe

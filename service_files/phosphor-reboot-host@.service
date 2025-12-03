@@ -16,4 +16,4 @@ After=obmc-host-stopped@%i.target
 ExecStart=/usr/libexec/phosphor-state-manager/host-reboot %i
 
 [Install]
-WantedBy=obmc-host-reboot@%i.target
+# Handled by bitbake recipe

@@ -10,4 +10,4 @@ ExecStart=/bin/systemctl start obmc-host-start@%i.target
 
 
 [Install]
-WantedBy=obmc-host-reset@%i.target
+# Handled by bitbake recipe

@@ -3,4 +3,4 @@ Description=Host%i (Reset Check)
 Conflicts=obmc-host-stop@%i.target
 
 [Install]
-WantedBy=multi-user.target
+# Handled by bitbake recipe
