@@ -7,9 +7,12 @@
 
 #include <gpiod.h>
 
+#include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/State/BMC/common.hpp>
+#include <xyz/openbmc_project/State/BMC/event.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -46,7 +49,15 @@ constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void BMC::bmcIsQuiesced()
 {
+    namespace events = sdbusplus::event::xyz::openbmc_project::state::BMC;
+    using CommonBMCState =
+        sdbusplus::common::xyz::openbmc_project::state::BMC::BMCState;
+
     this->currentBMCState(BMCState::Quiesced);
+    // quiesced event log
+    lg2::commit(events::State(
+        events::State::metadata_t<"CURRENT_STATE">{"CURRENT_STATE"},
+        CommonBMCState::Quiesced));
 
     // There is no getting out of Quiesced once entered (other then BMC
     // reboot) so stop watching for signals
