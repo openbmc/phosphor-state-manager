@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de72d546_4c0f60ef",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-12-17T16:00:45Z",
+      "side": 1,
+      "message": "This isn\u0027t really \"REBOOT_GUARD\" specific",
+      "revId": "05c71e14f242111393a0b7224839c16cbe2702b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
