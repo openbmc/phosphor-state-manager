@@ -51,10 +51,6 @@ void BMC::bmcIsQuiesced()
 {
     this->currentBMCState(BMCState::Quiesced);
 
-    using StateChanged =
-        sdbusplus::event::xyz::openbmc_project::state::BMC::StateChanged;
-    lg2::commit(StateChanged("STATE", BMCState::Quiesced));
-
     // There is no getting out of Quiesced once entered (other then BMC
     // reboot) so stop watching for signals
     auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
@@ -256,6 +252,13 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
 {
     info("Setting the BMCState field to {CURRENT_BMC_STATE}",
          "CURRENT_BMC_STATE", value);
+
+    if (server::BMC::currentBMCState() != value)
+    {
+        using StateChanged =
+            sdbusplus::event::xyz::openbmc_project::state::BMC::StateChanged;
+        lg2::commit(StateChanged("STATE", value));
+    }
 
     return server::BMC::currentBMCState(value);
 }
