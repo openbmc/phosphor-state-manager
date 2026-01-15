@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dacfda5_78809966",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-15T16:21:14Z",
+      "side": 1,
+      "message": "With https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/78827 coming, does that mean there will be 2 events every time a BMC reboots?  Is that excessive?",
+      "revId": "b26e5096b595a35015387f470330991fb2ebf1dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
