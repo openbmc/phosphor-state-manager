@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc89444d_9c57f42c",
+        "filename": "obmcutil",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-01-15T19:15:24Z",
+      "side": 1,
+      "message": "is it preferred in bash to declare loop variables?",
+      "range": {
+        "startLine": 215,
+        "startChar": 2,
+        "endLine": 215,
+        "endChar": 14
+      },
+      "revId": "c44a4fb9e856aecb8881cd95c49aa9a1fee2b048",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
