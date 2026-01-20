@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ca234e_4c66aa44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-01-20T15:22:57Z",
+      "side": 1,
+      "message": "My only remaining concern is that we already log an error when BMC Quiesced occurs over in https://grok.openbmc.org/xref/openbmc/phosphor-state-manager/systemd_target_signal.cpp?r\u003d1b2c3c035ecd647cef996982df00378506f93887#53. This error provides more info (which target/service failed). Is that not good enough here? I get that there\u0027s some benefit in using the more \"standard\" errors like this but our systems can\u0027t be logging duplicate errors so we\u0027d have to add this new one to our ignore list which seems a bit onerous.",
+      "revId": "be85d084cc353da73fbfd5d2403902a26e173aee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
