@@ -186,19 +186,19 @@ bool isHostRunning(size_t id)
     // where the BMC is rebooted with chassis power off. In cases where
     // chassis power is on, the host is likely running so we want to be sure
     // we check all interfaces
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < MAX_MAPPER_RETRIES; i++)
     {
         debug(
             "Introspecting new bus objects for bus id: {ID} sleeping for 1 second.",
             "ID", id);
         // Give mapper a small window to introspect new objects on bus
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(MAPPER_RETRY_DELAY);
         if (checkFirmwareConditionRunning(bus))
         {
             info("Host is running!");
             // Create file for host instance and create in filesystem to
             // indicate to services that host is running
-            std::string hostFile = std::format(HOST_RUNNING_FILE, 0);
+            std::string hostFile = std::format(HOST_RUNNING_FILE, id);
             std::ofstream outfile(hostFile);
             outfile.close();
             return true;
