@@ -52,6 +52,24 @@
       "parentUuid": "4b9b9fa7_3848ef13",
       "revId": "be85d084cc353da73fbfd5d2403902a26e173aee",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0bb06dc_435d4540",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-01-21T20:26:10Z",
+      "side": 1,
+      "message": "\u003e BMC.StateChanged is an event and not an error.\n\n\nUnder the covers this just means it\u0027s an info error right? i.e. \"obmcutil listlogs\" will show as an info error? \n\n\u003e If you want there to be an error for \"BMC Went into Quiesced State\" we \ncan make a dedicated error for that (rather than this event).  \n\nWe already log an appropriate error with the fail data, so if anything we should update that code to use the new \"standard\" way to do it I guess?\n\nIn the end it\u0027s clear there\u0027s a desire to have these events (i.e. this commit and the next one) and there\u0027s a way we can filter them out if we don\u0027t want them so it\u0027s fine.",
+      "parentUuid": "69d2c607_6f163e60",
+      "revId": "be85d084cc353da73fbfd5d2403902a26e173aee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
