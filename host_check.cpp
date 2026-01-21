@@ -169,6 +169,11 @@ bool isHostRunning(size_t id)
 
     auto bus = sdbusplus::bus::new_default();
 
+    // Number of retries to check if host is running
+    constexpr int MAX_MAPPER_RETRIES = 5;
+    // Delay between mapper retries
+    constexpr auto MAPPER_RETRY_DELAY = std::chrono::milliseconds(1000);
+
     // No need to check if chassis power is not on
     if (!isChassiPowerOn(bus, id))
     {
@@ -186,13 +191,13 @@ bool isHostRunning(size_t id)
     // where the BMC is rebooted with chassis power off. In cases where
     // chassis power is on, the host is likely running so we want to be sure
     // we check all interfaces
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < MAX_MAPPER_RETRIES; i++)
     {
         debug(
             "Introspecting new bus objects for bus id: {ID} sleeping for 1 second.",
             "ID", id);
         // Give mapper a small window to introspect new objects on bus
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(MAPPER_RETRY_DELAY);
         if (checkFirmwareConditionRunning(bus))
         {
             info("Host is running!");
