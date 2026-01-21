@@ -16,6 +16,24 @@
       "message": "With https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/78827 coming, does that mean there will be 2 events every time a BMC reboots?  Is that excessive?",
       "revId": "b26e5096b595a35015387f470330991fb2ebf1dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e7a9490_522360b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-21T11:51:43Z",
+      "side": 1,
+      "message": "We might end up with 3 events:\n\n- \"BMC Rebooted because of ...\"\n- \"BMC is NotReady\"\n- \"BMC is Ready\"\n\nI don\u0027t really see that as a problem but I don\u0027t know how to rationalize what someone might see as \"excessive\" vs someone else.  That\u0027s why we have the ignore-list, right?\n\nEvents aren\u0027t suppose to be problems.  Knowing when the BMC is Ready externally is fairly useful though.  If we\u0027re managing a huge set of servers, let\u0027s say through a firmware update sequence, the Ready event (being a push notification from the BMC via Redfish) can tell external services that the BMC is back up and running after the reboot (post update) and now the next firmware item can be updated.  Having these events is pretty useful for sequencing.",
+      "parentUuid": "0dacfda5_78809966",
+      "revId": "b26e5096b595a35015387f470330991fb2ebf1dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
