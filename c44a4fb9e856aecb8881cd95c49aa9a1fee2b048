@@ -22,6 +22,30 @@
       },
       "revId": "c44a4fb9e856aecb8881cd95c49aa9a1fee2b048",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "734f5253_fcbb42f6",
+        "filename": "obmcutil",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-01-21T19:00:07Z",
+      "side": 1,
+      "message": "Yeah, per google AI at least :)\n\"It is highly recommended to declare loop variables as local within a \nfunction in Bash to prevent unintended consequences and maintain scope \nintegrity\"",
+      "parentUuid": "bc89444d_9c57f42c",
+      "range": {
+        "startLine": 215,
+        "startChar": 2,
+        "endLine": 215,
+        "endChar": 14
+      },
+      "revId": "c44a4fb9e856aecb8881cd95c49aa9a1fee2b048",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
