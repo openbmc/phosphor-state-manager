@@ -34,6 +34,24 @@
       "parentUuid": "b7ca234e_4c66aa44",
       "revId": "be85d084cc353da73fbfd5d2403902a26e173aee",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d2c607_6f163e60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-01-21T11:44:44Z",
+      "side": 1,
+      "message": "\u003e I get that there\u0027s some benefit in using the more \"standard\" errors like this but our systems can\u0027t be logging duplicate errors so we\u0027d have to add this new one to our ignore list which seems a bit onerous.\n\n* `BMC.StateChanged` is an event and not an error.\n* There\u0027s not just \"some benefit\".  Only standardized events/errors will trigger Redfish push events (because while LogServices can hold non-standard events, the push part of the spec requires it).\n\nIf you want there to be an error for \"BMC Went into Quiesced State\" we can make a dedicated error for that (rather than this event).  We can add non-Redfish fields into events, to store the systemd service.  Take a look at `FailureData` in `State.Power.PowerRailFault` as an example.",
+      "parentUuid": "4b9b9fa7_3848ef13",
+      "revId": "be85d084cc353da73fbfd5d2403902a26e173aee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
