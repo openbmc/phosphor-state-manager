@@ -16,6 +16,24 @@
       "message": "I\u0027d prefer we have 2 separate commits here. You\u0027re mixing two changes in one commit. I\u0027m good with the fixing of the host ID but I\u0027m not ok with the movement of the constants to the header file. If they were used elsewhere then sure, but as they are only used in this one spot, it\u0027s much more readable and maintainable to have it directly in the source file.",
       "revId": "3fb52af695fc5ca33b06da69e31fbe2e9b46f2e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1141de4_b5e92284",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-01-22T06:16:15Z",
+      "side": 1,
+      "message": "yes, converted into two commits and I defined const value in cpp",
+      "parentUuid": "36e513a6_6495a873",
+      "revId": "3fb52af695fc5ca33b06da69e31fbe2e9b46f2e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
