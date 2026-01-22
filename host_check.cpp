@@ -198,7 +198,7 @@ bool isHostRunning(size_t id)
             info("Host is running!");
             // Create file for host instance and create in filesystem to
             // indicate to services that host is running
-            std::string hostFile = std::format(HOST_RUNNING_FILE, 0);
+            std::string hostFile = std::format(HOST_RUNNING_FILE, id);
             std::ofstream outfile(hostFile);
             outfile.close();
             return true;
