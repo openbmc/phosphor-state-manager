@@ -29,8 +29,7 @@ using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 void SystemdTargetLogging::startBmcQuiesceTarget()
 {
     auto method = this->bus.new_method_call(
-        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
-        "org.freedesktop.systemd1.Manager", "StartUnit");
+        SYSTEMD_SERVICE, SYSTEMD_PATH, SYSTEMD_MANAGER_IFACE, "StartUnit");
 
     // TODO: Enhance when needed to support multiple-bmc instance systems
     method.append("obmc-bmc-service-quiesce@0.target");
@@ -150,7 +149,7 @@ void SystemdTargetLogging::processNameChangeSignal(sdbusplus::message_t& msg)
     msg.read(name, old_owner, new_owner);
 
     // Looking for systemd to be on dbus so we can call it
-    if (name == "org.freedesktop.systemd1")
+    if (name == SYSTEMD_SERVICE)
     {
         info("org.freedesktop.systemd1 is now on dbus");
         subscribeToSystemdSignals();
@@ -161,8 +160,7 @@ void SystemdTargetLogging::processNameChangeSignal(sdbusplus::message_t& msg)
 void SystemdTargetLogging::subscribeToSystemdSignals()
 {
     auto method = this->bus.new_method_call(
-        "org.freedesktop.systemd1", "/org/freedesktop/systemd1",
-        "org.freedesktop.systemd1.Manager", "Subscribe");
+        SYSTEMD_SERVICE, SYSTEMD_PATH, SYSTEMD_MANAGER_IFACE, "Subscribe");
 
     try
     {

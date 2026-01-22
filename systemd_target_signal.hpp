@@ -14,6 +14,11 @@ namespace state
 {
 namespace manager
 {
+
+constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_MANAGER_IFACE = "org.freedesktop.systemd1.Manager";
+
 /** @class SystemdTargetLogging
  *  @brief Object to monitor input systemd targets and create corresponding
  *         input errors for on failures
@@ -36,10 +41,8 @@ class SystemdTargetLogging
             bus,
             sdbusplus::bus::match::rules::type::signal() +
                 sdbusplus::bus::match::rules::member("JobRemoved") +
-                sdbusplus::bus::match::rules::path(
-                    "/org/freedesktop/systemd1") +
-                sdbusplus::bus::match::rules::interface(
-                    "org.freedesktop.systemd1.Manager"),
+                sdbusplus::bus::match::rules::path(SYSTEMD_PATH) +
+                sdbusplus::bus::match::rules::interface(SYSTEMD_MANAGER_IFACE),
             [this](sdbusplus::message_t& m) { systemdUnitChange(m); }),
         systemdNameOwnedChangedSignal(
             bus, sdbusplus::bus::match::rules::nameOwnerChanged(),
