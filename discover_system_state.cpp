@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     auto bmcRebootCause =
         sdbusplus::message::convert_from_string<BMC::RebootCause>(
             phosphor::state::manager::utils::getProperty(
-                bus, bmcPath.str, BMCState::interface,
+                bus, bmcPath.str(), BMCState::interface,
                 BMCState::property_names::last_reboot_cause));
 
 #if !RUN_APR_ON_PINHOLE_RESET
