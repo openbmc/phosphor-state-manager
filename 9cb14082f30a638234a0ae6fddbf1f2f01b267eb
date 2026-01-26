@@ -16,6 +16,24 @@
       "message": "i\u0027m confused.  It has a str member:\n\nusing object_path \u003d details::string_path_wrapper;\n\nstruct string_path_wrapper\n{\n    std::string str;",
       "revId": "9cb14082f30a638234a0ae6fddbf1f2f01b267eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7376465d_86a361f5",
+        "filename": "discover_system_state.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-01-26T16:31:16Z",
+      "side": 1,
+      "message": "yes, object_path has a `str` member variable as well as the \nsdbusplus::message::object_path also provides a `str()` method that returns \nthe underlying string. but using the method `str()` is the \npreferred approach",
+      "parentUuid": "953c6ddb_b24f6919",
+      "revId": "9cb14082f30a638234a0ae6fddbf1f2f01b267eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
