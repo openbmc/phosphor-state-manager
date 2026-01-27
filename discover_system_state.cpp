@@ -45,6 +45,8 @@ int main(int argc, char** argv)
 {
     using namespace phosphor::logging;
 
+    constexpr auto dbusPropertiesInterface = "org.freedesktop.DBus.Properties";
+
     size_t hostId = 0;
     int arg;
     int optIndex = 0;
@@ -128,16 +130,15 @@ int main(int argc, char** argv)
      */
     auto methodOneTime = bus.new_method_call(
         settings.service(settings.powerRestorePolicy, powerRestoreIntf).c_str(),
-        settings.powerRestorePolicyOneTime.c_str(),
-        "org.freedesktop.DBus.Properties", "Get");
+        settings.powerRestorePolicyOneTime.c_str(),dbusPropertiesInterface,
+        "Get");
     methodOneTime.append(
         powerRestoreIntf,
         PowerRestorePolicy::property_names::power_restore_policy);
 
     auto methodUserSetting = bus.new_method_call(
         settings.service(settings.powerRestorePolicy, powerRestoreIntf).c_str(),
-        settings.powerRestorePolicy.c_str(), "org.freedesktop.DBus.Properties",
-        "Get");
+        settings.powerRestorePolicy.c_str(), dbusPropertiesInterface, "Get");
     methodUserSetting.append(
         powerRestoreIntf,
         PowerRestorePolicy::property_names::power_restore_policy);
@@ -173,8 +174,8 @@ int main(int argc, char** argv)
         auto methodUserSettingDelay = bus.new_method_call(
             settings.service(settings.powerRestorePolicy, powerRestoreIntf)
                 .c_str(),
-            settings.powerRestorePolicy.c_str(),
-            "org.freedesktop.DBus.Properties", "Get");
+            settings.powerRestorePolicy.c_str(), dbusPropertiesInterface,
+            "Get");
 
         methodUserSettingDelay.append(
             powerRestoreIntf,
