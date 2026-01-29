@@ -18,6 +18,9 @@
 namespace phosphor::state::manager
 {
 
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+
 using ChassisInherit = sdbusplus::server::object_t<
     sdbusplus::server::xyz::openbmc_project::state::Chassis,
     sdbusplus::server::xyz::openbmc_project::state::PowerOnHours>;
@@ -50,7 +53,11 @@ class Chassis : public ChassisInherit
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
                 sdbusRule::path(SYSTEMD_OBJ_PATH) +
+<<<<<<< HEAD
                 sdbusRule::interface(SYSTEMD_MANAGER_INTERFACE),
+=======
+                sdbusRule::interface(SYSTEMD_INTERFACE),
+>>>>>>> 454666a (chassis: Move systemd constants to header file)
             [this](sdbusplus::message_t& m) { sysStateChange(m); }),
         id(id),
         pohTimer(

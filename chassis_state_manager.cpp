@@ -57,6 +57,16 @@ constexpr uint TYPE_UPS = 3;
 constexpr uint STATE_FULLY_CHARGED = 4;
 constexpr uint BATTERY_LVL_FULL = 8;
 
+<<<<<<< HEAD
+=======
+constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+
+constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
+constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
+
+constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+
+>>>>>>> 454666a (chassis: Move systemd constants to header file)
 void Chassis::createSystemdTargetTable()
 {
     systemdTargetTable = {
