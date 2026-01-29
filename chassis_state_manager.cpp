@@ -62,8 +62,6 @@ constexpr uint STATE_FULLY_CHARGED = 4;
 constexpr uint BATTERY_LVL_FULL = 8;
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
-constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";

@@ -22,6 +22,9 @@ namespace state
 namespace manager
 {
 
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+
 using ChassisInherit = sdbusplus::server::object_t<
     sdbusplus::server::xyz::openbmc_project::state::Chassis,
     sdbusplus::server::xyz::openbmc_project::state::PowerOnHours>;
@@ -52,8 +55,8 @@ class Chassis : public ChassisInherit
         systemdSignals(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
-                sdbusRule::path("/org/freedesktop/systemd1") +
-                sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+                sdbusRule::path(SYSTEMD_OBJ_PATH) +
+                sdbusRule::interface(SYSTEMD_INTERFACE),
             [this](sdbusplus::message_t& m) { sysStateChange(m); }),
         id(id),
         pohTimer(
