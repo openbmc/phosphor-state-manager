@@ -56,7 +56,6 @@ constexpr auto ACTIVATING_STATE = "activating";
 constexpr uint TYPE_UPS = 3;
 constexpr uint STATE_FULLY_CHARGED = 4;
 constexpr uint BATTERY_LVL_FULL = 8;
-
 void Chassis::createSystemdTargetTable()
 {
     systemdTargetTable = {

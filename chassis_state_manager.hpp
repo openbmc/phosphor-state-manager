@@ -18,6 +18,8 @@
 namespace phosphor::state::manager
 {
 
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
+
 using ChassisInherit = sdbusplus::server::object_t<
     sdbusplus::server::xyz::openbmc_project::state::Chassis,
     sdbusplus::server::xyz::openbmc_project::state::PowerOnHours>;
