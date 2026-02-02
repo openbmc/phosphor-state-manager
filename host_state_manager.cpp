@@ -312,7 +312,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         // This file is used to indicate to host related systemd services
         // that the host is already running and they should skip running.
         // Once the host state is back to running we can clear this file.
-        std::string hostFile = std::format(HOST_RUNNING_FILE, 0);
+        std::string hostFile = std::format(HOST_RUNNING_FILE, id);
         if (std::filesystem::exists(hostFile))
         {
             std::filesystem::remove(hostFile);
