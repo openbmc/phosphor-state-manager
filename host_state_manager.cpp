@@ -61,6 +61,8 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
+constexpr auto AUTO_REBOOT_PROPERTY = "AutoReboot";
+
 void Host::determineInitialState()
 {
     if (stateActive(getTarget(server::Host::HostState::Running)) ||
@@ -210,12 +212,12 @@ bool Host::isAutoReboot()
     auto methodOneTime = bus.new_method_call(
         settings.service(settings.autoReboot, autoRebootIntf).c_str(),
         settings.autoRebootOneTime.c_str(), SYSTEMD_PROPERTY_IFACE, "Get");
-    methodOneTime.append(autoRebootIntf, "AutoReboot");
+    methodOneTime.append(autoRebootIntf, AUTO_REBOOT_PROPERTY);
 
     auto methodUserSetting = bus.new_method_call(
         settings.service(settings.autoReboot, autoRebootIntf).c_str(),
         settings.autoReboot.c_str(), SYSTEMD_PROPERTY_IFACE, "Get");
-    methodUserSetting.append(autoRebootIntf, "AutoReboot");
+    methodUserSetting.append(autoRebootIntf, AUTO_REBOOT_PROPERTY);
 
     try
     {
