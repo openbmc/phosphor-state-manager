@@ -27,7 +27,6 @@ int main(int argc, char** argv)
 {
     size_t chassisId = 0;
     const auto* objPath = ChassisState::namespace_path::value;
-    auto chassisBusName = ChassisState::interface + std::to_string(chassisId);
     int arg;
     int optIndex = 0;
 
