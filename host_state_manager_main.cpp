@@ -4,6 +4,7 @@
 
 #include <getopt.h>
 
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <cstdlib>
@@ -11,6 +12,8 @@
 #include <filesystem>
 #include <format>
 #include <iostream>
+
+PHOSPHOR_LOG2_USING;
 
 constexpr auto LEGACY_HOST_STATE_PERSIST_PATH =
     "/var/lib/phosphor-state-manager/requestedHostTransition";
@@ -62,7 +65,15 @@ int main(int argc, char** argv)
         fs::path newPath{std::format(HOST_STATE_PERSIST_PATH, hostId)};
         if (fs::exists(legacyPath))
         {
-            fs::rename(legacyPath, newPath);
+            try
+            {
+                fs::rename(legacyPath, newPath);
+            }
+            catch (const fs::filesystem_error& e)
+            {
+                error("Failed to rename legacy file {LEGACY} to {NEW}: {ERROR}",
+                      "LEGACY", legacyPath, "NEW", newPath, "ERROR", e.what());
+            }
         }
     }
 
@@ -72,7 +83,16 @@ int main(int argc, char** argv)
     phosphor::state::manager::Host manager(bus, objPathInst.c_str(), hostId);
 
     auto dir = fs::path(HOST_STATE_PERSIST_PATH).parent_path();
-    fs::create_directories(dir);
+    try
+    {
+        fs::create_directories(dir);
+    }
+    catch (const fs::filesystem_error& e)
+    {
+        error("Failed to create persist directory {DIR}: {ERROR}", "DIR", dir,
+              "ERROR", e.what());
+        return 1;
+    }
 
     // For backwards compatibility, request a busname without host id if
     // input id is 0.
