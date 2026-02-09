@@ -315,7 +315,15 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         std::string hostFile = std::format(HOST_RUNNING_FILE, id);
         if (std::filesystem::exists(hostFile))
         {
-            std::filesystem::remove(hostFile);
+            try
+            {
+                std::filesystem::remove(hostFile);
+            }
+            catch (const std::filesystem::filesystem_error& e)
+            {
+                error("Failed to remove host running file {FILE}: {ERROR}",
+                      "FILE", hostFile, "ERROR", e.what());
+            }
         }
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Quiesced)) &&
