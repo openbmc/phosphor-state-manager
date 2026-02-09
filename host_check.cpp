@@ -205,7 +205,15 @@ bool isHostRunning(size_t id)
             // indicate to services that host is running
             std::string hostFile = std::format(HOST_RUNNING_FILE, id);
             std::ofstream outfile(hostFile);
-            outfile.close();
+            if (!outfile)
+            {
+                error("Failed to create host running file {FILE}", "FILE",
+                      hostFile);
+            }
+            else
+            {
+                outfile.close();
+            }
             return true;
         }
     }
