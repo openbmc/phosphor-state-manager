@@ -41,6 +41,18 @@ using BMCState = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
 } // namespace state
 } // namespace phosphor
 
+// Helper function to handle power restore delay
+static void applyPowerRestoreDelay(sdbusplus::bus_t& bus,
+                                   std::chrono::microseconds delayUsec)
+{
+#ifdef APPLY_POWER_POLICY_WHEN_BMC_READY
+    auto delaySec = std::chrono::duration_cast<std::chrono::seconds>(delayUsec);
+    phosphor::state::manager::utils::waitBmcReady(bus, delaySec);
+#else
+    std::this_thread::sleep_for(delayUsec);
+#endif
+}
+
 int main(int argc, char** argv)
 {
     using namespace phosphor::logging;
@@ -201,11 +213,7 @@ int main(int argc, char** argv)
             info(
                 "power_policy=ALWAYS_POWER_ON, powering host{HOST_ID} on ({DELAY}s delay)",
                 "HOST_ID", hostId, "DELAY", powerRestoreDelaySec.count());
-#ifdef APPLY_POWER_POLICY_WHEN_BMC_READY
-            utils::waitBmcReady(bus, powerRestoreDelaySec);
-#else
-            std::this_thread::sleep_for(powerRestoreDelayUsec);
-#endif
+            applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
             phosphor::state::manager::utils::setProperty(
                 bus, hostPath, HostState::interface,
                 HostState::property_names::restart_cause,
@@ -233,11 +241,7 @@ int main(int argc, char** argv)
             info(
                 "power_policy=ALWAYS_POWER_OFF, set requested state to off ({DELAY}s delay)",
                 "DELAY", powerRestoreDelaySec.count());
-#ifdef APPLY_POWER_POLICY_WHEN_BMC_READY
-            utils::waitBmcReady(bus, powerRestoreDelaySec);
-#else
-            std::this_thread::sleep_for(powerRestoreDelayUsec);
-#endif
+            applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HostState::interface,
@@ -256,11 +260,7 @@ int main(int argc, char** argv)
         {
             info("power_policy=RESTORE, restoring last state ({DELAY}s delay)",
                  "DELAY", powerRestoreDelaySec.count());
-#ifdef APPLY_POWER_POLICY_WHEN_BMC_READY
-            utils::waitBmcReady(bus, powerRestoreDelaySec);
-#else
-            std::this_thread::sleep_for(powerRestoreDelayUsec);
-#endif
+            applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
             // Read last requested state and re-request it to execute it
             auto hostReqState = phosphor::state::manager::utils::getProperty(
                 bus, hostPath, HostState::interface,
