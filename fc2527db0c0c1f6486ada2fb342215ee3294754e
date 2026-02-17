@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93aa2b60_9f48ab33",
+        "filename": "host_state_manager_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-02-17T20:01:18Z",
+      "side": 1,
+      "message": "I\u0027m slightly concerned with this return 1 as it will error out the application now (change in behavior). i.e. if the dir is already there and we hit a weird permission issue of some sort that causes an error. But...it should be ok, will just have to keep an eye on some software update paths.",
+      "revId": "fc2527db0c0c1f6486ada2fb342215ee3294754e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
