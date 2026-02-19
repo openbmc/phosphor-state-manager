@@ -17,6 +17,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <cerrno>
 
 namespace phosphor
 {
@@ -276,8 +277,13 @@ void BMC::updateLastRebootTime()
     using namespace std::chrono;
     struct sysinfo info;
 
-    auto rc = sysinfo(&info);
-    assert(rc == 0);
+    if (sysinfo(&info) != 0)
+    {
+        auto rc = errno;
+        error("Failed to query system uptime with errno {ERRNO}", "ERRNO", rc);
+        return;
+    }
+
     // Since uptime is in seconds, also get the current time in seconds.
     auto now = time_point_cast<seconds>(system_clock::now());
     auto rebootTimeTs = now - seconds(info.uptime);
