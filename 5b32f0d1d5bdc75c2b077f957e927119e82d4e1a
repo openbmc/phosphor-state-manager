@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e936e88_bae4e909",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-02-21T14:33:55Z",
+      "side": 1,
+      "message": "This reads like an LLLM commit message, it has more of a \"what\" the commit does vs. the \"why\". Could you fix that? I assume the why is because exception handling provides better information in the case of a failure. The assert would not cause an \"invalid reboot time use in release builds\", it would cause the application to fail. You\u0027ve changed that behavior here with us just not doing the update. I\u0027m ok with moving to an exception handler but I think we should still exit out of the application to keep the same behavior as before. sysinfo \"should\" not be failing.",
+      "revId": "5b32f0d1d5bdc75c2b077f957e927119e82d4e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a566a426_5626a40d",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-02-21T14:33:55Z",
+      "side": 1,
+      "message": "std::abort to keep same behavior as before",
+      "revId": "5b32f0d1d5bdc75c2b077f957e927119e82d4e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
