@@ -41,15 +41,15 @@ class BMC : public BMCInherit
         stateSignal(std::make_unique<decltype(stateSignal)::element_type>(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
-                sdbusRule::path("/org/freedesktop/systemd1") +
-                sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+                sdbusRule::path(SYSTEMD_OBJ_PATH) +
+                sdbusRule::interface(SYSTEMD_MANAGER_INTERFACE),
             [this](sdbusplus::message_t& m) { bmcStateChange(m); })),
 
         timeSyncSignal(std::make_unique<decltype(timeSyncSignal)::element_type>(
             bus,
             sdbusRule::propertiesChanged(
                 "/org/freedesktop/systemd1/unit/time_2dsync_2etarget",
-                "org.freedesktop.systemd1.Unit"),
+                SYSTEMD_UNIT_INTERFACE),
             [this](sdbusplus::message_t& m) {
                 std::string interface;
                 std::unordered_map<std::string, std::variant<std::string>>

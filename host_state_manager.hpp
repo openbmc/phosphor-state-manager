@@ -58,14 +58,14 @@ class Host : public HostInherit
         systemdSignalJobRemoved(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
-                sdbusRule::path("/org/freedesktop/systemd1") +
-                sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+                sdbusRule::path(SYSTEMD_OBJ_PATH) +
+                sdbusRule::interface(SYSTEMD_MANAGER_INTERFACE),
             [this](sdbusplus::message_t& m) { sysStateChangeJobRemoved(m); }),
         systemdSignalJobNew(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobNew") +
-                sdbusRule::path("/org/freedesktop/systemd1") +
-                sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+                sdbusRule::path(SYSTEMD_OBJ_PATH) +
+                sdbusRule::interface(SYSTEMD_MANAGER_INTERFACE),
             [this](sdbusplus::message_t& m) { sysStateChangeJobNew(m); }),
         settings(bus, id), id(id)
     {

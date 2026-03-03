@@ -28,10 +28,6 @@ using namespace std::literals::chrono_literals;
 
 PHOSPHOR_LOG2_USING;
 
-constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
-constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 using ActBlockTrans = sdbusplus::client::xyz::openbmc_project::software::
     ActivationBlocksTransition<>;
@@ -39,7 +35,7 @@ using ActBlockTrans = sdbusplus::client::xyz::openbmc_project::software::
 void subscribeToSystemdSignals(sdbusplus::bus_t& bus)
 {
     auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                      SYSTEMD_INTERFACE, "Subscribe");
+                                      SYSTEMD_MANAGER_INTERFACE, "Subscribe");
 
     try
     {

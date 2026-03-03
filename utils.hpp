@@ -7,6 +7,11 @@
 
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
+constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_MANAGER_INTERFACE = "org.freedesktop.systemd1.Manager";
+constexpr auto SYSTEMD_UNIT_INTERFACE = "org.freedesktop.systemd1.Unit";
+
 namespace phosphor
 {
 namespace state

@@ -61,12 +61,6 @@ constexpr uint TYPE_UPS = 3;
 constexpr uint STATE_FULLY_CHARGED = 4;
 constexpr uint BATTERY_LVL_FULL = 8;
 
-constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
-constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-
-constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
-
 void Chassis::createSystemdTargetTable()
 {
     systemdTargetTable = {
@@ -460,8 +454,9 @@ void Chassis::powerSysInputsChangeEvent(sdbusplus::message_t& msg)
 
 void Chassis::startUnit(const std::string& sysdUnit)
 {
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "StartUnit");
+    auto method =
+        this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                  SYSTEMD_MANAGER_INTERFACE, "StartUnit");
 
     method.append(sysdUnit);
     method.append("replace");
@@ -473,8 +468,9 @@ void Chassis::startUnit(const std::string& sysdUnit)
 
 void Chassis::restartUnit(const std::string& sysdUnit)
 {
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "RestartUnit");
+    auto method =
+        this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                  SYSTEMD_MANAGER_INTERFACE, "RestartUnit");
 
     method.append(sysdUnit);
     method.append("replace");
@@ -489,8 +485,9 @@ bool Chassis::stateActive(const std::string& target)
     std::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
 
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "GetUnit");
+    auto method =
+        this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                  SYSTEMD_MANAGER_INTERFACE, "GetUnit");
 
     method.append(target);
 
@@ -510,7 +507,7 @@ bool Chassis::stateActive(const std::string& target)
         static_cast<const std::string&>(unitTargetPath).c_str(),
         PROPERTY_INTERFACE, "Get");
 
-    method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
+    method.append(SYSTEMD_UNIT_INTERFACE, "ActiveState");
 
     try
     {

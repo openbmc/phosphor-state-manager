@@ -35,9 +35,6 @@ using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 constexpr auto HOST_STATE_SVC = "xyz.openbmc_project.State.Host";
 constexpr auto HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
 
-constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
-constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto HOST_STATE_QUIESCE_TGT = "obmc-host-quiesce@0.target";
 
 bool wasHostBooting(sdbusplus::bus_t& bus)
@@ -126,8 +123,9 @@ void moveToHostQuiesce(sdbusplus::bus_t& bus)
 {
     try
     {
-        auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                          SYSTEMD_INTERFACE, "StartUnit");
+        auto method =
+            bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                SYSTEMD_MANAGER_INTERFACE, "StartUnit");
 
         method.append(HOST_STATE_QUIESCE_TGT);
         method.append("replace");

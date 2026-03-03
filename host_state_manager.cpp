@@ -54,12 +54,6 @@ using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 constexpr auto ACTIVE_STATE = "active";
 constexpr auto ACTIVATING_STATE = "activating";
 
-constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
-constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
-constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-
-constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
-
 constexpr auto AUTO_REBOOT_PROPERTY = "AutoReboot";
 
 void Host::determineInitialState()
@@ -144,8 +138,9 @@ void Host::executeTransition(Transition tranReq)
 {
     const auto& sysdUnit = getTarget(tranReq);
 
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "StartUnit");
+    auto method =
+        this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                  SYSTEMD_MANAGER_INTERFACE, "StartUnit");
 
     method.append(sysdUnit);
     method.append("replace");
@@ -160,8 +155,9 @@ bool Host::stateActive(const std::string& target)
     std::variant<std::string> currentState;
     sdbusplus::message::object_path unitTargetPath;
 
-    auto method = this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                            SYSTEMD_INTERFACE, "GetUnit");
+    auto method =
+        this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                  SYSTEMD_MANAGER_INTERFACE, "GetUnit");
 
     method.append(target);
 
@@ -181,7 +177,7 @@ bool Host::stateActive(const std::string& target)
         static_cast<const std::string&>(unitTargetPath).c_str(),
         PROPERTY_INTERFACE, "Get");
 
-    method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
+    method.append(SYSTEMD_UNIT_INTERFACE, "ActiveState");
 
     try
     {
