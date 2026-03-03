@@ -11,7 +11,6 @@
 
 PHOSPHOR_LOG2_USING;
 
-constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 using LoggingSettings =
     sdbusplus::client::xyz::openbmc_project::logging::Settings<>;
 

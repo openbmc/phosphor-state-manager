@@ -47,7 +47,6 @@ const std::map<server::BMC::Transition, const char*> SYSTEMD_TABLE = {
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-constexpr auto SYSTEMD_PRP_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void BMC::bmcIsQuiesced()
 {
@@ -97,7 +96,7 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
     method = this->bus.new_method_call(
         SYSTEMD_SERVICE,
         static_cast<const std::string&>(unitTargetPath).c_str(),
-        SYSTEMD_PRP_INTERFACE, "Get");
+        PROPERTY_INTERFACE, "Get");
 
     method.append("org.freedesktop.systemd1.Unit", "ActiveState");
 

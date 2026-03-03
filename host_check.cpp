@@ -2,6 +2,8 @@
 
 #include "host_check.hpp"
 
+#include "utils.hpp"
+
 #include <unistd.h>
 
 #include <phosphor-logging/lg2.hpp>
@@ -35,9 +37,6 @@ using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 using Chassis = sdbusplus::client::xyz::openbmc_project::state::Chassis<>;
 using HostFirmware =
     sdbusplus::client::xyz::openbmc_project::condition::HostFirmware<>;
-
-// Required strings for sending the msg to check on host
-constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 constexpr auto CHASSIS_STATE_SVC = "xyz.openbmc_project.State.Chassis";
 

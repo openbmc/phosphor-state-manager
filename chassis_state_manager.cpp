@@ -65,10 +65,7 @@ constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
-constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
-
-constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 void Chassis::createSystemdTargetTable()
 {
@@ -106,7 +103,7 @@ void Chassis::determineInitialState()
     std::variant<int> pgood = -1;
     auto method = this->bus.new_method_call(
         "org.openbmc.control.Power", "/org/openbmc/control/power0",
-        "org.freedesktop.DBus.Properties", "Get");
+        PROPERTY_INTERFACE, "Get");
 
     method.append("org.openbmc.control.Power", "pgood");
     try
@@ -511,7 +508,7 @@ bool Chassis::stateActive(const std::string& target)
     method = this->bus.new_method_call(
         SYSTEMD_SERVICE,
         static_cast<const std::string&>(unitTargetPath).c_str(),
-        SYSTEMD_PROPERTY_IFACE, "Get");
+        PROPERTY_INTERFACE, "Get");
 
     method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
 

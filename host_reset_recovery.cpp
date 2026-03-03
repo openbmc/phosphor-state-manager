@@ -1,5 +1,7 @@
 #include "config.h"
 
+#include "utils.hpp"
+
 #include <unistd.h>
 
 #include <phosphor-logging/elog.hpp>
@@ -32,7 +34,6 @@ using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 
 constexpr auto HOST_STATE_SVC = "xyz.openbmc_project.State.Host";
 constexpr auto HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
-constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";

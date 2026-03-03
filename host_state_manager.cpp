@@ -58,7 +58,6 @@ constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
-constexpr auto SYSTEMD_PROPERTY_IFACE = "org.freedesktop.DBus.Properties";
 constexpr auto SYSTEMD_INTERFACE_UNIT = "org.freedesktop.systemd1.Unit";
 
 constexpr auto AUTO_REBOOT_PROPERTY = "AutoReboot";
@@ -180,7 +179,7 @@ bool Host::stateActive(const std::string& target)
     method = this->bus.new_method_call(
         SYSTEMD_SERVICE,
         static_cast<const std::string&>(unitTargetPath).c_str(),
-        SYSTEMD_PROPERTY_IFACE, "Get");
+        PROPERTY_INTERFACE, "Get");
 
     method.append(SYSTEMD_INTERFACE_UNIT, "ActiveState");
 
@@ -211,12 +210,12 @@ bool Host::isAutoReboot()
      */
     auto methodOneTime = bus.new_method_call(
         settings.service(settings.autoReboot, autoRebootIntf).c_str(),
-        settings.autoRebootOneTime.c_str(), SYSTEMD_PROPERTY_IFACE, "Get");
+        settings.autoRebootOneTime.c_str(), PROPERTY_INTERFACE, "Get");
     methodOneTime.append(autoRebootIntf, AUTO_REBOOT_PROPERTY);
 
     auto methodUserSetting = bus.new_method_call(
         settings.service(settings.autoReboot, autoRebootIntf).c_str(),
-        settings.autoReboot.c_str(), SYSTEMD_PROPERTY_IFACE, "Get");
+        settings.autoReboot.c_str(), PROPERTY_INTERFACE, "Get");
     methodUserSetting.append(autoRebootIntf, AUTO_REBOOT_PROPERTY);
 
     try

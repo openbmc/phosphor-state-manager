@@ -31,7 +31,6 @@ PHOSPHOR_LOG2_USING;
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 using ActBlockTrans = sdbusplus::client::xyz::openbmc_project::software::

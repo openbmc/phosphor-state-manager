@@ -5,6 +5,8 @@
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
+constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
+
 namespace phosphor
 {
 namespace state
