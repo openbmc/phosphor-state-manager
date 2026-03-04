@@ -416,14 +416,15 @@ Host::Transition Host::requestedHostTransition(Transition value)
     info("Host{HOST_ID} state transition request of {REQ}", "HOST_ID", id,
          "REQ", value);
 
-#if ONLY_ALLOW_BOOT_WHEN_BMC_READY
-    if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
+    if constexpr (ONLY_ALLOW_BOOT_WHEN_BMC_READY)
     {
-        info("BMC State is not Ready so no host on operations allowed");
-        throw sdbusplus::xyz::openbmc_project::State::Host::Error::
-            BMCNotReady();
+        if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
+        {
+            info("BMC State is not Ready so no host on operations allowed");
+            throw sdbusplus::xyz::openbmc_project::State::Host::Error::
+                BMCNotReady();
+        }
     }
-#endif
 
     // If this is not a power off request then we need to
     // decrement the reboot counter.  This code should
