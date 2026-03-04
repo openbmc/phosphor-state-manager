@@ -88,10 +88,11 @@ void Host::setupSupportedTransitions()
         Transition::Off,
         Transition::Reboot,
         Transition::GracefulWarmReboot,
-#if ENABLE_FORCE_WARM_REBOOT
-        Transition::ForceWarmReboot,
-#endif
     };
+    if constexpr (ENABLE_FORCE_WARM_REBOOT)
+    {
+        supportedTransitions.insert(Transition::ForceWarmReboot);
+    }
     server::Host::allowedHostTransitions(supportedTransitions);
 }
 
