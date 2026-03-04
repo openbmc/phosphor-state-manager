@@ -266,7 +266,6 @@ bool waitBmcReady(sdbusplus::bus_t& bus, std::chrono::seconds timeout)
     return false;
 }
 
-#ifdef CHECK_FWUPDATE_BEFORE_DO_TRANSITION
 bool isFirmwareUpdating(sdbusplus::bus_t& bus)
 {
     /*
@@ -299,7 +298,6 @@ bool isFirmwareUpdating(sdbusplus::bus_t& bus)
 
     return !mapperResponse.empty();
 }
-#endif // CHECK_FWUPDATE_BEFORE_DO_TRANSITION
 
 } // namespace utils
 } // namespace manager
