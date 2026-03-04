@@ -75,7 +75,7 @@ conf.set10(
 
 conf.set('ENABLE_WARM_REBOOT', get_option('warm-reboot').allowed())
 
-conf.set('ENABLE_FORCE_WARM_REBOOT', get_option('force-warm-reboot').allowed())
+conf.set10('ENABLE_FORCE_WARM_REBOOT', get_option('force-warm-reboot').allowed())
 
 conf.set10(
     'APPLY_POWER_POLICY_WHEN_BMC_READY',
