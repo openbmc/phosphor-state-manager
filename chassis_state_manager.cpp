@@ -582,14 +582,15 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
     info(
         "Change to Chassis{CHASSIS_ID} Requested Power State: {REQ_POWER_TRAN}",
         "CHASSIS_ID", id, "REQ_POWER_TRAN", value);
-#if ONLY_ALLOW_BOOT_WHEN_BMC_READY
-    if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
+    if constexpr (ONLY_ALLOW_BOOT_WHEN_BMC_READY)
     {
-        info("BMC State is not Ready so no chassis on operations allowed");
-        throw sdbusplus::xyz::openbmc_project::State::Chassis::Error::
-            BMCNotReady();
+        if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
+        {
+            info("BMC State is not Ready so no chassis on operations allowed");
+            throw sdbusplus::xyz::openbmc_project::State::Chassis::Error::
+                BMCNotReady();
+        }
     }
-#endif
 
     if constexpr (CHECK_FWUPDATE_BEFORE_DO_TRANSITION)
     {
