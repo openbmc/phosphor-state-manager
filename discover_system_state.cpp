@@ -45,12 +45,16 @@ using BMCState = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
 static void applyPowerRestoreDelay(sdbusplus::bus_t& bus,
                                    std::chrono::microseconds delayUsec)
 {
-#ifdef APPLY_POWER_POLICY_WHEN_BMC_READY
-    auto delaySec = std::chrono::duration_cast<std::chrono::seconds>(delayUsec);
-    phosphor::state::manager::utils::waitBmcReady(bus, delaySec);
-#else
-    std::this_thread::sleep_for(delayUsec);
-#endif
+    if constexpr (APPLY_POWER_POLICY_WHEN_BMC_READY)
+    {
+        auto delaySec =
+            std::chrono::duration_cast<std::chrono::seconds>(delayUsec);
+        phosphor::state::manager::utils::waitBmcReady(bus, delaySec);
+    }
+    else
+    {
+        std::this_thread::sleep_for(delayUsec);
+    }
 }
 
 int main(int argc, char** argv)
