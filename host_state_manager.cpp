@@ -109,19 +109,31 @@ void Host::createSystemdTargetMaps()
         {Transition::Off, std::format("obmc-host-shutdown@{}.target", id)},
         {Transition::On, std::format("obmc-host-start@{}.target", id)},
         {Transition::Reboot, std::format("obmc-host-reboot@{}.target", id)},
-// Some systems do not support a warm reboot so just map the reboot
-// requests to our normal cold reboot in that case
-#if ENABLE_WARM_REBOOT
-        {Transition::GracefulWarmReboot,
-         std::format("obmc-host-warm-reboot@{}.target", id)},
-        {Transition::ForceWarmReboot,
-         std::format("obmc-host-force-warm-reboot@{}.target", id)}};
-#else
-        {Transition::GracefulWarmReboot,
-         std::format("obmc-host-reboot@{}.target", id)},
-        {Transition::ForceWarmReboot,
-         std::format("obmc-host-reboot@{}.target", id)}};
-#endif
+    };
+
+    // Some systems do not support a warm reboot so just map the reboot
+    // requests to our normal cold reboot in that case
+    if constexpr (ENABLE_WARM_REBOOT)
+    {
+        transitionTargetTable.insert(
+            {Transition::GracefulWarmReboot,
+             std::format("obmc-host-warm-reboot@{}.target", id)});
+
+        transitionTargetTable.insert(
+            {{Transition::ForceWarmReboot,
+              std::format("obmc-host-force-warm-reboot@{}.target", id)}});
+    }
+    else
+    {
+        transitionTargetTable.insert(
+            {Transition::GracefulWarmReboot,
+             std::format("obmc-host-reboot@{}.target", id)});
+
+        transitionTargetTable.insert(
+            {Transition::ForceWarmReboot,
+             std::format("obmc-host-reboot@{}.target", id)});
+    }
+
     hostCrashTarget = std::format("obmc-host-crash@{}.target", id);
 }
 
