@@ -68,7 +68,7 @@ conf.set_quoted('HOST_RUNNING_FILE', '/run/openbmc/host@{}-on')
 
 conf.set_quoted('CHASSIS_ON_FILE', '/run/openbmc/chassis@{}-on')
 
-conf.set(
+conf.set10(
     'CHECK_FWUPDATE_BEFORE_DO_TRANSITION',
     get_option('check-fwupdate-before-do-transition').allowed(),
 )

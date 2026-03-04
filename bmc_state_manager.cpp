@@ -233,17 +233,18 @@ BMC::Transition BMC::requestedBMCTransition(Transition value)
          "{REQUESTED_BMC_TRANSITION}",
          "REQUESTED_BMC_TRANSITION", value);
 
-#ifdef CHECK_FWUPDATE_BEFORE_DO_TRANSITION
-    /*
-     * Do not do transition when the any firmware being updated
-     */
-    if ((server::BMC::Transition::Reboot == value) &&
-        (phosphor::state::manager::utils::isFirmwareUpdating(this->bus)))
+    if constexpr (CHECK_FWUPDATE_BEFORE_DO_TRANSITION)
     {
-        info("Firmware being updated, reject the transition request");
-        throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+        /*
+         * Do not do transition when the any firmware being updated
+         */
+        if ((server::BMC::Transition::Reboot == value) &&
+            (phosphor::state::manager::utils::isFirmwareUpdating(this->bus)))
+        {
+            info("Firmware being updated, reject the transition request");
+            throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+        }
     }
-#endif // CHECK_FWUPDATE_BEFORE_DO_TRANSITION
 
     executeTransition(value);
     return server::BMC::requestedBMCTransition(value);
