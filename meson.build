@@ -73,19 +73,16 @@ conf.set10(
     get_option('check-fwupdate-before-do-transition').allowed(),
 )
 
+conf.set('ENABLE_WARM_REBOOT', get_option('warm-reboot').allowed())
+
+conf.set('ENABLE_FORCE_WARM_REBOOT', get_option('force-warm-reboot').allowed())
+
+conf.set(
+    'APPLY_POWER_POLICY_WHEN_BMC_READY',
+    get_option('apply-power-policy-bmc-ready').allowed(),
+)
+
 configure_file(output: 'config.h', configuration: conf)
-
-if (get_option('warm-reboot').allowed())
-    add_project_arguments('-DENABLE_WARM_REBOOT', language: 'cpp')
-endif
-
-if (get_option('force-warm-reboot').allowed())
-    add_project_arguments('-DENABLE_FORCE_WARM_REBOOT', language: 'cpp')
-endif
-
-if (get_option('apply-power-policy-bmc-ready').allowed())
-    add_project_arguments('-DAPPLY_POWER_POLICY_WHEN_BMC_READY', language: 'cpp')
-endif
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 sdbusplus = dependency('sdbusplus')
