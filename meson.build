@@ -73,7 +73,7 @@ conf.set10(
     get_option('check-fwupdate-before-do-transition').allowed(),
 )
 
-conf.set('ENABLE_WARM_REBOOT', get_option('warm-reboot').allowed())
+conf.set10('ENABLE_WARM_REBOOT', get_option('warm-reboot').allowed())
 
 conf.set10('ENABLE_FORCE_WARM_REBOOT', get_option('force-warm-reboot').allowed())
 
