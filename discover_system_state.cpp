@@ -227,14 +227,13 @@ int main(int argc, char** argv)
         // Always execute power on if AlwaysOn is set, otherwise check config
         // option (and AC loss status) on whether to execute other policy
         // settings
-#if ONLY_RUN_APR_ON_POWER_LOSS
-        else if (!phosphor::state::manager::utils::checkACLoss(hostId))
+        else if (ONLY_RUN_APR_ON_POWER_LOSS &&
+                 !phosphor::state::manager::utils::checkACLoss(hostId))
         {
             info(
                 "Chassis power was not on prior to BMC reboot so do not run any further power policy");
             return 0;
         }
-#endif
         else if (RestorePolicy::Policy::AlwaysOff ==
                  RestorePolicy::convertPolicyFromString(powerPolicy))
         {
