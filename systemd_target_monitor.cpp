@@ -71,10 +71,10 @@ int main(int argc, char* argv[])
         exit(-1);
     }
 
-    ServiceMonitorData serviceData;
+    ServiceMonitorResult serviceResult;
     if (!serviceFilePaths.empty())
     {
-        serviceData = parseServiceFiles(serviceFilePaths);
+        serviceResult = parseServiceFiles(serviceFilePaths);
     }
 
     if (gVerbose)
@@ -83,7 +83,8 @@ int main(int argc, char* argv[])
     }
 
     phosphor::state::manager::SystemdTargetLogging targetMon(
-        targetData, serviceData, bus);
+        targetData, serviceResult.services, serviceResult.stateChangeServices,
+        bus);
 
     // Subscribe to systemd D-bus signals indicating target completions
     targetMon.subscribeToSystemdSignals();
