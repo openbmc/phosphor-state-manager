@@ -10,6 +10,9 @@
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
+#include <string>
+#include <variant>
+
 namespace phosphor
 {
 namespace state
@@ -25,6 +28,9 @@ using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 using LoggingCreate =
     sdbusplus::client::xyz::openbmc_project::logging::Create<>;
 using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
+
+constexpr auto CRITICAL_SERVICE_ERROR =
+    "xyz.openbmc_project.State.Error.CriticalServiceFailure";
 
 void SystemdTargetLogging::startBmcQuiesceTarget()
 {
@@ -110,8 +116,7 @@ std::string SystemdTargetLogging::processError(const std::string& unit,
             utils::createBmcDump(this->bus);
             // Enter BMC Quiesce when a critical service fails
             startBmcQuiesceTarget();
-            return (std::string{
-                "xyz.openbmc_project.State.Error.CriticalServiceFailure"});
+            return std::string{CRITICAL_SERVICE_ERROR};
         }
     }
 
@@ -191,7 +196,145 @@ void SystemdTargetLogging::subscribeToSystemdSignals()
     // systemd signals
     this->systemdNameOwnedChangedSignal.~match();
 
+    // Now that systemd is available, set up state-change monitoring
+    initStateChangeMonitoring();
+
     return;
+}
+
+void SystemdTargetLogging::initStateChangeMonitoring()
+{
+    if (this->stateChangeServiceData.empty())
+    {
+        return;
+    }
+
+    // Guard against duplicate initialization (e.g. if systemd restarts
+    // on dbus and subscribeToSystemdSignals is called again)
+    if (this->stateChangeMonitoringInitialized)
+    {
+        return;
+    }
+
+    for (const auto& service : this->stateChangeServiceData)
+    {
+        // Use LoadUnit to resolve the service name to a unit object path.
+        // LoadUnit will load the unit into memory if it isn't already.
+        auto method =
+            this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                      SYSTEMD_MANAGER_INTERFACE, "LoadUnit");
+        method.append(service);
+
+        sdbusplus::message::object_path unitPath;
+        try
+        {
+            unitPath = this->bus.call(method)
+                           .unpack<sdbusplus::message::object_path>();
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            error("Failed to load unit for state-change monitoring, "
+                  "unit:{UNIT}, error:{ERROR}",
+                  "UNIT", service, "ERROR", e);
+            continue;
+        }
+
+        // Install a PropertiesChanged match on this unit's
+        // org.freedesktop.systemd1.Unit interface
+        auto matchRule = sdbusplus::bus::match::rules::propertiesChanged(
+            unitPath.str, SYSTEMD_UNIT_INTERFACE);
+
+        this->stateChangeMatches.emplace_back(
+            this->bus, matchRule,
+            [this, svcName = service](sdbusplus::message_t& m) {
+                processStateChange(m, svcName);
+            });
+
+        // After installing the match, read the current ActiveState to
+        // catch services that already failed before we started monitoring.
+        // This closes the race where a service crashes before our match
+        // is in place — the PropertiesChanged signal would have been
+        // missed, but the state is already "failed".
+        auto getMethod = this->bus.new_method_call(
+            SYSTEMD_SERVICE, unitPath.str.c_str(), PROPERTY_INTERFACE, "Get");
+        getMethod.append(SYSTEMD_UNIT_INTERFACE, "ActiveState");
+
+        try
+        {
+            auto currentState =
+                this->bus.call(getMethod).unpack<std::variant<std::string>>();
+            const auto* stateStr = std::get_if<std::string>(&currentState);
+            if (stateStr != nullptr && *stateStr == "failed")
+            {
+                info("Immediate-quiesce service already in failed state "
+                     "at monitor startup, unit:{UNIT}, result:{RESULT}",
+                     "UNIT", service, "RESULT", *stateStr);
+                utils::createBmcDump(this->bus);
+                logError(CRITICAL_SERVICE_ERROR, *stateStr, service);
+                startBmcQuiesceTarget();
+            }
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            error("Failed to read current ActiveState for unit:{UNIT}, "
+                  "error:{ERROR}",
+                  "UNIT", service, "ERROR", e);
+        }
+    }
+
+    this->stateChangeMonitoringInitialized = true;
+}
+
+void SystemdTargetLogging::processStateChange(sdbusplus::message_t& msg,
+                                              const std::string& unitName)
+{
+    // PropertiesChanged carries all changed properties. systemd unit
+    // properties include various types, so the variant must be wide enough
+    // to deserialize the entire signal even though we only inspect
+    // ActiveState (string).
+    using PropVariant = std::variant<std::string, bool, uint32_t, uint64_t,
+                                     int32_t, int64_t, double>;
+    using PropMap = std::map<std::string, PropVariant>;
+
+    std::string interface;
+    PropMap changedProperties;
+
+    try
+    {
+        msg.read(interface, changedProperties);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to read PropertiesChanged signal for unit:{UNIT}, "
+              "error:{ERROR}",
+              "UNIT", unitName, "ERROR", e);
+        return;
+    }
+
+    auto it = changedProperties.find("ActiveState");
+    if (it == changedProperties.end())
+    {
+        return;
+    }
+
+    const auto* activeStatePtr = std::get_if<std::string>(&it->second);
+    if (activeStatePtr == nullptr || *activeStatePtr != "failed")
+    {
+        return;
+    }
+
+    info("Monitored immediate-quiesce service has hit an error, "
+         "unit:{UNIT}, result:{RESULT}",
+         "UNIT", unitName, "RESULT", *activeStatePtr);
+
+    // Generate a BMC dump when an immediate-quiesce service fails
+    utils::createBmcDump(this->bus);
+
+    // Log the error
+    logError(CRITICAL_SERVICE_ERROR, *activeStatePtr, unitName);
+
+    // Enter BMC Quiesce
+    startBmcQuiesceTarget();
 }
 
 } // namespace manager
