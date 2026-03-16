@@ -24,12 +24,14 @@ TEST(TargetSignalData, BasicPaths)
         "xyz.openbmc_project.biosconfig_manager.service",
         "xyz.openbmc_project.Dump.Manager.service"};
 
+    ImmediateQuiesceData immediateQuiesceServiceData;
+
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     phosphor::state::manager::SystemdTargetLogging targetMon(
-        targetData, serviceData, bus);
+        targetData, serviceData, immediateQuiesceServiceData, bus);
 
     std::string invalidUnit = "invalid_unit";
     std::string validError = "timeout";
