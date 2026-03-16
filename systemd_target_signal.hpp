@@ -7,6 +7,9 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 
+#include <string>
+#include <vector>
+
 extern bool gVerbose;
 
 namespace phosphor
@@ -32,8 +35,10 @@ class SystemdTargetLogging
 
     SystemdTargetLogging(const TargetErrorData& targetData,
                          const ServiceMonitorData& serviceData,
+                         const StateChangeMonitorData& stateChangeServiceData,
                          sdbusplus::bus_t& bus) :
-        targetData(targetData), serviceData(serviceData), bus(bus),
+        targetData(targetData), serviceData(serviceData),
+        stateChangeServiceData(stateChangeServiceData), bus(bus),
         systemdJobRemovedSignal(
             bus,
             sdbusplus::bus::match::rules::type::signal() +
@@ -101,11 +106,32 @@ class SystemdTargetLogging
      */
     void processNameChangeSignal(sdbusplus::message_t& msg);
 
+    /** @brief Set up PropertiesChanged monitors for state-change services
+     *
+     * For each service in stateChangeServiceData, resolve its systemd
+     * unit object path via LoadUnit and install a PropertiesChanged
+     * match on the org.freedesktop.systemd1.Unit interface. When
+     * ActiveState becomes "failed", a BMC dump, error log, and quiesce
+     * are triggered immediately.
+     */
+    void initStateChangeMonitoring();
+
+    /** @brief Handle a PropertiesChanged signal for a monitored unit
+     *
+     * @param[in]  msg       - Data associated with PropertiesChanged signal
+     * @param[in]  unitName  - The human-readable service name
+     */
+    void processStateChange(sdbusplus::message_t& msg,
+                            const std::string& unitName);
+
     /** @brief Systemd targets to monitor and error logs to create */
     const TargetErrorData& targetData;
 
     /** @brief Systemd targets to monitor and error logs to create */
     const ServiceMonitorData& serviceData;
+
+    /** @brief Systemd services to monitor via ActiveState changes */
+    const StateChangeMonitorData& stateChangeServiceData;
 
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& bus;
@@ -115,6 +141,12 @@ class SystemdTargetLogging
 
     /** @brief Used to know when systemd has registered on dbus **/
     sdbusplus::bus::match_t systemdNameOwnedChangedSignal;
+
+    /** @brief PropertiesChanged matches for state-change monitored units */
+    std::vector<sdbusplus::bus::match_t> stateChangeMatches;
+
+    /** @brief Track whether state-change monitoring has been initialized */
+    bool stateChangeMonitoringInitialized = false;
 };
 
 } // namespace manager
