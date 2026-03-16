@@ -3,9 +3,10 @@
 #include <fstream>
 #include <iostream>
 
-ServiceMonitorData parseServiceFiles(const std::vector<std::string>& filePaths)
+ServiceMonitorResult parseServiceFiles(
+    const std::vector<std::string>& filePaths)
 {
-    ServiceMonitorData systemdServiceMap;
+    ServiceMonitorResult result;
     for (const auto& jsonFile : filePaths)
     {
         if (gVerbose)
@@ -22,8 +23,23 @@ ServiceMonitorData parseServiceFiles(const std::vector<std::string>& filePaths)
                 std::cout << "service: " << service.value() << std::endl;
             }
 
-            systemdServiceMap.push_back(service.value());
+            result.services.push_back(service.value());
+        }
+
+        if (j.contains("immediate_quiesce_services"))
+        {
+            for (const auto& service : j["immediate_quiesce_services"].items())
+            {
+                if (gVerbose)
+                {
+                    std::cout
+                        << "immediate quiesce service: " << service.value()
+                        << std::endl;
+                }
+
+                result.stateChangeServices.push_back(service.value());
+            }
         }
     }
-    return systemdServiceMap;
+    return result;
 }
