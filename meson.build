@@ -82,6 +82,12 @@ conf.set10(
     get_option('apply-power-policy-bmc-ready').allowed(),
 )
 
+conf.set10('ENABLE_MULTI_CHASSIS_SMP', get_option('multi-chassis-smp').allowed())
+
+if (get_option('multi-chassis-smp').allowed())
+    conf.set('NUM_CHASSIS_SMP', get_option('num-chassis-smp'))
+endif
+
 configure_file(output: 'config.h', configuration: conf)
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
@@ -168,10 +174,19 @@ executable(
     install: true,
 )
 
-executable(
-    'phosphor-chassis-state-manager',
+# Build chassis state manager with optional multi-chassis SMP support
+chassis_sources = [
     'chassis_state_manager.cpp',
     'chassis_state_manager_main.cpp',
+]
+
+if get_option('multi-chassis-smp').allowed()
+    chassis_sources += 'chassis_state_manager_smp.cpp'
+endif
+
+executable(
+    'phosphor-chassis-state-manager',
+    chassis_sources,
     dependencies: [
         cereal,
         libgpiod,
