@@ -73,6 +73,10 @@ conf.set(
     get_option('check-fwupdate-before-do-transition').allowed(),
 )
 
+if (get_option('multi-chassis-smp').allowed())
+    conf.set('NUM_CHASSIS_SMP', get_option('num-chassis-smp'))
+endif
+
 configure_file(output: 'config.h', configuration: conf)
 
 if (get_option('warm-reboot').allowed())
@@ -85,6 +89,10 @@ endif
 
 if (get_option('apply-power-policy-bmc-ready').allowed())
     add_project_arguments('-DAPPLY_POWER_POLICY_WHEN_BMC_READY', language: 'cpp')
+endif
+
+if (get_option('multi-chassis-smp').allowed())
+    add_project_arguments('-DENABLE_MULTI_CHASSIS_SMP', language: 'cpp')
 endif
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
@@ -171,10 +179,19 @@ executable(
     install: true,
 )
 
-executable(
-    'phosphor-chassis-state-manager',
+# Build chassis state manager with optional multi-chassis SMP support
+chassis_sources = [
     'chassis_state_manager.cpp',
     'chassis_state_manager_main.cpp',
+]
+
+if get_option('multi-chassis-smp').allowed()
+    chassis_sources += 'chassis_state_manager_smp.cpp'
+endif
+
+executable(
+    'phosphor-chassis-state-manager',
+    chassis_sources,
     dependencies: [
         cereal,
         libgpiod,

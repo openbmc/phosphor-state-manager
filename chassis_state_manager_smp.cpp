@@ -181,7 +181,7 @@ void ChassisSMP::aggregatePowerState()
         }
     }
 
-    if (currentPowerState() != aggregatedState)
+    if (server::Chassis::currentPowerState() != aggregatedState)
     {
         info("SMP Aggregator power state changing to: {POWER_STATE}",
              "POWER_STATE", aggregatedState);
@@ -250,7 +250,7 @@ void ChassisSMP::aggregatePowerStatus()
         }
     }
 
-    if (currentPowerStatus() != aggregatedStatus)
+    if (server::Chassis::currentPowerStatus() != aggregatedStatus)
     {
         info("SMP Aggregator power status changing to: {POWER_STATUS}",
              "POWER_STATUS", aggregatedStatus);
