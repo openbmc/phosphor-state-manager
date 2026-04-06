@@ -1,6 +1,9 @@
 #include "config.h"
 
 #include "chassis_state_manager.hpp"
+#ifdef ENABLE_MULTI_CHASSIS_SMP
+#include "chassis_state_manager_smp.hpp"
+#endif
 
 #include <getopt.h>
 
@@ -75,17 +78,45 @@ int main(int argc, char** argv)
 
     // Add sdbusplus ObjectManager.
     sdbusplus::server::manager_t objManager(bus, objPath);
-    phosphor::state::manager::Chassis manager(bus, objPathInst.c_str(),
-                                              chassisId);
 
-    // For backwards compatibility, request a busname without chassis id if
-    // input id is 0.
+#ifdef ENABLE_MULTI_CHASSIS_SMP
     if (chassisId == 0)
     {
+        // Use SMP aggregator for chassis 0
+        phosphor::state::manager::ChassisSMP manager(
+            bus, objPathInst.c_str(), chassisId, NUM_CHASSIS_SMP);
+
+        // For backwards compatibility, request a busname without chassis id
         bus.request_name(ChassisState::interface);
+        bus.request_name(chassisBusName.c_str());
+
+        // Start monitoring other chassis instances
+        manager.startMonitoring();
+
+        while (true)
+        {
+            bus.process_discard();
+            bus.wait();
+        }
+    }
+    else
+#endif
+    {
+        // Normal chassis state manager for non-zero chassis or when SMP is
+        // disabled
+        phosphor::state::manager::Chassis manager(bus, objPathInst.c_str(),
+                                                  chassisId);
+
+        // For backwards compatibility, request a busname without chassis id if
+        // input id is 0.
+        if (chassisId == 0)
+        {
+            bus.request_name(ChassisState::interface);
+        }
+
+        bus.request_name(chassisBusName.c_str());
+        manager.startPOHCounter();
     }
 
-    bus.request_name(chassisBusName.c_str());
-    manager.startPOHCounter();
     return 0;
 }
