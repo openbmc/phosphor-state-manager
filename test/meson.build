@@ -63,3 +63,27 @@ test(
         include_directories: '../',
     ),
 )
+
+
+if get_option('multi-chassis-smp').allowed()
+    test(
+        'test_chassis_smp',
+        executable(
+            'test_chassis_smp',
+            'test_chassis_smp.cpp',
+            '../chassis_state_manager_smp.cpp',
+            dependencies: [
+                gmock,
+                gtest,
+                libgpiod,
+                nlohmann_json_dep,
+                phosphorlogging,
+                sdbusplus,
+                sdeventplus,
+            ],
+            link_with: [utils_lib],
+            implicit_include_directories: true,
+            include_directories: '../',
+        ),
+    )
+endif
