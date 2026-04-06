@@ -160,6 +160,86 @@ The host@0-on file is removed once the obmc-host-start\@0.target and
 obmc-host-startmin\@0.target become active (i.e. all service have been
 successfully started which are wanted or required by these targets).
 
+## Multiple Chassis in a Symmetric Multi-Processor (SMP) System
+
+phosphor-state-manager supports an optional multi-chassis SMP feature for
+systems with multiple chassis instances that need to be managed as a single
+logical unit. This is useful in systems where multiple compute nodes or chassis
+work together in a symmetric multi-processor configuration.
+
+### Overview
+
+When the multi-chassis SMP feature is enabled, chassis instance 0 acts as an
+aggregator that monitors and controls chassis instances 1 through N. The
+aggregator does not monitor any local chassis 0 hardware; instead, it aggregates
+state information from the other chassis instances and presents a unified view.
+
+### Key Features
+
+- **Event-Driven Monitoring**: Uses D-Bus property change signals to monitor all
+  chassis instances in real-time (no polling overhead)
+- **Power State Aggregation**: Reports `Off` if ANY chassis is off, `On` only if
+  ALL chassis are on
+- **Power Status Aggregation**: Reports worst-case power status across all
+  chassis (BrownOut > UninterruptiblePowerSupply > Good)
+- **Coordinated Power Control**: Power transition requests are forwarded to all
+  chassis instances, and the systemd target for chassis 0 is also triggered.
+  This allows users who have any global service to run on all power on or off's
+  to put them in the instance 0 obmc-chassis-power(off/on) targets.
+
+### Configuration
+
+The feature is enabled by default in CI but disabled by default within the
+bitbake recipe.
+
+Configuration options:
+
+- `multi-chassis-smp`: Enable/disable the feature (default: enabled)
+- `num-chassis-smp`: Maximum number of chassis instances to aggregate, 1-N
+  (default: 12)
+
+### Usage
+
+Start the chassis state manager instances:
+
+```bash
+# Chassis 0 (aggregator) - monitors chassis 1-N, no local hardware monitoring
+phosphor-chassis-state-manager --chassis 0
+
+# Chassis 1-N (normal operation) - each monitors its own local hardware
+phosphor-chassis-state-manager --chassis 1
+phosphor-chassis-state-manager --chassis 2
+...
+phosphor-chassis-state-manager --chassis N
+```
+
+### D-Bus Interface
+
+Chassis 0 presents the standard chassis D-Bus interface at:
+
+- Bus name: `xyz.openbmc_project.State.Chassis0`
+- Object path: `/xyz/openbmc_project/state/chassis0`
+
+The aggregated properties include:
+
+- `CurrentPowerState`: Aggregated power state from all chassis
+- `CurrentPowerStatus`: Worst-case power status from all chassis
+- `RequestedPowerTransition`: Forwards requests to all chassis instances
+
+### Implementation Details
+
+When a power transition is requested on chassis 0:
+
+1. The systemd target for chassis 0 is started (e.g.,
+   `obmc-chassis-poweron@0.target`)
+2. The transition request is forwarded to all chassis instances 1-N
+3. Each chassis instance processes the request independently
+4. Chassis 0 aggregates the resulting states from all instances
+
+This ensures that both the aggregator and individual chassis instances maintain
+proper systemd target states and can execute any necessary system-specific
+services.
+
 ## Building the Code
 
 To build this package, do the following steps:
