@@ -99,7 +99,7 @@ class ChassisSMP : public ChassisInherit
     sdbusplus::bus_t& bus;
 
     /** @brief Chassis id (should always be 0 for SMP aggregator). **/
-    const size_t id;
+    [[maybe_unused]] const size_t id;
 
     /** @brief Number of chassis instances to aggregate (1-N). **/
     const size_t numChassis;
