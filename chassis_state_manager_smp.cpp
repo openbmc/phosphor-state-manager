@@ -156,10 +156,15 @@ void ChassisSMP::startMonitoring()
 
 void ChassisSMP::aggregatePowerState()
 {
-    // Aggregate power state: Off if ANY chassis is off, On only if ALL are on
-    PowerState aggregatedState = PowerState::On;
-
-    bool foundPresentChassis = false;
+    // Aggregate power state with priority:
+    // 1. If ANY chassis is TransitioningToOff -> TransitioningToOff
+    // 2. If ANY chassis is TransitioningToOn -> TransitioningToOn
+    // 3. If ANY chassis is On -> On
+    // 4. Only report Off if ALL present chassis are Off
+    PowerState aggregatedState = PowerState::Off;
+    bool hasTransitioningToOff = false;
+    bool hasTransitioningToOn = false;
+    bool hasOn = false;
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
@@ -167,8 +172,6 @@ void ChassisSMP::aggregatePowerState()
         {
             continue;
         }
-
-        foundPresentChassis = true;
 
         std::string chassisPath =
             fmt::format("/xyz/openbmc_project/state/chassis{}", i);
@@ -188,24 +191,21 @@ void ChassisSMP::aggregatePowerState()
             reply.read(propertyValue);
 
             auto stateStr = std::get<std::string>(propertyValue);
-            PowerState state = PowerState::Off;
-
-            if (stateStr == "xyz.openbmc_project.State.Chassis.PowerState.On")
-            {
-                state = PowerState::On;
-            }
-            else if (stateStr ==
-                     "xyz.openbmc_project.State.Chassis.PowerState.Off")
-            {
-                state = PowerState::Off;
-            }
+            auto state = server::Chassis::convertPowerStateFromString(stateStr);
 
             chassisPowerStates[i] = state;
 
-            // If any chassis is off, aggregate is off
-            if (state == PowerState::Off)
+            if (state == PowerState::TransitioningToOff)
             {
-                aggregatedState = PowerState::Off;
+                hasTransitioningToOff = true;
+            }
+            else if (state == PowerState::TransitioningToOn)
+            {
+                hasTransitioningToOn = true;
+            }
+            else if (state == PowerState::On)
+            {
+                hasOn = true;
             }
         }
         catch (const sdbusplus::exception_t& e)
@@ -213,13 +213,23 @@ void ChassisSMP::aggregatePowerState()
             error("Chassis{CHASSIS_ID}: Failed to get power state for chassis "
                   "{TARGET_CHASSIS_ID}: {ERROR}",
                   "CHASSIS_ID", id, "TARGET_CHASSIS_ID", i, "ERROR", e);
-            // Assume off if we can't read the state
             chassisPowerStates[i] = PowerState::Off;
-            aggregatedState = PowerState::Off;
         }
     }
 
-    if (!foundPresentChassis)
+    if (hasTransitioningToOff)
+    {
+        aggregatedState = PowerState::TransitioningToOff;
+    }
+    else if (hasTransitioningToOn)
+    {
+        aggregatedState = PowerState::TransitioningToOn;
+    }
+    else if (hasOn)
+    {
+        aggregatedState = PowerState::On;
+    }
+    else // No present chassis or all present chassis are Off
     {
         aggregatedState = PowerState::Off;
     }
