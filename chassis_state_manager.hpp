@@ -234,7 +234,7 @@ class Chassis : public ChassisInherit
      *
      *  @return true if fault detected, else false
      */
-    static bool standbyVoltageRegulatorFault();
+    bool standbyVoltageRegulatorFault();
 
     /** @brief Process UPS property changes
      *
