@@ -95,8 +95,10 @@ void Chassis::determineInitialState()
     determineStatusOfPower();
 
     std::variant<int> pgood = -1;
+    const auto powerControlPath =
+        std::format("/org/openbmc/control/power{}", id);
     auto method = this->bus.new_method_call(
-        "org.openbmc.control.Power", "/org/openbmc/control/power0",
+        "org.openbmc.control.Power", powerControlPath.c_str(),
         PROPERTY_INTERFACE, "Get");
 
     method.append("org.openbmc.control.Power", "pgood");
@@ -567,7 +569,7 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
         // This file is used to indicate to chassis related systemd services
         // that the chassis is already on and they should skip running.
         // Once the chassis state is back to on we can clear this file.
-        auto chassisFile = std::format(CHASSIS_ON_FILE, 0);
+        auto chassisFile = std::format(CHASSIS_ON_FILE, id);
         if (std::filesystem::exists(chassisFile))
         {
             std::filesystem::remove(chassisFile);
