@@ -2,6 +2,7 @@
 Description=Phosphor Chassis%i State Manager
 Before=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
 After=org.openbmc.control.Power@%i.service
+After=phosphor-power-control.service
 
 [Service]
 ExecStartPre=/bin/mkdir -p /run/openbmc/
