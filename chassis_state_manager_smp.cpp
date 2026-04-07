@@ -8,6 +8,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Inventory/Item/common.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -28,6 +29,7 @@ namespace server = sdbusplus::server::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+using InventoryItem = sdbusplus::common::xyz::openbmc_project::inventory::Item;
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
@@ -53,8 +55,8 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
             "ChassisSMP requires at least 1 chassis to aggregate");
     }
 
-    info("Creating SMP aggregator for chassis 0, monitoring {NUM_CHASSIS} "
-         "chassis instances",
+    info("Chassis0: Creating SMP aggregator for chassis 0, "
+         "monitoring up to {NUM_CHASSIS} chassis instances",
          "NUM_CHASSIS", numChassis);
 
     // Initialize cached states to Off/Good
@@ -89,11 +91,34 @@ void ChassisSMP::startUnit(const std::string& sysdUnit)
 
 void ChassisSMP::startMonitoring()
 {
-    // Set up property change monitoring for each chassis instance
+    // Set up property change monitoring for all chassis
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        // Always register inventory present property monitor for all chassis
+        // so we can detect when a chassis becomes present later
+        sdbusplus::object_path inventoryPath =
+            fmt::format("/xyz/openbmc_project/inventory/system/chassis{}", i);
+
+        auto inventoryMatch = std::make_unique<sdbusplus::bus::match_t>(
+            bus,
+            sdbusRule::propertiesChanged(inventoryPath.str,
+                                         "xyz.openbmc_project.Inventory.Item"),
+            [this, i](sdbusplus::message_t& msg) {
+                this->inventoryPresentChanged(msg, i);
+            });
+
+        inventoryPresentMatches.push_back(std::move(inventoryMatch));
+
+        // Only monitor chassis state properties for chassis that are present
+        if (!isChassisPresent(i))
+        {
+            info("Chassis0: Skipping state monitoring for chassis "
+                 "{MONITORED_CHASSIS_ID} because it is not present",
+                 "MONITORED_CHASSIS_ID", i);
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = fmt::format(CHASSIS_OBJ_PATH, i);
-        std::string chassisService = fmt::format(CHASSIS_SERVICE, i);
 
         auto match = std::make_unique<sdbusplus::bus::match_t>(
             bus,
@@ -105,7 +130,8 @@ void ChassisSMP::startMonitoring()
 
         chassisMatches.push_back(std::move(match));
 
-        debug("Monitoring chassis {CHASSIS_ID}", "CHASSIS_ID", i);
+        debug("Chassis0: Monitoring chassis {MONITORED_CHASSIS_ID}",
+              "MONITORED_CHASSIS_ID", i);
     }
 
     // Do initial aggregation
@@ -115,14 +141,25 @@ void ChassisSMP::startMonitoring()
 
 void ChassisSMP::aggregatePowerState()
 {
-    // Aggregate power state: Off if ANY chassis is off, On only if ALL are on
-    PowerState aggregatedState = PowerState::On;
+    // Aggregate power state with priority:
+    // 1. If ANY chassis is TransitioningToOff -> TransitioningToOff
+    // 2. If ANY chassis is TransitioningToOn -> TransitioningToOn
+    // 3. If ANY chassis is On -> On
+    // 4. Only report Off if ALL present chassis are Off
+    PowerState aggregatedState = PowerState::Off;
+    bool hasTransitioningToOff = false;
+    bool hasTransitioningToOn = false;
+    bool hasOn = false;
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!isChassisPresent(i))
+        {
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = fmt::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = fmt::format(CHASSIS_SERVICE, i);
-
         try
         {
             auto method = bus.new_method_call(
@@ -136,25 +173,52 @@ void ChassisSMP::aggregatePowerState()
 
             chassisPowerStates[i] = state;
 
-            // If any chassis is off, aggregate is off
-            if (state == PowerState::Off)
+            if (state == PowerState::TransitioningToOff)
             {
-                aggregatedState = PowerState::Off;
+                hasTransitioningToOff = true;
+            }
+            else if (state == PowerState::TransitioningToOn)
+            {
+                hasTransitioningToOn = true;
+            }
+            else if (state == PowerState::On)
+            {
+                hasOn = true;
             }
         }
         catch (const sdbusplus::exception_t& e)
         {
-            error("Failed to get power state for chassis {CHASSIS_ID}: {ERROR}",
-                  "CHASSIS_ID", i, "ERROR", e);
-            // Assume off if we can't read the state
+            error("Chassis0: Failed to get power state for chassis "
+                  "{TARGET_CHASSIS_ID}: {ERROR}",
+                  "TARGET_CHASSIS_ID", i, "ERROR", e);
             chassisPowerStates[i] = PowerState::Off;
-            aggregatedState = PowerState::Off;
         }
+    }
+
+    if (hasTransitioningToOff)
+    {
+        aggregatedState = PowerState::TransitioningToOff;
+    }
+    else if (hasTransitioningToOn)
+    {
+        aggregatedState = PowerState::TransitioningToOn;
+    }
+    else if (hasOn)
+    {
+        aggregatedState = PowerState::On;
+    }
+    else // No present chassis or all present chassis are Off
+    {
+        aggregatedState = PowerState::Off;
+        // Reset the coordinated power off flag when all chassis are off
+        // This allows the system to detect new failures on the next power on
+        coordinatedPowerOffInProgress = false;
     }
 
     if (server::Chassis::currentPowerState() != aggregatedState)
     {
-        info("SMP Aggregator power state changing to: {POWER_STATE}",
+        info("Chassis0: SMP Aggregator power state changing to: "
+             "{POWER_STATE}",
              "POWER_STATE", aggregatedState);
         currentPowerState(aggregatedState);
     }
@@ -167,6 +231,11 @@ void ChassisSMP::aggregatePowerStatus()
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!isChassisPresent(i))
+        {
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = fmt::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = fmt::format(CHASSIS_SERVICE, i);
 
@@ -197,9 +266,9 @@ void ChassisSMP::aggregatePowerStatus()
         }
         catch (const sdbusplus::exception_t& e)
         {
-            error(
-                "Failed to get power status for chassis {CHASSIS_ID}: {ERROR}",
-                "CHASSIS_ID", i, "ERROR", e);
+            error("Chassis0: Failed to get power status for chassis "
+                  "{TARGET_CHASSIS_ID}: {ERROR}",
+                  "TARGET_CHASSIS_ID", i, "ERROR", e);
             // Assume good if we can't read the status
             chassisPowerStatus[i] = PowerStatus::Good;
         }
@@ -207,7 +276,8 @@ void ChassisSMP::aggregatePowerStatus()
 
     if (server::Chassis::currentPowerStatus() != aggregatedStatus)
     {
-        info("SMP Aggregator power status changing to: {POWER_STATUS}",
+        info("Chassis0: SMP Aggregator power status changing to: "
+             "{POWER_STATUS}",
              "POWER_STATUS", aggregatedStatus);
         currentPowerStatus(aggregatedStatus);
     }
@@ -229,6 +299,36 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
             PowerState state =
                 server::Chassis::convertPowerStateFromString(stateStr);
 
+            // Check if this chassis is transitioning to off due to a failure
+            // This is only a failure if we're currently trying to power on
+            // (TransitioningToOn or On state), not during a normal power off
+            // Only do this if we haven't already initiated a coordinated power
+            // off
+            auto currentState = server::Chassis::currentPowerState();
+            if (state == PowerState::TransitioningToOff &&
+                chassisPowerStates[chassisId] !=
+                    PowerState::TransitioningToOff &&
+                !coordinatedPowerOffInProgress &&
+                (currentState == PowerState::TransitioningToOn ||
+                 currentState == PowerState::On))
+            {
+                warning(
+                    "Chassis0: Chassis {FAILED_CHASSIS_ID} is "
+                    "transitioning to off while system is in {POWER_STATE}, "
+                    "initiating power off for all chassis",
+                    "FAILED_CHASSIS_ID", chassisId, "POWER_STATE",
+                    currentState);
+
+                // Set flag to prevent repeated power off requests
+                coordinatedPowerOffInProgress = true;
+
+                // Start the chassis 0 poweroff target
+                startUnit(CHASSIS_POWEROFF_TARGET);
+
+                // Request power off transition on all chassis instances
+                requestTransitionOnAllChassis(Transition::Off);
+            }
+
             chassisPowerStates[chassisId] = state;
             aggregatePowerState();
         }
@@ -247,11 +347,20 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
 
 void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 {
-    info("Forwarding transition request {TRANSITION} to all chassis instances",
+    info("Chassis0: Forwarding transition request {TRANSITION} to "
+         "all chassis instances",
          "TRANSITION", transition);
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!isChassisPresent(i))
+        {
+            info("Chassis0: Skipping transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is not present",
+                 "TARGET_CHASSIS_ID", i);
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = fmt::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = fmt::format(CHASSIS_SERVICE, i);
 
@@ -268,22 +377,28 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 
             bus.call_noreply(method);
 
-            info("Forwarded transition to chassis {CHASSIS_ID}", "CHASSIS_ID",
-                 i);
+            info("Chassis0: Forwarded transition to chassis "
+                 "{TARGET_CHASSIS_ID}",
+                 "TARGET_CHASSIS_ID", i);
         }
         catch (const sdbusplus::exception_t& e)
         {
-            error("Failed to forward transition to chassis {CHASSIS_ID}: "
-                  "{ERROR}",
-                  "CHASSIS_ID", i, "ERROR", e);
+            error("Chassis0: Failed to forward transition to chassis "
+                  "{TARGET_CHASSIS_ID}: {ERROR}",
+                  "TARGET_CHASSIS_ID", i, "ERROR", e);
         }
     }
 }
 
 ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
 {
-    info("SMP Aggregator received transition request: {TRANSITION}",
+    info("Chassis0: SMP Aggregator received transition request: "
+         "{TRANSITION}",
          "TRANSITION", value);
+
+    // Reset the coordinated power off flag when a new transition is requested
+    // This allows the system to detect new failures after a power on attempt
+    coordinatedPowerOffInProgress = false;
 
     // Start the systemd target for chassis 0
     if (value == Transition::Off)
@@ -307,9 +422,90 @@ ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
 
 ChassisSMP::PowerState ChassisSMP::currentPowerState(PowerState value)
 {
-    info("SMP Aggregator power state set to: {POWER_STATE}", "POWER_STATE",
-         value);
+    info("Chassis0: SMP Aggregator power state set to: "
+         "{POWER_STATE}",
+         "POWER_STATE", value);
     return server::Chassis::currentPowerState(value);
+}
+
+bool ChassisSMP::isChassisPresent(size_t chassisId)
+{
+    constexpr auto inventoryBusName = "xyz.openbmc_project.Inventory.Manager";
+    constexpr auto inventoryObjPathFmt =
+        "/xyz/openbmc_project/inventory/system/chassis{}";
+
+    sdbusplus::object_path inventoryPath =
+        std::format(inventoryObjPathFmt, chassisId);
+
+    try
+    {
+        auto method = bus.new_method_call(inventoryBusName, inventoryPath.str,
+                                          PROPERTY_INTERFACE, "Get");
+        method.append(InventoryItem::interface,
+                      InventoryItem::property_names::present);
+
+        auto response = bus.call(method);
+        std::variant<bool> value;
+        response.read(value);
+
+        bool present = std::get<bool>(value);
+        debug("Chassis0: Chassis {CHASSIS_ID} present status: "
+              "{PRESENT}",
+              "CHASSIS_ID", chassisId, "PRESENT", present);
+        return present;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        debug("Chassis0: Could not read Present property for "
+              "chassis {CHASSIS_ID}: {ERROR}",
+              "CHASSIS_ID", chassisId, "ERROR", e.what());
+        return false;
+    }
+}
+
+void ChassisSMP::inventoryPresentChanged(sdbusplus::message_t& msg,
+                                         size_t chassisId)
+{
+    std::string interface;
+    std::map<std::string, std::variant<bool>> properties;
+
+    msg.read(interface, properties);
+
+    auto present = properties.find(InventoryItem::property_names::present);
+    if (present == properties.end())
+    {
+        return;
+    }
+
+    bool isPresent = std::get<bool>(present->second);
+
+    info("Chassis0: Chassis {TARGET_CHASSIS_ID} inventory presence "
+         "changed to {PRESENT}",
+         "TARGET_CHASSIS_ID", chassisId, "PRESENT", isPresent);
+
+    // If chassis became present, start monitoring its state properties
+    if (isPresent)
+    {
+        sdbusplus::object_path chassisPath =
+            fmt::format("/xyz/openbmc_project/state/chassis{}", chassisId);
+
+        auto match = std::make_unique<sdbusplus::bus::match_t>(
+            bus,
+            sdbusRule::propertiesChanged(chassisPath.str,
+                                         "xyz.openbmc_project.State.Chassis"),
+            [this, chassisId](sdbusplus::message_t& msg) {
+                this->chassisPropertyChanged(msg, chassisId);
+            });
+
+        chassisMatches.push_back(std::move(match));
+
+        info("Chassis0: Started monitoring chassis "
+             "{MONITORED_CHASSIS_ID}",
+             "MONITORED_CHASSIS_ID", chassisId);
+    }
+
+    aggregatePowerState();
+    aggregatePowerStatus();
 }
 
 } // namespace manager
