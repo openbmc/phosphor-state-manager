@@ -109,7 +109,8 @@ void Chassis::determineInitialState()
 
         if (std::get<int>(pgood) == 1)
         {
-            info("Initial Chassis State will be On");
+            info("Chassis{CHASSIS_ID}: Initial Chassis State will be On",
+                 "CHASSIS_ID", id);
             server::Chassis::currentPowerState(PowerState::On);
             server::Chassis::requestedPowerTransition(Transition::On);
             return;
@@ -128,8 +129,9 @@ void Chassis::determineInitialState()
                 // was not a pinhole reset, log an error
                 if (lastState == PowerState::On)
                 {
-                    info(
-                        "Chassis power was on before the BMC reboot and it is off now");
+                    info("Chassis{CHASSIS_ID}: Chassis power was on before the "
+                         "BMC reboot and it is off now",
+                         "CHASSIS_ID", id);
 
                     // Reset host sensors since system is off now
                     // Ensure Power Leds are off.
@@ -159,7 +161,8 @@ void Chassis::determineInitialState()
                     }
                     else
                     {
-                        info("Pinhole reset");
+                        info("Chassis{CHASSIS_ID}: Pinhole reset", "CHASSIS_ID",
+                             id);
                     }
                 }
             }
@@ -176,12 +179,15 @@ void Chassis::determineInitialState()
         }
 
         // Only log for unexpected error types.
-        error("Error performing call to get pgood: {ERROR}", "ERROR", e);
+        error(
+            "Chassis{CHASSIS_ID}: Error performing call to get pgood: {ERROR}",
+            "CHASSIS_ID", id, "ERROR", e);
         goto fail;
     }
 
 fail:
-    info("Initial Chassis State will be Off");
+    info("Chassis{CHASSIS_ID}: Initial Chassis State will be Off", "CHASSIS_ID",
+         id);
     server::Chassis::currentPowerState(PowerState::Off);
     server::Chassis::requestedPowerTransition(Transition::Off);
 
@@ -210,9 +216,10 @@ void Chassis::determineStatusOfPower()
         if ((initialPowerStatus != PowerStatus::Good) &&
             (server::Chassis::currentPowerState() == PowerState::Off))
         {
-            info("power status transitioned from {START_PWR_STATE} to Good and "
-                 "chassis power is off, calling APR",
-                 "START_PWR_STATE", initialPowerStatus);
+            info(
+                "Chassis{CHASSIS_ID}: power status transitioned from "
+                "{START_PWR_STATE} to Good and chassis power is off, calling APR",
+                "CHASSIS_ID", id, "START_PWR_STATE", initialPowerStatus);
             restartUnit(std::format(AUTO_POWER_RESTORE_SVC_FMT, this->id));
         }
     }
@@ -237,13 +244,16 @@ bool Chassis::determineStatusOfUPSPower()
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Error in mapper GetSubTree call for UPS: {ERROR}", "ERROR", e);
+        error("Chassis{CHASSIS_ID}: Error in mapper GetSubTree call for UPS: "
+              "{ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
         throw;
     }
 
     if (mapperResponse.empty())
     {
-        debug("No UPower devices found in system");
+        debug("Chassis{CHASSIS_ID}: No UPower devices found in system",
+              "CHASSIS_ID", id);
     }
 
     // Iterate through all returned Upower interfaces and look for UPS's
@@ -267,8 +277,10 @@ bool Chassis::determineStatusOfUPSPower()
 
                 if (std::get<uint>(properties["Type"]) != TYPE_UPS)
                 {
-                    info("UPower device {OBJ_PATH} is not a UPS device",
-                         "OBJ_PATH", path);
+                    info(
+                        "Chassis{CHASSIS_ID}: UPower device {OBJ_PATH} is not a "
+                        "UPS device",
+                        "CHASSIS_ID", id, "OBJ_PATH", path);
                     continue;
                 }
 
@@ -276,18 +288,22 @@ bool Chassis::determineStatusOfUPSPower()
                 {
                     // There is a UPS detected but it is not officially
                     // "present" yet. Monitor it for state change.
-                    info("UPower device {OBJ_PATH} is not present", "OBJ_PATH",
-                         path);
+                    info("Chassis{CHASSIS_ID}: UPower device {OBJ_PATH} is not "
+                         "present",
+                         "CHASSIS_ID", id, "OBJ_PATH", path);
                     continue;
                 }
 
                 if (std::get<uint>(properties["State"]) == STATE_FULLY_CHARGED)
                 {
-                    info("UPS is fully charged");
+                    info("Chassis{CHASSIS_ID}: UPS is fully charged",
+                         "CHASSIS_ID", id);
                 }
                 else
                 {
-                    info("UPS is not fully charged: {UPS_STATE}", "UPS_STATE",
+                    info("Chassis{CHASSIS_ID}: UPS is not fully charged: "
+                         "{UPS_STATE}",
+                         "CHASSIS_ID", id, "UPS_STATE",
                          std::get<uint>(properties["State"]));
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
@@ -297,15 +313,17 @@ bool Chassis::determineStatusOfUPSPower()
                 if (std::get<uint>(properties["BatteryLevel"]) ==
                     BATTERY_LVL_FULL)
                 {
-                    info("UPS Battery Level is Full");
+                    info("Chassis{CHASSIS_ID}: UPS Battery Level is Full",
+                         "CHASSIS_ID", id);
                     // Only one UPS per system, we've found it and it's all
                     // good so exit function
                     return true;
                 }
                 else
                 {
-                    info("UPS Battery Level is Low: {UPS_BAT_LEVEL}",
-                         "UPS_BAT_LEVEL",
+                    info("Chassis{CHASSIS_ID}: UPS Battery Level is Low: "
+                         "{UPS_BAT_LEVEL}",
+                         "CHASSIS_ID", id, "UPS_BAT_LEVEL",
                          std::get<uint>(properties["BatteryLevel"]));
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
@@ -314,9 +332,10 @@ bool Chassis::determineStatusOfUPSPower()
             }
             catch (const sdbusplus::exception_t& e)
             {
-                error("Error reading UPS property, error: {ERROR}, "
-                      "service: {SERVICE} path: {PATH}",
-                      "ERROR", e, "SERVICE", service, "PATH", path);
+                error("Chassis{CHASSIS_ID}: Error reading UPS property, error: "
+                      "{ERROR}, service: {SERVICE} path: {PATH}",
+                      "CHASSIS_ID", id, "ERROR", e, "SERVICE", service, "PATH",
+                      path);
                 throw;
             }
         }
@@ -345,8 +364,9 @@ bool Chassis::determineStatusOfPSUPower()
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Error in mapper GetSubTree call for PowerSystemInputs: {ERROR}",
-              "ERROR", e);
+        error("Chassis{CHASSIS_ID}: Error in mapper GetSubTree call for "
+              "PowerSystemInputs: {ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
         throw;
     }
 
@@ -375,7 +395,10 @@ bool Chassis::determineStatusOfPSUPower()
 
                 if (status == decoratorServer::PowerSystemInputs::Status::Fault)
                 {
-                    info("Power System Inputs status is in Fault state");
+                    info(
+                        "Chassis{CHASSIS_ID}: Power System Inputs status is in "
+                        "Fault state",
+                        "CHASSIS_ID", id);
                     server::Chassis::currentPowerStatus(PowerStatus::BrownOut);
                     return false;
                 }
@@ -383,9 +406,10 @@ bool Chassis::determineStatusOfPSUPower()
             catch (const sdbusplus::exception_t& e)
             {
                 error(
-                    "Error reading Power System Inputs property, error: {ERROR}, "
-                    "service: {SERVICE} path: {PATH}",
-                    "ERROR", e, "SERVICE", service, "PATH", path);
+                    "Chassis{CHASSIS_ID}: Error reading Power System Inputs "
+                    "property, error: {ERROR}, service: {SERVICE} path: {PATH}",
+                    "CHASSIS_ID", id, "ERROR", e, "SERVICE", service, "PATH",
+                    path);
                 throw;
             }
         }
@@ -395,7 +419,8 @@ bool Chassis::determineStatusOfPSUPower()
 
 void Chassis::uPowerChangeEvent(sdbusplus::message_t& msg)
 {
-    debug("UPS Property Change Event Triggered");
+    debug("Chassis{CHASSIS_ID}: UPS Property Change Event Triggered",
+          "CHASSIS_ID", id);
     std::string statusInterface;
     std::map<std::string, std::variant<uint, bool>> msgData;
     msg.read(statusInterface, msgData);
@@ -406,7 +431,8 @@ void Chassis::uPowerChangeEvent(sdbusplus::message_t& msg)
     auto propertyMap = msgData.find("IsPresent");
     if (propertyMap != msgData.end())
     {
-        info("UPS presence changed to {UPS_PRES_INFO}", "UPS_PRES_INFO",
+        info("Chassis{CHASSIS_ID}: UPS presence changed to {UPS_PRES_INFO}",
+             "CHASSIS_ID", id, "UPS_PRES_INFO",
              std::get<bool>(propertyMap->second));
         determineStatusOfPower();
         return;
@@ -415,7 +441,8 @@ void Chassis::uPowerChangeEvent(sdbusplus::message_t& msg)
     propertyMap = msgData.find("State");
     if (propertyMap != msgData.end())
     {
-        info("UPS State changed to {UPS_STATE}", "UPS_STATE",
+        info("Chassis{CHASSIS_ID}: UPS State changed to {UPS_STATE}",
+             "CHASSIS_ID", id, "UPS_STATE",
              std::get<uint>(propertyMap->second));
         determineStatusOfPower();
         return;
@@ -424,7 +451,8 @@ void Chassis::uPowerChangeEvent(sdbusplus::message_t& msg)
     propertyMap = msgData.find("BatteryLevel");
     if (propertyMap != msgData.end())
     {
-        info("UPS BatteryLevel changed to {UPS_BAT_LEVEL}", "UPS_BAT_LEVEL",
+        info("Chassis{CHASSIS_ID}: UPS BatteryLevel changed to {UPS_BAT_LEVEL}",
+             "CHASSIS_ID", id, "UPS_BAT_LEVEL",
              std::get<uint>(propertyMap->second));
         determineStatusOfPower();
         return;
@@ -434,7 +462,9 @@ void Chassis::uPowerChangeEvent(sdbusplus::message_t& msg)
 
 void Chassis::powerSysInputsChangeEvent(sdbusplus::message_t& msg)
 {
-    debug("Power System Inputs Property Change Event Triggered");
+    debug("Chassis{CHASSIS_ID}: Power System Inputs Property Change Event "
+          "Triggered",
+          "CHASSIS_ID", id);
     std::string statusInterface;
     std::map<std::string, std::variant<std::string>> msgData;
     msg.read(statusInterface, msgData);
@@ -445,8 +475,9 @@ void Chassis::powerSysInputsChangeEvent(sdbusplus::message_t& msg)
     auto propertyMap = msgData.find("Status");
     if (propertyMap != msgData.end())
     {
-        info("Power System Inputs status changed to {POWER_SYS_INPUT_STATUS}",
-             "POWER_SYS_INPUT_STATUS",
+        info("Chassis{CHASSIS_ID}: Power System Inputs status changed to "
+             "{POWER_SYS_INPUT_STATUS}",
+             "CHASSIS_ID", id, "POWER_SYS_INPUT_STATUS",
              std::get<std::string>(propertyMap->second));
         determineStatusOfPower();
         return;
@@ -500,7 +531,8 @@ bool Chassis::stateActive(const std::string& target)
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Error in GetUnit call: {ERROR}", "ERROR", e);
+        error("Chassis{CHASSIS_ID}: Error in GetUnit call: {ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
         return false;
     }
 
@@ -518,7 +550,8 @@ bool Chassis::stateActive(const std::string& target)
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Error in ActiveState Get: {ERROR}", "ERROR", e);
+        error("Chassis{CHASSIS_ID}: Error in ActiveState Get: {ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
         return false;
     }
 
@@ -543,8 +576,9 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Error in state change - bad encoding: {ERROR} {REPLY_SIG}",
-              "ERROR", e, "REPLY_SIG", msg.get_signature());
+        error("Chassis{CHASSIS_ID}: Error in state change - bad encoding: "
+              "{ERROR} {REPLY_SIG}",
+              "CHASSIS_ID", id, "ERROR", e, "REPLY_SIG", msg.get_signature());
         return 0;
     }
 
@@ -552,7 +586,8 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
         (newStateResult == "done") &&
         (!stateActive(systemdTargetTable[Transition::On])))
     {
-        info("Received signal that power OFF is complete");
+        info("Chassis{CHASSIS_ID}: Received signal that power OFF is complete",
+             "CHASSIS_ID", id);
         this->currentPowerState(server::Chassis::PowerState::Off);
         this->setStateChangeTime();
     }
@@ -560,7 +595,8 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
              (newStateResult == "done") &&
              (stateActive(systemdTargetTable[Transition::On])))
     {
-        info("Received signal that power ON is complete");
+        info("Chassis{CHASSIS_ID}: Received signal that power ON is complete",
+             "CHASSIS_ID", id);
         this->currentPowerState(server::Chassis::PowerState::On);
         this->setStateChangeTime();
 
@@ -581,14 +617,16 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
 
 Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 {
-    info(
-        "Change to Chassis{CHASSIS_ID} Requested Power State: {REQ_POWER_TRAN}",
-        "CHASSIS_ID", id, "REQ_POWER_TRAN", value);
+    info("Chassis{CHASSIS_ID}: Change to Chassis Requested Power State: "
+         "{REQ_POWER_TRAN}",
+         "CHASSIS_ID", id, "REQ_POWER_TRAN", value);
     if constexpr (ONLY_ALLOW_BOOT_WHEN_BMC_READY)
     {
         if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
         {
-            info("BMC State is not Ready so no chassis on operations allowed");
+            info("Chassis{CHASSIS_ID}: BMC State is not Ready so no chassis on "
+                 "operations allowed",
+                 "CHASSIS_ID", id);
             throw sdbusplus::xyz::openbmc_project::State::Chassis::Error::
                 BMCNotReady();
         }
@@ -602,7 +640,9 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
         if ((value != Transition::Off) &&
             (phosphor::state::manager::utils::isFirmwareUpdating(this->bus)))
         {
-            info("Firmware being updated, reject the transition request");
+            info("Chassis{CHASSIS_ID}: Firmware being updated, reject the "
+                 "transition request",
+                 "CHASSIS_ID", id);
             throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
         }
     }
@@ -614,7 +654,8 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
 Chassis::PowerState Chassis::currentPowerState(PowerState value)
 {
     PowerState chassisPowerState;
-    info("Change to Chassis{CHASSIS_ID} Power State: {CUR_POWER_STATE}",
+    info("Chassis{CHASSIS_ID}: Change to Chassis Power State: "
+         "{CUR_POWER_STATE}",
          "CHASSIS_ID", id, "CUR_POWER_STATE", value);
 
     chassisPowerState = server::Chassis::currentPowerState(value);
@@ -682,7 +723,8 @@ bool Chassis::deserializePOH(uint32_t& pohCounter)
     }
     catch (const cereal::Exception& e)
     {
-        error("deserialize exception: {ERROR}", "ERROR", e);
+        error("Chassis{CHASSIS_ID}: deserialize exception: {ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
         fs::remove(path);
         return false;
     }
@@ -707,8 +749,10 @@ void Chassis::startPOHCounter()
     }
     catch (const sdeventplus::SdEventError& e)
     {
-        error("Error occurred during the sdeventplus loop: {ERROR}", "ERROR",
-              e);
+        error(
+            "Chassis{CHASSIS_ID}: Error occurred during the sdeventplus loop: "
+            "{ERROR}",
+            "CHASSIS_ID", id, "ERROR", e);
         phosphor::logging::commit<InternalFailure>();
     }
 }
@@ -739,7 +783,8 @@ bool Chassis::deserializeStateChangeTime(uint64_t& time, PowerState& state)
     }
     catch (const std::exception& e)
     {
-        error("deserialize exception: {ERROR}", "ERROR", e);
+        error("Chassis{CHASSIS_ID}: deserialize exception: {ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
         fs::remove(path);
     }
 
@@ -797,12 +842,15 @@ bool Chassis::standbyVoltageRegulatorFault()
 
     if (-1 == gpioval)
     {
-        error("Failed reading regulator-standby-faulted GPIO");
+        error("Chassis{CHASSIS_ID}: Failed reading regulator-standby-faulted "
+              "GPIO",
+              "CHASSIS_ID", id);
     }
 
     if (1 == gpioval)
     {
-        info("Detected standby voltage regulator fault");
+        info("Chassis{CHASSIS_ID}: Detected standby voltage regulator fault",
+             "CHASSIS_ID", id);
         regulatorFault = true;
     }
 
