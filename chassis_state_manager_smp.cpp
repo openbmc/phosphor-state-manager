@@ -53,7 +53,7 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus, const char* objPath, size_t id,
     }
 
     info("Chassis{CHASSIS_ID}: Creating SMP aggregator for chassis 0, "
-         "monitoring {NUM_CHASSIS} chassis instances",
+         "monitoring up to {NUM_CHASSIS} chassis instances",
          "CHASSIS_ID", id, "NUM_CHASSIS", numChassis);
 
     // Initialize cached states to Off/Good
@@ -101,17 +101,39 @@ void ChassisSMP::startUnit(const std::string& sysdUnit)
 
 void ChassisSMP::startMonitoring()
 {
-    info("Chassis{CHASSIS_ID}: Starting monitoring of {NUM_CHASSIS} chassis "
-         "instances",
+    info("Chassis{CHASSIS_ID}: Starting monitoring of up to {NUM_CHASSIS} "
+         "chassis instances",
          "CHASSIS_ID", id, "NUM_CHASSIS", numChassis);
 
-    // Set up property change monitoring for each chassis instance
+    // Set up property change monitoring for all chassis
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        // Always register inventory present property monitor for all chassis
+        // so we can detect when a chassis becomes present later
+        std::string inventoryPath =
+            fmt::format("/xyz/openbmc_project/inventory/system/chassis{}", i);
+
+        auto inventoryMatch = std::make_unique<sdbusplus::bus::match_t>(
+            bus,
+            sdbusRule::propertiesChanged(inventoryPath,
+                                         "xyz.openbmc_project.Inventory.Item"),
+            [this, i](sdbusplus::message_t& msg) {
+                this->inventoryPresentChanged(msg, i);
+            });
+
+        inventoryPresentMatches.push_back(std::move(inventoryMatch));
+
+        // Only monitor chassis state properties for chassis that are present
+        if (!isChassisPresent(i))
+        {
+            info("Chassis{CHASSIS_ID}: Skipping state monitoring for chassis "
+                 "{MONITORED_CHASSIS_ID} because it is not present",
+                 "CHASSIS_ID", id, "MONITORED_CHASSIS_ID", i);
+            continue;
+        }
+
         std::string chassisPath =
             fmt::format("/xyz/openbmc_project/state/chassis{}", i);
-        std::string chassisService =
-            fmt::format("xyz.openbmc_project.State.Chassis{}", i);
 
         auto match = std::make_unique<sdbusplus::bus::match_t>(
             bus,
@@ -137,8 +159,17 @@ void ChassisSMP::aggregatePowerState()
     // Aggregate power state: Off if ANY chassis is off, On only if ALL are on
     PowerState aggregatedState = PowerState::On;
 
+    bool foundPresentChassis = false;
+
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!isChassisPresent(i))
+        {
+            continue;
+        }
+
+        foundPresentChassis = true;
+
         std::string chassisPath =
             fmt::format("/xyz/openbmc_project/state/chassis{}", i);
         std::string chassisService =
@@ -188,6 +219,11 @@ void ChassisSMP::aggregatePowerState()
         }
     }
 
+    if (!foundPresentChassis)
+    {
+        aggregatedState = PowerState::Off;
+    }
+
     if (server::Chassis::currentPowerState() != aggregatedState)
     {
         info("Chassis{CHASSIS_ID}: SMP Aggregator power state changing to: "
@@ -204,6 +240,11 @@ void ChassisSMP::aggregatePowerStatus()
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!isChassisPresent(i))
+        {
+            continue;
+        }
+
         std::string chassisPath =
             fmt::format("/xyz/openbmc_project/state/chassis{}", i);
         std::string chassisService =
@@ -320,6 +361,14 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!isChassisPresent(i))
+        {
+            info("Chassis{CHASSIS_ID}: Skipping transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is not present",
+                 "CHASSIS_ID", id, "TARGET_CHASSIS_ID", i);
+            continue;
+        }
+
         std::string chassisPath =
             fmt::format("/xyz/openbmc_project/state/chassis{}", i);
         std::string chassisService =
@@ -388,6 +437,86 @@ ChassisSMP::PowerState ChassisSMP::currentPowerState(PowerState value)
          "{POWER_STATE}",
          "CHASSIS_ID", id, "POWER_STATE", value);
     return server::Chassis::currentPowerState(value);
+}
+
+bool ChassisSMP::isChassisPresent(size_t chassisId)
+{
+    constexpr auto inventoryBusName = "xyz.openbmc_project.Inventory.Manager";
+    constexpr auto inventoryObjPathFmt =
+        "/xyz/openbmc_project/inventory/system/chassis{}";
+    constexpr auto inventoryIntf = "xyz.openbmc_project.Inventory.Item";
+
+    std::string inventoryPath = std::format(inventoryObjPathFmt, chassisId);
+
+    try
+    {
+        auto method = bus.new_method_call(
+            inventoryBusName, inventoryPath.c_str(), PROPERTY_INTERFACE, "Get");
+        method.append(inventoryIntf, "Present");
+
+        auto response = bus.call(method);
+        std::variant<bool> value;
+        response.read(value);
+
+        bool present = std::get<bool>(value);
+        debug("Chassis{AGGREGATOR_ID}: Chassis {CHASSIS_ID} present status: "
+              "{PRESENT}",
+              "AGGREGATOR_ID", id, "CHASSIS_ID", chassisId, "PRESENT", present);
+        return present;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        debug("Chassis{AGGREGATOR_ID}: Could not read Present property for "
+              "chassis {CHASSIS_ID}: {ERROR}",
+              "AGGREGATOR_ID", id, "CHASSIS_ID", chassisId, "ERROR", e.what());
+        return false;
+    }
+}
+
+void ChassisSMP::inventoryPresentChanged(sdbusplus::message_t& msg,
+                                         size_t chassisId)
+{
+    std::string interface;
+    std::map<std::string, std::variant<bool>> properties;
+
+    msg.read(interface, properties);
+
+    auto present = properties.find("Present");
+    if (present == properties.end())
+    {
+        return;
+    }
+
+    bool isPresent = std::get<bool>(present->second);
+
+    info("Chassis{CHASSIS_ID}: Chassis {TARGET_CHASSIS_ID} inventory presence "
+         "changed to {PRESENT}",
+         "CHASSIS_ID", id, "TARGET_CHASSIS_ID", chassisId, "PRESENT",
+         isPresent);
+
+    // If chassis became present, start monitoring its state properties
+    if (isPresent)
+    {
+        std::string chassisPath =
+            fmt::format("/xyz/openbmc_project/state/chassis{}", chassisId);
+
+        auto match = std::make_unique<sdbusplus::bus::match_t>(
+            bus,
+            sdbusRule::propertiesChanged(chassisPath,
+                                         "xyz.openbmc_project.State.Chassis"),
+            [this, chassisId](sdbusplus::message_t& msg) {
+                this->chassisPropertyChanged(msg, chassisId);
+            });
+
+        chassisMatches.push_back(std::move(match));
+
+        info("Chassis{CHASSIS_ID}: Started monitoring chassis "
+             "{MONITORED_CHASSIS_ID}",
+             "CHASSIS_ID", id, "MONITORED_CHASSIS_ID", chassisId);
+    }
+
+    aggregatePowerState();
+    aggregatePowerStatus();
 }
 
 } // namespace manager
