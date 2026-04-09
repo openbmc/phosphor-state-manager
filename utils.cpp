@@ -203,9 +203,8 @@ void createError(
 void createBmcDump(sdbusplus::bus_t& bus)
 {
     using DumpCreate = sdbusplus::client::xyz::openbmc_project::dump::Create<>;
-    auto dumpPath =
-        sdbusplus::message::object_path(DumpCreate::namespace_path::value) /
-        DumpCreate::namespace_path::bmc;
+    auto dumpPath = sdbusplus::object_path(DumpCreate::namespace_path::value) /
+                    DumpCreate::namespace_path::bmc;
 
     auto method = bus.new_method_call(
         DumpCreate::default_service, dumpPath.str.c_str(),
@@ -237,7 +236,7 @@ bool checkACLoss(size_t& chassisId)
 bool isBmcReady(sdbusplus::bus_t& bus)
 {
     using BMC = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
-    auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
+    auto bmcPath = sdbusplus::object_path(BMC::namespace_path::value) /
                    BMC::namespace_path::bmc;
 
     auto bmcState = getProperty(bus, bmcPath.str, BMC::interface,

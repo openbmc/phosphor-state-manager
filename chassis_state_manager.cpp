@@ -483,7 +483,7 @@ void Chassis::restartUnit(const std::string& sysdUnit)
 bool Chassis::stateActive(const std::string& target)
 {
     std::variant<std::string> currentState;
-    sdbusplus::message::object_path unitTargetPath;
+    sdbusplus::object_path unitTargetPath;
 
     auto method =
         this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
@@ -527,7 +527,7 @@ bool Chassis::stateActive(const std::string& target)
 
 int Chassis::sysStateChange(sdbusplus::message_t& msg)
 {
-    sdbusplus::message::object_path newStateObjPath;
+    sdbusplus::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
 
