@@ -508,6 +508,46 @@ function handle_cmd()
                 handle_cmd $query
             done
             check_and_warn_boot_block
+
+            # If verbose flag is set, show all chassis instance states
+            if [ -n "$G_VERBOSE" ]; then
+                # Find all chassis instances by checking for chassis state objects
+                # and inventory Present property
+                chassis_instances=()
+                for i in {1..12}; do
+                    OBJECT=$STATE_OBJECT/chassis$i
+                    # Check if this chassis instance exists
+                    if busctl introspect xyz.openbmc_project.State.Chassis"$i" "$OBJECT" &>/dev/null; then
+                        # Check if chassis is present in inventory
+                        # Ignore errors when chassis doesn't exist in inventory
+                        INV_OBJECT="/xyz/openbmc_project/inventory/system/chassis$i"
+                        if present=$(busctl get-property xyz.openbmc_project.Inventory.Manager "$INV_OBJECT" xyz.openbmc_project.Inventory.Item Present 2>/dev/null); then
+                            # Only add chassis if Present is true
+                            present=$(echo "$present" | awk '{print $2}')
+                            if [ "$present" = "true" ]; then
+                                chassis_instances+=("$i")
+                            fi
+                        fi
+                    fi
+                done
+
+                # Only show additional chassis info if there are multiple chassis
+                if [ ${#chassis_instances[@]} -gt 0 ]; then
+                    echo ""
+                    echo "Additional Chassis Instances (Present in Inventory):"
+                    for chassis_id in "${chassis_instances[@]}"; do
+                        echo "  Chassis $chassis_id:"
+                        OBJECT=$STATE_OBJECT/chassis$chassis_id
+                        SERVICE=$(mapper get-service "$OBJECT" 2>/dev/null || echo "xyz.openbmc_project.State.Chassis$chassis_id")
+                        INTERFACE=$STATE_INTERFACE.Chassis
+                        PROPERTY=CurrentPowerState
+                        state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$PROPERTY" 2>/dev/null | cut -d '"' -f2)
+                        if [ -n "$state" ]; then
+                            printf "    %-18s: %s\n" "CurrentPowerState" "$state"
+                        fi
+                    done
+                fi
+            fi
             ;;
         bootprogress)
             query_state "host" "$STATE_INTERFACE.Boot.Progress" "BootProgress"
