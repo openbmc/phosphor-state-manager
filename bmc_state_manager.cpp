@@ -148,7 +148,11 @@ void BMC::executeTransition(const Transition tranReq)
     {
         // Put BMC state not NotReady when issuing a BMC reboot
         // and stop monitoring for state changes
-        this->currentBMCState(BMCState::NotReady);
+        // This signals external clients to cease communication. To avoid
+        // generating event logs which are intended for the startup process,
+        // call the sdbusplus class directly.
+        info("Setting the BMCState field to BMC_NOTREADY");
+        server::BMC::currentBMCState(BMCState::NotReady);
         this->stateSignal.reset();
 
         auto method =
@@ -184,7 +188,11 @@ void BMC::executeTransition(const Transition tranReq)
 
         // Put BMC state not NotReady when issuing a BMC reboot
         // and stop monitoring for state changes
-        this->currentBMCState(BMCState::NotReady);
+        // This signals external clients to cease communication. To avoid
+        // generating event logs which are intended for the startup process,
+        // call the sdbusplus class directly.
+        info("Setting the BMCState field to BMC_NOTREADY");
+        server::BMC::currentBMCState(BMCState::NotReady);
         this->stateSignal.reset();
 
         try
