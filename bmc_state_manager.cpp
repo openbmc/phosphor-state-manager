@@ -148,7 +148,7 @@ void BMC::executeTransition(const Transition tranReq)
     {
         // Put BMC state not NotReady when issuing a BMC reboot
         // and stop monitoring for state changes
-        this->currentBMCState(BMCState::NotReady);
+        server::BMC::currentBMCState(BMCState::NotReady);
         this->stateSignal.reset();
 
         auto method =
@@ -184,7 +184,7 @@ void BMC::executeTransition(const Transition tranReq)
 
         // Put BMC state not NotReady when issuing a BMC reboot
         // and stop monitoring for state changes
-        this->currentBMCState(BMCState::NotReady);
+        server::BMC::currentBMCState(BMCState::NotReady);
         this->stateSignal.reset();
 
         try
