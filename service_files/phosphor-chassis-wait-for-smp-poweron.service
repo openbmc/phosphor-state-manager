@@ -1,0 +1,15 @@
+[Unit]
+Description=Wait for all SMP chassis to power on
+Before=obmc-power-on@0.target
+Wants=obmc-power-on@0.target
+After=xyz.openbmc_project.State.Chassis0.service
+Wants=xyz.openbmc_project.State.Chassis0.service
+Conflicts=obmc-chassis-poweroff@0.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/phosphor-chassis-wait-for-smp-poweron
+
+[Install]
+RequiredBy=obmc-chassis-poweron@0.target
