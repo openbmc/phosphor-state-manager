@@ -26,6 +26,11 @@ unit_files = [
     'phosphor-bmc-quiesce-reboot.service',
 ]
 
+# Add SMP-specific service file when multi-chassis SMP is enabled
+if get_option('multi-chassis-smp').allowed()
+    unit_files += 'phosphor-chassis-wait-for-smp-poweron.service'
+endif
+
 fs = import('fs')
 foreach u : unit_files
     fs.copyfile(u, install: true, install_dir: systemd_system_unit_dir)
