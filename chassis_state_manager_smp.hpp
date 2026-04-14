@@ -59,6 +59,11 @@ class ChassisSMP : public ChassisInherit
     void startMonitoring();
 
   private:
+    /** @brief Handle systemd JobNew signals for chassis 0 targets
+     *
+     * @param[in] msg - D-Bus message containing job information
+     */
+    void sysStateChangeJobNew(sdbusplus::message_t& msg);
     /** @brief Create systemd target instance names and mapping table */
     void createSystemdTargetTable();
 
@@ -130,6 +135,9 @@ class ChassisSMP : public ChassisInherit
     /** @brief Inventory Present property change signal matches. **/
     std::vector<std::unique_ptr<sdbusplus::bus::match_t>>
         inventoryPresentMatches;
+
+    /** @brief Systemd JobNew signal match for chassis 0 target monitoring. **/
+    std::unique_ptr<sdbusplus::bus::match_t> systemdSignalJobNew;
 
     /** @brief Cached power states from each chassis instance. **/
     std::map<size_t, PowerState> chassisPowerStates;
