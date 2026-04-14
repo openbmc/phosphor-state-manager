@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56372265_b4dd3e01",
+        "filename": "systemd_service_parser.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-14T14:02:28Z",
+      "side": 1,
+      "message": "I\u0027d prefer the naming to be more clear on the purpose of this new field. Something like \"ImmediateQuiesceData immediateQuiesceServices\"",
+      "revId": "5adefd28089d65de071ccceebfcd3ac58c4d9e16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
