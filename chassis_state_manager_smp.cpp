@@ -56,6 +56,14 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus, const char* objPath, size_t id,
          "monitoring up to {NUM_CHASSIS} chassis instances",
          "CHASSIS_ID", id, "NUM_CHASSIS", numChassis);
 
+    // Set up systemd JobNew signal monitoring for chassis 0 targets
+    systemdSignalJobNew = std::make_unique<sdbusplus::bus::match_t>(
+        bus,
+        sdbusRule::type::signal() + sdbusRule::member("JobNew") +
+            sdbusRule::path("/org/freedesktop/systemd1") +
+            sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+        [this](sdbusplus::message_t& m) { sysStateChangeJobNew(m); });
+
     // Initialize cached states to Off/Good
     for (size_t i = 1; i <= numChassis; ++i)
     {
@@ -574,6 +582,39 @@ void ChassisSMP::inventoryPresentChanged(sdbusplus::message_t& msg,
 
     aggregatePowerState();
     aggregatePowerStatus();
+}
+
+void ChassisSMP::sysStateChangeJobNew(sdbusplus::message_t& msg)
+{
+    uint32_t newStateID{};
+    sdbusplus::message::object_path newStateObjPath;
+    std::string newStateUnit{};
+
+    // Read the msg and populate each variable
+    msg.read(newStateID, newStateObjPath, newStateUnit);
+
+    // Check if the chassis 0 poweroff target was started
+    std::string poweroffTarget =
+        fmt::format("obmc-chassis-poweroff@{}.target", std::to_string(id));
+
+    if (newStateUnit == poweroffTarget)
+    {
+        // Only initiate auto power off if we were actively trying to power on
+        // This indicates a failure scenario where the power on attempt failed
+        auto currentState = server::Chassis::currentPowerState();
+        if (currentState == PowerState::TransitioningToOn ||
+            currentState == PowerState::On)
+        {
+            warning(
+                "Chassis{CHASSIS_ID}: Chassis 0 poweroff target started while "
+                "in state {POWER_STATE}, initiating power off for all chassis "
+                "instances",
+                "CHASSIS_ID", id, "POWER_STATE", currentState);
+
+            // Request power off transition on all chassis instances
+            requestTransitionOnAllChassis(Transition::Off);
+        }
+    }
 }
 
 } // namespace manager
