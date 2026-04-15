@@ -330,6 +330,9 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
                 // Set flag to prevent repeated power off requests
                 coordinatedPowerOffInProgress = true;
 
+                // Set requested power transition to off so state is correct
+                server::Chassis::requestedPowerTransition(Transition::Off);
+
                 // Start the chassis 0 poweroff target
                 startUnit(CHASSIS_POWEROFF_TARGET);
 
@@ -525,23 +528,48 @@ void ChassisSMP::sysStateChangeJobNew(sdbusplus::message_t& msg)
     // Read the msg and populate each variable
     msg.read(newStateID, newStateObjPath, newStateUnit);
 
+    // Check if the chassis 0 poweron target was started outside of this
+    // application
+    std::string poweronTarget =
+        fmt::format("obmc-chassis-poweron@{}.target", std::to_string(0));
+
+    if (newStateUnit == poweronTarget)
+    {
+        // Only initiate power on if our current requested power state is off
+        // and our current power state is off
+        auto currentRequestedTransition =
+            server::Chassis::requestedPowerTransition();
+        auto currentPowerState = server::Chassis::currentPowerState();
+        if ((currentRequestedTransition == Transition::Off) &&
+            (currentPowerState == PowerState::Off))
+        {
+            info("Chassis0: Chassis 0 poweron target started while "
+                 "in state {POWER_STATE}, forwarding to all chassis instances",
+                 "POWER_STATE", currentPowerState);
+
+            requestedPowerTransition(Transition::On);
+        }
+        return;
+    }
+
     // Check if the chassis 0 poweroff target was started
     if (newStateUnit == CHASSIS_POWEROFF_TARGET)
     {
         // Only initiate auto power off if we were actively trying to power on
-        // This indicates a failure scenario where the power on attempt failed
+        // and we have not already processed a request to power off
         auto currentState = server::Chassis::currentPowerState();
-        if (currentState == PowerState::TransitioningToOn ||
-            currentState == PowerState::On)
+        auto currentRequestedTransition =
+            server::Chassis::requestedPowerTransition();
+        if ((currentState == PowerState::TransitioningToOn ||
+             currentState == PowerState::On) &&
+            (currentRequestedTransition != Transition::Off))
         {
-            warning(
-                "Chassis{CHASSIS_ID}: Chassis 0 poweroff target started while "
-                "in state {POWER_STATE}, initiating power off for all chassis "
-                "instances",
-                "CHASSIS_ID", id, "POWER_STATE", currentState);
+            info("Chassis0: Chassis 0 poweroff target started while "
+                 "in state {POWER_STATE}, initiating power off for all chassis "
+                 "instances",
+                 "POWER_STATE", currentState);
 
-            // Request power off transition on all chassis instances
-            requestTransitionOnAllChassis(Transition::Off);
+            requestedPowerTransition(Transition::Off);
         }
     }
 }
