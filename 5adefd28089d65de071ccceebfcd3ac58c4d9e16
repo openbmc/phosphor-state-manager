@@ -16,6 +16,24 @@
       "message": "I\u0027d prefer the naming to be more clear on the purpose of this new field. Something like \"ImmediateQuiesceData immediateQuiesceServices\"",
       "revId": "5adefd28089d65de071ccceebfcd3ac58c4d9e16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "904e9d21_62e2f8e6",
+        "filename": "systemd_service_parser.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-04-15T06:36:58Z",
+      "side": 1,
+      "message": "Thanks for the feedback.\nRenamed to \"ImmediateQuiesceData immediateQuiesceServices\" as suggested, and also updated the related internal methods and members to match (initImmediateQuiesceMonitoring, immediateQuiesceMatches, etc.).\nIf you\u0027d prefer any of those reverted, please let me know.",
+      "parentUuid": "56372265_b4dd3e01",
+      "revId": "5adefd28089d65de071ccceebfcd3ac58c4d9e16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
