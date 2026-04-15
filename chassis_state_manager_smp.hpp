@@ -61,6 +61,11 @@ class ChassisSMP : public ChassisInherit
   private:
     /** @brief Handle systemd JobNew signals for chassis 0 targets
      *
+     * This ensures that when systemd targets are started directly (not via
+     * the D-Bus API), the transition is still forwarded to all chassis
+     * instances to maintain SMP coordination. Monitors both poweron and
+     * poweroff targets for chassis 0.
+     *
      * @param[in] msg - D-Bus message containing job information
      */
     void sysStateChangeJobNew(sdbusplus::message_t& msg);
