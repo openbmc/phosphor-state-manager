@@ -60,7 +60,7 @@ phosphor-dbus-interfaces for each object it supports.
   `BrownOut` state indicates there is not enough chassis power to fully power on
   and `UninterruptiblePowerSupply` indicates the chassis is running on a UPS.
   - CurrentPowerState: On, Off, BrownOut, UninterruptiblePowerSupply
-  - RequestedPowerTransition: On, Off
+  - RequestedPowerTransition: On, Off, PowerCycle
   - Monitored systemd targets: obmc-chassis-poweron\@.target,
     obmc-chassis-poweroff\@.target
 - [host][4]: The host represents the software running on the system. In most
