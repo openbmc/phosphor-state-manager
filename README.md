@@ -2,7 +2,7 @@
 
 This repository contains the software responsible for tracking and controlling
 the state of different objects within OpenBMC. This currently includes the BMC,
-Chassis, Host, and Hypervisor. The most critical feature of
+Chassis, Host, Hypervisor, and Drive. The most critical feature of
 phosphor-state-manager (PSM) software is its support for requests to power on
 and off the system by the user.
 
@@ -79,6 +79,16 @@ phosphor-dbus-interfaces for each object it supports.
   object implements a limited subset of the host D-Bus interface.
   - CurrentHostState: Standby, TransitionToRunning, Running, Off, Quiesced
   - RequestedHostTransition: On
+- [drive][7]: The drive represents an individual storage device (NVMe/SSD) that
+  supports power control. Drive instances are discovered at runtime through
+  entity-manager. The drive can be `Ready` (powered on), `Offline` (powered
+  off), or `NotReady` (transitioning). `Unknown` indicates the state has not
+  been determined and `UpdateInProgress` indicates a firmware update is active.
+  - CurrentDriveState: Unknown, Ready, NotReady, Offline, Debug,
+    UpdateInProgress
+  - RequestedDriveTransition: On, Off, Reboot, HardReboot, Powercycle
+  - Monitored systemd targets: obmc-drive-poweron\@.target,
+    obmc-drive-poweroff\@.target
 
 As noted above, PSM provides a command line tool, [obmcutil][5], which takes a
 `state` parameter. This will use D-Bus commands to retrieve the above states and
@@ -179,3 +189,5 @@ To clean the repository again run `rm -rf build`.
 [5]: https://github.com/openbmc/phosphor-state-manager/blob/master/obmcutil
 [6]:
   https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Control/Power/RestorePolicy.interface.yaml
+[7]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/Drive.interface.yaml
