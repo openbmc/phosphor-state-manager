@@ -14,8 +14,7 @@ int main()
     // 0 is for the current instance
     const auto* BMCName = BMCState::namespace_path::bmc;
     const auto* objPath = BMCState::namespace_path::value;
-    std::string objPathInst =
-        sdbusplus::message::object_path(objPath) / BMCName;
+    std::string objPathInst = sdbusplus::object_path(objPath) / BMCName;
 
     // Add sdbusplus ObjectManager.
     sdbusplus::server::manager_t objManager(bus, objPath);

@@ -121,7 +121,7 @@ std::string SystemdTargetLogging::processError(const std::string& unit,
 void SystemdTargetLogging::systemdUnitChange(sdbusplus::message_t& msg)
 {
     uint32_t id;
-    sdbusplus::message::object_path objPath;
+    sdbusplus::object_path objPath;
     std::string unit{};
     std::string result{};
 

@@ -47,8 +47,7 @@ int main(int argc, char** argv)
     const auto* objPath = ChassisState::namespace_path::value;
     auto chassisName = std::string(ChassisState::namespace_path::chassis) +
                        std::to_string(chassisId);
-    std::string objPathInst =
-        sdbusplus::message::object_path(objPath) / chassisName;
+    std::string objPathInst = sdbusplus::object_path(objPath) / chassisName;
 
     if (chassisId == 0)
     {

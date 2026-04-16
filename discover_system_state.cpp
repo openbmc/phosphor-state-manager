@@ -98,7 +98,7 @@ int main(int argc, char** argv)
     // If the BMC was rebooted due to a user initiated pinhole reset, do not
     // implement any power restore policies
     using BMC = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
-    auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
+    auto bmcPath = sdbusplus::object_path(BMC::namespace_path::value) /
                    BMC::namespace_path::bmc;
 
     if constexpr (!(RUN_APR_ON_PINHOLE_RESET && RUN_APR_ON_WATCHDOG_RESET &&

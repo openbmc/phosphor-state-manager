@@ -166,7 +166,7 @@ void Host::executeTransition(Transition tranReq)
 bool Host::stateActive(const std::string& target)
 {
     std::variant<std::string> currentState;
-    sdbusplus::message::object_path unitTargetPath;
+    sdbusplus::object_path unitTargetPath;
 
     auto method =
         this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
@@ -294,7 +294,7 @@ bool Host::isAutoReboot()
 void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
 {
     uint32_t newStateID{};
-    sdbusplus::message::object_path newStateObjPath;
+    sdbusplus::object_path newStateObjPath;
     std::string newStateUnit{};
     std::string newStateResult{};
 
@@ -356,7 +356,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
 void Host::sysStateChangeJobNew(sdbusplus::message_t& msg)
 {
     uint32_t newStateID{};
-    sdbusplus::message::object_path newStateObjPath;
+    sdbusplus::object_path newStateObjPath;
     std::string newStateUnit{};
 
     // Read the msg and populate each variable
