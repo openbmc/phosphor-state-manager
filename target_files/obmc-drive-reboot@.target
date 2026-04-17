@@ -1,0 +1,5 @@
+[Unit]
+Description=Reboot Drive%i
+After=multi-user.target
+Wants=obmc-drive-powercycle@%i.target
+After=obmc-drive-powercycle@%i.target
