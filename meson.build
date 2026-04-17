@@ -187,6 +187,16 @@ executable(
 )
 
 executable(
+    'phosphor-drive-state-manager',
+    'drive_state_manager.cpp',
+    'drive_state_manager_main.cpp',
+    dependencies: [phosphordbusinterfaces, phosphorlogging, sdbusplus],
+    link_with: [utils_lib],
+    implicit_include_directories: true,
+    install: true,
+)
+
+executable(
     'phosphor-chassis-check-power-status',
     'chassis_check_power_status.cpp',
     dependencies: [libgpiod, phosphordbusinterfaces, phosphorlogging, sdbusplus],
