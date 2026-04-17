@@ -1,0 +1,13 @@
+[Unit]
+Description=Phosphor Drive%i State Manager
+Before=mapper-wait@-xyz-openbmc_project-state-drive-%i.service
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/phosphor-drive-state-manager --drive %i
+Restart=always
+Type=dbus
+BusName=xyz.openbmc_project.State.Drive.%i
+
+[Install]
+# Handled by bitbake recipe
