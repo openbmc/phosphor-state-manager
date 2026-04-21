@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a905e86_3888b3e5",
+        "filename": "drive_state_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-21T12:47:41Z",
+      "side": 1,
+      "message": "So there\u0027s no GPIO or other communication path to figure out state? I worry a bit that after a BMC reset the state will just always be Unknown.",
+      "revId": "223ec1af6a9795732f7393d32538c0cc78efc3c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61f82647_a17d26e0",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-21T12:47:41Z",
+      "side": 1,
+      "message": "I think it\u0027s getting time to move the source files under sub-dirs. Like one for host, chassis, bmc, and now drive. But we can do that after we get this in.",
+      "revId": "223ec1af6a9795732f7393d32538c0cc78efc3c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e5b4eb_f9ad9234",
+        "filename": "service_files/xyz.openbmc_project.State.Drive@.service",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-21T12:47:41Z",
+      "side": 1,
+      "message": "Why is this needed? I know we have it one service that\u0027s responsible for APR function (need to run after system has reached BMC Ready) but does this service have a similar requirement?",
+      "revId": "223ec1af6a9795732f7393d32538c0cc78efc3c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
