@@ -135,6 +135,12 @@ utils_lib = static_library(
     dependencies: [sdbusplus, phosphorlogging, phosphordbusinterfaces, libgpiod],
 )
 
+sub_device_lib = static_library(
+    'sub_device_manager',
+    'sub_device_manager.cpp',
+    dependencies: [sdbusplus, phosphorlogging],
+)
+
 executable(
     'phosphor-host-state-manager',
     'host_state_manager.cpp',
