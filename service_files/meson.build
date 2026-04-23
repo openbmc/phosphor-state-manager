@@ -24,6 +24,7 @@ unit_files = [
     'phosphor-set-chassis-transition-to-on@.service',
     'phosphor-set-chassis-transition-to-off@.service',
     'phosphor-bmc-quiesce-reboot.service',
+    'xyz.openbmc_project.State.Drive.service',
 ]
 
 fs = import('fs')
