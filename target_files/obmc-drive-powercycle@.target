@@ -1,0 +1,8 @@
+[Unit]
+Description=Drive%i (Power Cycle)
+# Platform must attach a service that performs off-wait-on and starts
+# obmc-drive-poweron@%i.target upon completion, so the daemon can
+# update CurrentDriveState to Ready via the poweron JobRemoved signal.
+# Drives follow host power: obmc-host-stop triggers obmc-drive-poweroff
+# for all associated drives; host start triggers obmc-drive-poweron.
+After=multi-user.target
