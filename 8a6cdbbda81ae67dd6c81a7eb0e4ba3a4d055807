@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72c8a831_0a50fa76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-23T12:52:22Z",
+      "side": 1,
+      "message": "There was some discussion on this log over in the https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/86701 series and the general agreement was that it\u0027s useful but if users don\u0027t want it, they can add it to the ignore log for their systems.",
+      "revId": "8a6cdbbda81ae67dd6c81a7eb0e4ba3a4d055807",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
