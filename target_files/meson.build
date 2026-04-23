@@ -53,3 +53,14 @@ if get_option('auto-reboot-on-bmc-quiesce').enabled()
         pointing_to: '../phosphor-bmc-quiesce-reboot.service',
     )
 endif
+
+install_data(
+    'obmc-drive-hard-reboot@.target',
+    'obmc-drive-powercycle@.target',
+    'obmc-drive-powered-off@.target',
+    'obmc-drive-powered-on@.target',
+    'obmc-drive-poweroff@.target',
+    'obmc-drive-poweron@.target',
+    'obmc-drive-reboot@.target',
+    install_dir: systemd_system_unit_dir,
+)
