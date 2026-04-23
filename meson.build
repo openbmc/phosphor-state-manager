@@ -227,6 +227,16 @@ executable(
 )
 
 executable(
+    'phosphor-drive-state-manager',
+    'drive_state_manager.cpp',
+    'drive_state_manager_main.cpp',
+    dependencies: [phosphordbusinterfaces, phosphorlogging, sdbusplus],
+    link_with: [sub_device_lib, utils_lib],
+    implicit_include_directories: true,
+    install: true,
+)
+
+executable(
     'phosphor-systemd-target-monitor',
     'systemd_service_parser.cpp',
     'systemd_target_monitor.cpp',

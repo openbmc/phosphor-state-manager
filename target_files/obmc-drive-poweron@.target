@@ -1,0 +1,9 @@
+[Unit]
+Description=Drive%i (Power On)
+After=multi-user.target
+Wants=mapper-wait@-xyz-openbmc_project-state-drive-%i.service
+After=mapper-wait@-xyz-openbmc_project-state-drive-%i.service
+Wants=obmc-drive-powered-on@%i.target
+Conflicts=obmc-drive-poweroff@%i.target
+OnFailure=obmc-drive-poweroff@%i.target
+OnFailureJobMode=fail
