@@ -1,6 +1,7 @@
 [Unit]
 Description=Host%i (Reset Check)
 Conflicts=obmc-host-stop@%i.target
+After=obmc-host-stop@%i.target
 
 [Install]
 # Handled by bitbake recipe

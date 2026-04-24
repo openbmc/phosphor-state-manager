@@ -1,6 +1,7 @@
 [Unit]
 Description=Chassis%i (Reset Check)
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target
 
 [Install]
 # Handled by bitbake recipe

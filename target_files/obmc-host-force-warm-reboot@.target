@@ -4,3 +4,4 @@
 Description=Force Warm Reboot Host%i
 After=multi-user.target
 Conflicts=obmc-host-startmin@%i.target
+After=obmc-host-startmin@%i.target

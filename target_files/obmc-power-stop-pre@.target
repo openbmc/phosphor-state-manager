@@ -4,4 +4,5 @@ After=multi-user.target
 Wants=obmc-host-stopped@%i.target
 After=obmc-host-stopped@%i.target
 Conflicts=obmc-chassis-poweron@%i.target
+After=obmc-chassis-poweron@%i.target
 RefuseManualStart=yes

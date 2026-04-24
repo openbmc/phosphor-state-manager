@@ -1,4 +1,5 @@
 [Unit]
 Description=Host%i running after reset
 Conflicts=obmc-host-stop@%i.target
+After=obmc-host-stop@%i.target
 RefuseManualStart=yes

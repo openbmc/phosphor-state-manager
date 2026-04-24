@@ -6,5 +6,7 @@ After=obmc-host-stop-pre@%i.target
 Wants=obmc-host-stopped@%i.target
 Before=obmc-host-stopped@%i.target
 Conflicts=obmc-host-startmin@%i.target
+After=obmc-host-startmin@%i.target
 Conflicts=obmc-host-starting@%i.target
+After=obmc-host-starting@%i.target
 RefuseManualStart=yes

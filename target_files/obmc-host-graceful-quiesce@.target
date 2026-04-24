@@ -5,3 +5,4 @@ Wants=obmc-host-stop-pre@%i.target
 Wants=obmc-host-stopping@%i.target
 Wants=obmc-host-stopped@%i.target
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target
