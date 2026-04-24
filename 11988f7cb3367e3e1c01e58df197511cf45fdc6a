@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72180d4d_3bad6f61",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002462
+      },
+      "writtenOn": "2026-04-24T09:04:15Z",
+      "side": 1,
+      "message": "Yes, exactly. The BMC is initially in the Ready state, and then transitions to NotReady after a reboot is triggered via D-Bus/Redfish.",
+      "parentUuid": "0155091d_37432b72",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 55
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a4b01da_d2d12d32",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-24T02:04:27Z",
       "side": 1,
       "message": "But the BMC is NotReady at that point of time.  Why is it \"undesirable\" or \"inconsistent\"?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "827e37fb_7b6b4661",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002462
+      },
+      "writtenOn": "2026-04-24T09:04:15Z",
+      "side": 1,
+      "message": "#21",
+      "parentUuid": "6a4b01da_d2d12d32",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60449ae0_1b5a8518",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002462
+      },
+      "writtenOn": "2026-04-24T09:04:15Z",
+      "side": 1,
+      "message": "Yes, I agree that it works as expected.",
+      "parentUuid": "4de3bfec_ec0c4711",
+      "range": {
+        "startLine": 16,
+        "startChar": 30,
+        "endLine": 18,
+        "endChar": 37
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ed75baf_a6034cd4",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18cf3a65_c8ff6378",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002462
+      },
+      "writtenOn": "2026-04-24T09:04:15Z",
+      "side": 1,
+      "message": "You are correct; the startup process is working exactly as expected during boot. Regarding the CLI behavior, the reason it doesn\u0027t generate the log is likely because the standard reboot command bypasses the D-Bus/Redfish graceful shutdown flow, thereby avoiding the state manager\u0027s transition logic entirely.",
+      "parentUuid": "4ed75baf_a6034cd4",
+      "range": {
+        "startLine": 18,
+        "startChar": 38,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1281ff3_a63e5d7c",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-04-24T02:04:27Z",
       "side": 1,
       "message": "Isn\u0027t this a very heavy hammer though?  It means we _never_ get a NotReady even if it might be a true condition ...\n\nTo recap/clarify:\n- If bmc-state-manager starts before multi-user.target completes, we emit NotReady and then Ready.  This seems ok.\n- If bmc-state-manager starts as multi-user.target complets, we emit only Ready.  This is also ok even though \"inconsistent\".\n- If the BMC is in the process of rebooting, due to a user requires, I would not expect any new event to happen as part of that reboot except maybe an [new?] explicit \"Rebooting\" state.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 54
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc548e40_ac423796",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002462
+      },
+      "writtenOn": "2026-04-24T09:04:15Z",
+      "side": 1,
+      "message": "Thanks for the detailed review and clarification. Your recap makes perfect sense, and I agree with your assessment.\nYou are right. The root cause isn\u0027t that the event is being logged, but rather that the BMC is transitioning to NotReady during a shutdown/reboot sequence at all. My current patch only hides the symptom (the log) instead of fixing the inappropriate state transition.\nBased on your feedback, it seems the correct approach is to prevent currentBMCState from transitioning to NotReady if the system is already processing a shutdown or reboot request. As you mentioned, introducing a new state like Rebooting.\nSince Andrew is tagged, I\u0027d appreciate his or your thoughts on whether we should \nintroduce a Rebooting state for this specific phase?",
+      "parentUuid": "c1281ff3_a63e5d7c",
       "range": {
         "startLine": 22,
         "startChar": 0,
