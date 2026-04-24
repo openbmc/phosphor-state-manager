@@ -1,3 +1,4 @@
 [Unit]
 Description=Fan Control Ready
 Conflicts=obmc-chassis-powered-off@%i.target
+After=obmc-chassis-powered-off@%i.target

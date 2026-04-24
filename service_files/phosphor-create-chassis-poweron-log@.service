@@ -4,6 +4,7 @@ Wants=obmc-power-start-pre@%i.target
 Before=obmc-power-start-pre@%i.target
 Before=phosphor-regulators-config.service
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target
 ConditionPathExists=!/run/openbmc/chassis@%i-on
 
 [Service]

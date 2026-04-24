@@ -4,4 +4,5 @@ Wants=obmc-power-start-pre@%i.target
 After=obmc-power-start-pre@%i.target
 After=multi-user.target
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target
 RefuseManualStart=yes

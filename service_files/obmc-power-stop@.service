@@ -7,6 +7,7 @@ After=obmc-power-stop-pre@%i.target
 Wants=mapper-wait@-org-openbmc-control-power%i.service
 After=mapper-wait@-org-openbmc-control-power%i.service
 Conflicts=obmc-chassis-poweron@%i.target
+After=obmc-chassis-poweron@%i.target
 
 [Service]
 RemainAfterExit=yes

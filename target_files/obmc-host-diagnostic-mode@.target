@@ -5,3 +5,4 @@
 Description=Diagnostic Mode Collection for Host%i
 After=multi-user.target
 Conflicts=obmc-host-startmin@%i.target
+After=obmc-host-startmin@%i.target

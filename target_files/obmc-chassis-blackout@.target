@@ -2,3 +2,4 @@
 Description=Chassis Blackout Target
 After=multi-user.target
 Conflicts=obmc-chassis-poweron@%i.target
+After=obmc-chassis-poweron@%i.target

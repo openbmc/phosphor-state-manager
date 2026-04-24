@@ -5,6 +5,7 @@ After=mapper-wait@-xyz-openbmc_project-state-host%i.service
 Wants=obmc-host-stop-pre@%i.target
 Before=obmc-host-stop-pre@%i.target
 Conflicts=obmc-host-startmin@%i.target
+After=obmc-host-startmin@%i.target
 
 [Service]
 Restart=no
