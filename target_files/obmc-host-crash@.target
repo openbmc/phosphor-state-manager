@@ -1,3 +1,4 @@
 [Unit]
 Description=Host instance %i crashed
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target

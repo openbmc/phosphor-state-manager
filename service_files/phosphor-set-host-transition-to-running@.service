@@ -4,6 +4,7 @@ Wants=mapper-wait@-xyz-openbmc_project-state-host%i.service
 After=mapper-wait@-xyz-openbmc_project-state-host%i.service
 Wants=obmc-host-start-pre@%i.target
 Before=obmc-host-start-pre@%i.target
+After=obmc-host-stop@%i.target
 Conflicts=obmc-host-stop@%i.target
 ConditionPathExists=!/run/openbmc/host@%i-on
 

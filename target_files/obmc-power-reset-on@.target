@@ -1,4 +1,5 @@
 [Unit]
 Description=Chassis%i power on after reset
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target
 RefuseManualStart=yes

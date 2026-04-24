@@ -2,4 +2,6 @@
 Description=Quiesce Target
 After=multi-user.target
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target
 Conflicts=obmc-host-stop@%i.target
+After=obmc-host-stop@%i.target

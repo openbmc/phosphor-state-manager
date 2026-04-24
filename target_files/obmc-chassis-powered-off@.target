@@ -4,4 +4,6 @@ After=multi-user.target
 Wants=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
 After=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
 Conflicts=obmc-chassis-poweron@%i.target
+After=obmc-chassis-poweron@%i.target
 Conflicts=obmc-chassis-powerreset@%i.target
+After=obmc-chassis-powerreset@%i.target

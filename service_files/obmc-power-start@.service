@@ -8,6 +8,7 @@ After=obmc-fan-control.target
 Wants=mapper-wait@-org-openbmc-control-power%i.service
 After=mapper-wait@-org-openbmc-control-power%i.service
 Conflicts=obmc-chassis-poweroff@%i.target
+After=obmc-chassis-poweroff@%i.target
 ConditionPathExists=!/run/openbmc/chassis@%i-on
 
 [Service]

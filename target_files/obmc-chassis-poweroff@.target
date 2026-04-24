@@ -7,4 +7,6 @@ Wants=obmc-power-stop-pre@%i.target
 Wants=obmc-power-stop@%i.target
 Wants=obmc-power-off@%i.target
 Conflicts=obmc-chassis-poweron@%i.target
+After=obmc-chassis-poweron@%i.target
 Conflicts=obmc-chassis-powerreset@%i.target
+After=obmc-chassis-powerreset@%i.target
