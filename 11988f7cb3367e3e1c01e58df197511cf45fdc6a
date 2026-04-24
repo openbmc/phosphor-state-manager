@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0155091d_37432b72",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-24T02:04:27Z",
+      "side": 1,
+      "message": "So, this is specifically to fix a case where the BMC enters \"NotReady\" after it was previously \"Ready\"?  As part of a BMC reboot?\n\nThat to me _is_ unexpected.  The BMC was ready and it is only \"not ready\" because it is shutting down, but I would not expect it to go to \"NotReady\" state for that.  Maybe \"Quiesed\" or \"Quiesing\".\n\nMaybe @geissonator@yahoo.com can give some clarity.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 55
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a4b01da_d2d12d32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-24T02:04:27Z",
+      "side": 1,
+      "message": "But the BMC is NotReady at that point of time.  Why is it \"undesirable\" or \"inconsistent\"?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4de3bfec_ec0c4711",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-24T02:04:27Z",
+      "side": 1,
+      "message": "It is, isn\u0027t it?  That\u0027s the current behavior.",
+      "range": {
+        "startLine": 16,
+        "startChar": 30,
+        "endLine": 18,
+        "endChar": 37
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ed75baf_a6034cd4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-24T02:04:27Z",
+      "side": 1,
+      "message": "Why would the type of reboot affect this?  Isn\u0027t it entirely a race condition between the service starting up and the rest of the services starting?",
+      "range": {
+        "startLine": 18,
+        "startChar": 38,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1281ff3_a63e5d7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-24T02:04:27Z",
+      "side": 1,
+      "message": "Isn\u0027t this a very heavy hammer though?  It means we _never_ get a NotReady even if it might be a true condition ...\n\nTo recap/clarify:\n- If bmc-state-manager starts before multi-user.target completes, we emit NotReady and then Ready.  This seems ok.\n- If bmc-state-manager starts as multi-user.target complets, we emit only Ready.  This is also ok even though \"inconsistent\".\n- If the BMC is in the process of rebooting, due to a user requires, I would not expect any new event to happen as part of that reboot except maybe an [new?] explicit \"Rebooting\" state.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 54
+      },
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
