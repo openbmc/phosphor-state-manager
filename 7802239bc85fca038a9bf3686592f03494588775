@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9933d0c5_73226e5a",
+        "filename": "obmcutil",
+        "patchSetId": 2
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:38:30Z",
+      "side": 1,
+      "message": "random question:\n\n`num-chassis-smp` meson option defines this, right?\n\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/88928/5\n\nCan we hardcode it here as `12` or do we need to derive it from the meson option.",
+      "range": {
+        "startLine": 517,
+        "startChar": 29,
+        "endLine": 517,
+        "endChar": 31
+      },
+      "revId": "7802239bc85fca038a9bf3686592f03494588775",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
