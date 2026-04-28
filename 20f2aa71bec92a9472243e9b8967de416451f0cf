@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cbcc005_a7ce7349",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-28T21:44:19Z",
+      "side": 1,
+      "message": "could also combine this commit with the .cpp implementation one so it\u0027s easier to review together.",
+      "revId": "20f2aa71bec92a9472243e9b8967de416451f0cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3eaa247_b8fefefd",
+        "filename": "chassis_state_manager_smp.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-28T21:44:19Z",
+      "side": 1,
+      "message": "FYI for a while now one is able to have these all::on::one::line",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "20f2aa71bec92a9472243e9b8967de416451f0cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
