@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a6be7b2_0150c6ce",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40bb86ee_9f6e0346",
+      "range": {
+        "startLine": 110,
+        "startChar": 8,
+        "endLine": 110,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05bc4017_69908a49",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-28T08:03:08Z",
       "side": 1,
       "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b74aea8_38e9fd70",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05bc4017_69908a49",
       "range": {
         "startLine": 140,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "882fab14_a3245a9a",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "432303a8_e0e3b32b",
+      "range": {
+        "startLine": 203,
+        "startChar": 8,
+        "endLine": 203,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d79d556_5303aac1",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-04-28T08:03:08Z",
       "side": 1,
       "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 317,
+        "startChar": 8,
+        "endLine": 317,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e75b6b4_eb27d937",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d79d556_5303aac1",
       "range": {
         "startLine": 317,
         "startChar": 8,
