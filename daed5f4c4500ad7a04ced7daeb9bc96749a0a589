@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bbfbd9a_723f0d99",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:10:58Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 113,
+        "startChar": 13,
+        "endLine": 113,
+        "endChar": 19
+      },
+      "revId": "daed5f4c4500ad7a04ced7daeb9bc96749a0a589",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ef879e1_8a7e3bb9",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:10:58Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 135,
+        "startChar": 13,
+        "endLine": 135,
+        "endChar": 19
+      },
+      "revId": "daed5f4c4500ad7a04ced7daeb9bc96749a0a589",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa060272_0f2abb5e",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:10:58Z",
+      "side": 1,
+      "message": "nit: we can directly use the constant from the generated header which will avoid the need to re-define it here.\n```suggestion\n    using InventoryItem \u003d ...\n```\n\nand then later\n\n```\nInventoryItem::interface\n```",
+      "range": {
+        "startLine": 447,
+        "startChar": 19,
+        "endLine": 447,
+        "endChar": 32
+      },
+      "revId": "daed5f4c4500ad7a04ced7daeb9bc96749a0a589",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d614e273_3401a620",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:10:58Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 449,
+        "startChar": 9,
+        "endLine": 449,
+        "endChar": 15
+      },
+      "revId": "daed5f4c4500ad7a04ced7daeb9bc96749a0a589",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e01dbd32_624b1c75",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:10:58Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 500,
+        "startChar": 13,
+        "endLine": 500,
+        "endChar": 19
+      },
+      "revId": "daed5f4c4500ad7a04ced7daeb9bc96749a0a589",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
