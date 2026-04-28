@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20dcc610_e687ddcc",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8d3e1b6_75681567",
+      "revId": "1e621b6e494cbb02f2851bee974ff218eeea28a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14700ff6_77112fef",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9864ea64_c1939a9f",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14700ff6_77112fef",
+      "range": {
+        "startLine": 84,
+        "startChar": 9,
+        "endLine": 84,
+        "endChar": 15
+      },
+      "revId": "1e621b6e494cbb02f2851bee974ff218eeea28a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd260dd9_81b841ed",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-04-28T08:13:43Z",
       "side": 1,
       "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 110,
+        "startChar": 9,
+        "endLine": 110,
+        "endChar": 15
+      },
+      "revId": "1e621b6e494cbb02f2851bee974ff218eeea28a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "795fbec0_8bb9db48",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd260dd9_81b841ed",
       "range": {
         "startLine": 110,
         "startChar": 9,
