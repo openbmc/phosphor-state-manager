@@ -22,6 +22,30 @@
       },
       "revId": "7802239bc85fca038a9bf3686592f03494588775",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69a55f4b_4df1c750",
+        "filename": "obmcutil",
+        "patchSetId": 2
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-04-28T16:52:36Z",
+      "side": 1,
+      "message": "Yeah, I couldn\u0027t come up with an easy solution to get the meson.option into this file. I could rename it to obmcutil.in (template file) and then do a @NUM_CHASSIS_SMP@ for the 12, but then you can\u0027t just copy the obmcutil onto a system and start using it. So....not sure the added complexity is worth it for a verbose debug option in here.",
+      "parentUuid": "9933d0c5_73226e5a",
+      "range": {
+        "startLine": 517,
+        "startChar": 29,
+        "endLine": 517,
+        "endChar": 31
+      },
+      "revId": "7802239bc85fca038a9bf3686592f03494588775",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
