@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40bb86ee_9f6e0346",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:03:08Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 110,
+        "startChar": 8,
+        "endLine": 110,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05bc4017_69908a49",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:03:08Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "432303a8_e0e3b32b",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:03:08Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 203,
+        "startChar": 8,
+        "endLine": 203,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d79d556_5303aac1",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:03:08Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 317,
+        "startChar": 8,
+        "endLine": 317,
+        "endChar": 19
+      },
+      "revId": "5b27da2238cf2aa33b4a29fe055688ea0bb310b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
