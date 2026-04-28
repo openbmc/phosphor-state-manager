@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8d3e1b6_75681567",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:13:43Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "revId": "1e621b6e494cbb02f2851bee974ff218eeea28a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14700ff6_77112fef",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:13:43Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 84,
+        "startChar": 9,
+        "endLine": 84,
+        "endChar": 15
+      },
+      "revId": "1e621b6e494cbb02f2851bee974ff218eeea28a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd260dd9_81b841ed",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-28T08:13:43Z",
+      "side": 1,
+      "message": "nit: `sdbusplus::object_path`",
+      "range": {
+        "startLine": 110,
+        "startChar": 9,
+        "endLine": 110,
+        "endChar": 15
+      },
+      "revId": "1e621b6e494cbb02f2851bee974ff218eeea28a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
