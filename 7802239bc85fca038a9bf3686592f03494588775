@@ -46,6 +46,30 @@
       },
       "revId": "7802239bc85fca038a9bf3686592f03494588775",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e587354_b5323f73",
+        "filename": "obmcutil",
+        "patchSetId": 2
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T09:13:07Z",
+      "side": 1,
+      "message": "makes sense, maybe not worth it for verbose debug options 👍",
+      "parentUuid": "69a55f4b_4df1c750",
+      "range": {
+        "startLine": 517,
+        "startChar": 29,
+        "endLine": 517,
+        "endChar": 31
+      },
+      "revId": "7802239bc85fca038a9bf3686592f03494588775",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
