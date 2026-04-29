@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0864fbd4_2e05b457",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:57:32Z",
+      "side": 1,
+      "message": "nit: there is an overload that accepts `object_path` directly\n```suggestion\n        \"org.openbmc.control.Power\", powerControlPath, PROPERTY_INTERFACE,\n```\n\nsorry, i should have probably commented this on my first review",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 2
+      },
+      "revId": "fde3deae4033d90bfe8c648ffd2b789c46c7f02c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
