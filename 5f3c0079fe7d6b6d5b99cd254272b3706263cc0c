@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "738af53c_b627676b",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:51:08Z",
+      "side": 1,
+      "message": "nit\n\n```suggestion\nChassisSMP::ChassisSMP(sdbusplus::bus_t\u0026 bus, const sdbusplus::object_path\u0026 objPath, size_t id,\n```",
+      "range": {
+        "startLine": 38,
+        "startChar": 52,
+        "endLine": 38,
+        "endChar": 56
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b9f2273_aef8655d",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:51:08Z",
+      "side": 1,
+      "message": "nit: There is an overload now which accepts `object_path`\n\n```suggestion\n                bus.new_method_call(chassisService.c_str(), chassisPath,\n```",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 2
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e6f34b2_84a040ee",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:51:08Z",
+      "side": 1,
+      "message": "nit\n\n```suggestion\n                bus.new_method_call(chassisService.c_str(), chassisPath,\n```",
+      "range": {
+        "startLine": 211,
+        "startChar": 60,
+        "endLine": 211,
+        "endChar": 75
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89bd4833_c79d72e3",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:51:08Z",
+      "side": 1,
+      "message": "nit\n```suggestion\n                bus.new_method_call(chassisService.c_str(), chassisPath,\n```",
+      "range": {
+        "startLine": 342,
+        "startChar": 60,
+        "endLine": 342,
+        "endChar": 75
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
