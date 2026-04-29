@@ -39,6 +39,29 @@
       },
       "revId": "20f2aa71bec92a9472243e9b8967de416451f0cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "327c23a7_a75a9544",
+        "filename": "chassis_state_manager_smp.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:50:50Z",
+      "side": 1,
+      "message": "nit, the generated server can be constructed with `object_path` now.\n\n```suggestion\n    ChassisSMP(sdbusplus::bus_t\u0026 bus, const sdbusplus::object_path\u0026 objPath, size_t id,\n```",
+      "range": {
+        "startLine": 49,
+        "startChar": 44,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "20f2aa71bec92a9472243e9b8967de416451f0cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
