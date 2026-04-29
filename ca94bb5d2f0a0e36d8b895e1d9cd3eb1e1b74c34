@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b9d353d_b3bdb767",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:54:52Z",
+      "side": 1,
+      "message": "nit (outside of diff, sorry for that)\n```suggestion\n    sdbusplus::object_path objPathInst \u003d sdbusplus::object_path(objPath) / chassisName;\n```",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 2
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1344b811_7ae86432",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:54:52Z",
+      "side": 1,
+      "message": "nit\n```suggestion\n                bus, objPathInst, chassisId, NUM_CHASSIS_SMP);\n```",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 2
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd15cdd_449f1607",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:54:52Z",
+      "side": 1,
+      "message": "nit\n```suggestion\n            phosphor::state::manager::Chassis manager(bus, objPathInst,\n```",
+      "range": {
+        "startLine": 101,
+        "startChar": 59,
+        "endLine": 101,
+        "endChar": 78
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fcc8a86_0f990c1b",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-29T08:54:52Z",
+      "side": 1,
+      "message": "nit\n```suggestion\n        phosphor::state::manager::Chassis manager(bus, objPathInst,\n```",
+      "range": {
+        "startLine": 111,
+        "startChar": 55,
+        "endLine": 111,
+        "endChar": 74
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
