@@ -302,7 +302,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     if ((newStateUnit == getTarget(server::Host::HostState::Off)) &&
-        (newStateResult == "done") &&
+        (newStateResult == "done") && (stateActive(newStateUnit)) &&
         (!stateActive(getTarget(server::Host::HostState::Running))))
     {
         info("Received signal that host is off");
