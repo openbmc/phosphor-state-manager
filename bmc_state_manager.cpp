@@ -210,7 +210,8 @@ int BMC::bmcStateChange(sdbusplus::message_t& msg)
     // Read the msg and populate each variable
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
-    if ((newStateUnit == obmcQuiesceTarget) && (newStateResult == signalDone))
+    if ((newStateUnit == obmcQuiesceTarget) && (newStateResult == signalDone) &&
+        (getUnitState(newStateUnit) == activeState))
     {
         error("BMC has entered BMC_QUIESCED state");
         bmcIsQuiesced();
@@ -218,7 +219,8 @@ int BMC::bmcStateChange(sdbusplus::message_t& msg)
     }
 
     // Caught the signal that indicates the BMC is now BMC_READY
-    if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone))
+    if ((newStateUnit == obmcStandbyTarget) && (newStateResult == signalDone) &&
+        (getUnitState(newStateUnit) == activeState))
     {
         info("BMC_READY");
         this->currentBMCState(BMCState::Ready);
