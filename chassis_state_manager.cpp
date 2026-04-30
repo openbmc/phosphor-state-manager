@@ -547,16 +547,14 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
     }
 
     if ((newStateUnit == std::format(CHASSIS_STATE_POWEROFF_TGT_FMT, id)) &&
-        (newStateResult == "done") &&
-        (!stateActive(systemdTargetTable[Transition::On])))
+        (newStateResult == "done") && (stateActive(newStateUnit)))
     {
         info("Received signal that power OFF is complete");
         this->currentPowerState(server::Chassis::PowerState::Off);
         this->setStateChangeTime();
     }
     else if ((newStateUnit == systemdTargetTable[Transition::On]) &&
-             (newStateResult == "done") &&
-             (stateActive(systemdTargetTable[Transition::On])))
+             (newStateResult == "done") && (stateActive(newStateUnit)))
     {
         info("Received signal that power ON is complete");
         this->currentPowerState(server::Chassis::PowerState::On);
