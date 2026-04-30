@@ -26,6 +26,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71c45284_c7dbdfce",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-30T15:55:05Z",
+      "side": 1,
+      "message": "could just be const since id has to be zero?",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "412aab15_ba79d075",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-30T15:55:05Z",
+      "side": 1,
+      "message": "Is this useful considering the constructor already traces the same thing?",
+      "range": {
+        "startLine": 104,
+        "startChar": 3,
+        "endLine": 105,
+        "endChar": 36
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74704065_ae44691c",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-30T15:55:05Z",
+      "side": 1,
+      "message": "debug?",
+      "range": {
+        "startLine": 125,
+        "startChar": 7,
+        "endLine": 125,
+        "endChar": 13
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b9f2273_aef8655d",
         "filename": "chassis_state_manager_smp.cpp",
         "patchSetId": 6
@@ -49,6 +112,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6ce945a_551c07a7",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-30T15:55:05Z",
+      "side": 1,
+      "message": "could use the PDI constant for this, the header is already included.",
+      "range": {
+        "startLine": 150,
+        "startChar": 27,
+        "endLine": 150,
+        "endChar": 60
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27dc8ad8_98579089",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-30T15:55:05Z",
+      "side": 1,
+      "message": "I wonder why this repo didn\u0027t get picked up in the big read()-\u003e unpack() conversion a while ago.\n\nThe option is the following, if you like it:\nauto propertyValue \u003d reply.unpack\u003cvariant\u003cstring\u003e\u003e();\nor:\npropertyValue \u003d reply.unpack\u003cvariant\u003cPowerState\u003e\u003e();\nand then you can use enums below instead of strings.\n\nfor example see wasHostBooting in host_reset_recovery.cpp.",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e6f34b2_84a040ee",
         "filename": "chassis_state_manager_smp.cpp",
         "patchSetId": 6
@@ -66,6 +169,23 @@
         "endLine": 211,
         "endChar": 75
       },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed3a75cb_6033a869",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-04-30T15:55:05Z",
+      "side": 1,
+      "message": "same comments about enums as above",
       "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
