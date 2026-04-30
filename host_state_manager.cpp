@@ -298,8 +298,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     if ((newStateUnit == getTarget(server::Host::HostState::Off)) &&
-        (newStateResult == "done") &&
-        (!stateActive(getTarget(server::Host::HostState::Running))))
+        (newStateResult == "done") && (stateActive(newStateUnit)))
     {
         info("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
@@ -307,8 +306,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         this->operatingSystemState(osstatus::Status::OSStatus::Inactive);
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Running)) &&
-             (newStateResult == "done") &&
-             (stateActive(getTarget(server::Host::HostState::Running))))
+             (newStateResult == "done") && (stateActive(newStateUnit)))
     {
         info("Received signal that host is running");
         this->currentHostState(server::Host::HostState::Running);
@@ -333,8 +331,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         }
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Quiesced)) &&
-             (newStateResult == "done") &&
-             (stateActive(getTarget(server::Host::HostState::Quiesced))))
+             (newStateResult == "done") && (stateActive(newStateUnit)))
     {
         if (Host::isAutoReboot())
         {
