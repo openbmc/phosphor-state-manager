@@ -33,6 +33,24 @@
       "message": "Is there actually special code required here or is it just a bunch of target dependencies?  If there is special code can you elaborate what that is doing?\n\nIt seems to me on the surface that this could be handled exclusively through target dependencies, which you could install at a machine level (or via a meta-phosphor machine feature).",
       "revId": "b6dd3731158759f5c73a23828467024115fec41a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5369b966_f253bc6d",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-04T20:24:40Z",
+      "side": 1,
+      "message": "Yeah, I started down that path, basically installing the obmc-chassis-poweron@[1-N] targets into the obmc-chassis-poweron@0.target.requires but I found a lot of things I didn\u0027t like with that path:\n\n\n- I would need compile flag checks in the existing chassis code for things like inventory presence. Also, the existing chassis code would not work for our aggregated chassis 0 as there is no real chassis power (or pgood pins) associated with it. So either way I would need something special for chassis0. Writing a small app that does the aggregation logic and handles the chassis 0 systemd targets (as there are still some system wide chassis servers we need in the obmc-chassis 0 targets) made more sense and means we don\u0027t need any changes to the existing chassis code.\n- There is no great way to aggregate properties like CurrentPowerState and CurrentPowerStatus (without an aggregation app). If one chassis has a power problem, we want the aggregate power to reflect that.\n- Error path handling - Although systemd does have things like OnFailure, I\u0027ve  hit a lot of race conditions and problems in the past when trying more complex recovery. If a chassis fails to power on, we need to gracefully power down all other chassis, log an appropriate error, and potentially try another power on without that bad chassis. Also if there\u0027s some sort of system wide power event, the aggregator can handle that as a whole vs. each chassis logging errors and initiating recovery actions.\n\nHaving a separate SMP app allows for centralized coordination, clean code (no changes to code in non-SMP systems), easier testing, and is easier to build upon in the future. The downsides are we have a new app to support and we\u0027ve added some \"state\" logic to PSM where it historically has mostly been a wrapper around systemd.",
+      "parentUuid": "59ad388a_c5230fe0",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
