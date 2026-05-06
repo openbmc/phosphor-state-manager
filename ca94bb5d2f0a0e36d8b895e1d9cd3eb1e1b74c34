@@ -49,6 +49,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0930723_5ff5a2ec",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-06T16:11:52Z",
+      "side": 1,
+      "message": "Why is this block needed here but not in the other cases?",
+      "range": {
+        "startLine": 91,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 13
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3fd15cdd_449f1607",
         "filename": "chassis_state_manager_main.cpp",
         "patchSetId": 6
