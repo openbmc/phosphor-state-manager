@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74b6ec5a_b18b7253",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-06T16:34:24Z",
+      "side": 1,
+      "message": "FYI it is possible this call could fail at this point in time.\n\nThe power control application may not yet have been able to determine the initial power state of a chassis. In that situation, it will not publish anything on D-Bus for that chassis, rather than just guessing.\n\nThis could happen in situations like the following:\n- The Present property is not (yet?) on D-Bus for that chassis. This property is required for the power control application to know whether it can communicate with the chassis. If the power good signal is obtained from a GPIO, and the chassis is missing, it is hardware implementation-dependent whether attempting to read from the GPIO would fail, produce an invalid value, etc.\n- Communication is not possible to the chassis due to a hardware issue. If the Available property is being used to indicate whether communication is possible, this property could be false or not published on D-Bus (yet?).\n\nThe power control application may publish the pgood property later, such as if the Present or Available property becomes available later. So you could add a listener.\n\nYou can also obviously just assume a pgood value if this call fails, but it will be a random guess.",
+      "revId": "fde3deae4033d90bfe8c648ffd2b789c46c7f02c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0864fbd4_2e05b457",
         "filename": "chassis_state_manager.cpp",
         "patchSetId": 4
