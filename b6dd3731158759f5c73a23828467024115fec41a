@@ -20,6 +20,74 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d53293e7_cdee6e03",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-06T15:49:47Z",
+      "side": 1,
+      "message": "Will Off be used if the chassis is experiencing a blackout (no input power)? Or do we need to add a BlackOut enum value?",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86e80c44_2c64f47b",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-06T15:49:47Z",
+      "side": 1,
+      "message": "Need to add the powercycle target here, since it is mentioned in RequestedPowerTransition?",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed0d414_767fb6c8",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-06T15:49:47Z",
+      "side": 1,
+      "message": "A few comments here:\n* During a system power on, PSM may chose not to power some chassis on. The chassis could be missing, in hardware isolation, have a bad power status, etc.\n* I think we want chassis 0 to only show that the system is powered on when all the chassis **selected for power on** are powered on. So it should change to On last after the chassis, and the power state should not take into account chassis not selected for power on.\n* During a system power off, PSM may chose not to power some chassis off. For example, if the Available property is being used to indicate whether communication is possible, it may not be possible to power some chassis off.\n* I think we want chassis 0 to only show the system is powered off when all the chassis **selected for power off** are powered off. So it should change to Off last.",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da5debb7_b88ec495",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-06T15:49:47Z",
+      "side": 1,
+      "message": "Even if one chassis has a bad power state, we are still going to want to power on the chassis in a good state. So hopefully this aggregated state does not prevent a power on?",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59ad388a_c5230fe0",
         "filename": "README.md",
         "patchSetId": 4
@@ -49,6 +117,24 @@
       "side": 1,
       "message": "Yeah, I started down that path, basically installing the obmc-chassis-poweron@[1-N] targets into the obmc-chassis-poweron@0.target.requires but I found a lot of things I didn\u0027t like with that path:\n\n\n- I would need compile flag checks in the existing chassis code for things like inventory presence. Also, the existing chassis code would not work for our aggregated chassis 0 as there is no real chassis power (or pgood pins) associated with it. So either way I would need something special for chassis0. Writing a small app that does the aggregation logic and handles the chassis 0 systemd targets (as there are still some system wide chassis servers we need in the obmc-chassis 0 targets) made more sense and means we don\u0027t need any changes to the existing chassis code.\n- There is no great way to aggregate properties like CurrentPowerState and CurrentPowerStatus (without an aggregation app). If one chassis has a power problem, we want the aggregate power to reflect that.\n- Error path handling - Although systemd does have things like OnFailure, I\u0027ve  hit a lot of race conditions and problems in the past when trying more complex recovery. If a chassis fails to power on, we need to gracefully power down all other chassis, log an appropriate error, and potentially try another power on without that bad chassis. Also if there\u0027s some sort of system wide power event, the aggregator can handle that as a whole vs. each chassis logging errors and initiating recovery actions.\n\nHaving a separate SMP app allows for centralized coordination, clean code (no changes to code in non-SMP systems), easier testing, and is easier to build upon in the future. The downsides are we have a new app to support and we\u0027ve added some \"state\" logic to PSM where it historically has mostly been a wrapper around systemd.",
       "parentUuid": "59ad388a_c5230fe0",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70aa16ac_abec99eb",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-06T15:49:47Z",
+      "side": 1,
+      "message": "I\u0027m not sure if it is relevant here, but the phosphor-power-sequencer application will maintain its view of the power state and power good for chassis 0. It will be the aggregation based on which chassis were selected for power on/off. Not sure if that is helpful. PSM may want to keep its aggregation separate to enforce its own logic.",
+      "parentUuid": "5369b966_f253bc6d",
       "revId": "b6dd3731158759f5c73a23828467024115fec41a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
