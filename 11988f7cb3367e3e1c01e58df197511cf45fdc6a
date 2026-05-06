@@ -234,6 +234,40 @@
       },
       "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8574d3d8_f12cfbee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-06T20:03:46Z",
+      "side": 1,
+      "message": "I\u0027m still not a huge fan of this, it feels like we\u0027re working around something I wasn\u0027t super happy to begin with (the log on every state change). Going to NotReady on a reboot was added because at least at IBM, our external Redfish clients kept hitting a window during the BMC reboot where they thought the BMC was still \"Ready\" and was expecting normal Redfish API\u0027s to keep working. BMC reboots take 10-15s and bmcweb is the last to get shut down so it was a mess. Going to NotReady is an indicator to external clients to stop talking to the BMC in these reboot paths. \n\nBut with all that said, add a comment to the code and I\u0027m fine.",
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a977261_c4cae3fe",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-06T20:03:46Z",
+      "side": 1,
+      "message": "I\u0027d like a comment addressing why we\u0027re directly calling the sdbusplus class here so we don\u0027t forget in the future.",
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
