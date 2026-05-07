@@ -231,59 +231,66 @@ int main(int argc, char** argv)
         // Always execute power on if AlwaysOn is set, otherwise check config
         // option (and AC loss status) on whether to execute other policy
         // settings
-        else if constexpr (ONLY_RUN_APR_ON_POWER_LOSS)
+        else
         {
-            if (!phosphor::state::manager::utils::checkACLoss(hostId))
+            if constexpr (ONLY_RUN_APR_ON_POWER_LOSS)
+            {
+                if (!phosphor::state::manager::utils::checkACLoss(hostId))
+                {
+                    info(
+                        "Chassis power was not on prior to BMC reboot so do not run any further power policy");
+                    return 0;
+                }
+            }
+            if (RestorePolicy::Policy::AlwaysOff ==
+                RestorePolicy::convertPolicyFromString(powerPolicy))
             {
                 info(
-                    "Chassis power was not on prior to BMC reboot so do not run any further power policy");
-                return 0;
+                    "power_policy=ALWAYS_POWER_OFF, set requested state to off ({DELAY}s delay)",
+                    "DELAY", powerRestoreDelaySec.count());
+                applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
+                // Read last requested state and re-request it to execute it
+                auto hostReqState =
+                    phosphor::state::manager::utils::getProperty(
+                        bus, hostPath, HostState::interface,
+                        HostState::property_names::requested_host_transition);
+                if (hostReqState !=
+                    convertForMessage(server::Host::Transition::Off))
+                {
+                    phosphor::state::manager::utils::setProperty(
+                        bus, hostPath, HostState::interface,
+                        HostState::property_names::requested_host_transition,
+                        convertForMessage(server::Host::Transition::Off));
+                }
             }
-        }
-        else if (RestorePolicy::Policy::AlwaysOff ==
-                 RestorePolicy::convertPolicyFromString(powerPolicy))
-        {
-            info(
-                "power_policy=ALWAYS_POWER_OFF, set requested state to off ({DELAY}s delay)",
-                "DELAY", powerRestoreDelaySec.count());
-            applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
-            // Read last requested state and re-request it to execute it
-            auto hostReqState = phosphor::state::manager::utils::getProperty(
-                bus, hostPath, HostState::interface,
-                HostState::property_names::requested_host_transition);
-            if (hostReqState !=
-                convertForMessage(server::Host::Transition::Off))
+            else if (RestorePolicy::Policy::Restore ==
+                     RestorePolicy::convertPolicyFromString(powerPolicy))
             {
-                phosphor::state::manager::utils::setProperty(
-                    bus, hostPath, HostState::interface,
-                    HostState::property_names::requested_host_transition,
-                    convertForMessage(server::Host::Transition::Off));
-            }
-        }
-        else if (RestorePolicy::Policy::Restore ==
-                 RestorePolicy::convertPolicyFromString(powerPolicy))
-        {
-            info("power_policy=RESTORE, restoring last state ({DELAY}s delay)",
-                 "DELAY", powerRestoreDelaySec.count());
-            applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
-            // Read last requested state and re-request it to execute it
-            auto hostReqState = phosphor::state::manager::utils::getProperty(
-                bus, hostPath, HostState::interface,
-                HostState::property_names::requested_host_transition);
+                info(
+                    "power_policy=RESTORE, restoring last state ({DELAY}s delay)",
+                    "DELAY", powerRestoreDelaySec.count());
+                applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
+                // Read last requested state and re-request it to execute it
+                auto hostReqState =
+                    phosphor::state::manager::utils::getProperty(
+                        bus, hostPath, HostState::interface,
+                        HostState::property_names::requested_host_transition);
 
-            // As long as the host transition is not 'Off' power on host state.
-            if (hostReqState !=
-                convertForMessage(server::Host::Transition::Off))
-            {
-                phosphor::state::manager::utils::setProperty(
-                    bus, hostPath, HostState::interface,
-                    HostState::property_names::restart_cause,
-                    convertForMessage(
-                        server::Host::RestartCause::PowerPolicyPreviousState));
-                phosphor::state::manager::utils::setProperty(
-                    bus, hostPath, HostState::interface,
-                    HostState::property_names::requested_host_transition,
-                    convertForMessage(server::Host::Transition::On));
+                // As long as the host transition is not 'Off' power on host
+                // state.
+                if (hostReqState !=
+                    convertForMessage(server::Host::Transition::Off))
+                {
+                    phosphor::state::manager::utils::setProperty(
+                        bus, hostPath, HostState::interface,
+                        HostState::property_names::restart_cause,
+                        convertForMessage(server::Host::RestartCause::
+                                              PowerPolicyPreviousState));
+                    phosphor::state::manager::utils::setProperty(
+                        bus, hostPath, HostState::interface,
+                        HostState::property_names::requested_host_transition,
+                        convertForMessage(server::Host::Transition::On));
+                }
             }
         }
     }
