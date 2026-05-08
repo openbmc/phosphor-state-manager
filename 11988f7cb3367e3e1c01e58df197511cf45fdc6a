@@ -268,6 +268,24 @@
       "message": "I\u0027d like a comment addressing why we\u0027re directly calling the sdbusplus class here so we don\u0027t forget in the future.",
       "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3efcbeaa_9f3c2cbb",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002462
+      },
+      "writtenOn": "2026-05-08T11:02:36Z",
+      "side": 1,
+      "message": "Thanks for the background. That context about the Redfish client and bmcweb hutdown timing is really helpful. I\u0027ve updated the code with a comment explaining why we are transitioning to NotReady and why we\u0027re calling sdbusplus directly to bypass the startup-focused logging. This should ensure the \u0027why\u0027 isn\u0027t lost in the future.",
+      "parentUuid": "3a977261_c4cae3fe",
+      "revId": "11988f7cb3367e3e1c01e58df197511cf45fdc6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
