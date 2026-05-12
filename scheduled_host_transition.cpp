@@ -23,11 +23,7 @@
 #define TFD_TIMER_CANCEL_ON_SET (1 << 1)
 #endif
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -310,6 +306,4 @@ void ScheduledHostTransition::restoreScheduledValues()
     }
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

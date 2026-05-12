@@ -17,11 +17,7 @@
 #include <filesystem>
 #include <string>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 using HostInherit = sdbusplus::server::object_t<
@@ -361,6 +357,4 @@ class Host : public HostInherit
     std::string hostCrashTarget;
 };
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

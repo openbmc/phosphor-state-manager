@@ -32,11 +32,7 @@
 // Register class version with Cereal
 CEREAL_CLASS_VERSION(phosphor::state::manager::Host, CLASS_VERSION)
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -504,6 +500,4 @@ Host::HostState Host::currentHostState(HostState value)
     return server::Host::currentHostState(value);
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
