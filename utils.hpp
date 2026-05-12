@@ -12,13 +12,7 @@ constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_MANAGER_INTERFACE = "org.freedesktop.systemd1.Manager";
 constexpr auto SYSTEMD_UNIT_INTERFACE = "org.freedesktop.systemd1.Unit";
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
-{
-namespace utils
+namespace phosphor::state::manager::utils
 {
 
 /** @brief Tell systemd to generate d-bus events
@@ -117,7 +111,4 @@ bool waitBmcReady(sdbusplus::bus_t& bus, std::chrono::seconds timeout);
  */
 bool isFirmwareUpdating(sdbusplus::bus_t& bus);
 
-} // namespace utils
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager::utils

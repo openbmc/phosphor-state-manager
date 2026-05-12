@@ -13,11 +13,7 @@
 #include <string>
 #include <variant>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 using phosphor::logging::elog;
@@ -336,6 +332,4 @@ void SystemdTargetLogging::processImmediateQuiesceStateChange(
     startBmcQuiesceTarget();
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

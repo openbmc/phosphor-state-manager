@@ -11,11 +11,7 @@
 #include <string>
 #include <vector>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 /**
@@ -115,6 +111,4 @@ class SMPChassisWaiter
     std::unique_ptr<sdeventplus::source::Signal> sigtermSource;
 };
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
