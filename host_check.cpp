@@ -22,11 +22,7 @@
 #include <thread>
 #include <vector>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -220,6 +216,4 @@ bool isHostRunning(size_t id)
     return false;
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

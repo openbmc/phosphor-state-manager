@@ -22,11 +22,7 @@
 #include <string>
 #include <thread>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -37,9 +33,7 @@ using namespace sdbusplus::server::xyz::openbmc_project::control::power;
 using HostState = sdbusplus::client::xyz::openbmc_project::state::Host<>;
 using BMCState = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
 
 // Helper function to handle power restore delay
 static void applyPowerRestoreDelay(sdbusplus::bus_t& bus,

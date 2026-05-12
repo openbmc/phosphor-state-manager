@@ -12,11 +12,7 @@
 
 extern bool gVerbose;
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 /** @class SystemdTargetLogging
@@ -152,6 +148,4 @@ class SystemdTargetLogging
     bool immediateQuiesceMonitoringInitialized = false;
 };
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
