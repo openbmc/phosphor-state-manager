@@ -10,11 +10,7 @@
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 using phosphor::logging::elog;
@@ -194,6 +190,4 @@ void SystemdTargetLogging::subscribeToSystemdSignals()
     return;
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

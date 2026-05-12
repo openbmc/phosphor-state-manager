@@ -2,11 +2,7 @@
 
 #include <cstddef>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 /** @brief Determine if host is running
@@ -15,6 +11,4 @@ namespace manager
  */
 bool isHostRunning(size_t hostId = 0);
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
