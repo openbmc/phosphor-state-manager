@@ -4,9 +4,7 @@
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 
-namespace phosphor
-{
-namespace condition
+namespace phosphor::condition
 {
 
 PHOSPHOR_LOG2_USING;
@@ -67,5 +65,4 @@ Host::FirmwareCondition Host::currentFirmwareCondition() const
 
     return retVal;
 }
-} // namespace condition
-} // namespace phosphor
+} // namespace phosphor::condition

@@ -11,11 +11,7 @@
 #include <cassert>
 #include <chrono>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 using BMCInherit = sdbusplus::server::object_t<
@@ -151,6 +147,4 @@ class BMC : public BMCInherit
     uint64_t rebootTime;
 };
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

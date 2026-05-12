@@ -20,11 +20,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -375,6 +371,4 @@ void BMC::discoverLastRebootCause()
     return;
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
