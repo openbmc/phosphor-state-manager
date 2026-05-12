@@ -17,11 +17,7 @@
 #include <fstream>
 #include <string>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -142,9 +138,7 @@ void moveToHostQuiesce(sdbusplus::bus_t& bus)
     }
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
 
 int main()
 {

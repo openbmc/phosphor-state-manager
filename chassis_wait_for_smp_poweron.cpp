@@ -9,11 +9,7 @@
 
 #include <chrono>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -208,9 +204,7 @@ void SMPChassisWaiter::checkAllChassisReady()
     }
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
 
 int main()
 {

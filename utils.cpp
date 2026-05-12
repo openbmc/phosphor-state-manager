@@ -15,13 +15,7 @@
 #include <filesystem>
 #include <format>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
-{
-namespace utils
+namespace phosphor::state::manager::utils
 {
 
 using namespace std::literals::chrono_literals;
@@ -298,7 +292,4 @@ bool isFirmwareUpdating(sdbusplus::bus_t& bus)
     return !mapperResponse.empty();
 }
 
-} // namespace utils
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager::utils
