@@ -14,11 +14,7 @@
 #include <map>
 #include <string>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 PHOSPHOR_LOG2_USING;
@@ -581,6 +577,4 @@ void ChassisSMP::sysStateChangeJobNew(sdbusplus::message_t& msg)
     }
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

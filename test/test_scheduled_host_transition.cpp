@@ -8,11 +8,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 using namespace std::chrono;
@@ -115,6 +111,4 @@ TEST_F(TestScheduledHostTransition, bmcTimeChangeBackward)
     EXPECT_TRUE(isTimerEnabled());
 }
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

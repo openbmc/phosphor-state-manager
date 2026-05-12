@@ -6,9 +6,7 @@
 
 #include <iostream>
 
-namespace phosphor
-{
-namespace condition
+namespace phosphor::condition
 {
 
 using HostIntf = sdbusplus::server::object_t<
@@ -43,5 +41,4 @@ class Host : public HostIntf
      */
     void scanGpioPin();
 };
-} // namespace condition
-} // namespace phosphor
+} // namespace phosphor::condition

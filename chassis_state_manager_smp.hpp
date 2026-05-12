@@ -13,11 +13,7 @@
 #include <memory>
 #include <vector>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 using ChassisInherit = sdbusplus::server::object_t<
@@ -151,6 +147,4 @@ class ChassisSMP : public ChassisInherit
     bool coordinatedPowerOffInProgress = false;
 };
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
