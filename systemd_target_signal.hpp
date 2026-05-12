@@ -9,11 +9,7 @@
 
 extern bool gVerbose;
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 /** @class SystemdTargetLogging
@@ -117,6 +113,4 @@ class SystemdTargetLogging
     sdbusplus::bus::match_t systemdNameOwnedChangedSignal;
 };
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

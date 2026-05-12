@@ -8,11 +8,7 @@
 #include <xyz/openbmc_project/State/Host/server.hpp>
 #include <xyz/openbmc_project/State/ScheduledHostTransition/server.hpp>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 class TestScheduledHostTransition;
@@ -138,6 +134,4 @@ class ScheduledHostTransition : public ScheduledHostTransitionInherit
      * file */
     void restoreScheduledValues();
 };
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager

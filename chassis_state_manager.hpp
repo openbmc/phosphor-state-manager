@@ -15,11 +15,7 @@
 #include <chrono>
 #include <filesystem>
 
-namespace phosphor
-{
-namespace state
-{
-namespace manager
+namespace phosphor::state::manager
 {
 
 using ChassisInherit = sdbusplus::server::object_t<
@@ -257,6 +253,4 @@ class Chassis : public ChassisInherit
     void powerSysInputsChangeEvent(sdbusplus::message_t& msg);
 };
 
-} // namespace manager
-} // namespace state
-} // namespace phosphor
+} // namespace phosphor::state::manager
