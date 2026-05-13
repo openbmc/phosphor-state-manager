@@ -16,6 +16,24 @@
       "message": "Why did this change? I don\u0027t have a problem with it I\u0027m just curious. I believe this service file invokes skeleton code? Not sure on the repercussions of changing it.",
       "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0428695_4839ddc0",
+        "filename": "service_files/xyz.openbmc_project.State.Chassis@.service",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 0,
+      "message": "Good point, the pgood gpio can be hosted in 2 different services. This one and phosphor-power-control.service. Let me change this back and add the power service so whichever one is installed, we\u0027ll wait for.",
+      "parentUuid": "4bc1e21b_a57ebe98",
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
