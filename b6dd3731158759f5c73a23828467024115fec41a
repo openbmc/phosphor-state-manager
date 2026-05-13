@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa00b1a_2d08e99e",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "I\u0027ll queue that up for a separate discussion. Obviously when we only had 1 chassis there was nothing to report a blackout, but with multi-chassis, it probably would be useful to know when a chassis has input power issues.",
+      "parentUuid": "d53293e7_cdee6e03",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86e80c44_2c64f47b",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-05-06T15:49:47Z",
       "side": 1,
       "message": "Need to add the powercycle target here, since it is mentioned in RequestedPowerTransition?",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efc9a8c4_75fc24b4",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "So since that target is actually a combination of the power off and then power on, we actually don\u0027t monitor it (we only monitor the off and on).",
+      "parentUuid": "86e80c44_2c64f47b",
       "revId": "b6dd3731158759f5c73a23828467024115fec41a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ec4fe6_2673a935",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ed0d414_767fb6c8",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da5debb7_b88ec495",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-05-06T15:49:47Z",
       "side": 1,
       "message": "Even if one chassis has a bad power state, we are still going to want to power on the chassis in a good state. So hopefully this aggregated state does not prevent a power on?",
+      "revId": "b6dd3731158759f5c73a23828467024115fec41a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4029f492_6bfbe364",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da5debb7_b88ec495",
       "revId": "b6dd3731158759f5c73a23828467024115fec41a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
