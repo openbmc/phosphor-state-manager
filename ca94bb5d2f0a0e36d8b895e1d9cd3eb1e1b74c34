@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9dfaf26_ce0db9df",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "The chassis_state_manager.hpp class will need to be updated. I\u0027ll take a TODO to fix that in a separate commit.",
+      "parentUuid": "7b9d353d_b3bdb767",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 2
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1344b811_7ae86432",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-29T08:54:52Z",
       "side": 1,
       "message": "nit\n```suggestion\n                bus, objPathInst, chassisId, NUM_CHASSIS_SMP);\n```",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 2
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2284ae5e_da7daeee",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1344b811_7ae86432",
       "range": {
         "startLine": 85,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "543e9b0a_9429c045",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "The standard path gets its event loop from startPOHCounter(), which handles both POH timing and D-Bus signal processing. It is a bit awkward that it got stuffed into the startPOHCounter() function.",
+      "parentUuid": "e0930723_5ff5a2ec",
+      "range": {
+        "startLine": 91,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 13
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fd15cdd_449f1607",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9648de54_fd986ac0",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3fd15cdd_449f1607",
+      "range": {
+        "startLine": 101,
+        "startChar": 59,
+        "endLine": 101,
+        "endChar": 78
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fcc8a86_0f990c1b",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-04-29T08:54:52Z",
       "side": 1,
       "message": "nit\n```suggestion\n        phosphor::state::manager::Chassis manager(bus, objPathInst,\n```",
+      "range": {
+        "startLine": 111,
+        "startChar": 55,
+        "endLine": 111,
+        "endChar": 74
+      },
+      "revId": "ca94bb5d2f0a0e36d8b895e1d9cd3eb1e1b74c34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f96c42f8_a95ba62d",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2fcc8a86_0f990c1b",
       "range": {
         "startLine": 111,
         "startChar": 55,
