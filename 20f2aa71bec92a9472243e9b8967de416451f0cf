@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "60d3c399_9241ec34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Yeah, good feedback. I went back and forth on making the reviews more of a \"story\" with smaller commits vs. larger more logical commits.",
+      "parentUuid": "3cbcc005_a7ce7349",
+      "revId": "20f2aa71bec92a9472243e9b8967de416451f0cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c3eaa247_b8fefefd",
         "filename": "chassis_state_manager_smp.hpp",
         "patchSetId": 5
@@ -31,6 +49,30 @@
       "writtenOn": "2026-04-28T21:44:19Z",
       "side": 1,
       "message": "FYI for a while now one is able to have these all::on::one::line",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "20f2aa71bec92a9472243e9b8967de416451f0cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67cbb165_4fba1b0b",
+        "filename": "chassis_state_manager_smp.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Yeah, be nice to do that all in one. I added a commit at the end to fix all the files.",
+      "parentUuid": "c3eaa247_b8fefefd",
       "range": {
         "startLine": 16,
         "startChar": 0,
@@ -54,6 +96,30 @@
       "writtenOn": "2026-04-29T08:50:50Z",
       "side": 1,
       "message": "nit, the generated server can be constructed with `object_path` now.\n\n```suggestion\n    ChassisSMP(sdbusplus::bus_t\u0026 bus, const sdbusplus::object_path\u0026 objPath, size_t id,\n```",
+      "range": {
+        "startLine": 49,
+        "startChar": 44,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "20f2aa71bec92a9472243e9b8967de416451f0cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01b39370_1c488aa3",
+        "filename": "chassis_state_manager_smp.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "327c23a7_a75a9544",
       "range": {
         "startLine": 49,
         "startChar": 44,
