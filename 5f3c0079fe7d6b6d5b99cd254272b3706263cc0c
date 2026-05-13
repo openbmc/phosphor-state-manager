@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "108f400f_1d0e2a0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Yeah, good point, this commit was just On/Off, and then later in https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/88977 I support the transitioning concepts and also correct what you noted here, that if any Chassis is On then the reported state will be On.\n\n\nLater commits also address the presence concept (so we\u0027ll only power on/off chassis that are present). Commits not yet up yet will move to the Available concept so chassis which are unavailable for a variety of reasons will also not be included in what is logically on/off.\n\nAs noted by Matt in previous commits I probably took the \"small commit\" concept a bit too far here but I\u0027d prefer to just keep things as-is for now given the end result of the patch series will address your comment here.",
+      "parentUuid": "2673cebf_6caac6f3",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 57
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "738af53c_b627676b",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-04-29T08:51:08Z",
       "side": 1,
       "message": "nit\n\n```suggestion\nChassisSMP::ChassisSMP(sdbusplus::bus_t\u0026 bus, const sdbusplus::object_path\u0026 objPath, size_t id,\n```",
+      "range": {
+        "startLine": 38,
+        "startChar": 52,
+        "endLine": 38,
+        "endChar": 56
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82b4ac8f_70f79395",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "738af53c_b627676b",
       "range": {
         "startLine": 38,
         "startChar": 52,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76b0c537_054efa9b",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Yep, good point, let me remove this and simplify.",
+      "parentUuid": "71c45284_c7dbdfce",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "412aab15_ba79d075",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-04-30T15:55:05Z",
       "side": 1,
       "message": "Is this useful considering the constructor already traces the same thing?",
+      "range": {
+        "startLine": 104,
+        "startChar": 3,
+        "endLine": 105,
+        "endChar": 36
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e2fd058_25b91632",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "412aab15_ba79d075",
       "range": {
         "startLine": 104,
         "startChar": 3,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "981e6b65_56a7541a",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "74704065_ae44691c",
+      "range": {
+        "startLine": 125,
+        "startChar": 7,
+        "endLine": 125,
+        "endChar": 13
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2801b57_e845faf8",
@@ -127,6 +241,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed79ed6c_0fd618d5",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Responded in commit message, let me know if you don\u0027t agree.",
+      "parentUuid": "a2801b57_e845faf8",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b9f2273_aef8655d",
@@ -140,6 +272,30 @@
       "writtenOn": "2026-04-29T08:51:08Z",
       "side": 1,
       "message": "nit: There is an overload now which accepts `object_path`\n\n```suggestion\n                bus.new_method_call(chassisService.c_str(), chassisPath,\n```",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 2
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "445ee383_f97fcb8f",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b9f2273_aef8655d",
       "range": {
         "startLine": 148,
         "startChar": 0,
@@ -173,6 +329,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b35c42f8_25fe638e",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6ce945a_551c07a7",
+      "range": {
+        "startLine": 150,
+        "startChar": 27,
+        "endLine": 150,
+        "endChar": 60
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27dc8ad8_98579089",
@@ -186,6 +366,24 @@
       "writtenOn": "2026-04-30T15:55:05Z",
       "side": 1,
       "message": "I wonder why this repo didn\u0027t get picked up in the big read()-\u003e unpack() conversion a while ago.\n\nThe option is the following, if you like it:\nauto propertyValue \u003d reply.unpack\u003cvariant\u003cstring\u003e\u003e();\nor:\npropertyValue \u003d reply.unpack\u003cvariant\u003cPowerState\u003e\u003e();\nand then you can use enums below instead of strings.\n\nfor example see wasHostBooting in host_reset_recovery.cpp.",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "234d9215_4c90f914",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27dc8ad8_98579089",
       "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -207,6 +405,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf87cd81_073f2746",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Simplified using generated constants",
+      "parentUuid": "92eaac32_cbd76351",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e6f34b2_84a040ee",
@@ -220,6 +436,30 @@
       "writtenOn": "2026-04-29T08:51:08Z",
       "side": 1,
       "message": "nit\n\n```suggestion\n                bus.new_method_call(chassisService.c_str(), chassisPath,\n```",
+      "range": {
+        "startLine": 211,
+        "startChar": 60,
+        "endLine": 211,
+        "endChar": 75
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81e9fd6b_18f28839",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e6f34b2_84a040ee",
       "range": {
         "startLine": 211,
         "startChar": 60,
@@ -264,6 +504,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f558a22e_1d21f231",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Queued this up for a design topic. I\u0027ll add a new commit with proper document and code updates based on that discussion.",
+      "parentUuid": "0e5bf1a8_1a5101e4",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf9e6504_7fd0ef17",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed3a75cb_6033a869",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d59e03b8_74d59985",
@@ -281,6 +557,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67090e8b_8982e8eb",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d59e03b8_74d59985",
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89bd4833_c79d72e3",
@@ -294,6 +588,30 @@
       "writtenOn": "2026-04-29T08:51:08Z",
       "side": 1,
       "message": "nit\n```suggestion\n                bus.new_method_call(chassisService.c_str(), chassisPath,\n```",
+      "range": {
+        "startLine": 342,
+        "startChar": 60,
+        "endLine": 342,
+        "endChar": 75
+      },
+      "revId": "5f3c0079fe7d6b6d5b99cd254272b3706263cc0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "891ee5bf_f5a088d0",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89bd4833_c79d72e3",
       "range": {
         "startLine": 342,
         "startChar": 60,
