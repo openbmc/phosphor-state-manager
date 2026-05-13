@@ -16,6 +16,24 @@
       "message": "Nit: Same comment as Matt had earlier re: can put all three on same line.",
       "revId": "b35b9bfce259b2a665dd378b49fac2e8f61b751a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7ce8a63_9a626654",
+        "filename": "chassis_wait_for_smp_poweron.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "For simplicity I just did the entire repo in my final commit in this series.",
+      "parentUuid": "9e9723fe_837a0fca",
+      "revId": "b35b9bfce259b2a665dd378b49fac2e8f61b751a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
