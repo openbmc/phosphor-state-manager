@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b186b8d_932c788a",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Yeah, an earlier comment in these reviews was to just hard code the target file as a const since SMP will only ever be dealing with intance 0, so I\u0027ll just use that const value.",
+      "parentUuid": "b9a271c1_db2ce498",
+      "revId": "dfe5f62ce30ddbdb4d2e49e149ad9b4590b32948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3bea76f_835ca03b",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-06T17:12:23Z",
       "side": 1,
       "message": "Just curious. I thought this target might have some sort of systemd dependency that would have caused the chassis-specific power off targets to be called automatically, avoiding the need to do it in C++? I\u0027m probably just not understanding how this all works.",
+      "revId": "dfe5f62ce30ddbdb4d2e49e149ad9b4590b32948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3253f29_12032782",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Yeah, I responded to a similar question in an earlier review but basically I did not add those dependencies in the systemd targets and chose to coordinate it via this new SMP application. If I did it via systemd then this app would be getting notifications for each of the chassis and it would introduce a lot of complexity in the code. Basically I had 2 choices, do it all via systemd, or do it via this app. Mixing the 2 would be dangerous.",
+      "parentUuid": "e3bea76f_835ca03b",
       "revId": "dfe5f62ce30ddbdb4d2e49e149ad9b4590b32948",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edd6ecd7_6343188a",
+        "filename": "chassis_state_manager_smp.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40d52f89_b09693cd",
+      "revId": "dfe5f62ce30ddbdb4d2e49e149ad9b4590b32948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "033aa817_83e39590",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-05-06T17:12:23Z",
       "side": 1,
       "message": "Unless you intend to inspect matches later, you could probably use a single vector of match objects named matches. I\u0027m not sure they need to be separated by purpose.",
+      "revId": "dfe5f62ce30ddbdb4d2e49e149ad9b4590b32948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f4539c6_3cee5466",
+        "filename": "chassis_state_manager_smp.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-13T20:07:12Z",
+      "side": 1,
+      "message": "Personal preference is to just keep them separate but if you feel strongly feel free to reopen this comment.",
+      "parentUuid": "033aa817_83e39590",
       "revId": "dfe5f62ce30ddbdb4d2e49e149ad9b4590b32948",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
