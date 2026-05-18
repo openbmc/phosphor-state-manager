@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5182d6f9_bda98d77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-18T22:55:33Z",
+      "side": 1,
+      "message": "Agree with Alexander\u0027s comment about using the constants that you defined for the chassis service and object path. Can probably done in a later commit if that saves you time.",
+      "revId": "6efedaaccd8539b5efc12d9ae93800d546cdc845",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b7f25b5_b6bb165d",
