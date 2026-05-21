@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "707f1c86_6b2531be",
+        "filename": "test/meson.build",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9e82ef9_2b4dd358",
+      "revId": "9dc7b27aeb82949a60c94478a11fd4f85a2cad28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "844e4d15_74122080",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-05-20T21:32:13Z",
       "side": 1,
       "message": "Is this still in the code? I thought I remembered seeing a data member or method with this name get removed at some point in the chain of commits.",
+      "range": {
+        "startLine": 88,
+        "startChar": 23,
+        "endLine": 88,
+        "endChar": 48
+      },
+      "revId": "9dc7b27aeb82949a60c94478a11fd4f85a2cad28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "374e629f_06137f0b",
+        "filename": "test/test_chassis_smp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m going to simplify these tests down a bit and as you noted this one doesn\u0027t really make sense anymore.",
+      "parentUuid": "844e4d15_74122080",
       "range": {
         "startLine": 88,
         "startChar": 23,
@@ -75,6 +117,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "842935b0_906000c4",
+        "filename": "test/test_chassis_smp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Yeah, I let me LLM to a little crazy on these tests which end up just \nbasically being create SMP object, verify non-null. Let me simplify this all down.",
+      "parentUuid": "35941656_0ee4acb7",
+      "revId": "9dc7b27aeb82949a60c94478a11fd4f85a2cad28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67640450_76782719",
@@ -88,6 +148,24 @@
       "writtenOn": "2026-05-20T21:32:13Z",
       "side": 1,
       "message": "Is this a stub that will be filled in later?\n\nI haven\u0027t used the low level mock class provided by sdbusplus, so I\u0027m not sure how you return true or false here.\n\nSame question for chassis state below.",
+      "revId": "9dc7b27aeb82949a60c94478a11fd4f85a2cad28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2353c33_f7f9e23f",
+        "filename": "test/test_chassis_smp_enhanced.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Let me update the comment a bit. Ideally we\u0027d do more full mocking but for now the goal is just to test the basic initialization of the SMP object and it\u0027s API\u0027s.",
+      "parentUuid": "67640450_76782719",
       "revId": "9dc7b27aeb82949a60c94478a11fd4f85a2cad28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
