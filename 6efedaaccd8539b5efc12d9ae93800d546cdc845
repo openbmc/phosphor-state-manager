@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf9f890c_80104fdf",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Yeah, I started with the current chassis as my base and had some half hearted thoughts about some day supporting multiple SMP\u0027s within a single system but we\u0027ll wait for that to actually happen. I removed the id.",
+      "parentUuid": "9b7f25b5_b6bb165d",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "6efedaaccd8539b5efc12d9ae93800d546cdc845",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dab59308_4f8f8d7d",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-05-15T09:01:18Z",
       "side": 1,
       "message": "nit: can we solve it here with something like `std::bind_back` or `std::bind` to avoid the inline lambda",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 2
+      },
+      "revId": "6efedaaccd8539b5efc12d9ae93800d546cdc845",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2736e6e_bbdd83a9",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "As you noted with the \"nit\" this feels more like personal preference and I prefer to stick with the lambda as I feel like it\u0027s a bit more readable (by me) and more consistent with what is done elsewhere in this project.",
+      "parentUuid": "dab59308_4f8f8d7d",
       "range": {
         "startLine": 109,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f300db7_b0d3c426",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8e43984_adcc3940",
+      "range": {
+        "startLine": 136,
+        "startChar": 55,
+        "endLine": 136,
+        "endChar": 72
+      },
+      "revId": "6efedaaccd8539b5efc12d9ae93800d546cdc845",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be2f3a79_a53f1ce3",
@@ -110,6 +182,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22021388_aee01927",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be2f3a79_a53f1ce3",
+      "range": {
+        "startLine": 182,
+        "startChar": 55,
+        "endLine": 182,
+        "endChar": 73
+      },
+      "revId": "6efedaaccd8539b5efc12d9ae93800d546cdc845",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b51057f6_660356a4",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-05-15T09:01:18Z",
       "side": 1,
       "message": "You already defined these format strings around line 41, so we should either use them everywhere in this file or inline the format strings, but not not mix both of those.\n\nIn line 175 you are already using the format strings.\n\n```suggestion\n        sdbusplus::object_path chassisPath \u003d\n            fmt::format(CHASSIS_OBJ_PATH, i);\n        std::string chassisService \u003d\n            fmt::format(CHASSIS_SERVICE, i);\n```",
+      "range": {
+        "startLine": 271,
+        "startChar": 8,
+        "endLine": 274,
+        "endChar": 66
+      },
+      "revId": "6efedaaccd8539b5efc12d9ae93800d546cdc845",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb07744_1dc673ac",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b51057f6_660356a4",
       "range": {
         "startLine": 271,
         "startChar": 8,
