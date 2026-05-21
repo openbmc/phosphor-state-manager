@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03a83b3f_8c4436c4",
+        "filename": "chassis_state_manager_smp.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "As noted in later reviews, no need for this, this class only supports instance 0.",
+      "revId": "89b5fffe26920d0995af83192604cbd64ea868f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
