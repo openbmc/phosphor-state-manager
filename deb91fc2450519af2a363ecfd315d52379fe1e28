@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7603c06_4ed36541",
+        "filename": "obmcutil",
+        "patchSetId": 5
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "Yeah makes sense, let me move to it\u0027s own function",
+      "parentUuid": "02ed0907_038c9b4a",
+      "revId": "deb91fc2450519af2a363ecfd315d52379fe1e28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "add5b063_dc5e47d0",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-20T15:32:23Z",
       "side": 1,
       "message": "I\u0027m no bash expert, but should this comparison be like the following from line 621:\n```\nif [[ $host_timeout_target_state \u003d\u003d \"masked\" ]]; then\n```\n\nThe single equal sign just looks strange as a long-time C/C++ guy.",
+      "revId": "deb91fc2450519af2a363ecfd315d52379fe1e28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9891c144_42bebb45",
+        "filename": "obmcutil",
+        "patchSetId": 5
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-21T14:15:36Z",
+      "side": 1,
+      "message": "You\u0027re right - using \u003d\u003d is clearer and more consistent with modern bash practices. While \u003d works in [ ] for string comparison, \u003d\u003d is more explicit and avoids confusion with assignment operators in other languages.",
+      "parentUuid": "add5b063_dc5e47d0",
       "revId": "deb91fc2450519af2a363ecfd315d52379fe1e28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
