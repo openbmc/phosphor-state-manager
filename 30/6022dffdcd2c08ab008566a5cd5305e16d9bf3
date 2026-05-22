@@ -1,0 +1,8 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+Submitted-at: Fri, 22 May 2026 13:53:48 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/88312
+Comments-Total: 6
+Project: openbmc/phosphor-state-manager
+Branch: refs/heads/master
