@@ -225,11 +225,10 @@ void SystemdTargetLogging::initImmediateQuiesceMonitoring()
                                       SYSTEMD_MANAGER_INTERFACE, "LoadUnit");
         method.append(service);
 
-        sdbusplus::message::object_path unitPath;
+        sdbusplus::object_path unitPath;
         try
         {
-            unitPath = this->bus.call(method)
-                           .unpack<sdbusplus::message::object_path>();
+            unitPath = this->bus.call(method).unpack<sdbusplus::object_path>();
         }
         catch (const sdbusplus::exception_t& e)
         {
