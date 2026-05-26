@@ -53,7 +53,8 @@ class Host : public HostInherit
      * @param[in] objPath   - The Dbus object path
      * @param[in] id        - The Host id
      */
-    Host(sdbusplus::bus_t& bus, const char* objPath, size_t id) :
+    Host(sdbusplus::bus_t& bus, const sdbusplus::object_path& objPath,
+         size_t id) :
         HostInherit(bus, objPath, HostInherit::action::defer_emit), bus(bus),
         systemdSignalJobRemoved(
             bus,
