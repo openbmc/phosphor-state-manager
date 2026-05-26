@@ -48,7 +48,8 @@ int main(int argc, char** argv)
     const auto* objPath = ChassisState::namespace_path::value;
     auto chassisName = std::string(ChassisState::namespace_path::chassis) +
                        std::to_string(chassisId);
-    std::string objPathInst = sdbusplus::object_path(objPath) / chassisName;
+    sdbusplus::object_path objPathInst =
+        sdbusplus::object_path(objPath) / chassisName;
 
     if (chassisId == 0)
     {
@@ -98,7 +99,7 @@ int main(int argc, char** argv)
         {
             // Normal chassis state manager for non-zero chassis when SMP is
             // enabled
-            phosphor::state::manager::Chassis manager(bus, objPathInst.c_str(),
+            phosphor::state::manager::Chassis manager(bus, objPathInst,
                                                       chassisId);
 
             bus.request_name(chassisBusName.c_str());
@@ -108,8 +109,7 @@ int main(int argc, char** argv)
     else
     {
         // Normal chassis state manager when SMP is disabled
-        phosphor::state::manager::Chassis manager(bus, objPathInst.c_str(),
-                                                  chassisId);
+        phosphor::state::manager::Chassis manager(bus, objPathInst, chassisId);
 
         // For backwards compatibility, request a busname without chassis id if
         // input id is 0.
