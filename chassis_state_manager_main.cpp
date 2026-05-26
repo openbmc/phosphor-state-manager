@@ -48,7 +48,8 @@ int main(int argc, char** argv)
     const auto* objPath = ChassisState::namespace_path::value;
     auto chassisName = std::string(ChassisState::namespace_path::chassis) +
                        std::to_string(chassisId);
-    std::string objPathInst = sdbusplus::object_path(objPath) / chassisName;
+    sdbusplus::object_path objPathInst =
+        sdbusplus::object_path(objPath) / chassisName;
 
     if (chassisId == 0)
     {
@@ -75,6 +76,7 @@ int main(int argc, char** argv)
 
     // Add sdbusplus ObjectManager.
     sdbusplus::server::manager_t objManager(bus, objPath);
+    phosphor::state::manager::Chassis manager(bus, objPathInst, chassisId);
 
     if constexpr (ENABLE_MULTI_CHASSIS_SMP)
     {

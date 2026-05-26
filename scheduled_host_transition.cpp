@@ -89,7 +89,7 @@ void ScheduledHostTransition::hostTransition()
 {
     auto hostName = std::string(HostState::namespace_path::host) +
                     std::to_string(id);
-    std::string hostPath =
+    sdbusplus::object_path hostPath =
         sdbusplus::object_path(HostState::namespace_path::value) / hostName;
 
     auto reqTrans = convertForMessage(HostTransition::scheduledTransition());
