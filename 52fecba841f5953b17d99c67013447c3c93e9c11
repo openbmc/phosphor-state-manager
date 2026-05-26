@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f39164e_269b5fe4",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-05-26T11:52:57Z",
+      "side": 1,
+      "message": "If a chassis changes from not present to present multiple times, then I think duplicate PropertiesChanged listeners will get added to this vector, leading to duplicate callbacks?\n\nIf so, should it remove a listener on present going to false, or check for duplicates? Maybe there is something in sdeventplus that eliminates duplicate callbacks?",
+      "revId": "52fecba841f5953b17d99c67013447c3c93e9c11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
