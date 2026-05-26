@@ -26,7 +26,6 @@ using ChassisState = sdbusplus::client::xyz::openbmc_project::state::Chassis<>;
 int main(int argc, char** argv)
 {
     size_t chassisId = 0;
-    const auto* objPath = ChassisState::namespace_path::value;
     int arg;
     int optIndex = 0;
 
@@ -47,7 +46,8 @@ int main(int argc, char** argv)
 
     auto chassisName = std::string(ChassisState::namespace_path::chassis) +
                        std::to_string(chassisId);
-    std::string chassisPath = sdbusplus::object_path(objPath) / chassisName;
+    sdbusplus::object_path chassisPath =
+        sdbusplus::object_path(ChassisState::namespace_path::value) / chassisName;
     auto bus = sdbusplus::bus::new_default();
 
     // If the chassis power status is not good, log an error and exit with
