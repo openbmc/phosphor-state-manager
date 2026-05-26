@@ -46,7 +46,8 @@ class Chassis : public ChassisInherit
      * @param[in] objPath   - The Dbus object path
      * @param[in] id        - Chassis id
      */
-    Chassis(sdbusplus::bus_t& bus, const char* objPath, size_t id) :
+    Chassis(sdbusplus::bus_t& bus, const sdbusplus::object_path& objPath,
+            size_t id) :
         ChassisInherit(bus, objPath, ChassisInherit::action::defer_emit),
         bus(bus),
         systemdSignals(

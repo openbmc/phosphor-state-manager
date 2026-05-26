@@ -47,7 +47,8 @@ int main(int argc, char** argv)
 
     auto chassisName = std::string(ChassisState::namespace_path::chassis) +
                        std::to_string(chassisId);
-    std::string chassisPath = sdbusplus::object_path(objPath) / chassisName;
+    sdbusplus::object_path chassisPath =
+        sdbusplus::object_path(objPath) / chassisName;
     auto bus = sdbusplus::bus::new_default();
 
     // If the chassis power status is not good, log an error and exit with
