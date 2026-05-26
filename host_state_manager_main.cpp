@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     auto hostName = std::string(HostState::namespace_path::host) +
                     std::to_string(hostId);
     const auto* objPath = HostState::namespace_path::value;
-    std::string objPathInst = sdbusplus::object_path(objPath) / hostName;
+    sdbusplus::object_path objPathInst = sdbusplus::object_path(objPath) / hostName;
 
     if (hostId == 0)
     {
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     // Add sdbusplus ObjectManager.
     sdbusplus::server::manager_t objManager(bus, objPath);
 
-    phosphor::state::manager::Host manager(bus, objPathInst.c_str(), hostId);
+    phosphor::state::manager::Host manager(bus, objPathInst, hostId);
 
     auto dir = fs::path(HOST_STATE_PERSIST_PATH).parent_path();
     try
