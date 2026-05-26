@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4429189_8ea565d9",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-05-26T15:26:25Z",
+      "side": 1,
+      "message": "I was just expecting trace statement changes in these files based on the commit message.  Maybe just add some new text to the commit message also mentioning this?",
+      "revId": "52fecba841f5953b17d99c67013447c3c93e9c11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7f39164e_269b5fe4",
         "filename": "chassis_state_manager_smp.cpp",
         "patchSetId": 7
