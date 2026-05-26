@@ -36,7 +36,7 @@ class BMC : public BMCInherit
      * @param[in] busName   - The Dbus name to own
      * @param[in] objPath   - The Dbus object path
      */
-    BMC(sdbusplus::bus_t& bus, const char* objPath) :
+    BMC(sdbusplus::bus_t& bus, const sdbusplus::object_path& objPath) :
         BMCInherit(bus, objPath, BMCInherit::action::defer_emit), bus(bus),
         stateSignal(std::make_unique<decltype(stateSignal)::element_type>(
             bus,
