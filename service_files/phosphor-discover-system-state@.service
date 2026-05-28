@@ -18,7 +18,7 @@ ConditionPathExists=!/run/openbmc/chassis@%i-on
 Restart=no
 Type=simple
 RemainAfterExit=yes
-ExecStart=/usr/bin/phosphor-discover-system-state --host %i
+ExecStart=/usr/libexec/phosphor-state-manager/phosphor-discover-system-state --host %i
 
 [Install]
 # Handled by bitbake recipe
