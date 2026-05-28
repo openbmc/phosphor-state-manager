@@ -6,6 +6,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Inventory/Item/common.hpp>
 
 #include <format>
 #include <fstream>
@@ -27,6 +28,7 @@ namespace server = sdbusplus::server::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+using InventoryItem = sdbusplus::common::xyz::openbmc_project::inventory::Item;
 
 constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_OBJ_PATH = "/org/freedesktop/systemd1";
@@ -53,14 +55,15 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
     }
 
     info("Chassis0: Creating SMP aggregator for chassis 0, "
-         "monitoring {NUM_CHASSIS} chassis instances",
+         "monitoring up to {NUM_CHASSIS} chassis instances",
          "NUM_CHASSIS", numChassis);
 
-    // Initialize cached states to Off/Good
+    // Initialize cached states to Off/Good and not present
     for (size_t i = 1; i <= numChassis; ++i)
     {
         chassisPowerStates[i] = PowerState::Off;
         chassisPowerStatus[i] = PowerStatus::Good;
+        chassisPresentStatus[i] = false;
     }
 
     // Set initial aggregated state
@@ -88,11 +91,37 @@ void ChassisSMP::startUnit(const std::string& sysdUnit)
 
 void ChassisSMP::startMonitoring()
 {
-    // Set up property change monitoring for each chassis instance
+    // Set up property change monitoring for all chassis
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        // Always register inventory present property monitor for all chassis
+        // so we can detect when a chassis becomes present later
+        sdbusplus::object_path inventoryPath =
+            std::format("/xyz/openbmc_project/inventory/system/chassis{}", i);
+
+        auto inventoryMatch = std::make_unique<sdbusplus::bus::match_t>(
+            bus,
+            sdbusRule::propertiesChanged(inventoryPath.str,
+                                         "xyz.openbmc_project.Inventory.Item"),
+            [this, i](sdbusplus::message_t& msg) {
+                this->inventoryPresentChanged(msg, i);
+            });
+
+        inventoryPresentMatches.push_back(std::move(inventoryMatch));
+
+        // Initialize the present status cache by reading current value
+        chassisPresentStatus[i] = isChassisPresent(i);
+
+        // Only monitor chassis state properties for chassis that are present
+        if (!chassisPresentStatus[i])
+        {
+            info("Chassis0: Skipping state monitoring for chassis "
+                 "{MONITORED_CHASSIS_ID} because it is not present",
+                 "MONITORED_CHASSIS_ID", i);
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
-        std::string chassisService = std::format(CHASSIS_SERVICE, i);
 
         auto match = std::make_unique<sdbusplus::bus::match_t>(
             bus,
@@ -102,7 +131,7 @@ void ChassisSMP::startMonitoring()
                 this->chassisPropertyChanged(msg, i);
             });
 
-        chassisMatches.push_back(std::move(match));
+        chassisMatches[i] = std::move(match);
 
         debug("Chassis0: Monitoring chassis {MONITORED_CHASSIS_ID}",
               "MONITORED_CHASSIS_ID", i);
@@ -127,6 +156,11 @@ void ChassisSMP::aggregatePowerState()
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!chassisPresentStatus[i])
+        {
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = std::format(CHASSIS_SERVICE, i);
         try
@@ -197,6 +231,11 @@ void ChassisSMP::aggregatePowerStatus()
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!chassisPresentStatus[i])
+        {
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = std::format(CHASSIS_SERVICE, i);
 
@@ -284,6 +323,14 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
+        if (!chassisPresentStatus[i])
+        {
+            info("Chassis0: Skipping transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is not present",
+                 "TARGET_CHASSIS_ID", i);
+            continue;
+        }
+
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = std::format(CHASSIS_SERVICE, i);
 
@@ -345,6 +392,93 @@ ChassisSMP::PowerState ChassisSMP::currentPowerState(PowerState value)
          "{POWER_STATE}",
          "POWER_STATE", value);
     return server::Chassis::currentPowerState(value);
+}
+
+bool ChassisSMP::isChassisPresent(size_t chassisId)
+{
+    constexpr auto inventoryBusName = "xyz.openbmc_project.Inventory.Manager";
+    constexpr auto inventoryObjPathFmt =
+        "/xyz/openbmc_project/inventory/system/chassis{}";
+
+    sdbusplus::object_path inventoryPath =
+        std::format(inventoryObjPathFmt, chassisId);
+
+    try
+    {
+        auto method = bus.new_method_call(inventoryBusName, inventoryPath.str,
+                                          PROPERTY_INTERFACE, "Get");
+        method.append(InventoryItem::interface,
+                      InventoryItem::property_names::present);
+
+        auto response = bus.call(method);
+        std::variant<bool> value;
+        response.read(value);
+
+        bool present = std::get<bool>(value);
+        debug("Chassis0: Chassis {CHASSIS_ID} present status: "
+              "{PRESENT}",
+              "CHASSIS_ID", chassisId, "PRESENT", present);
+        return present;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        debug("Chassis0: Could not read Present property for "
+              "chassis {CHASSIS_ID}: {ERROR}",
+              "CHASSIS_ID", chassisId, "ERROR", e.what());
+        return false;
+    }
+}
+
+void ChassisSMP::inventoryPresentChanged(sdbusplus::message_t& msg,
+                                         size_t chassisId)
+{
+    std::string interface;
+    std::map<std::string, std::variant<bool>> properties;
+
+    msg.read(interface, properties);
+
+    auto present = properties.find(InventoryItem::property_names::present);
+    if (present == properties.end())
+    {
+        return;
+    }
+
+    bool isPresent = std::get<bool>(present->second);
+
+    info("Chassis0: Chassis {TARGET_CHASSIS_ID} inventory presence "
+         "changed to {PRESENT}",
+         "TARGET_CHASSIS_ID", chassisId, "PRESENT", isPresent);
+
+    // Update the cached present status
+    chassisPresentStatus[chassisId] = isPresent;
+
+    // If chassis became present, start monitoring its state properties
+    if (isPresent)
+    {
+        // Only create a new match if we're not already monitoring this chassis
+        if (chassisMatches.find(chassisId) == chassisMatches.end())
+        {
+            sdbusplus::object_path chassisPath =
+                std::format("/xyz/openbmc_project/state/chassis{}", chassisId);
+
+            auto match = std::make_unique<sdbusplus::bus::match_t>(
+                bus,
+                sdbusRule::propertiesChanged(
+                    chassisPath.str, "xyz.openbmc_project.State.Chassis"),
+                [this, chassisId](sdbusplus::message_t& msg) {
+                    this->chassisPropertyChanged(msg, chassisId);
+                });
+
+            chassisMatches[chassisId] = std::move(match);
+
+            info("Chassis0: Started monitoring chassis "
+                 "{MONITORED_CHASSIS_ID}",
+                 "MONITORED_CHASSIS_ID", chassisId);
+        }
+    }
+
+    aggregatePowerState();
+    aggregatePowerStatus();
 }
 
 } // namespace manager
