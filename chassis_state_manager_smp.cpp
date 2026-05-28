@@ -52,8 +52,8 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
             "ChassisSMP requires at least 1 chassis to aggregate");
     }
 
-    info("Creating SMP aggregator for chassis 0, monitoring {NUM_CHASSIS} "
-         "chassis instances",
+    info("Chassis0: Creating SMP aggregator for chassis 0, "
+         "monitoring {NUM_CHASSIS} chassis instances",
          "NUM_CHASSIS", numChassis);
 
     // Initialize cached states to Off/Good
@@ -104,7 +104,8 @@ void ChassisSMP::startMonitoring()
 
         chassisMatches.push_back(std::move(match));
 
-        debug("Monitoring chassis {CHASSIS_ID}", "CHASSIS_ID", i);
+        debug("Chassis0: Monitoring chassis {MONITORED_CHASSIS_ID}",
+              "MONITORED_CHASSIS_ID", i);
     }
 
     // Do initial aggregation
@@ -143,8 +144,9 @@ void ChassisSMP::aggregatePowerState()
         }
         catch (const sdbusplus::exception_t& e)
         {
-            error("Failed to get power state for chassis {CHASSIS_ID}: {ERROR}",
-                  "CHASSIS_ID", i, "ERROR", e);
+            error("Chassis0: Failed to get power state for chassis "
+                  "{TARGET_CHASSIS_ID}: {ERROR}",
+                  "TARGET_CHASSIS_ID", i, "ERROR", e);
             // Assume off if we can't read the state
             chassisPowerStates[i] = PowerState::Off;
             aggregatedState = PowerState::Off;
@@ -153,7 +155,8 @@ void ChassisSMP::aggregatePowerState()
 
     if (server::Chassis::currentPowerState() != aggregatedState)
     {
-        info("SMP Aggregator power state changing to: {POWER_STATE}",
+        info("Chassis0: SMP Aggregator power state changing to: "
+             "{POWER_STATE}",
              "POWER_STATE", aggregatedState);
         currentPowerState(aggregatedState);
     }
@@ -196,9 +199,9 @@ void ChassisSMP::aggregatePowerStatus()
         }
         catch (const sdbusplus::exception_t& e)
         {
-            error(
-                "Failed to get power status for chassis {CHASSIS_ID}: {ERROR}",
-                "CHASSIS_ID", i, "ERROR", e);
+            error("Chassis0: Failed to get power status for chassis "
+                  "{TARGET_CHASSIS_ID}: {ERROR}",
+                  "TARGET_CHASSIS_ID", i, "ERROR", e);
             // Assume good if we can't read the status
             chassisPowerStatus[i] = PowerStatus::Good;
         }
@@ -206,7 +209,8 @@ void ChassisSMP::aggregatePowerStatus()
 
     if (server::Chassis::currentPowerStatus() != aggregatedStatus)
     {
-        info("SMP Aggregator power status changing to: {POWER_STATUS}",
+        info("Chassis0: SMP Aggregator power status changing to: "
+             "{POWER_STATUS}",
              "POWER_STATUS", aggregatedStatus);
         currentPowerStatus(aggregatedStatus);
     }
@@ -246,7 +250,8 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
 
 void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 {
-    info("Forwarding transition request {TRANSITION} to all chassis instances",
+    info("Chassis0: Forwarding transition request {TRANSITION} to "
+         "all chassis instances",
          "TRANSITION", transition);
 
     for (size_t i = 1; i <= numChassis; ++i)
@@ -267,21 +272,24 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 
             bus.call_noreply(method);
 
-            debug("Forwarded transition to chassis {CHASSIS_ID}", "CHASSIS_ID",
-                 i);
+            debug("Chassis0: Forwarded transition to chassis "
+                  "{TARGET_CHASSIS_ID}",
+                  "TARGET_CHASSIS_ID", i);
         }
         catch (const sdbusplus::exception_t& e)
         {
-            error("Failed to forward transition to chassis {CHASSIS_ID}: "
-                  "{ERROR}",
-                  "CHASSIS_ID", i, "ERROR", e);
+            error(
+                "Chassis0: Failed to forward transition to chassis "
+                "{TARGET_CHASSIS_ID}: {ERROR}",
+                "TARGET_CHASSIS_ID", i, "ERROR", e);
         }
     }
 }
 
 ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
 {
-    info("SMP Aggregator received transition request: {TRANSITION}",
+    info("Chassis0: SMP Aggregator received transition request: "
+         "{TRANSITION}",
          "TRANSITION", value);
 
     // Start the systemd target for chassis 0
@@ -306,8 +314,9 @@ ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
 
 ChassisSMP::PowerState ChassisSMP::currentPowerState(PowerState value)
 {
-    info("SMP Aggregator power state set to: {POWER_STATE}", "POWER_STATE",
-         value);
+    info("Chassis0: SMP Aggregator power state set to: "
+         "{POWER_STATE}",
+         "POWER_STATE", value);
     return server::Chassis::currentPowerState(value);
 }
 
