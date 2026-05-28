@@ -130,6 +130,11 @@ class ChassisSMP : public ChassisInherit
 
     /** @brief Cached present status from each chassis instance. **/
     std::map<size_t, bool> chassisPresentStatus;
+
+    /** @brief Flag to track if we've initiated a coordinated power off due to
+     * failure. Prevents repeated power off requests as each chassis transitions
+     * to off. **/
+    bool coordinatedPowerOffInProgress = false;
 };
 
 } // namespace manager

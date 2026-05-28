@@ -213,6 +213,9 @@ void ChassisSMP::aggregatePowerState()
     else // No present chassis or all present chassis are Off
     {
         aggregatedState = PowerState::Off;
+        // Reset the coordinated power off flag when all chassis are off
+        // This allows the system to detect new failures on the next power on
+        coordinatedPowerOffInProgress = false;
     }
 
     if (server::Chassis::currentPowerState() != aggregatedState)
@@ -299,6 +302,36 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
             PowerState state =
                 server::Chassis::convertPowerStateFromString(stateStr);
 
+            // Check if this chassis is transitioning to off due to a failure
+            // This is only a failure if we're currently trying to power on
+            // (TransitioningToOn or On state), not during a normal power off
+            // Only do this if we haven't already initiated a coordinated power
+            // off
+            auto currentState = server::Chassis::currentPowerState();
+            if (state == PowerState::TransitioningToOff &&
+                chassisPowerStates[chassisId] !=
+                    PowerState::TransitioningToOff &&
+                !coordinatedPowerOffInProgress &&
+                (currentState == PowerState::TransitioningToOn ||
+                 currentState == PowerState::On))
+            {
+                warning(
+                    "Chassis0: Chassis {FAILED_CHASSIS_ID} is "
+                    "transitioning to off while system is in {POWER_STATE}, "
+                    "initiating power off for all chassis",
+                    "FAILED_CHASSIS_ID", chassisId, "POWER_STATE",
+                    currentState);
+
+                // Set flag to prevent repeated power off requests
+                coordinatedPowerOffInProgress = true;
+
+                // Start the chassis 0 poweroff target
+                startUnit(CHASSIS_POWEROFF_TARGET);
+
+                // Request power off transition on all chassis instances
+                requestTransitionOnAllChassis(Transition::Off);
+            }
+
             chassisPowerStates[chassisId] = state;
             aggregatePowerState();
         }
@@ -365,6 +398,10 @@ ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
     info("Chassis0: SMP Aggregator received transition request: "
          "{TRANSITION}",
          "TRANSITION", value);
+
+    // Reset the coordinated power off flag when a new transition is requested
+    // This allows the system to detect new failures after a power on attempt
+    coordinatedPowerOffInProgress = false;
 
     // Start the systemd target for chassis 0
     if (value == Transition::Off)
