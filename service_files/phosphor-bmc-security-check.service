@@ -7,7 +7,7 @@ After=mapper-wait@-xyz-openbmc_project-logging-settings.service
 
 
 [Service]
-ExecStart=/usr/bin/phosphor-secure-boot-check
+ExecStart=/usr/libexec/phosphor-secure-boot-check
 Type=oneshot
 RemainAfterExit=yes
 

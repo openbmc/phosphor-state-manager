@@ -14,7 +14,7 @@ After=obmc-chassis-poweroff@%i.target
 Restart=no
 Type=simple
 RemainAfterExit=yes
-ExecStart=/usr/bin/phosphor-host-reset-recovery
+ExecStart=/usr/libexec/phosphor-host-reset-recovery
 
 
 [Install]

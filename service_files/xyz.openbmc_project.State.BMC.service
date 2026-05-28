@@ -5,7 +5,7 @@ After=xyz.openbmc_project.State.Chassis@0.service
 
 
 [Service]
-ExecStart=/usr/bin/phosphor-bmc-state-manager
+ExecStart=/usr/libexec/phosphor-bmc-state-manager
 Restart=always
 Type=dbus
 BusName=xyz.openbmc_project.State.BMC
