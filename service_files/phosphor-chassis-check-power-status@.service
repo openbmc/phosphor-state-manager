@@ -13,7 +13,7 @@ ConditionPathExists=!/run/openbmc/chassis@%i-on
 Restart=no
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/phosphor-chassis-check-power-status --chassis %i
+ExecStart=/usr/libexec/phosphor-chassis-check-power-status --chassis %i
 
 [Install]
 # Handled by bitbake recipe
