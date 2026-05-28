@@ -94,14 +94,33 @@ class ChassisSMP : public ChassisInherit
      */
     void requestTransitionOnAllChassis(Transition transition);
 
+    /** @brief Check if a chassis is present in the inventory
+     *
+     * @param[in] chassisId - ID of the chassis to check
+     * @return true if chassis is present, false otherwise
+     */
+    bool isChassisPresent(size_t chassisId);
+
+    /** @brief Handle inventory Present property changes
+     *
+     * @param[in] msg - D-Bus message containing property changes
+     * @param[in] chassisId - ID of the chassis that changed
+     */
+    void inventoryPresentChanged(sdbusplus::message_t& msg, size_t chassisId);
+
     /** @brief Persistent sdbusplus DBus connection. */
     sdbusplus::bus_t& bus;
 
     /** @brief Number of chassis instances to aggregate (1-N). **/
     const size_t numChassis;
 
-    /** @brief Property change signal matches for each chassis instance. **/
-    std::vector<std::unique_ptr<sdbusplus::bus::match_t>> chassisMatches;
+    /** @brief Property change signal matches for each chassis instance.
+     *  Maps chassis ID to its match object. **/
+    std::map<size_t, std::unique_ptr<sdbusplus::bus::match_t>> chassisMatches;
+
+    /** @brief Inventory Present property change signal matches. **/
+    std::vector<std::unique_ptr<sdbusplus::bus::match_t>>
+        inventoryPresentMatches;
 
     /** @brief Cached power states from each chassis instance. **/
     std::map<size_t, PowerState> chassisPowerStates;
