@@ -13,7 +13,7 @@ Wants=xyz.openbmc_project.Dump.Manager.service
 After=xyz.openbmc_project.Dump.Manager.service
 
 [Service]
-ExecStart=/usr/bin/phosphor-host-state-manager --host %i
+ExecStart=/usr/libexec/phosphor-state-manager/phosphor-host-state-manager --host %i
 Restart=always
 Type=dbus
 BusName=xyz.openbmc_project.State.Host%i
