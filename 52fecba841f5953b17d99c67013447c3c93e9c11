@@ -18,6 +18,41 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d337cc2_e94ad032",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-28T15:00:29Z",
+      "side": 1,
+      "message": "Sigh, I\u0027m not sure what I did in one of my big rebases, but I somehow merged https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/88976 into this one. Let me fix it.",
+      "parentUuid": "b4429189_8ea565d9",
+      "revId": "52fecba841f5953b17d99c67013447c3c93e9c11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f0bd2ff_acc6a8c7",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-28T15:00:29Z",
+      "side": 1,
+      "message": "This transition logic was also was a separate commit, will fix.",
+      "revId": "52fecba841f5953b17d99c67013447c3c93e9c11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f39164e_269b5fe4",
@@ -31,6 +66,24 @@
       "writtenOn": "2026-05-26T11:52:57Z",
       "side": 1,
       "message": "If a chassis changes from not present to present multiple times, then I think duplicate PropertiesChanged listeners will get added to this vector, leading to duplicate callbacks?\n\nIf so, should it remove a listener on present going to false, or check for duplicates? Maybe there is something in sdeventplus that eliminates duplicate callbacks?",
+      "revId": "52fecba841f5953b17d99c67013447c3c93e9c11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d9e28c8_42256be0",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-05-28T15:00:29Z",
+      "side": 1,
+      "message": "Yep good point. As noted by Matt above, I manged to merge 3 commits into this 1 as a part of my rebasing activity. I fixed that so this fix is in the correct commit now (multi-chassis-smp: skip absent SMP chassis)",
+      "parentUuid": "7f39164e_269b5fe4",
       "revId": "52fecba841f5953b17d99c67013447c3c93e9c11",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
