@@ -98,7 +98,11 @@ libgpiod = dependency(
 if cpp.has_header('CLI/CLI.hpp')
     CLI11 = declare_dependency()
 else
-    CLI11 = dependency('CLI11')
+    CLI11 = dependency(
+        'CLI11',
+        include_type: 'system',
+        default_options: ['tests=disabled'],
+    )
 endif
 
 # Get Cereal dependency.
