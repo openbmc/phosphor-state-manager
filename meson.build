@@ -151,6 +151,7 @@ executable(
     link_with: [settings_lib, utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -166,6 +167,7 @@ executable(
     link_with: [settings_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -184,6 +186,7 @@ executable(
     link_with: [utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -193,6 +196,7 @@ executable(
     link_with: [utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -209,6 +213,7 @@ executable(
     link_with: [utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -218,6 +223,7 @@ executable(
     link_with: [settings_lib, utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -237,6 +243,7 @@ executable(
     link_with: [utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -247,6 +254,7 @@ executable(
     link_with: [utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -255,6 +263,7 @@ executable(
     dependencies: [phosphorlogging, sdbusplus],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 executable(
@@ -264,6 +273,7 @@ executable(
     link_with: [utils_lib],
     implicit_include_directories: true,
     install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
 if get_option('install-utils').allowed()
