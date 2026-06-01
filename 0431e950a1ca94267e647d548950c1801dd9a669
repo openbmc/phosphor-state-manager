@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c860c8bc_f8f81b45",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-01T19:16:36Z",
+      "side": 1,
+      "message": "if you wanted, this wouldn\u0027t need to be a unique_ptr and you could just construct it in the initialize list above.",
+      "revId": "0431e950a1ca94267e647d548950c1801dd9a669",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
