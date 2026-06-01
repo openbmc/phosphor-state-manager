@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ab294e_978e2642",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-01T19:29:17Z",
+      "side": 1,
+      "message": "I feel like you might have changed this code in other commits to use the PDI enums.  If so you may as well do that here.  If not, you can disregard if you want, though enums are probably better.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 0
+      },
+      "revId": "c8c8d8fbaae1ec77352565842438ec7f31d38491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc08a5b_90606b36",
+        "filename": "service_files/phosphor-chassis-wait-for-smp-poweron.service",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-01T19:29:17Z",
+      "side": 1,
+      "message": "Usually, applications only used by service files are in /usr/libexec/phosphor-state-manager/, though I guess if you\u0027d like to keep it in /usr/bin/ to be with the other ones that\u0027s probably fine.",
+      "range": {
+        "startLine": 12,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "c8c8d8fbaae1ec77352565842438ec7f31d38491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
