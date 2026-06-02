@@ -16,6 +16,29 @@
       "message": "After discussing with the Wiwynn team members, we decided to include the previously implemented https://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/78827 changes together with the BOOT_DEVICE changes in this update.",
       "revId": "dc0312ee917233119390d219a9bcd857871c2c44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33ab05df_9e77308a",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-06-02T10:52:37Z",
+      "side": 1,
+      "message": "I want to adjust this behavior in `phosphor-static-norootfs-init` before you start treating it as an API.",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 5
+      },
+      "revId": "dc0312ee917233119390d219a9bcd857871c2c44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
