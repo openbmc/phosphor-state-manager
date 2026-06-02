@@ -3,7 +3,6 @@
 #include "bmc_state_manager.hpp"
 
 #include "utils.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <gpiod.h>
 
@@ -31,9 +30,9 @@ PHOSPHOR_LOG2_USING;
 
 // When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
+namespace event = sdbusplus::event::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
-using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 constexpr auto obmcQuiesceTarget = "obmc-bmc-service-quiesce@0.target";
 constexpr auto obmcStandbyTarget = "multi-user.target";
@@ -265,9 +264,7 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
 
     if (server::BMC::currentBMCState() != value)
     {
-        using StateChanged =
-            sdbusplus::event::xyz::openbmc_project::state::BMC::StateChanged;
-        lg2::commit(StateChanged("STATE", value));
+        lg2::commit(event::BMC::StateChanged("STATE", value));
     }
 
     return server::BMC::currentBMCState(value);
@@ -277,6 +274,12 @@ BMC::RebootCause BMC::lastRebootCause(RebootCause value)
 {
     info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
          "LAST_REBOOT_CAUSE", value);
+
+    if (server::BMC::lastRebootCause() != value)
+    {
+        lg2::commit(event::BMC::RebootCause("CAUSE", value, "BOOT_DEVICE",
+                                            getBootDevice()));
+    }
 
     return server::BMC::lastRebootCause(value);
 }
@@ -304,6 +307,27 @@ void BMC::updateLastRebootTime()
 uint64_t BMC::lastRebootTime() const
 {
     return rebootTime;
+}
+
+std::string BMC::getBootDevice()
+{
+    std::string bootDevice;
+    std::ifstream file;
+    const std::filesystem::path bootSlotPath = "/run/boot-device";
+
+    // If the file does not exist, return "Unknown".
+    // Not all systems provide this path for boot device detection.
+    if (!std::filesystem::exists(bootSlotPath))
+    {
+        return "Unknown";
+    }
+
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit |
+                    std::ifstream::eofbit);
+    file.open(bootSlotPath);
+    std::getline(file, bootDevice);
+
+    return bootDevice;
 }
 
 void BMC::discoverLastRebootCause()
