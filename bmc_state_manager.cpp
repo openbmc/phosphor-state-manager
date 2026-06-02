@@ -3,7 +3,6 @@
 #include "bmc_state_manager.hpp"
 
 #include "utils.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <gpiod.h>
 
@@ -29,11 +28,10 @@ namespace manager
 
 PHOSPHOR_LOG2_USING;
 
-// When you see server:: you know we're referencing our base class
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
+namespace event = sdbusplus::event::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
-using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 constexpr auto obmcQuiesceTarget = "obmc-bmc-service-quiesce@0.target";
 constexpr auto obmcStandbyTarget = "multi-user.target";
@@ -265,9 +263,7 @@ BMC::BMCState BMC::currentBMCState(BMCState value)
 
     if (server::BMC::currentBMCState() != value)
     {
-        using StateChanged =
-            sdbusplus::event::xyz::openbmc_project::state::BMC::StateChanged;
-        lg2::commit(StateChanged("STATE", value));
+        lg2::commit(event::BMC::StateChanged("STATE", value));
     }
 
     return server::BMC::currentBMCState(value);
@@ -277,6 +273,12 @@ BMC::RebootCause BMC::lastRebootCause(RebootCause value)
 {
     info("Setting the RebootCause field to {LAST_REBOOT_CAUSE}",
          "LAST_REBOOT_CAUSE", value);
+
+    if (server::BMC::lastRebootCause() != value)
+    {
+        lg2::commit(event::BMC::RebootCause("CAUSE", value, "BOOT_DEVICE",
+                                            getBootDevice()));
+    }
 
     return server::BMC::lastRebootCause(value);
 }
@@ -304,6 +306,42 @@ void BMC::updateLastRebootTime()
 uint64_t BMC::lastRebootTime() const
 {
     return rebootTime;
+}
+
+std::string BMC::getBootDevice()
+{
+    char bootDevice = 0;
+    std::ifstream file;
+    const auto* bootSlotPath = "/run/media/slot";
+
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit |
+                    std::ifstream::eofbit);
+
+    try
+    {
+        file.open(bootSlotPath);
+        file >> bootDevice;
+    }
+    catch (const std::exception& e)
+    {
+        auto rc = errno;
+        error("Failed to read sysfs file {FILE} with errno {ERRNO}", "FILE",
+              bootSlotPath, "ERRNO", rc);
+        return "Unknown";
+    }
+
+    // The 0 or 1 value read from the file indicates which flash the system
+    // booted from. If the value is not 0 or 1, then it is unknown which device
+    // was used to boot
+    switch (bootDevice)
+    {
+        case '0':
+            return "Primary Flash";
+        case '1':
+            return "Secondary Flash";
+        default:
+            return "Unknown";
+    }
 }
 
 void BMC::discoverLastRebootCause()
@@ -350,15 +388,10 @@ void BMC::discoverLastRebootCause()
     // A 0 indicates a pinhole reset occurred
     if (0 == gpioval)
     {
+        // Generate log telling user a pinhole reset has occurred
         info("The BMC reset was caused by a pinhole reset");
         this->lastRebootCause(RebootCause::PinholeReset);
 
-        // Generate log telling user a pinhole reset has occurred
-        const std::string errorMsg = "xyz.openbmc_project.State.PinholeReset";
-        phosphor::state::manager::utils::createError(
-            this->bus, errorMsg,
-            sdbusplus::server::xyz::openbmc_project::logging::Entry::Level::
-                Notice);
         return;
     }
 
