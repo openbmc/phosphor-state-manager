@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99096e3f_fe1aa40d",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-02T19:45:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02ab294e_978e2642",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 0
+      },
+      "revId": "c8c8d8fbaae1ec77352565842438ec7f31d38491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bc08a5b_90606b36",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-01T19:29:17Z",
       "side": 1,
       "message": "Usually, applications only used by service files are in /usr/libexec/phosphor-state-manager/, though I guess if you\u0027d like to keep it in /usr/bin/ to be with the other ones that\u0027s probably fine.",
+      "range": {
+        "startLine": 12,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "c8c8d8fbaae1ec77352565842438ec7f31d38491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6294e4ab_56dc5623",
+        "filename": "service_files/phosphor-chassis-wait-for-smp-poweron.service",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-02T19:45:28Z",
+      "side": 1,
+      "message": "Yeah, good call, this is actually one of Xavier\u0027s first projects, to move all the apps over to /usr/libexec. I may as well do this one correctly.",
+      "parentUuid": "6bc08a5b_90606b36",
       "range": {
         "startLine": 12,
         "startChar": 10,
