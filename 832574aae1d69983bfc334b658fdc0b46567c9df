@@ -39,6 +39,24 @@
       "message": "Isn\u0027t there already a watch on this property?  So if you cached that value you wouldn\u0027t need to read it every time?",
       "revId": "832574aae1d69983bfc334b658fdc0b46567c9df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf69f3d8_c5d31f66",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-02T19:45:28Z",
+      "side": 1,
+      "message": "Yeah good point, no need to have the repeated calls to this function.",
+      "parentUuid": "657027d3_bc6d20ed",
+      "revId": "832574aae1d69983bfc334b658fdc0b46567c9df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
