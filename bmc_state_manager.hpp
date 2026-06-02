@@ -146,6 +146,11 @@ class BMC : public BMCInherit
     void updateLastRebootTime();
 
     /**
+     * @brief get the boot device information
+     */
+    static std::string getBootDevice();
+
+    /**
      * @brief the lastRebootTime calculated at startup.
      **/
     uint64_t rebootTime;
