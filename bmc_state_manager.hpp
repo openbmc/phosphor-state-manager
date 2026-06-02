@@ -146,6 +146,14 @@ class BMC : public BMCInherit
     void updateLastRebootTime();
 
     /**
+     * @brief get the boot device information
+     * @details If boot device is 0, it means primary flash
+     *          If it is 1, it means secondary flash
+     *          Otherwise, it is unknown
+     */
+    std::string getBootDevice() const;
+
+    /**
      * @brief the lastRebootTime calculated at startup.
      **/
     uint64_t rebootTime;
