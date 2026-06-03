@@ -39,6 +39,30 @@
       },
       "revId": "dc0312ee917233119390d219a9bcd857871c2c44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "076e2c2e_86ded8f4",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1002558
+      },
+      "writtenOn": "2026-06-03T06:06:49Z",
+      "side": 1,
+      "message": "Hi @patrick@stwcx.xyz,\nI noticed your changes in https://gerrit.openbmc.org/c/openbmc/openbmc/+/90871, so I updated phosphor-state-manager accordingly based on those changes.",
+      "parentUuid": "33ab05df_9e77308a",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 5
+      },
+      "revId": "dc0312ee917233119390d219a9bcd857871c2c44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
