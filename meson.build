@@ -84,8 +84,12 @@ conf.set10(
 
 conf.set10('ENABLE_MULTI_CHASSIS_SMP', get_option('multi-chassis-smp').allowed())
 
+# Always define NUM_CHASSIS_SMP to avoid compilation errors when feature is disabled
+# The value is only used when ENABLE_MULTI_CHASSIS_SMP is true
 if (get_option('multi-chassis-smp').allowed())
     conf.set('NUM_CHASSIS_SMP', get_option('num-chassis-smp'))
+else
+    conf.set('NUM_CHASSIS_SMP', 0)
 endif
 
 configure_file(output: 'config.h', configuration: conf)
