@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9bc4775_8c5513ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-04T13:08:56Z",
+      "side": 1,
+      "message": "Would like to get current PSM bump through as it has some dependencies before generating a new bump",
+      "revId": "463a3faa8d1e4b07e33b876169a7fb3e23b7a362",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
