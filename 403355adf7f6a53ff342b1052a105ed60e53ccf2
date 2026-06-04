@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c39c4ef3_2550ea8d",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T19:58:05Z",
+      "side": 1,
+      "message": "also, we don\u0027t have this file, so it should be silent if not present.\nActually, an event wouldn\u0027t even be necessary then either.",
+      "parentUuid": "26724c12_61749015",
+      "revId": "403355adf7f6a53ff342b1052a105ed60e53ccf2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f8811bd_5f4b8684",
         "filename": "bmc_state_manager.cpp",
         "patchSetId": 7
@@ -65,6 +83,24 @@
       "writtenOn": "2026-06-04T19:50:06Z",
       "side": 1,
       "message": "It\u0027s not clear to me if taking out the PinholeReset is acceptable here.\n\ncc: @spinler@us.ibm.com",
+      "revId": "403355adf7f6a53ff342b1052a105ed60e53ccf2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e04c08c_474e9273",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-06-04T19:58:05Z",
+      "side": 1,
+      "message": "IBM would still want this log.",
+      "parentUuid": "4f8811bd_5f4b8684",
       "revId": "403355adf7f6a53ff342b1052a105ed60e53ccf2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
