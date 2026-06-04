@@ -526,7 +526,7 @@ void ChassisSMP::inventoryPresentChanged(sdbusplus::message_t& msg,
 void ChassisSMP::sysStateChangeJobNew(sdbusplus::message_t& msg)
 {
     uint32_t newStateID{};
-    sdbusplus::message::object_path newStateObjPath;
+    sdbusplus::object_path newStateObjPath;
     std::string newStateUnit{};
 
     msg.read(newStateID, newStateObjPath, newStateUnit);
