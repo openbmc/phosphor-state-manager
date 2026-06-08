@@ -139,6 +139,24 @@
       "parentUuid": "4f8811bd_5f4b8684",
       "revId": "403355adf7f6a53ff342b1052a105ed60e53ccf2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b078fec_e1f52c59",
+        "filename": "bmc_state_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1002558
+      },
+      "writtenOn": "2026-06-08T01:18:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e04c08c_474e9273",
+      "revId": "403355adf7f6a53ff342b1052a105ed60e53ccf2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
