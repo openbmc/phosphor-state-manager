@@ -1,7 +1,11 @@
 #include "systemd_service_parser.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <fstream>
 #include <iostream>
+
+PHOSPHOR_LOG2_USING;
 
 ServiceMonitorResult parseServiceFiles(
     const std::vector<std::string>& filePaths)
@@ -14,6 +18,12 @@ ServiceMonitorResult parseServiceFiles(
             std::cout << "Parsing input service file " << jsonFile << std::endl;
         }
         std::ifstream fileStream(jsonFile);
+        if (!fileStream.is_open())
+        {
+            error("Failed to open service monitor file: {FILE}", "FILE",
+                  jsonFile);
+            continue;
+        }
         auto j = json::parse(fileStream);
 
         for (const auto& service : j["services"].items())
