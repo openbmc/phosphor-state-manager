@@ -5,7 +5,7 @@ test(
         'test_systemd_parser',
         'systemd_parser.cpp',
         '../systemd_target_parser.cpp',
-        dependencies: [gtest, nlohmann_json_dep],
+        dependencies: [gtest, nlohmann_json_dep, phosphorlogging],
         implicit_include_directories: true,
         include_directories: '../',
     ),
