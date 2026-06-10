@@ -3,6 +3,9 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <phosphor-logging/lg2.hpp>
+
+PHOSPHOR_LOG2_USING;
 
 void validateErrorsToMonitor(std::vector<std::string>& errorsToMonitor)
 {
@@ -47,6 +50,12 @@ TargetErrorData parseFiles(const std::vector<std::string>& filePaths)
             std::cout << "Parsing input file " << jsonFile << std::endl;
         }
         std::ifstream fileStream(jsonFile);
+        if (!fileStream.is_open())
+        {
+            error("Failed to open target monitor file: {FILE}", "FILE",
+                  jsonFile);
+            continue;
+        }
         auto j = json::parse(fileStream);
 
         for (auto it = j["targets"].begin(); it != j["targets"].end(); ++it)
