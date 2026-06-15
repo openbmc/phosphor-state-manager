@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ba9aa67_a3fa132f",
+        "filename": "service_files/phosphor-bmc-security-check.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-15T18:48:53Z",
+      "side": 1,
+      "message": "oh whoops, these should all be:\nExecStart\u003d/usr/libexec/phosphor-state-manager/\u003capplication name\u003e\nThe applications go under phosphor-state-manager to distinguish which apps come from where.",
+      "revId": "1f07106be3cde78f08ac17414fff00d578cb5ff5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
