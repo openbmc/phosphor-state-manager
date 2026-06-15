@@ -200,6 +200,29 @@ void createBmcDump(sdbusplus::bus_t& bus)
     auto dumpPath = sdbusplus::object_path(DumpCreate::namespace_path::value) /
                     DumpCreate::namespace_path::bmc;
 
+    // Pre-flight check: verify dump service is available
+    // This prevents D-Bus error allocations in test environments where services
+    // don't exist
+    try
+    {
+        auto checkMethod = bus.new_method_call(
+            "org.freedesktop.DBus", "/org/freedesktop/DBus",
+            "org.freedesktop.DBus", "GetNameOwner");
+        checkMethod.append(DumpCreate::default_service);
+        auto response = bus.call(checkMethod);
+        std::string owner;
+        response.read(owner);
+        if (owner.empty())
+        {
+            return;
+        }
+    }
+    catch (const sdbusplus::exception_t&)
+    {
+        // Service not available, skip dump creation
+        return;
+    }
+
     auto method = bus.new_method_call(
         DumpCreate::default_service, dumpPath.str.c_str(),
         DumpCreate::interface, DumpCreate::method_names::create_dump);

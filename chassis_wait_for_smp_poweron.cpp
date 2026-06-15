@@ -83,6 +83,33 @@ bool SMPChassisWaiter::isChassisPresent(size_t chassisId)
     sdbusplus::object_path inventoryPath = std::format(
         "/xyz/openbmc_project/inventory/system/chassis{}", chassisId);
 
+    // Pre-flight check: verify inventory service is available
+    // This prevents unnecessary D-Bus error allocations in test environments
+    try
+    {
+        auto method = bus.new_method_call(
+            "org.freedesktop.DBus", "/org/freedesktop/DBus",
+            "org.freedesktop.DBus", "GetNameOwner");
+        method.append(inventoryBusName);
+
+        auto response = bus.call(method);
+        std::string owner;
+        response.read(owner);
+
+        if (owner.empty())
+        {
+            debug("Inventory service not running");
+            return false;
+        }
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        debug("SMP Chassis Waiter: Inventory service unavailable for chassis "
+              "{CHASSIS_ID}: {ERROR}",
+              "CHASSIS_ID", chassisId, "ERROR", e.what());
+        return false;
+    }
+
     try
     {
         auto method = bus.new_method_call(inventoryBusName, inventoryPath.str,
