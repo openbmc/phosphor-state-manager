@@ -64,6 +64,17 @@ test(
     ),
 )
 
+test(
+    'test_host_reset_recovery',
+    executable(
+        'test_host_reset_recovery',
+        'test_host_reset_recovery.cpp',
+        dependencies: [gtest, phosphorlogging, sdbusplus],
+        implicit_include_directories: true,
+        include_directories: '../',
+    ),
+)
+
 
 if get_option('multi-chassis-smp').allowed()
     test(
