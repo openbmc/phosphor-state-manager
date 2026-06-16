@@ -200,9 +200,9 @@ void createBmcDump(sdbusplus::bus_t& bus)
     auto dumpPath = sdbusplus::object_path(DumpCreate::namespace_path::value) /
                     DumpCreate::namespace_path::bmc;
 
-    auto method = bus.new_method_call(
-        DumpCreate::default_service, dumpPath.str.c_str(),
-        DumpCreate::interface, DumpCreate::method_names::create_dump);
+    auto method = bus.new_method_call(DumpCreate::default_service, dumpPath,
+                                      DumpCreate::interface,
+                                      DumpCreate::method_names::create_dump);
     method.append(
         std::vector<
             std::pair<std::string, std::variant<std::string, uint64_t>>>());
@@ -233,7 +233,7 @@ bool isBmcReady(sdbusplus::bus_t& bus)
     auto bmcPath = sdbusplus::object_path(BMC::namespace_path::value) /
                    BMC::namespace_path::bmc;
 
-    auto bmcState = getProperty(bus, bmcPath.str, BMC::interface,
+    auto bmcState = getProperty(bus, bmcPath, BMC::interface,
                                 BMC::property_names::current_bmc_state);
 
     if (sdbusplus::message::convert_from_string<BMC::BMCState>(bmcState) !=
