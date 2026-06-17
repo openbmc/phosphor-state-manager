@@ -57,6 +57,13 @@ option(
 )
 
 option(
+    'host-reset-recovery-timeout-sec',
+    type: 'integer',
+    value: 0,
+    description: 'Timeout in seconds for host reset recovery to wait for chassis poweron target completion. 0 means wait forever.',
+)
+
+option(
     'class-version',
     type: 'integer',
     value: 2,
