@@ -150,13 +150,21 @@ int main()
     // Chassis power is on if this service starts but need to wait for the
     // obmc-chassis-poweron@.target to complete before potentially initiating
     // another systemd target transition (i.e. Quiesce->Reboot)
+    auto timeout = std::chrono::seconds(HOST_RESET_RECOVERY_TIMEOUT_SEC);
     while (!isChassisTargetComplete())
     {
         debug("Waiting for chassis on target to complete");
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        // There is no timeout here, wait until it happens or until system
-        // is powered off and this service is stopped
+        if (timeout.count() == 0)
+        {
+            error(
+                "Timeout waiting for chassis on target completion after "
+                "{TIMEOUT} seconds, continuing host reset recovery",
+                "TIMEOUT", HOST_RESET_RECOVERY_TIMEOUT_SEC);
+            break;
+        }
+        timeout--;
     }
 
     info("Chassis power on has completed, checking if host is "

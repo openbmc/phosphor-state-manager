@@ -28,6 +28,10 @@ conf.set_quoted(
     get_option('scheduled-host-transition-persist-path'),
 )
 conf.set('BOOT_COUNT_MAX_ALLOWED', get_option('boot-count-max-allowed'))
+conf.set(
+    'HOST_RESET_RECOVERY_TIMEOUT_SEC',
+    get_option('host-reset-recovery-timeout-sec'),
+)
 conf.set('CLASS_VERSION', get_option('class-version'))
 conf.set_quoted('SYSFS_SECURE_BOOT_PATH', get_option('sysfs-secure-boot-path'))
 conf.set_quoted('SYSFS_ABR_IMAGE_PATH', get_option('sysfs-abr-image-path'))
