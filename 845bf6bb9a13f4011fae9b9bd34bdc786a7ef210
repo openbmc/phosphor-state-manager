@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67b1e364_ae6c9c51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-19T12:29:44Z",
+      "side": 1,
+      "message": "I\u0027m ok with supporting a timeout but I think the default should still be to wait forever. There could be undefined behavior on systems that hit this timeout and continue without the target completing. My vote is we support a time of \"0\" which means to just wait forever and that be the default in meson.options.",
+      "revId": "845bf6bb9a13f4011fae9b9bd34bdc786a7ef210",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
