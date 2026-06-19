@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dca6ea5b_08a3a774",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-19T12:20:52Z",
+      "side": 1,
+      "message": "Thanks for the additional testing!",
+      "revId": "664fa5f2b79dd1e3455249d481436bdb9f3c3632",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03630825_a27123e3",
+        "filename": "chassis_wait_for_smp_poweron.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-19T12:20:52Z",
+      "side": 1,
+      "message": "I\u0027ve never seen this term, \"Pre-flight check\" so would prefer to just strike it. Also, I think these changes to the production code should be a separate commit from the test case with it\u0027s own commit message. And finally, I think we should utilize the getService() function the utils file to look for the service.",
+      "revId": "664fa5f2b79dd1e3455249d481436bdb9f3c3632",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
