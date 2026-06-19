@@ -154,13 +154,13 @@ class Chassis : public ChassisInherit
     sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus systemd signals **/
-    sdbusplus::bus::match_t systemdSignals;
+    sdbusplus::match systemdSignals;
 
     /** @brief Watch for any changes to UPS properties **/
-    std::unique_ptr<sdbusplus::bus::match_t> uPowerPropChangeSignal;
+    std::unique_ptr<sdbusplus::match> uPowerPropChangeSignal;
 
     /** @brief Watch for any changes to PowerSystemInputs properties **/
-    std::unique_ptr<sdbusplus::bus::match_t> powerSysInputsPropChangeSignal;
+    std::unique_ptr<sdbusplus::match> powerSysInputsPropChangeSignal;
 
     /** @brief Chassis id. **/
     const size_t id = 0;

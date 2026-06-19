@@ -79,7 +79,7 @@ class Hypervisor : public HypervisorInherit
     void bootProgressChangeEvent(sdbusplus::message_t& msg);
 
     /** @brief Watch BootProgress changes to know hypervisor state **/
-    sdbusplus::bus::match_t bootProgressChangeSignal;
+    sdbusplus::match bootProgressChangeSignal;
 };
 
 } // namespace phosphor::state::manager

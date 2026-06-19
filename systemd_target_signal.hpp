@@ -134,14 +134,14 @@ class SystemdTargetLogging
     sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus systemd JobRemoved signals **/
-    sdbusplus::bus::match_t systemdJobRemovedSignal;
+    sdbusplus::match systemdJobRemovedSignal;
 
     /** @brief Used to know when systemd has registered on dbus **/
-    sdbusplus::bus::match_t systemdNameOwnedChangedSignal;
+    sdbusplus::match systemdNameOwnedChangedSignal;
 
     /** @brief PropertiesChanged matches for immediate-quiesce monitored units
      */
-    std::vector<sdbusplus::bus::match_t> immediateQuiesceMatches;
+    std::vector<sdbusplus::match> immediateQuiesceMatches;
 
     /** @brief Track whether immediate-quiesce monitoring has been initialized
      */

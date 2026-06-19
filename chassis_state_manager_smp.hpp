@@ -123,14 +123,13 @@ class ChassisSMP : public ChassisInherit
 
     /** @brief Property change signal matches for each chassis instance.
      *  Maps chassis ID to its match object. **/
-    std::map<size_t, std::unique_ptr<sdbusplus::bus::match_t>> chassisMatches;
+    std::map<size_t, std::unique_ptr<sdbusplus::match>> chassisMatches;
 
     /** @brief Inventory Present property change signal matches. **/
-    std::vector<std::unique_ptr<sdbusplus::bus::match_t>>
-        inventoryPresentMatches;
+    std::vector<std::unique_ptr<sdbusplus::match>> inventoryPresentMatches;
 
     /** @brief Systemd JobNew signal match for chassis 0 target monitoring. **/
-    sdbusplus::bus::match_t systemdSignalJobNew;
+    sdbusplus::match systemdSignalJobNew;
 
     /** @brief Cached power states from each chassis instance. **/
     std::map<size_t, PowerState> chassisPowerStates;

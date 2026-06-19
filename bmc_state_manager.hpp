@@ -126,10 +126,10 @@ class BMC : public BMCInherit
     sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus system state changes **/
-    std::unique_ptr<sdbusplus::bus::match_t> stateSignal;
+    std::unique_ptr<sdbusplus::match> stateSignal;
 
     /** @brief Used to subscribe to timesync **/
-    std::unique_ptr<sdbusplus::bus::match_t> timeSyncSignal;
+    std::unique_ptr<sdbusplus::match> timeSyncSignal;
 
     /**
      * @brief discover the last reboot cause of the bmc

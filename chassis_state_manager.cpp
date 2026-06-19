@@ -73,14 +73,14 @@ void Chassis::createSystemdTargetTable()
 void Chassis::determineInitialState()
 {
     // Monitor for any properties changed signals on UPower device path
-    uPowerPropChangeSignal = std::make_unique<sdbusplus::bus::match_t>(
+    uPowerPropChangeSignal = std::make_unique<sdbusplus::match>(
         bus,
         sdbusplus::bus::match::rules::propertiesChangedNamespace(
             "/org/freedesktop/UPower", UPowerDevice::interface),
         [this](auto& msg) { this->uPowerChangeEvent(msg); });
 
     // Monitor for any properties changed signals on PowerSystemInputs
-    powerSysInputsPropChangeSignal = std::make_unique<sdbusplus::bus::match_t>(
+    powerSysInputsPropChangeSignal = std::make_unique<sdbusplus::match>(
         bus,
         sdbusplus::bus::match::rules::propertiesChangedNamespace(
             std::format(
