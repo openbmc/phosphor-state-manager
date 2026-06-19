@@ -38,14 +38,13 @@ class SystemdTargetLogging
         immediateQuiesceServiceData(immediateQuiesceServiceData), bus(bus),
         systemdJobRemovedSignal(
             bus,
-            sdbusplus::bus::match::rules::type::signal() +
-                sdbusplus::bus::match::rules::member("JobRemoved") +
-                sdbusplus::bus::match::rules::path(SYSTEMD_OBJ_PATH) +
-                sdbusplus::bus::match::rules::interface(
-                    SYSTEMD_MANAGER_INTERFACE),
+            sdbusplus::match_rules::type::signal() +
+                sdbusplus::match_rules::member("JobRemoved") +
+                sdbusplus::match_rules::path(SYSTEMD_OBJ_PATH) +
+                sdbusplus::match_rules::interface(SYSTEMD_MANAGER_INTERFACE),
             [this](sdbusplus::message_t& m) { systemdUnitChange(m); }),
         systemdNameOwnedChangedSignal(
-            bus, sdbusplus::bus::match::rules::nameOwnerChanged(),
+            bus, sdbusplus::match_rules::nameOwnerChanged(),
             [this](sdbusplus::message_t& m) { processNameChangeSignal(m); })
     {}
 
@@ -134,14 +133,14 @@ class SystemdTargetLogging
     sdbusplus::bus_t& bus;
 
     /** @brief Used to subscribe to dbus systemd JobRemoved signals **/
-    sdbusplus::bus::match_t systemdJobRemovedSignal;
+    sdbusplus::match systemdJobRemovedSignal;
 
     /** @brief Used to know when systemd has registered on dbus **/
-    sdbusplus::bus::match_t systemdNameOwnedChangedSignal;
+    sdbusplus::match systemdNameOwnedChangedSignal;
 
     /** @brief PropertiesChanged matches for immediate-quiesce monitored units
      */
-    std::vector<sdbusplus::bus::match_t> immediateQuiesceMatches;
+    std::vector<sdbusplus::match> immediateQuiesceMatches;
 
     /** @brief Track whether immediate-quiesce monitoring has been initialized
      */

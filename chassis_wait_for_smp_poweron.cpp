@@ -14,7 +14,7 @@ namespace phosphor::state::manager
 PHOSPHOR_LOG2_USING;
 
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
-namespace sdbusRule = sdbusplus::bus::match::rules;
+namespace sdbusRule = sdbusplus::match_rules;
 
 using PowerState = server::Chassis::PowerState;
 
@@ -60,7 +60,7 @@ void SMPChassisWaiter::initializeMonitoring()
         sdbusplus::object_path chassisPath =
             std::format("/xyz/openbmc_project/state/chassis{}", i);
 
-        auto chassisMatch = std::make_unique<sdbusplus::bus::match_t>(
+        auto chassisMatch = std::make_unique<sdbusplus::match>(
             bus,
             sdbusRule::propertiesChanged(chassisPath.str, CHASSIS_INTERFACE),
             [this, i](sdbusplus::message_t& msg) {
