@@ -357,7 +357,7 @@ void Host::sysStateChangeJobNew(sdbusplus::message_t& msg)
 
     if (newStateUnit == getTarget(server::Host::HostState::DiagnosticMode))
     {
-        info("Received signal that host is in diagnostice mode");
+        info("Received signal that host is in diagnostic mode");
         this->currentHostState(server::Host::HostState::DiagnosticMode);
     }
     else if ((newStateUnit == hostCrashTarget) &&
