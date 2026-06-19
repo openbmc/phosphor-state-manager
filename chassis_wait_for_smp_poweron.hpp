@@ -103,7 +103,7 @@ class SMPChassisWaiter
     std::map<size_t, bool> chassisPowerStates;
 
     /** @brief D-Bus matches for chassis property changes */
-    std::vector<std::unique_ptr<sdbusplus::bus::match_t>> chassisMatches;
+    std::vector<std::unique_ptr<sdbusplus::match>> chassisMatches;
 
     /** @brief Signal source for SIGINT */
     std::unique_ptr<sdeventplus::source::Signal> sigintSource;
