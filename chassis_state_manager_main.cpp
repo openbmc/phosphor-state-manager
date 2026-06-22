@@ -5,6 +5,7 @@
 
 #include <getopt.h>
 
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <cstdlib>
@@ -12,6 +13,8 @@
 #include <filesystem>
 #include <format>
 #include <iostream>
+
+PHOSPHOR_LOG2_USING;
 
 constexpr auto LEGACY_POH_COUNTER_PERSIST_PATH =
     "/var/lib/phosphor-state-manager/POHCounter";
@@ -66,11 +69,29 @@ int main(int argc, char** argv)
             std::format(CHASSIS_STATE_CHANGE_PERSIST_PATH, chassisId)};
         if (fs::exists(legacyPohPath))
         {
-            fs::rename(legacyPohPath, newPohPath);
+            try
+            {
+                fs::rename(legacyPohPath, newPohPath);
+            }
+            catch (const fs::filesystem_error& e)
+            {
+                error("Failed to rename legacy file {LEGACY} to {NEW}: {ERROR}",
+                      "LEGACY", legacyPohPath, "NEW", newPohPath, "ERROR",
+                      e.what());
+            }
         }
         if (fs::exists(legacyStateChangePath))
         {
-            fs::rename(legacyStateChangePath, newStateChangePath);
+            try
+            {
+                fs::rename(legacyStateChangePath, newStateChangePath);
+            }
+            catch (const fs::filesystem_error& e)
+            {
+                error("Failed to rename legacy file {LEGACY} to {NEW}: {ERROR}",
+                      "LEGACY", legacyStateChangePath, "NEW",
+                      newStateChangePath, "ERROR", e.what());
+            }
         }
     }
 
