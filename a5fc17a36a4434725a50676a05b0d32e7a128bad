@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "095f73a1_3eb5df5e",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T18:41:11Z",
+      "side": 1,
+      "message": "nit: you can  just pass \"e\". phosphor-logging handles it.",
+      "revId": "a5fc17a36a4434725a50676a05b0d32e7a128bad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03857124_e8b8ac94",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T18:41:11Z",
+      "side": 1,
+      "message": "Same comment as above.",
+      "revId": "a5fc17a36a4434725a50676a05b0d32e7a128bad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
