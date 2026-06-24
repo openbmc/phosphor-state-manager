@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb17ce0f_eee9092a",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-06-24T11:28:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "095f73a1_3eb5df5e",
+      "revId": "a5fc17a36a4434725a50676a05b0d32e7a128bad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03857124_e8b8ac94",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-23T18:41:11Z",
       "side": 1,
       "message": "Same comment as above.",
+      "revId": "a5fc17a36a4434725a50676a05b0d32e7a128bad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cdb0fa9_12e36f8b",
+        "filename": "chassis_state_manager_main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-06-24T11:28:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "03857124_e8b8ac94",
       "revId": "a5fc17a36a4434725a50676a05b0d32e7a128bad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
