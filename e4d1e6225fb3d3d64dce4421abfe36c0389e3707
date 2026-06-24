@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eda8f30f_9ddadea4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-24T11:40:19Z",
+      "side": 1,
+      "message": "Please remove stray \"q\" here",
+      "revId": "e4d1e6225fb3d3d64dce4421abfe36c0389e3707",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
