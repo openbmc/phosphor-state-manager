@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include <fstream>
-#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 
@@ -48,7 +47,7 @@ TargetErrorData parseFiles(const std::vector<std::string>& filePaths)
     {
         if (gVerbose)
         {
-            std::cout << "Parsing input file " << jsonFile << std::endl;
+            debug("Parsing input file {FILE}", "FILE", jsonFile);
         }
         std::ifstream fileStream(jsonFile);
         if (!fileStream.is_open())
@@ -64,8 +63,8 @@ TargetErrorData parseFiles(const std::vector<std::string>& filePaths)
             targetEntry entry;
             if (gVerbose)
             {
-                std::cout << "target: " << it.key() << " | " << it.value()
-                          << std::endl;
+                debug("target: {KEY} | {VALUE}", "KEY", it.key(), "VALUE",
+                      it.value());
             }
 
             // Be unforgiving on invalid json files. Just throw or allow
