@@ -3,7 +3,6 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
-#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 
@@ -15,7 +14,7 @@ ServiceMonitorResult parseServiceFiles(
     {
         if (gVerbose)
         {
-            std::cout << "Parsing input service file " << jsonFile << std::endl;
+            debug("Parsing input service file {FILE}", "FILE", jsonFile);
         }
         std::ifstream fileStream(jsonFile);
         if (!fileStream.is_open())
@@ -30,7 +29,7 @@ ServiceMonitorResult parseServiceFiles(
         {
             if (gVerbose)
             {
-                std::cout << "service: " << service.value() << std::endl;
+                debug("service: {SERVICE}", "SERVICE", service.value());
             }
 
             result.services.push_back(service.value());
@@ -42,9 +41,8 @@ ServiceMonitorResult parseServiceFiles(
             {
                 if (gVerbose)
                 {
-                    std::cout
-                        << "immediate quiesce service: " << service.value()
-                        << std::endl;
+                    debug("immediate quiesce service: {SERVICE}", "SERVICE",
+                          service.value());
                 }
 
                 result.immediateQuiesceServices.push_back(service.value());

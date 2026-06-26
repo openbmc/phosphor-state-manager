@@ -6,7 +6,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
-#include <iostream>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
@@ -15,29 +14,16 @@ bool gVerbose = false;
 
 void dump_targets(const TargetErrorData& targetData)
 {
-    std::cout << "## Data Structure of Json ##" << std::endl;
+    debug("## Data Structure of Json ##");
     for (const auto& [target, value] : targetData)
     {
-        std::cout << target << " " << value.errorToLog << std::endl;
-        std::cout << "    ";
+        debug("{TARGET} {ERROR_TO_LOG}", "TARGET", target, "ERROR_TO_LOG",
+              value.errorToLog);
         for (const auto& eToMonitor : value.errorsToMonitor)
         {
-            std::cout << eToMonitor << ", ";
+            debug("{ERROR_TO_MONITOR}", "ERROR_TO_MONITOR", eToMonitor);
         }
-        std::cout << std::endl;
     }
-    std::cout << std::endl;
-}
-
-void print_usage(void)
-{
-    std::cout << "[-f <file1> -f <file2> ...] : Full path to json file(s) with "
-                 "target/error mappings"
-              << std::endl;
-    std::cout << "[-s <file1> -s <file2> ...] : Full path to json file(s) with "
-                 "services to monitor for errors"
-              << std::endl;
-    return;
 }
 
 int main(int argc, char* argv[])
@@ -59,7 +45,6 @@ int main(int argc, char* argv[])
     if (targetFilePaths.empty())
     {
         error("No input files");
-        print_usage();
         exit(-1);
     }
 
@@ -67,7 +52,6 @@ int main(int argc, char* argv[])
     if (targetData.size() == 0)
     {
         error("Invalid input files, no targets found");
-        print_usage();
         exit(-1);
     }
 
