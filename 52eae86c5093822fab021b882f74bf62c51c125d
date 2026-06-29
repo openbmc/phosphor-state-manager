@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8e0912e_6f168dc7",
+        "filename": "systemd_target_monitor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-06-29T06:24:46Z",
+      "side": 0,
+      "message": "this approach is good",
+      "range": {
+        "startLine": 32,
+        "startChar": 5,
+        "endLine": 32,
+        "endChar": 16
+      },
+      "revId": "52eae86c5093822fab021b882f74bf62c51c125d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
