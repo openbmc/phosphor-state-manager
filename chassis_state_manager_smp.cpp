@@ -88,7 +88,15 @@ void ChassisSMP::startUnit(const std::string& sysdUnit)
     method.append(sysdUnit);
     method.append("replace");
 
-    this->bus.call_noreply(method);
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to start unit {UNIT}, exception:{ERROR}", "UNIT",
+              sysdUnit, "ERROR", e);
+    }
 }
 
 void ChassisSMP::startMonitoring()

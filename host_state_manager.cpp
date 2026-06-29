@@ -154,7 +154,15 @@ void Host::executeTransition(Transition tranReq)
     method.append(sysdUnit);
     method.append("replace");
 
-    this->bus.call_noreply(method);
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to execute transition, unit:{UNIT}, exception:{ERROR}",
+              "UNIT", sysdUnit, "ERROR", e);
+    }
 
     return;
 }
