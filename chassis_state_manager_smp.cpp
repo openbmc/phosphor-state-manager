@@ -88,7 +88,16 @@ void ChassisSMP::startUnit(const std::string& sysdUnit)
     method.append(sysdUnit);
     method.append("replace");
 
-    this->bus.call_noreply(method);
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to start unit {UNIT}, exception:{ERROR}", "UNIT",
+              sysdUnit, "ERROR", e);
+        throw;
+    }
 }
 
 void ChassisSMP::startMonitoring()
@@ -394,6 +403,7 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
             error("Chassis0: Failed to forward transition to chassis "
                   "{TARGET_CHASSIS_ID}: {ERROR}",
                   "TARGET_CHASSIS_ID", i, "ERROR", e);
+            throw;
         }
     }
 }

@@ -129,7 +129,18 @@ void setProperty(sdbusplus::bus_t& bus, const std::string& path,
                                       PROPERTY_INTERFACE, "Set");
 
     method.append(interface, property, variantValue);
-    bus.call_noreply(method);
+    try
+    {
+        bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to set property {PROPERTY} on path {PATH}, "
+              "interface {INTERFACE}, exception:{ERROR}",
+              "PROPERTY", property, "PATH", path, "INTERFACE", interface,
+              "ERROR", e);
+        throw;
+    }
 
     return;
 }
@@ -213,8 +224,6 @@ void createBmcDump(sdbusplus::bus_t& bus)
     catch (const sdbusplus::exception_t& e)
     {
         error("Failed to create BMC dump, exception:{ERROR}", "ERROR", e);
-        // just continue, this is error path anyway so we're just collecting
-        // what we can
     }
 }
 
