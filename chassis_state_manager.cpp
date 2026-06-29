@@ -490,8 +490,16 @@ void Chassis::startUnit(const std::string& sysdUnit)
     method.append(sysdUnit);
     method.append("replace");
 
-    this->bus.call_noreply(method);
-
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to start unit {UNIT}, exception:{ERROR}", "UNIT",
+              sysdUnit, "ERROR", e);
+        throw;
+    }
     return;
 }
 
@@ -504,8 +512,16 @@ void Chassis::restartUnit(const std::string& sysdUnit)
     method.append(sysdUnit);
     method.append("replace");
 
-    this->bus.call_noreply(method);
-
+    try
+    {
+        this->bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to restart unit {UNIT}, exception:{ERROR}", "UNIT",
+              sysdUnit, "ERROR", e);
+        throw;
+    }
     return;
 }
 
