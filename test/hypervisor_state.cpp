@@ -3,6 +3,7 @@
 #include <hypervisor_state_manager.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
+#include <xyz/openbmc_project/State/Host/error.hpp>
 
 #include <gtest/gtest.h>
 
@@ -35,4 +36,18 @@ TEST(updateCurrentHostState, BasicPaths)
                    "ProgressStages.Unspecified";
     hypObj.updateCurrentHostState(bootProgress);
     EXPECT_EQ(hypObj.currentHostState(), server::Host::HostState::Off);
+}
+
+TEST(requestedHostTransition, UnsupportedTransitionThrows)
+{
+    auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+    auto objPathInst = std::string{HYPERVISOR_OBJPATH} + '0';
+
+    phosphor::state::manager::Hypervisor hypObj(bus, objPathInst.c_str());
+
+    EXPECT_THROW(
+        hypObj.requestedHostTransition(server::Host::Transition::Off),
+        sdbusplus::xyz::openbmc_project::State::Host::Error::BMCNotReady);
 }
