@@ -35,6 +35,7 @@ owners:
 - geissonator@yahoo.com
 
 reviewers:
+- sramya@ami.com
 
 matchers:
 
@@ -42,3 +43,6 @@ openbmc:
 - name: Andrew Geissler
   email: geissonator@yahoo.com
   discord: geissonator
+- name: Ramya Sivakumar
+  email: sramya@ami.com
+  discord: ramya_10172
