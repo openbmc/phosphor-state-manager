@@ -641,7 +641,15 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
         }
     }
 
-    startUnit(systemdTargetTable.find(value)->second);
+    auto iter = systemdTargetTable.find(value);
+    if (iter == systemdTargetTable.end())
+    {
+        error("Chassis{CHASSIS_ID}: Invalid transition request: {TRANSITION}",
+              "CHASSIS_ID", id, "TRANSITION", value);
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+
+    startUnit(iter->second);
     return server::Chassis::requestedPowerTransition(value);
 }
 
