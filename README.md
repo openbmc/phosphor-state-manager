@@ -246,6 +246,122 @@ This ensures that both the aggregator and individual chassis instances maintain
 proper systemd target states and can execute any necessary system-specific
 services.
 
+## Chassis Availability Monitoring
+
+With systems that support multiple chassis, there are potential system
+configurations where a chassis is present in the system, but not available for
+general use by BMC software. For example a chassis may not have AC power
+plugged, or a required SMP or other cable (i2c, gpio, ...) may not be properly
+plugged.
+
+In these cases there needs to be a consistent mechanism with OpenBMC firmware to
+know whether they should/can access the chassis. This new service within
+phosphor-state-manager will aggregate the different inputs into a single
+Available property in each chassis. This will be an optional feature within
+phosphor-state-manager that OpenBMC machine owners can enable.
+
+The set of D-Bus properties that determine chassis availability is fully
+data-driven. Rather than compiling in a fixed list of interfaces and properties,
+the service reads a JSON configuration file at startup that declares what to
+monitor and what value each property must hold to consider the chassis
+Available.
+
+### Configuration
+
+The conditions to monitor are defined in a JSON configuration file installed to
+`/etc/phosphor-chassis-availability/`. A default config will be installed which
+has a single mapping to the present property. OpenBMC machines can override this
+file in the bitbake layer.
+
+Each entry in the `"conditions"` array describes one D-Bus property to monitor.
+The `"baseObjectPath"` is the chassis inventory object path with `<N>`
+representing the chassis instance number (e.g. `chassis1`, `chassis2`). At
+startup the service substitutes the actual chassis number for `<N>` and calls
+the ObjectMapper `GetObject` method on the resulting path to determine which
+D-Bus service owns that object. It then registers a `PropertiesChanged` signal
+match on that service and object so the check re-runs whenever the property
+changes. The application will monitor all chassis instances it finds on dbus and
+will support chassis inventory objects showing up on dbus after it has started.
+
+#### Example: `phosphor-chassis-availability-default.json`
+
+```json
+{
+  "conditions": [
+    {
+      "baseObjectPath": "/xyz/openbmc_project/inventory/system/chassis<N>",
+      "interface": "xyz.openbmc_project.Inventory.Item",
+      "property": "Present",
+      "availableValue": true
+    },
+    {
+      "baseObjectPath": "/xyz/openbmc_project/inventory/system/chassis<N>",
+      "interface": "xyz.openbmc_project.State.Decorator.PowerSystemInputs",
+      "property": "Status",
+      "availableValue": "xyz.openbmc_project.State.Decorator.PowerSystemInputs.Status.Good"
+    },
+    {
+      "baseObjectPath": "/xyz/openbmc_project/inventory/system/chassis<N>",
+      "interface": "xyz.openbmc_project.Common.Progress",
+      "property": "Status",
+      "availableValue": "xyz.openbmc_project.Common.Progress.OperationStatus.Completed"
+    }
+  ]
+}
+```
+
+The `"availableValue"` field supports any JSON scalar type (boolean, string,
+integer) and is compared directly against the value returned by
+`org.freedesktop.DBus.Properties.Get`.
+
+If a configured object path does not exist on D-Bus for a given chassis (i.e.
+`GetObject` returns no results), the `Available` property will be false. As the
+OpenBMC machine owner has complete control of this configuration file for their
+machine it is assumed they expect the property be available.
+
+### Availability Logic
+
+The chassis is marked as **Available** only when ALL configured conditions are
+met (each monitored property equals its configured `"availableValue"`).
+
+If ANY monitored property transitions away from its required value, the chassis
+is immediately marked as **Unavailable**.
+
+### Output Property
+
+The `Available` property (`xyz.openbmc_project.State.Decorator.Availability`) is
+updated on the same inventory object that carries `Inventory.Item` for the
+chassis (`/xyz/openbmc_project/inventory/system/chassis<N>`), via
+`org.freedesktop.DBus.Properties.Set`. The owning service is resolved at runtime
+through ObjectMapper, so there is no compile-time dependency on any specific
+inventory implementation.
+
+Note that some additional processing will be required if the property is hosted
+by phosphor-inventory-manager as the standard `Set` call is not persistent.
+
+### Implementation
+
+The availability monitor:
+
+- Reads the JSON configuration file(s) at startup to determine which conditions
+  to evaluate
+- For each chassis instance and each condition, calls ObjectMapper `GetObject`
+  on the configured object path to discover which D-Bus service owns it
+- Subscribes to `InterfacesAdded` on `/xyz/openbmc_project/inventory` to handle
+  objects that appear after startup
+- Uses event-driven `PropertiesChanged` signals on discovered objects (no
+  polling)
+- Monitors all chassis instances 1-N simultaneously
+- Updates the `Available` property via `org.freedesktop.DBus.Properties.Set` on
+  whichever service owns the inventory object for that chassis
+- Handles errors gracefully with appropriate logging
+- Starts automatically via systemd after the D-Bus mapper is ready
+
+### D-Bus Service
+
+- Service name: `xyz.openbmc_project.State.ChassisAvailability`
+- Systemd unit: `xyz.openbmc_project.State.ChassisAvailability.service`
+
 ## Building the Code
 
 To build this package, do the following steps:
