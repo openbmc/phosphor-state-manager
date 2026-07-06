@@ -246,6 +246,107 @@ This ensures that both the aggregator and individual chassis instances maintain
 proper systemd target states and can execute any necessary system-specific
 services.
 
+## Chassis Availability Monitoring
+
+With systems that support multiple chassis, there are potential system
+configurations where a chassis is present in the system, but not available for
+general use by BMC software. For example a chassis may not have AC power
+plugged, or a required SMP or other cable (i2c, gpio, ...) may not be properly
+plugged.
+
+In these cases there needs to be a consistent mechanism with OpenBMC firmware to
+know whether they should/can access the chassis. This new service within
+phosphor-state-manager will aggregate the different inputs into a single
+Available property in each chassis.
+
+This availability service monitors three critical properties for each chassis
+and updates the `Available` property associated with the chassis accordingly.
+
+### Monitored Properties
+
+For each chassis instance (1 through N), the monitor tracks three properties.
+Rather than assuming fixed D-Bus object paths, the service uses the ObjectMapper
+`GetSubTree` call at startup — and listens for `InterfacesAdded` signals — to
+discover whichever objects on the bus implement the relevant interfaces,
+regardless of which service (phosphor-inventory-manager, entity-manager, or any
+other) provides them.
+
+1. **Present** - Physical presence of the chassis in inventory
+   - Interface: `xyz.openbmc_project.Inventory.Item`
+   - Property: `Present`
+   - Discovered under: `/xyz/openbmc_project/inventory`
+
+2. **PowerSystemInputs Status** - Standby power status to the chassis
+   - Interface: `xyz.openbmc_project.State.Decorator.PowerSystemInputs`
+   - Property: `Status`
+   - Discovered under: `/xyz/openbmc_project`
+
+3. **VPD Collection Status** - VPD (Vital Product Data) collection completion
+   - Interface: `xyz.openbmc_project.Common.Progress`
+   - Property: `Status`
+   - Discovered under: `/xyz/openbmc_project/inventory`
+
+The monitor associates discovered objects with a chassis instance by matching a
+`chassis{N}` segment anywhere in the object path (e.g.
+`/xyz/openbmc_project/inventory/system/chassis1` and
+`/xyz/openbmc_project/vpdManager/chassis1/progress` both resolve to chassis 1).
+
+Note that if an interface is not found for a given chassis it is assumed that it
+is not supported by the system and will be ignored as input into the `Available`
+property.
+
+### Availability Logic
+
+The chassis is marked as **Available** only when ALL discovered conditions are
+met:
+
+- Present == true
+- PowerSystemInputs.Status == Good
+- VPD Progress.Status == Completed
+
+If ANY monitored property transitions to a failing state, the chassis is
+immediately marked as **Unavailable**.
+
+Note that future conditions can be added in the future such as SMP cable status
+and other general cable status.
+
+### Output Property
+
+The `Available` property (`xyz.openbmc_project.State.Decorator.Availability`) is
+updated on the same inventory object that carries `Inventory.Item` for the
+chassis, via `org.freedesktop.DBus.Properties.Set`. The owning service is
+resolved at runtime through ObjectMapper, so there is no compile-time dependency
+on any specific inventory implementation.
+
+Note that some additional processing will be required if the property is hosted
+by phosphor-inventory-manager as the standard `Set` call is not persistent.
+
+### Implementation
+
+The availability monitor:
+
+- Uses ObjectMapper `GetSubTree` at startup to discover input objects
+- Subscribes to `InterfacesAdded` on `/xyz/openbmc_project/inventory` and
+  `/xyz/openbmc_project` to handle objects that appear after startup
+- Uses event-driven `PropertiesChanged` signals on discovered objects (no
+  polling)
+- Monitors all chassis instances 1-N simultaneously
+- Updates the `Available` property via `org.freedesktop.DBus.Properties.Set` on
+  whichever service owns the inventory object for that chassis
+- Handles errors gracefully with appropriate logging
+- Starts automatically via systemd after the D-Bus mapper is ready
+
+### Configuration
+
+The number of chassis instances to monitor is determined by the
+`num-chassis-smp` meson option (default: 12). The monitor will track chassis
+instances 1 through N, where N is the configured value.
+
+### D-Bus Service
+
+- Service name: `xyz.openbmc_project.State.ChassisAvailability`
+- Systemd unit: `xyz.openbmc_project.State.ChassisAvailability.service`
+
 ## Building the Code
 
 To build this package, do the following steps:
