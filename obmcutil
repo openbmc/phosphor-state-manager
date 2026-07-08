@@ -448,13 +448,13 @@ function delete_logs()
 function stop_off_targets()
 {
     systemctl stop \
-        obmc-chassis-powered-off@0.target \
-        obmc-host-stop-pre@0.target \
-        obmc-host-stopped@0.target \
-        obmc-host-stopping@0.target \
-        obmc-power-off@0.target \
-        obmc-power-stop-pre@0.target \
-        obmc-power-stop@0.target
+        obmc-chassis-powered-off@*.target \
+        obmc-host-stop-pre@*.target \
+        obmc-host-stopped@*.target \
+        obmc-host-stopping@*.target \
+        obmc-power-off@*.target \
+        obmc-power-stop-pre@*.target \
+        obmc-power-stop@*.target
 }
 
 function show_verbose_chassis_states()
