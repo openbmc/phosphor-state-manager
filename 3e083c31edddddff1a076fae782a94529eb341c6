@@ -33,6 +33,24 @@
       "message": "The main concern I have with this is we\u0027re changing the existing behavior. Before, if one of these calls failed, we\u0027d get an unhandled exception and crash the service. Then we\u0027d try a few restarts of the service and Quiesce the BMC if it continued to fail. Now we\u0027ll just log an error to the journal and continue. That seems like undefined behavior. What if we log the error but still just throw the exception?",
       "revId": "3e083c31edddddff1a076fae782a94529eb341c6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e996edb4_b3951236",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-07-08T05:36:17Z",
+      "side": 1,
+      "message": "I agree the current try/catch changes the failure semantics. \n\nIf the goal is only to improve observability, the safer pattern is to log the exception and then rethrow it. That preserves the existing fail-fast behavior while still adding context to the journal. I’d recommend changing these handlers to catch (...) {log; throw;}\n\nlogging and then throw; is the correct approach",
+      "parentUuid": "6daa98ef_2f1ee0d5",
+      "revId": "3e083c31edddddff1a076fae782a94529eb341c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
