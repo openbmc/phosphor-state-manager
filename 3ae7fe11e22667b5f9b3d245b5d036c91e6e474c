@@ -22,6 +22,52 @@
       },
       "revId": "3ae7fe11e22667b5f9b3d245b5d036c91e6e474c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d751ea39_b45dc513",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T19:47:58Z",
+      "side": 1,
+      "message": "is there a reason this would need to be writeable?  If not, maybe /usr/share?",
+      "range": {
+        "startLine": 272,
+        "startChar": 1,
+        "endLine": 272,
+        "endChar": 6
+      },
+      "revId": "3ae7fe11e22667b5f9b3d245b5d036c91e6e474c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6791ec01_5caf257a",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-07-09T19:47:58Z",
+      "side": 1,
+      "message": "The one in the config file?  what if it isn\u0027t there?",
+      "range": {
+        "startLine": 332,
+        "startChar": 0,
+        "endLine": 333,
+        "endChar": 66
+      },
+      "revId": "3ae7fe11e22667b5f9b3d245b5d036c91e6e474c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
