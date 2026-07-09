@@ -215,9 +215,9 @@ void ChassisSMP::aggregatePowerState()
     else // No present chassis or all present chassis are Off
     {
         aggregatedState = PowerState::Off;
-        // Reset the coordinated power off flag when all chassis are off
+        // Reset per-chassis failure tracking when all chassis are off
         // This allows the system to detect new failures on the next power on
-        coordinatedPowerOffInProgress = false;
+        chassisFailureTriggered.clear();
     }
 
     if (server::Chassis::currentPowerState() != aggregatedState)
@@ -313,7 +313,7 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
             if (state == PowerState::TransitioningToOff &&
                 chassisPowerStates[chassisId] !=
                     PowerState::TransitioningToOff &&
-                !coordinatedPowerOffInProgress &&
+                !chassisFailureTriggered[chassisId] &&
                 (currentState == PowerState::TransitioningToOn ||
                  currentState == PowerState::On))
             {
@@ -324,8 +324,9 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
                     "FAILED_CHASSIS_ID", chassisId, "POWER_STATE",
                     currentState);
 
-                // Set flag to prevent repeated power off requests
-                coordinatedPowerOffInProgress = true;
+                // Set per-chassis flag to prevent repeated power off requests
+                // from this chassis
+                chassisFailureTriggered[chassisId] = true;
 
                 // Set requested power transition to off so state is correct
                 server::Chassis::requestedPowerTransition(Transition::Off);
@@ -404,9 +405,9 @@ ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
          "{TRANSITION}",
          "TRANSITION", value);
 
-    // Reset the coordinated power off flag when a new transition is requested
+    // Reset per-chassis failure tracking when a new transition is requested
     // This allows the system to detect new failures after a power on attempt
-    coordinatedPowerOffInProgress = false;
+    chassisFailureTriggered.clear();
 
     // Start the systemd target for chassis 0
     if (value == Transition::Off)

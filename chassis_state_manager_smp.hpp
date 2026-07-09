@@ -140,10 +140,10 @@ class ChassisSMP : public ChassisInherit
     /** @brief Cached present status from each chassis instance. **/
     std::map<size_t, bool> chassisPresentStatus;
 
-    /** @brief Flag to track if we've initiated a coordinated power off due to
-     * failure. Prevents repeated power off requests as each chassis transitions
-     * to off. **/
-    bool coordinatedPowerOffInProgress = false;
+    /** @brief Per-chassis flag to track if a coordinated power off has been
+     * initiated due to a failure on that chassis. Prevents repeated power off
+     * requests as each individual chassis transitions to off. **/
+    std::map<size_t, bool> chassisFailureTriggered;
 };
 
 } // namespace phosphor::state::manager
