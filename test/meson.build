@@ -89,6 +89,20 @@ test(
     ),
 )
 
+test(
+    'test_bmc_state_manager',
+    executable(
+        'test_bmc_state_manager',
+        'test_bmc_state_manager.cpp',
+        dependencies: [
+            gtest,
+            phosphorlogging,
+        ],
+        implicit_include_directories: true,
+        include_directories: '../',
+    ),
+)
+
 if get_option('multi-chassis-smp').allowed()
     test(
         'test_chassis_smp',
