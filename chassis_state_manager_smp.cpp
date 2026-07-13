@@ -8,6 +8,7 @@
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Inventory/Item/common.hpp>
 
+#include <chrono>
 #include <format>
 #include <fstream>
 #include <iostream>
@@ -23,6 +24,7 @@ PHOSPHOR_LOG2_USING;
 namespace server = sdbusplus::server::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
+using namespace std::literals::chrono_literals;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 using InventoryItem = sdbusplus::common::xyz::openbmc_project::inventory::Item;
 
@@ -37,6 +39,7 @@ constexpr auto CHASSIS_POWERON_TARGET = "obmc-chassis-poweron@0.target";
 constexpr auto CHASSIS_POWERCYCLE_TARGET = "obmc-chassis-powercycle@0.target";
 constexpr auto CHASSIS_OBJ_PATH = "/xyz/openbmc_project/state/chassis{}";
 constexpr auto CHASSIS_SERVICE = "xyz.openbmc_project.State.Chassis{}";
+constexpr auto AGGREGATOR_DBUS_TIMEOUT = 10s;
 
 ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
                        const sdbusplus::object_path& objPath,
@@ -172,7 +175,7 @@ void ChassisSMP::aggregatePowerState()
             method.append(server::Chassis::interface,
                           server::Chassis::property_names::current_power_state);
 
-            auto reply = bus.call(method);
+            auto reply = bus.call(method, AGGREGATOR_DBUS_TIMEOUT);
             auto propertyValue = reply.unpack<std::variant<PowerState>>();
             auto state = std::get<PowerState>(propertyValue);
 
@@ -252,7 +255,7 @@ void ChassisSMP::aggregatePowerStatus()
                 server::Chassis::interface,
                 server::Chassis::property_names::current_power_status);
 
-            auto reply = bus.call(method);
+            auto reply = bus.call(method, AGGREGATOR_DBUS_TIMEOUT);
             auto propertyValue = reply.unpack<std::variant<PowerStatus>>();
             auto status = std::get<PowerStatus>(propertyValue);
 
@@ -452,7 +455,7 @@ bool ChassisSMP::isChassisPresent(size_t chassisId)
         method.append(InventoryItem::interface,
                       InventoryItem::property_names::present);
 
-        auto response = bus.call(method);
+        auto response = bus.call(method, AGGREGATOR_DBUS_TIMEOUT);
         std::variant<bool> value;
         response.read(value);
 
