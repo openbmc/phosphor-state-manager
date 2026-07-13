@@ -16,6 +16,24 @@
       "message": "Nit: Any reason to keep the trailing return;? Since this is a void function, it seems like it could be dropped",
       "revId": "a54eeaaec5293b62bd0c0f5ceb640ad69940004c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebba9c66_b99a9706",
+        "filename": "chassis_state_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-13T15:37:33Z",
+      "side": 1,
+      "message": "I\u0027m good either way",
+      "parentUuid": "4d73aab0_bf188b0d",
+      "revId": "a54eeaaec5293b62bd0c0f5ceb640ad69940004c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
