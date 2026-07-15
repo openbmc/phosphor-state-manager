@@ -16,6 +16,24 @@
       "message": "Lets make this /usr/share/phosphor-state-manager/chassis-availability so it\u0027s clear which repo is responsible for the file.",
       "revId": "7a59825b743f1cdd58e6fbea8ce7ea11b6ba6d7d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3298a628_13238e41",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-15T17:28:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efd7ec6e_99073311",
+      "revId": "7a59825b743f1cdd58e6fbea8ce7ea11b6ba6d7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
