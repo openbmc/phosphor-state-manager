@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ced4bb7e_d501aeec",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-15T17:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "334e1081_a302fc4a",
+      "range": {
+        "startLine": 258,
+        "startChar": 18,
+        "endLine": 258,
+        "endChar": 28
+      },
+      "revId": "3ae7fe11e22667b5f9b3d245b5d036c91e6e474c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d751ea39_b45dc513",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-09T19:47:58Z",
       "side": 1,
       "message": "is there a reason this would need to be writeable?  If not, maybe /usr/share?",
+      "range": {
+        "startLine": 272,
+        "startChar": 1,
+        "endLine": 272,
+        "endChar": 6
+      },
+      "revId": "3ae7fe11e22667b5f9b3d245b5d036c91e6e474c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b8ed9bc_9a044757",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-15T17:25:33Z",
+      "side": 1,
+      "message": "Yeah good point",
+      "parentUuid": "d751ea39_b45dc513",
       "range": {
         "startLine": 272,
         "startChar": 1,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15d5065d_db43a194",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-15T17:25:33Z",
+      "side": 1,
+      "message": "The clang format tool for this markdown file wants it like this. I\u0027ll be sure the real json has proper indentation.",
+      "parentUuid": "46c528de_5ea2c064",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 286,
+        "endChar": 58
+      },
+      "revId": "3ae7fe11e22667b5f9b3d245b5d036c91e6e474c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6791ec01_5caf257a",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-09T19:47:58Z",
       "side": 1,
       "message": "The one in the config file?  what if it isn\u0027t there?",
+      "range": {
+        "startLine": 332,
+        "startChar": 0,
+        "endLine": 333,
+        "endChar": 66
+      },
+      "revId": "3ae7fe11e22667b5f9b3d245b5d036c91e6e474c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2f4c8a7_e482f992",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-15T17:25:33Z",
+      "side": 1,
+      "message": "Yeah, we\u0027ve got a json config, might as well just put the info in their to make it easy.",
+      "parentUuid": "6791ec01_5caf257a",
       "range": {
         "startLine": 332,
         "startChar": 0,
