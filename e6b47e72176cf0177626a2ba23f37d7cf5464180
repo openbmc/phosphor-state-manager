@@ -16,6 +16,24 @@
       "message": "An alternative would be to have this daemon host the Available iface on these object paths, so that people without PIM can use it, but that could be a future enhancement if someone needed that functionality I guess.",
       "revId": "e6b47e72176cf0177626a2ba23f37d7cf5464180",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bf306c6_cf0c7e4e",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-21T18:09:49Z",
+      "side": 1,
+      "message": "Yeah true, be a nice optional feature, like you put \"self\" here or something to indicate this app should host it.",
+      "parentUuid": "72799103_25cf365f",
+      "revId": "e6b47e72176cf0177626a2ba23f37d7cf5464180",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
