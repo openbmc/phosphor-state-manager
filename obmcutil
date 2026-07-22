@@ -386,7 +386,7 @@ function check_chassis_host_states()
     local INTERFACE=$STATE_INTERFACE.Chassis
     local PROPERTY=CurrentPowerState
     local state
-    state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE $PROPERTY" | cut -d '"' -f2)
+    state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$PROPERTY" | cut -d '"' -f2)
     if [[ ${state} =~ "xyz.openbmc_project.State.Chassis.PowerState.Transitioning"* ]]; then
         echo "Chassis is $state, request rejected, use --force to override"
         exit 1
@@ -396,7 +396,7 @@ function check_chassis_host_states()
     SERVICE=$(get_service "$OBJECT")
     INTERFACE=$STATE_INTERFACE.Host
     PROPERTY=CurrentHostState
-    state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE $PROPERTY" | cut -d '"' -f2)
+    state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$PROPERTY" | cut -d '"' -f2)
     if [[ ${state} =~ "xyz.openbmc_project.State.Host.HostState.Transitioning"* ]]; then
         echo "Host is $state, request rejected, use --force to override"
         exit 1
