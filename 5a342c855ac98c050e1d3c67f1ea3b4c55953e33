@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67224a7b_4213a9ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-07-22T04:21:42Z",
+      "side": 1,
+      "message": "Looks good. Code is clean, change is minimal and focused.",
+      "revId": "5a342c855ac98c050e1d3c67f1ea3b4c55953e33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
