@@ -35,8 +35,9 @@ readonly DEFAULT_WAIT_TIMEOUT=30
 # Usage and Help
 # ============================================================================
 readonly OPTS="bmcstate,bootprogress,chassiskill,chassisoff,chassison,chassisstate,hoststate,\
-osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebooton,recoveryoff,recoveryon,\
-bmcrebootoff, bmcrebooton, listbootblock listlogs showlog deletelogs, stopofftargets"
+osstate,power,poweroff,poweron,state,status,hostrebootoff,hostrebootoffonetime,hostrebooton,\
+recoveryoff,recoveryon,recoverystatus,bmcrebootoff,bmcrebooton,listbootblock,listlogs,showlog,\
+deletelogs,stopofftargets"
 
 readonly USAGE="Usage: obmcutil [-h] [--wait] [--verbose] [--id=<INSTANCE_ID>]
 {$OPTS}"
