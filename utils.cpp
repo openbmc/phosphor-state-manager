@@ -124,15 +124,14 @@ std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
 
 void setProperty(sdbusplus::bus_t& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
-                 const std::string& value)
+                 const std::variant<bool, std::string>& value)
 {
-    std::variant<std::string> variantValue = value;
     std::string service = getService(bus, path, interface);
 
     auto method = bus.new_method_call(service.c_str(), path.c_str(),
                                       PROPERTY_INTERFACE, "Set");
 
-    method.append(interface, property, variantValue);
+    method.append(interface, property, value);
     try
     {
         bus.call_noreply(method);
@@ -145,8 +144,6 @@ void setProperty(sdbusplus::bus_t& bus, const std::string& path,
               "ERROR", e);
         throw;
     }
-
-    return;
 }
 
 int getGpioValue(const std::string& gpioName)
