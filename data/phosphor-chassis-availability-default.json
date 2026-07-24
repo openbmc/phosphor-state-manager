@@ -1,0 +1,11 @@
+{
+    "availableObjectPath": "/xyz/openbmc_project/inventory/system/chassis<N>",
+    "conditions": [
+        {
+            "baseObjectPath": "/xyz/openbmc_project/inventory/system/chassis<N>",
+            "interface": "xyz.openbmc_project.Inventory.Item",
+            "property": "Present",
+            "availableValue": true
+        }
+    ]
+}
