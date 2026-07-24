@@ -48,7 +48,7 @@ std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
                         const std::string& interface,
                         const std::string& propertyName);
 
-/** @brief Set the value of property
+/** @brief Set the value of a property
  *
  * @param[in] bus          - The Dbus bus object
  * @param[in] path         - The Dbus object path
@@ -58,7 +58,7 @@ std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
  */
 void setProperty(sdbusplus::bus_t& bus, const std::string& path,
                  const std::string& interface, const std::string& property,
-                 const std::string& value);
+                 const std::variant<bool, std::string>& value);
 
 /** @brief Return the value of the input GPIO
  *
