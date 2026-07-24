@@ -103,6 +103,24 @@ test(
     ),
 )
 
+test(
+    'test_chassis_availability_monitor',
+    executable(
+        'test_chassis_availability_monitor',
+        'test_chassis_availability_monitor.cpp',
+        '../chassis_availability_monitor.cpp',
+        dependencies: [
+            gtest,
+            nlohmann_json_dep,
+            phosphorlogging,
+            sdbusplus,
+        ],
+        link_with: [utils_lib],
+        implicit_include_directories: true,
+        include_directories: '../',
+    ),
+)
+
 if get_option('multi-chassis-smp').allowed()
     test(
         'test_chassis_smp',
