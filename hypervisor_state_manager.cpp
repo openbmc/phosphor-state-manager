@@ -92,7 +92,16 @@ void Hypervisor::bootProgressChangeEvent(sdbusplus::message_t& msg)
 {
     std::string statusInterface;
     std::map<std::string, std::variant<std::string>> msgData;
-    msg.read(statusInterface, msgData);
+    try
+    {
+        msg.read(statusInterface, msgData);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to parse BootProgress properties change signal: {ERROR}",
+              "ERROR", e);
+        return;
+    }
 
     auto propertyMap = msgData.find("BootProgress");
     if (propertyMap != msgData.end())
