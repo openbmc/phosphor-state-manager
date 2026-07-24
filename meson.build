@@ -226,6 +226,23 @@ executable(
     install_dir: get_option('libexecdir') / 'phosphor-state-manager',
 )
 
+
+executable(
+    'phosphor-chassis-availability-monitor',
+    'chassis_availability_monitor.cpp',
+    'chassis_availability_monitor_main.cpp',
+    dependencies: [
+        nlohmann_json_dep,
+        phosphordbusinterfaces,
+        phosphorlogging,
+        sdbusplus,
+    ],
+    implicit_include_directories: true,
+    install: true,
+    install_dir: get_option('libexecdir') / 'phosphor-state-manager',
+)
+
+
 executable(
     'phosphor-bmc-state-manager',
     'bmc_state_manager.cpp',
