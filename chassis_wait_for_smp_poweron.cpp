@@ -2,8 +2,11 @@
 
 #include "chassis_wait_for_smp_poweron.hpp"
 
+#include "utils.hpp"
+
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/Inventory/Item/common.hpp>
 
 #include <chrono>
 #include <format>
@@ -18,8 +21,9 @@ namespace sdbusRule = sdbusplus::match_rules;
 
 using PowerState = server::Chassis::PowerState;
 
+using InventoryItem = sdbusplus::common::xyz::openbmc_project::inventory::Item;
+
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
-constexpr auto INVENTORY_INTERFACE = "xyz.openbmc_project.Inventory.Item";
 constexpr auto CHASSIS_INTERFACE = "xyz.openbmc_project.State.Chassis";
 
 SMPChassisWaiter::SMPChassisWaiter(
@@ -80,15 +84,18 @@ void SMPChassisWaiter::initializeMonitoring()
 
 bool SMPChassisWaiter::isChassisPresent(size_t chassisId)
 {
-    constexpr auto inventoryBusName = "xyz.openbmc_project.Inventory.Manager";
     sdbusplus::object_path inventoryPath = std::format(
         "/xyz/openbmc_project/inventory/system/chassis{}", chassisId);
 
     try
     {
-        auto method = bus.new_method_call(inventoryBusName, inventoryPath,
-                                          PROPERTY_INTERFACE, "Get");
-        method.append(INVENTORY_INTERFACE, "Present");
+        auto inventoryBusName =
+            utils::getService(bus, inventoryPath.str, InventoryItem::interface);
+
+        auto method = bus.new_method_call(
+            inventoryBusName.c_str(), inventoryPath, PROPERTY_INTERFACE, "Get");
+        method.append(InventoryItem::interface,
+                      InventoryItem::property_names::present);
 
         auto response = bus.call(method);
         std::variant<bool> value;
