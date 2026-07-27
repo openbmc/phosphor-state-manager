@@ -316,7 +316,9 @@ if get_option('multi-chassis-smp').allowed()
     executable(
         'phosphor-chassis-wait-for-smp-poweron',
         'chassis_wait_for_smp_poweron.cpp',
+        'utils.cpp',
         dependencies: [
+            libgpiod,
             phosphordbusinterfaces,
             phosphorlogging,
             sdbusplus,
