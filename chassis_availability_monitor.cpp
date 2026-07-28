@@ -3,6 +3,8 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
+#include <map>
+#include <regex>
 #include <stdexcept>
 
 namespace phosphor::state::manager
@@ -15,6 +17,7 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
     bus(bus), configPath(configPath)
 {
     loadConfiguration();
+    discoverChassis();
 }
 
 void ChassisAvailability::loadConfiguration()
