@@ -25,6 +25,11 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
 {
     loadConfiguration();
     discoverChassis();
+
+    for (int chassisNum : discoveredChassisNumbers)
+    {
+        setupMonitoringForChassis(chassisNum);
+    }
 }
 
 void ChassisAvailability::loadConfiguration()
@@ -135,6 +140,110 @@ std::optional<int> ChassisAvailability::getChassisNumber(
     {
         error("No chassis number found in path: {PATH}", "PATH", path);
         return std::nullopt;
+    }
+}
+
+std::string ChassisAvailability::substituteChassisNumber(
+    const std::string& path, int chassisNum)
+{
+    std::string result = path;
+    const std::string placeholder = "<N>";
+    size_t pos = result.find(placeholder);
+
+    if (pos != std::string::npos)
+    {
+        result.replace(pos, placeholder.length(), std::to_string(chassisNum));
+    }
+
+    return result;
+}
+
+void ChassisAvailability::setupMonitoringForChassis(int chassisNum)
+{
+    info("Setting up monitoring for chassis {NUM}", "NUM", chassisNum);
+
+    chassisStates[chassisNum] = ChassisState();
+
+    for (const auto& condition : conditions)
+    {
+        // Replace <N> with actual chassis number
+        std::string objectPath =
+            substituteChassisNumber(condition.baseObjectPath, chassisNum);
+
+        // Subscribe to PropertiesChanged signal
+        auto matchRule = sdbusplus::bus::match::rules::propertiesChanged(
+            objectPath, condition.interface);
+
+        auto match = std::make_unique<sdbusplus::bus::match_t>(
+            bus, matchRule, [this, chassisNum](sdbusplus::message_t& /*msg*/) {
+                checkAvailability(chassisNum);
+            });
+
+        propertyMatches.push_back(std::move(match));
+
+        info("Monitoring chassis {NUM} property {IFACE}.{PROP}", "NUM",
+             chassisNum, "IFACE", condition.interface, "PROP",
+             condition.property);
+    }
+
+    checkAvailability(chassisNum);
+}
+
+void ChassisAvailability::checkAvailability(int chassisNum)
+{
+    info("Checking availability for chassis {NUM}", "NUM", chassisNum);
+
+    bool allConditionsMet = true;
+
+    for (const auto& condition : conditions)
+    {
+        const auto objectPath =
+            substituteChassisNumber(condition.baseObjectPath, chassisNum);
+
+        try
+        {
+            std::string service =
+                utils::getService(bus, objectPath, condition.interface);
+
+            auto propCall = bus.new_method_call(
+                service.c_str(), objectPath.c_str(), PROPERTY_INTERFACE, "Get");
+
+            propCall.append(condition.interface);
+            propCall.append(condition.property);
+
+            auto propReply = bus.call(propCall);
+            auto value =
+                propReply.unpack<std::variant<bool, std::string, int64_t>>();
+
+            if (value != condition.availableValue)
+            {
+                info(
+                    "Chassis {NUM} condition not met: {IFACE}.{PROP} value mismatch",
+                    "NUM", chassisNum, "IFACE", condition.interface, "PROP",
+                    condition.property);
+                allConditionsMet = false;
+                break;
+            }
+        }
+        catch (const std::exception& e)
+        {
+            error(
+                "Failed to read chassis {NUM} property {IFACE}.{PROP}: {ERROR}",
+                "NUM", chassisNum, "IFACE", condition.interface, "PROP",
+                condition.property, "ERROR", e.what());
+            allConditionsMet = false;
+            break;
+        }
+    }
+
+    bool previousAvailability = chassisStates[chassisNum].available;
+    chassisStates[chassisNum].available = allConditionsMet;
+
+    if (previousAvailability != allConditionsMet)
+    {
+        info("Chassis {NUM} availability changed to {AVAIL}", "NUM", chassisNum,
+             "AVAIL", allConditionsMet);
+        // TODO: Update Available property on D-Bus
     }
 }
 
