@@ -3,6 +3,8 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
+#include <map>
+#include <regex>
 #include <stdexcept>
 
 namespace phosphor
@@ -19,6 +21,7 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
     bus(bus), configPath(configPath)
 {
     loadConfiguration();
+    discoverChassis();
 }
 
 void ChassisAvailability::loadConfiguration()
@@ -42,6 +45,7 @@ void ChassisAvailability::loadConfiguration()
             condition.interface = cond["interface"];
             condition.property = cond["property"];
             const auto& val = cond["availableValue"];
+
             if (val.is_boolean())
             {
                 condition.availableValue = val.get<bool>();
@@ -66,6 +70,63 @@ void ChassisAvailability::loadConfiguration()
     {
         error("Config error: {ERROR}", "ERROR", e.what());
         throw;
+    }
+}
+
+void ChassisAvailability::discoverChassis()
+{
+    try
+    {
+        const std::string searchPath = "/xyz/openbmc_project/inventory";
+        constexpr int searchDepth = 0;
+
+        auto mapperCall = bus.new_method_call(
+            "xyz.openbmc_project.ObjectMapper",
+            "/xyz/openbmc_project/object_mapper",
+            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+
+        mapperCall.append(searchPath);
+        mapperCall.append(searchDepth);
+        mapperCall.append(std::vector<std::string>{});
+
+        SubTreeResponse response;
+        auto mapperReply = bus.call(mapperCall);
+        mapperReply.read(response);
+
+        for (const auto& [path, services] : response)
+        {
+            int chassisNum = getChassisNumber(path);
+            if (chassisNum >= 0)
+            {
+                discoveredChassisNumbers.insert(chassisNum);
+                info("Discovered chassis {NUM}", "NUM", chassisNum);
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error("Chassis discovery failed: {ERROR}", "ERROR", e.what());
+        throw;
+    }
+}
+
+int ChassisAvailability::getChassisNumber(const std::string& path)
+{
+    try
+    {
+        std::regex pattern(R"(chassis(\d+))");
+        std::smatch match;
+
+        if (std::regex_search(path, match, pattern) && match.size() > 1)
+        {
+            return std::stoi(match[1].str());
+        }
+        return -1;
+    }
+    catch (...)
+    {
+        error("No chassis number found in path: {PATH}", "PATH", path);
+        return -1;
     }
 }
 
