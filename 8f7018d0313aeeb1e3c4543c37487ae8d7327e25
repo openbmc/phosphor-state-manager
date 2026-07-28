@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58969ac5_e7d26623",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-07-28T20:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87360ed6_992ee11e",
+      "revId": "8f7018d0313aeeb1e3c4543c37487ae8d7327e25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dbccde9_06cb2bae",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-07-28T12:54:54Z",
       "side": 1,
       "message": "Don\u0027t think this .str.c_str() is needed for inventoryPath.",
+      "range": {
+        "startLine": 465,
+        "startChar": 55,
+        "endLine": 465,
+        "endChar": 67
+      },
+      "revId": "8f7018d0313aeeb1e3c4543c37487ae8d7327e25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e4bddd_96d5db4a",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-07-28T20:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5dbccde9_06cb2bae",
       "range": {
         "startLine": 465,
         "startChar": 55,
