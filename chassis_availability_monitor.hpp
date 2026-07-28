@@ -2,6 +2,8 @@
 
 #include <sdbusplus/bus.hpp>
 
+#include <optional>
+#include <set>
 #include <string>
 #include <variant>
 #include <vector>
@@ -42,6 +44,15 @@ class ChassisAvailability
     /** @brief Load and parse JSON configuration file */
     void loadConfiguration();
 
+    /** @brief Discover all connected server chassis on a system */
+    void discoverChassis();
+
+    /** @brief Extract chassis number from D-bus object path
+     * @param[in] path D-Bus object path to extract chassis number from
+     * @return Chassis number if found, otherwise returns std::nullopt
+     */
+    static std::optional<int> getChassisNumber(const std::string& path);
+
     /** @brief Persistent sdbusplus D-Bus connection (marked as unused for now)
      */
     [[maybe_unused]] sdbusplus::bus_t& bus;
@@ -55,6 +66,9 @@ class ChassisAvailability
 
     /** @brief List of conditions to monitor from JSON config */
     std::vector<PropertyCondition> conditions;
+
+    /** @brief Set of discovered chassis numbers connected to system*/
+    std::set<int> discoveredChassisNumbers;
 };
 
 } // namespace phosphor::state::manager
