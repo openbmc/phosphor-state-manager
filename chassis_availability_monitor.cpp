@@ -243,7 +243,26 @@ void ChassisAvailability::checkAvailability(int chassisNum)
     {
         info("Chassis {NUM} availability changed to {AVAIL}", "NUM", chassisNum,
              "AVAIL", allConditionsMet);
-        // TODO: Update Available property on D-Bus
+        updateAvailableProperty(chassisNum, allConditionsMet);
+    }
+}
+
+void ChassisAvailability::updateAvailableProperty(int chassisNum,
+                                                  bool isAvailable)
+{
+    try
+    {
+        std::string objectPath =
+            substituteChassisNumber(availableObjectPathTemplate, chassisNum);
+
+        utils::setProperty(bus, objectPath,
+                           "xyz.openbmc_project.State.Decorator.Availability",
+                           "Available", isAvailable);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to update Available property for chassis {NUM}: {ERROR}",
+              "NUM", chassisNum, "ERROR", e);
     }
 }
 
