@@ -258,7 +258,54 @@ void ChassisAvailability::checkAvailability(int chassisNum)
     {
         info("Chassis {NUM} availability changed to {AVAIL}", "NUM", chassisNum,
              "AVAIL", allConditionsMet);
-        // TODO: Update Available property on D-Bus
+        updateAvailableProperty(chassisNum, allConditionsMet);
+    }
+}
+
+void ChassisAvailability::updateAvailableProperty(int chassisNum,
+                                                  bool available)
+{
+    try
+    {
+        std::string objectPath =
+            substituteChassisNumber(availableObjectPathTemplate, chassisNum);
+
+        const std::string inventoryPrefix = "/xyz/openbmc_project/inventory";
+        std::string notifyPath = objectPath;
+        if (objectPath.find(inventoryPrefix) == 0)
+        {
+            notifyPath = objectPath.substr(inventoryPrefix.length());
+        }
+
+        // Build Notify method call: a{oa{sa{sv}}}
+        auto notifyCall = bus.new_method_call(
+            "xyz.openbmc_project.Inventory.Manager",
+            "/xyz/openbmc_project/inventory",
+            "xyz.openbmc_project.Inventory.Manager", "Notify");
+
+        std::map<
+            sdbusplus::object_path,
+            std::map<std::string, std::map<std::string, std::variant<bool>>>>
+            outerMap;
+
+        std::map<std::string, std::map<std::string, std::variant<bool>>>
+            interfaceMap;
+
+        std::map<std::string, std::variant<bool>> propertyMap;
+        propertyMap["Available"] = available;
+
+        interfaceMap["xyz.openbmc_project.State.Decorator.Availability"] =
+            propertyMap;
+        outerMap[notifyPath] = interfaceMap;
+
+        notifyCall.append(outerMap);
+
+        bus.call(notifyCall);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to update Available property for chassis {NUM}: {ERROR}",
+              "NUM", chassisNum, "ERROR", e.what());
     }
 }
 
