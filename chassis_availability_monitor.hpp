@@ -90,6 +90,13 @@ class ChassisAvailability
      */
     void checkAvailability(int chassisNum);
 
+    /** @brief Update Available property on D-Bus for a chassis
+     * @param[in] chassisNum Chassis number to update
+     * @param[in] available New availability value
+     * @details Calls Inventory.Manager.Notify to update the Available property
+     */
+    void updateAvailableProperty(int chassisNum, bool available);
+
     /** @brief Extract chassis number from D-bus object path
      * @param[in] path D-Bus object path to extract chassis number from
      * @return Chassis number if found, otherwise returns -1
