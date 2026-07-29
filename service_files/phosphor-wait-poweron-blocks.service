@@ -1,0 +1,18 @@
+[Unit]
+Description=Wait for power-on blocking conditions to clear
+Wants=mapper-subtree-remove@-xyz-openbmc\x5fproject-software\x3Axyz.openbmc_project.Software.ActivationBlocksTransition.service
+After=mapper-subtree-remove@-xyz-openbmc\x5fproject-software\x3Axyz.openbmc_project.Software.ActivationBlocksTransition.service
+Wants=mapper-subtree-remove@-xyz-openbmc\x5fproject-logging\x3Axyz.openbmc_project.Logging.ErrorBlocksTransition.service
+After=mapper-subtree-remove@-xyz-openbmc\x5fproject-logging\x3Axyz.openbmc_project.Logging.ErrorBlocksTransition.service
+Wants=obmc-power-start-pre@0.target
+Before=obmc-power-start-pre@0.target
+ConditionPathExists=!/run/openbmc/chassis@0-on
+Conflicts=obmc-chassis-poweroff@0.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
+
+[Install]
+RequiredBy=obmc-chassis-poweron@0.target
