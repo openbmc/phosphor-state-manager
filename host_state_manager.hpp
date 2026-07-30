@@ -321,6 +321,11 @@ class Host : public HostInherit
      */
     const std::string& getTarget(Transition tranReq);
 
+    /**
+     * Remove the host running sentinel file if it exists
+     **/
+    void removeRunningFile();
+
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& bus;
 

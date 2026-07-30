@@ -248,6 +248,23 @@ bool Host::isAutoReboot()
     }
 }
 
+void Host::removeRunningFile()
+{
+    std::string hostFile = std::format(HOST_RUNNING_FILE, id);
+    if (std::filesystem::exists(hostFile))
+    {
+        try
+        {
+            std::filesystem::remove(hostFile);
+        }
+        catch (const std::filesystem::filesystem_error& e)
+        {
+            error("Failed to remove host running file {FILE}: {ERROR}", "FILE",
+                  hostFile, "ERROR", e.what());
+        }
+    }
+}
+
 void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
 {
     uint32_t newStateID{};
@@ -265,6 +282,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         this->currentHostState(server::Host::HostState::Off);
         this->bootProgress(bootprogress::Progress::ProgressStages::Unspecified);
         this->operatingSystemState(osstatus::Status::OSStatus::Inactive);
+        removeRunningFile();
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Running)) &&
              (newStateResult == "done") &&
@@ -278,19 +296,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         // This file is used to indicate to host related systemd services
         // that the host is already running and they should skip running.
         // Once the host state is back to running we can clear this file.
-        std::string hostFile = std::format(HOST_RUNNING_FILE, id);
-        if (std::filesystem::exists(hostFile))
-        {
-            try
-            {
-                std::filesystem::remove(hostFile);
-            }
-            catch (const std::filesystem::filesystem_error& e)
-            {
-                error("Failed to remove host running file {FILE}: {ERROR}",
-                      "FILE", hostFile, "ERROR", e.what());
-            }
-        }
+        removeRunningFile();
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Quiesced)) &&
              (newStateResult == "done") &&
