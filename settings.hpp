@@ -4,7 +4,9 @@
 #include <xyz/openbmc_project/Control/Boot/RebootPolicy/client.hpp>
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/client.hpp>
 
+#include <map>
 #include <string>
+#include <vector>
 
 namespace settings
 {
@@ -12,6 +14,8 @@ namespace settings
 using Path = std::string;
 using Service = std::string;
 using Interface = std::string;
+using Interfaces = std::vector<Interface>;
+using MapperResponse = std::map<Path, std::map<Service, Interfaces>>;
 
 constexpr auto defaultRoot = "/";
 constexpr auto autoRebootIntf = sdbusplus::client::xyz::openbmc_project::
@@ -19,6 +23,18 @@ constexpr auto autoRebootIntf = sdbusplus::client::xyz::openbmc_project::
 using PowerRestorePolicy =
     sdbusplus::common::xyz::openbmc_project::control::power::RestorePolicy;
 constexpr auto powerRestoreIntf = PowerRestorePolicy::interface;
+
+/** @brief Parse mapper subtree response and identify settings paths.
+ *
+ * @param[in] result                     - Mapper GetSubTree response
+ * @param[out] autoReboot                - persistent auto_reboot path
+ * @param[out] autoRebootOneTime         - one-time auto_reboot path
+ * @param[out] powerRestorePolicy        - persistent power_restore_policy path
+ * @param[out] powerRestorePolicyOneTime - one-time power_restore_policy path
+ */
+void parseMapperPaths(const MapperResponse& result, Path& autoReboot,
+                      Path& autoRebootOneTime, Path& powerRestorePolicy,
+                      Path& powerRestorePolicyOneTime);
 
 /** @class Objects
  *  @brief Fetch paths of settings d-bus objects of interest, upon construction

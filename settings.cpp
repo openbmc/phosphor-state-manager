@@ -17,39 +17,10 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 
-Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
+void parseMapperPaths(const MapperResponse& result, Path& autoReboot,
+                      Path& autoRebootOneTime, Path& powerRestorePolicy,
+                      Path& powerRestorePolicyOneTime)
 {
-    std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
-    auto depth = 0;
-
-    auto mapperCall = bus.new_method_call(
-        ObjectMapper::default_service, ObjectMapper::instance_path,
-        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
-    mapperCall.append(root);
-    mapperCall.append(depth);
-    mapperCall.append(settingsIntfs);
-
-    using Interfaces = std::vector<Interface>;
-    using MapperResponse = std::map<Path, std::map<Service, Interfaces>>;
-    MapperResponse result;
-
-    try
-    {
-        auto response = bus.call(mapperCall);
-
-        response.read(result);
-        if (result.empty())
-        {
-            error("Invalid response from mapper");
-            elog<InternalFailure>();
-        }
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Error in mapper GetSubTree: {ERROR}", "ERROR", e);
-        elog<InternalFailure>();
-    }
-
     for (const auto& iter : result)
     {
         const Path& path = iter.first;
@@ -95,6 +66,41 @@ Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
             }
         }
     }
+}
+
+Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
+{
+    std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
+    auto depth = 0;
+
+    auto mapperCall = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
+    mapperCall.append(root);
+    mapperCall.append(depth);
+    mapperCall.append(settingsIntfs);
+
+    MapperResponse result;
+
+    try
+    {
+        auto response = bus.call(mapperCall);
+
+        response.read(result);
+        if (result.empty())
+        {
+            error("Invalid response from mapper");
+            elog<InternalFailure>();
+        }
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error in mapper GetSubTree: {ERROR}", "ERROR", e);
+        elog<InternalFailure>();
+    }
+
+    parseMapperPaths(result, autoReboot, autoRebootOneTime, powerRestorePolicy,
+                     powerRestorePolicyOneTime);
 }
 
 Service Objects::service(const Path& path, const Interface& interface) const
