@@ -17,6 +17,56 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 
+MapperPaths pathsFromMapperResponse(const MapperResponse& result)
+{
+    MapperPaths paths;
+    for (const auto& pathEntry : result)
+    {
+        const auto& path = pathEntry.first;
+        for (const auto& serviceEntry : pathEntry.second)
+        {
+            for (const auto& interface : serviceEntry.second)
+            {
+                if (autoRebootIntf == interface)
+                {
+                    if (path.find("one_time") != std::string::npos)
+                    {
+                        paths.autoRebootOneTime = path;
+                    }
+                    else
+                    {
+                        paths.autoReboot = path;
+                    }
+                }
+                else if (powerRestoreIntf == interface)
+                {
+                    if (path.find("one_time") != std::string::npos)
+                    {
+                        paths.powerRestorePolicyOneTime = path;
+                    }
+                    else
+                    {
+                        paths.powerRestorePolicy = path;
+                    }
+                }
+            }
+        }
+    }
+
+    return paths;
+}
+
+Service serviceFromMapperResponse(const MapperObjectResponse& result)
+{
+    if (result.empty())
+    {
+        error("Invalid response from mapper");
+        elog<InternalFailure>();
+    }
+
+    return result.begin()->first;
+}
+
 Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
 {
     std::vector<std::string> settingsIntfs = {autoRebootIntf, powerRestoreIntf};
@@ -29,8 +79,6 @@ Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
     mapperCall.append(depth);
     mapperCall.append(settingsIntfs);
 
-    using Interfaces = std::vector<Interface>;
-    using MapperResponse = std::map<Path, std::map<Service, Interfaces>>;
     MapperResponse result;
 
     try
@@ -50,63 +98,22 @@ Objects::Objects(sdbusplus::bus_t& bus, const Path& root) : bus(bus)
         elog<InternalFailure>();
     }
 
-    for (const auto& iter : result)
-    {
-        const Path& path = iter.first;
-
-        for (const auto& serviceIter : iter.second)
-        {
-            for (const auto& interface : serviceIter.second)
-            {
-                if (autoRebootIntf == interface)
-                {
-                    /* There are two implementations of the AutoReboot
-                     * Interface. A persistent user setting and a one-time
-                     * setting which is only valid for one boot of the system.
-                     * The one-time setting will have "one_time" in its
-                     * object path.
-                     */
-                    if (path.find("one_time") != std::string::npos)
-                    {
-                        autoRebootOneTime = path;
-                    }
-                    else
-                    {
-                        autoReboot = path;
-                    }
-                }
-                else if (powerRestoreIntf == interface)
-                {
-                    /* There are two implementations of the PowerRestorePolicy
-                     * Interface. A persistent user setting and a one-time
-                     * setting which is only valid for one boot of the system.
-                     * The one-time setting will have "one_time" in its
-                     * object path.
-                     */
-                    if (path.find("one_time") != std::string::npos)
-                    {
-                        powerRestorePolicyOneTime = path;
-                    }
-                    else
-                    {
-                        powerRestorePolicy = path;
-                    }
-                }
-            }
-        }
-    }
+    auto paths = pathsFromMapperResponse(result);
+    autoReboot = paths.autoReboot;
+    autoRebootOneTime = paths.autoRebootOneTime;
+    powerRestorePolicy = paths.powerRestorePolicy;
+    powerRestorePolicyOneTime = paths.powerRestorePolicyOneTime;
 }
 
 Service Objects::service(const Path& path, const Interface& interface) const
 {
-    using Interfaces = std::vector<Interface>;
     auto mapperCall = bus.new_method_call(
         ObjectMapper::default_service, ObjectMapper::instance_path,
         ObjectMapper::interface, ObjectMapper::method_names::get_object);
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 
-    std::map<Service, Interfaces> result;
+    MapperObjectResponse result;
 
     try
     {
@@ -119,13 +126,7 @@ Service Objects::service(const Path& path, const Interface& interface) const
         elog<InternalFailure>();
     }
 
-    if (result.empty())
-    {
-        error("Invalid response from mapper");
-        elog<InternalFailure>();
-    }
-
-    return result.begin()->first;
+    return serviceFromMapperResponse(result);
 }
 
 HostObjects::HostObjects(sdbusplus::bus_t& bus, size_t id) :

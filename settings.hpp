@@ -4,7 +4,9 @@
 #include <xyz/openbmc_project/Control/Boot/RebootPolicy/client.hpp>
 #include <xyz/openbmc_project/Control/Power/RestorePolicy/client.hpp>
 
+#include <map>
 #include <string>
+#include <vector>
 
 namespace settings
 {
@@ -12,6 +14,20 @@ namespace settings
 using Path = std::string;
 using Service = std::string;
 using Interface = std::string;
+using Interfaces = std::vector<Interface>;
+using MapperResponse = std::map<Path, std::map<Service, Interfaces>>;
+using MapperObjectResponse = std::map<Service, Interfaces>;
+
+struct MapperPaths
+{
+    Path autoReboot;
+    Path autoRebootOneTime;
+    Path powerRestorePolicy;
+    Path powerRestorePolicyOneTime;
+};
+
+MapperPaths pathsFromMapperResponse(const MapperResponse& result);
+Service serviceFromMapperResponse(const MapperObjectResponse& result);
 
 constexpr auto defaultRoot = "/";
 constexpr auto autoRebootIntf = sdbusplus::client::xyz::openbmc_project::
