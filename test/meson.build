@@ -104,6 +104,7 @@ test(
 )
 
 test(
+<<<<<<< HEAD
     'test_chassis_availability_monitor',
     executable(
         'test_chassis_availability_monitor',
@@ -111,6 +112,20 @@ test(
         '../chassis_availability_monitor.cpp',
         dependencies: [gtest, nlohmann_json_dep, phosphorlogging, sdbusplus],
         link_with: [utils_lib],
+=======
+    'test_settings',
+    executable(
+        'test_settings',
+        'test_settings.cpp',
+        dependencies: [
+            gmock,
+            gtest,
+            phosphordbusinterfaces,
+            phosphorlogging,
+            sdbusplus,
+        ],
+        link_with: [settings_lib],
+>>>>>>> ec312b3 (test: add unit tests for settings mapper behavior)
         implicit_include_directories: true,
         include_directories: '../',
     ),
