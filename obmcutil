@@ -17,8 +17,6 @@ readonly CONTROL_OBJECT="${OBJECT_ROOT}/control"
 # Constants - Systemd Targets and Directories
 # ============================================================================
 readonly BMC_SYSTEMD_RUN_DIR="/run/systemd/system/"
-readonly HOST_TIMEOUT_TARGET="obmc-host-timeout@0.target"
-readonly HOST_CRASH_TARGET="obmc-host-crash@0.target"
 
 # ============================================================================
 # Constants - BMC Reboot Guard
@@ -292,6 +290,16 @@ function get_systemd_target_state()
     echo "$enabled_state"
 }
 
+function get_host_timeout_target()
+{
+    echo "obmc-host-timeout@${G_INSTANCE_ID}.target"
+}
+
+function get_host_crash_target()
+{
+    echo "obmc-host-crash@${G_INSTANCE_ID}.target"
+}
+
 function disable_bmc_reboot()
 {
     local unit
@@ -537,7 +545,7 @@ function handle_cmd()
             set_state_transition "host" "$INTERFACE" "RequestedHostTransition" "$INTERFACE.Transition.On"
             ;;
         bmcstate)
-            query_state "bmc" "$STATE_INTERFACE.BMC" "CurrentBMCState" "0"
+            query_state "bmc" "$STATE_INTERFACE.BMC" "CurrentBMCState"
             ;;
         chassisstate)
             query_state "chassis" "$STATE_INTERFACE.Chassis" "CurrentPowerState"
@@ -564,7 +572,7 @@ function handle_cmd()
             query_state "host" "$STATE_INTERFACE.Boot.Progress" "BootProgress"
             ;;
         power)
-            local OBJECT=/org/openbmc/control/power0
+            local OBJECT=/org/openbmc/control/power$G_INSTANCE_ID
             local SERVICE
             SERVICE=$(get_service "$OBJECT")
             local INTERFACE=org.openbmc.control.Power
@@ -604,14 +612,14 @@ function handle_cmd()
         recoveryoff)
             handle_cmd hostrebootoff
             handle_cmd bmcrebootoff
-            mask_systemd_target $HOST_TIMEOUT_TARGET
-            mask_systemd_target $HOST_CRASH_TARGET
+            mask_systemd_target "$(get_host_timeout_target)"
+            mask_systemd_target "$(get_host_crash_target)"
             ;;
         recoveryon)
             handle_cmd hostrebooton
             handle_cmd bmcrebooton
-            unmask_systemd_target $HOST_TIMEOUT_TARGET
-            unmask_systemd_target $HOST_CRASH_TARGET
+            unmask_systemd_target "$(get_host_timeout_target)"
+            unmask_systemd_target "$(get_host_crash_target)"
             ;;
         recoverystatus)
             host_reboot_state=$(get_host_reboot_status)
@@ -628,14 +636,14 @@ function handle_cmd()
                 bmc_reboot_status=0
             fi
 
-            host_timeout_target_state=$(get_systemd_target_state $HOST_TIMEOUT_TARGET)
+            host_timeout_target_state=$(get_systemd_target_state "$(get_host_timeout_target)")
             if [[ $host_timeout_target_state == "masked" ]]; then
                 host_timeout_status=0
             else
                 host_timeout_status=1
             fi
 
-            host_crash_target_state=$(get_systemd_target_state $HOST_CRASH_TARGET)
+            host_crash_target_state=$(get_systemd_target_state "$(get_host_crash_target)")
             if [[ $host_crash_target_state == "masked" ]]; then
                 host_crash_status=0
             else
