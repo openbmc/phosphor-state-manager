@@ -18,6 +18,7 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
 {
     loadConfiguration();
     discoverChassis();
+    subscribeToChassisAdded();
 
     for (int chassisNum : discoveredChassisNumbers)
     {
@@ -255,7 +256,98 @@ void ChassisAvailability::checkAvailability(int chassisNum)
     {
         info("Chassis {NUM} availability changed to {AVAIL}", "NUM", chassisNum,
              "AVAIL", allConditionsMet);
-        // TODO: Update Available property on D-Bus
+        updateAvailableProperty(chassisNum, allConditionsMet);
+    }
+}
+
+void ChassisAvailability::updateAvailableProperty(int chassisNum,
+                                                  bool available)
+{
+    try
+    {
+        std::string objectPath =
+            substituteChassisNumber(availableObjectPathTemplate, chassisNum);
+
+        const std::string inventoryPrefix = "/xyz/openbmc_project/inventory";
+        std::string notifyPath = objectPath;
+        if (objectPath.find(inventoryPrefix) == 0)
+        {
+            notifyPath = objectPath.substr(inventoryPrefix.length());
+        }
+
+        // Build Notify method call: a{oa{sa{sv}}}
+        auto notifyCall = bus.new_method_call(
+            "xyz.openbmc_project.Inventory.Manager",
+            "/xyz/openbmc_project/inventory",
+            "xyz.openbmc_project.Inventory.Manager", "Notify");
+
+        std::map<
+            sdbusplus::object_path,
+            std::map<std::string, std::map<std::string, std::variant<bool>>>>
+            outerMap;
+
+        std::map<std::string, std::map<std::string, std::variant<bool>>>
+            interfaceMap;
+
+        std::map<std::string, std::variant<bool>> propertyMap;
+        propertyMap["Available"] = available;
+
+        interfaceMap["xyz.openbmc_project.State.Decorator.Availability"] =
+            propertyMap;
+        outerMap[notifyPath] = interfaceMap;
+
+        notifyCall.append(outerMap);
+
+        bus.call(notifyCall);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to update Available property for chassis {NUM}: {ERROR}",
+              "NUM", chassisNum, "ERROR", e.what());
+    }
+}
+
+void ChassisAvailability::subscribeToChassisAdded()
+{
+    auto matchRule = sdbusplus::bus::match::rules::interfacesAdded(
+        "/xyz/openbmc_project/inventory");
+
+    chassisAddedMatch = std::make_unique<sdbusplus::bus::match_t>(
+        bus, matchRule,
+        [this](sdbusplus::message_t& msg) { onChassisAdded(msg); });
+}
+
+void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
+
+{
+    sdbusplus::object_path objectPath;
+
+    std::map<std::string,
+             std::map<std::string, std::variant<bool, std::string, int64_t>>>
+        interfaces;
+
+    msg.read(objectPath, interfaces);
+
+    int chassisNum = getChassisNumber(objectPath.str);
+    if (chassisNum >= 0 && discoveredChassisNumbers.find(chassisNum) ==
+                               discoveredChassisNumbers.end())
+    {
+        bool hasRequiredInterface = false;
+        for (const auto& condition : conditions)
+        {
+            if (interfaces.find(condition.interface) != interfaces.end())
+            {
+                hasRequiredInterface = true;
+                break;
+            }
+        }
+
+        if (hasRequiredInterface)
+        {
+            info("New chassis {NUM} detected", "NUM", chassisNum);
+            discoveredChassisNumbers.insert(chassisNum);
+            setupMonitoringForChassis(chassisNum);
+        }
     }
 }
 
