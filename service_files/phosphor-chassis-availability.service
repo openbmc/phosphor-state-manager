@@ -1,0 +1,14 @@
+[Unit]
+Description=Phosphor Chassis Availability Monitor
+After=mapper-wait@-xyz-openbmc_project-inventory.service
+After=xyz.openbmc_project.Inventory.Manager.service
+Wants=mapper-wait@-xyz-openbmc_project-inventory.service
+Wants=xyz.openbmc_project.Inventory.Manager.service
+
+[Service]
+Type=notify
+ExecStart=/usr/libexec/phosphor-state-manager/phosphor-chassis-availability-monitor
+Restart=always
+
+[Install]
+# Handled by bitbake recipe
