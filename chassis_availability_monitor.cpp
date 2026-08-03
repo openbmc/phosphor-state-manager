@@ -2,6 +2,8 @@
 
 #include "utils.hpp"
 
+#include <systemd/sd-daemon.h>
+
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 
@@ -31,6 +33,8 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
     {
         setupMonitoringForChassis(chassisNum);
     }
+
+    sd_notify(0, "READY=1");
 }
 
 void ChassisAvailability::loadConfiguration()
