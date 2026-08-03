@@ -25,6 +25,7 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
 {
     loadConfiguration();
     discoverChassis();
+    subscribeToChassisAdded();
 
     for (int chassisNum : discoveredChassisNumbers)
     {
@@ -263,6 +264,42 @@ void ChassisAvailability::updateAvailableProperty(int chassisNum,
     {
         error("Failed to update Available property for chassis {NUM}: {ERROR}",
               "NUM", chassisNum, "ERROR", e);
+    }
+}
+
+void ChassisAvailability::subscribeToChassisAdded()
+{
+    auto matchRule = sdbusplus::bus::match::rules::interfacesAdded(
+        "/xyz/openbmc_project/inventory");
+
+    chassisAddedMatch = std::make_unique<sdbusplus::bus::match_t>(
+        bus, matchRule,
+        [this](sdbusplus::message_t& msg) { onChassisAdded(msg); });
+}
+
+void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
+{
+    using InterfaceMap = std::map<
+        std::string,
+        std::map<std::string, std::variant<bool, std::string, int64_t>>>;
+    auto result = msg.unpack<sdbusplus::object_path, InterfaceMap>();
+    const auto& [objectPath, interfaces] = result;
+
+    auto chassisNum = getChassisNumber(objectPath.str);
+    if (chassisNum &&
+        !std::ranges::contains(discoveredChassisNumbers, *chassisNum))
+    {
+        auto hasRequiredInterface = std::ranges::any_of(
+            conditions, [ifaces = interfaces](const auto& condition) {
+                return ifaces.contains(condition.interface);
+            });
+
+        if (hasRequiredInterface)
+        {
+            info("New chassis {NUM} detected", "NUM", *chassisNum);
+            discoveredChassisNumbers.insert(*chassisNum);
+            setupMonitoringForChassis(*chassisNum);
+        }
     }
 }
 
