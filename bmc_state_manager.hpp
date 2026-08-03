@@ -10,6 +10,8 @@
 
 #include <cassert>
 #include <chrono>
+#include <format>
+#include <string>
 
 namespace phosphor::state::manager
 {
@@ -32,8 +34,12 @@ class BMC : public BMCInherit
      * @param[in] busName   - The Dbus name to own
      * @param[in] objPath   - The Dbus object path
      */
-    BMC(sdbusplus::bus_t& bus, const sdbusplus::object_path& objPath) :
+    BMC(sdbusplus::bus_t& bus, const sdbusplus::object_path& objPath,
+        size_t id = 0) :
         BMCInherit(bus, objPath, BMCInherit::action::defer_emit), bus(bus),
+        id(id),
+        obmcQuiesceTarget(
+            std::format("obmc-bmc-service-quiesce@{}.target", id)),
         stateSignal(std::make_unique<decltype(stateSignal)::element_type>(
             bus,
             sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
@@ -124,6 +130,12 @@ class BMC : public BMCInherit
 
     /** @brief Persistent sdbusplus DBus bus connection. **/
     sdbusplus::bus_t& bus;
+
+    /** @brief BMC instance ID **/
+    const size_t id;
+
+    /** @brief Systemd target to move BMC into quiesced state **/
+    const std::string obmcQuiesceTarget;
 
     /** @brief Used to subscribe to dbus system state changes **/
     std::unique_ptr<sdbusplus::match> stateSignal;
