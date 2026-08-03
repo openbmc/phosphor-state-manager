@@ -128,18 +128,6 @@ class Chassis : public ChassisInherit
      */
     void restartUnit(const std::string& sysdUnit);
 
-    /**
-     * @brief Determine if target is active
-     *
-     * This function determines if the target is active and
-     * helps prevent misleading log recorded states.
-     *
-     * @param[in] target - Target string to check on
-     *
-     * @return boolean corresponding to state active
-     **/
-    bool stateActive(const std::string& target);
-
     /** @brief Check if systemd state change is relevant to this object
      *
      * Instance specific interface to handle the detected systemd state

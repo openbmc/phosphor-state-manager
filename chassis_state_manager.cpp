@@ -49,8 +49,6 @@ constexpr auto CHASSIS_STATE_POWERCYCLE_TGT_FMT =
     "obmc-chassis-powercycle@{}.target";
 constexpr auto AUTO_POWER_RESTORE_SVC_FMT =
     "phosphor-discover-system-state@{}.service";
-constexpr auto ACTIVE_STATE = "active";
-constexpr auto ACTIVATING_STATE = "activating";
 
 // Details at https://upower.freedesktop.org/docs/Device.html
 constexpr uint TYPE_UPS = 3;
@@ -525,53 +523,6 @@ void Chassis::restartUnit(const std::string& sysdUnit)
     return;
 }
 
-bool Chassis::stateActive(const std::string& target)
-{
-    std::variant<std::string> currentState;
-    sdbusplus::object_path unitTargetPath;
-
-    auto method =
-        this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                  SYSTEMD_MANAGER_INTERFACE, "GetUnit");
-
-    method.append(target);
-
-    try
-    {
-        auto result = this->bus.call(method);
-        result.read(unitTargetPath);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Chassis{CHASSIS_ID}: Error in GetUnit call: {ERROR}",
-              "CHASSIS_ID", id, "ERROR", e);
-        return false;
-    }
-
-    method = this->bus.new_method_call(
-        SYSTEMD_SERVICE,
-        static_cast<const std::string&>(unitTargetPath).c_str(),
-        PROPERTY_INTERFACE, "Get");
-
-    method.append(SYSTEMD_UNIT_INTERFACE, "ActiveState");
-
-    try
-    {
-        auto result = this->bus.call(method);
-        result.read(currentState);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Chassis{CHASSIS_ID}: Error in ActiveState Get: {ERROR}",
-              "CHASSIS_ID", id, "ERROR", e);
-        return false;
-    }
-
-    const auto& currentStateStr = std::get<std::string>(currentState);
-    return currentStateStr == ACTIVE_STATE ||
-           currentStateStr == ACTIVATING_STATE;
-}
-
 int Chassis::sysStateChange(sdbusplus::message_t& msg)
 {
     sdbusplus::object_path newStateObjPath;
@@ -595,7 +546,7 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
     }
 
     if ((newStateUnit == std::format(CHASSIS_STATE_POWEROFF_TGT_FMT, id)) &&
-        (newStateResult == "done") && (stateActive(newStateUnit)))
+        (newStateResult == "done") && (utils::stateActive(bus, newStateUnit)))
     {
         info("Chassis{CHASSIS_ID}: Received signal that power OFF is complete",
              "CHASSIS_ID", id);
@@ -603,7 +554,8 @@ int Chassis::sysStateChange(sdbusplus::message_t& msg)
         this->setStateChangeTime();
     }
     else if ((newStateUnit == systemdTargetTable[Transition::On]) &&
-             (newStateResult == "done") && (stateActive(newStateUnit)))
+             (newStateResult == "done") &&
+             (utils::stateActive(bus, newStateUnit)))
     {
         info("Chassis{CHASSIS_ID}: Received signal that power ON is complete",
              "CHASSIS_ID", id);
