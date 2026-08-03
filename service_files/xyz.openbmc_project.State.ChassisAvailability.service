@@ -1,0 +1,13 @@
+[Unit]
+Description=Phosphor Chassis Availability Monitor
+After=mapper-wait@-xyz-openbmc_project-inventory.service
+After=xyz.openbmc_project.Inventory.Manager.service
+
+[Service]
+ExecStart=/usr/libexec/phosphor-state-manager/phosphor-chassis-availability-monitor
+Restart=always
+Type=dbus
+BusName=xyz.openbmc_project.State.ChassisAvailability
+
+[Install]
+WantedBy=multi-user.target
