@@ -6,7 +6,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
-#include <xyz/openbmc_project/State/Host/error.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -32,8 +32,7 @@ server::Host::Transition Hypervisor::requestedHostTransition(Transition value)
     {
         error("Unsupported hypervisor transition request: {TRAN_REQUEST}",
               "TRAN_REQUEST", value);
-        throw sdbusplus::xyz::openbmc_project::State::Host::Error::
-            BMCNotReady();
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
     }
 
     // This property is monitored by a separate application (for example PLDM)

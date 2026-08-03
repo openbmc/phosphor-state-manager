@@ -3,7 +3,7 @@
 #include <hypervisor_state_manager.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/event.hpp>
-#include <xyz/openbmc_project/State/Host/error.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <gtest/gtest.h>
 
@@ -49,5 +49,5 @@ TEST(requestedHostTransition, UnsupportedTransitionThrows)
 
     EXPECT_THROW(
         hypObj.requestedHostTransition(server::Host::Transition::Off),
-        sdbusplus::xyz::openbmc_project::State::Host::Error::BMCNotReady);
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
 }
