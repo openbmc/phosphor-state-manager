@@ -22,6 +22,7 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
 {
     loadConfiguration();
     discoverChassis();
+    subscribeToChassisAdded();
 
     for (int chassisNum : discoveredChassisNumbers)
     {
@@ -286,6 +287,31 @@ void ChassisAvailability::updateAvailableProperty(int chassisNum,
     {
         error("Failed to update Available property for chassis {NUM}: {ERROR}",
               "NUM", chassisNum, "ERROR", e.what());
+    }
+}
+
+void ChassisAvailability::subscribeToChassisAdded()
+{
+    auto matchRule = sdbusplus::bus::match::rules::interfacesAdded(
+        "/xyz/openbmc_project/inventory");
+
+    chassisAddedMatch = std::make_unique<sdbusplus::bus::match_t>(
+        bus, matchRule,
+        [this](sdbusplus::message_t& msg) { onChassisAdded(msg); });
+}
+
+void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
+{
+    std::string objectPath;
+    msg.read(objectPath);
+
+    int chassisNum = getChassisNumber(objectPath);
+    if (chassisNum >= 0 && discoveredChassisNumbers.find(chassisNum) ==
+                               discoveredChassisNumbers.end())
+    {
+        info("New chassis {NUM} detected", "NUM", chassisNum);
+        discoveredChassisNumbers.insert(chassisNum);
+        setupMonitoringForChassis(chassisNum);
     }
 }
 
