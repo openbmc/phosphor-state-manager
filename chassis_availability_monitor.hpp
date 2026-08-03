@@ -59,6 +59,9 @@ class ChassisAvailability
     /** @brief Discover all connected server chassis on a system */
     void discoverChassis();
 
+    /** @brief Subscribe to chassis hot-plug events */
+    void subscribeToChassisAdded();
+
     /** @brief Set up monitoring for a specific chassis
      * @param[in] chassisNum Chassis number to set up monitoring for
      */
@@ -77,6 +80,11 @@ class ChassisAvailability
      * @details Calls setProperty to update the Available property
      */
     void updateAvailableProperty(int chassisNum, bool isAvailable);
+
+    /** @brief Handle new chassis detection
+     * @param[in] msg D-Bus InterfacesAdded message
+     */
+    void onChassisAdded(sdbusplus::message_t& msg);
 
     /** @brief Extract chassis number from D-bus object path
      * @param[in] path D-Bus object path to extract chassis number from
@@ -117,6 +125,9 @@ class ChassisAvailability
 
     /** @brief D-Bus signal matches for PropertiesChanged subscriptions */
     std::vector<std::unique_ptr<sdbusplus::bus::match_t>> propertyMatches;
+
+    /** @brief D-bus signal match for a new added chassis */
+    std::unique_ptr<sdbusplus::bus::match_t> chassisAddedMatch;
 };
 
 } // namespace phosphor::state::manager
