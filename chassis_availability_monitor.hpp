@@ -38,6 +38,7 @@ struct ChassisState
 {
     bool available = false;
     std::vector<std::string> conditionPaths;
+    std::vector<std::unique_ptr<sdbusplus::bus::match_t>> propertyMatches;
 };
 
 /** @class ChassisAvailability
@@ -67,6 +68,9 @@ class ChassisAvailability
     /** @brief Subscribe to chassis hot-plug events */
     void subscribeToChassisAdded();
 
+    /** @brief Subscribe to chassis removal events */
+    void subscribeToChassisRemoved();
+
     /** @brief Set up monitoring for a specific chassis
      * @param[in] chassisNum Chassis number to set up monitoring for
      */
@@ -90,6 +94,11 @@ class ChassisAvailability
      * @param[in] msg D-Bus InterfacesAdded message
      */
     void onChassisAdded(sdbusplus::message_t& msg);
+
+    /** @brief Handle chassis removal
+     * @param[in] msg D-Bus InterfacesRemoved message
+     */
+    void onChassisRemoved(sdbusplus::message_t& msg);
 
     /** @brief Extract chassis number from D-bus object path
      * @param[in] path D-Bus object path to extract chassis number from
@@ -128,11 +137,11 @@ class ChassisAvailability
      */
     std::map<int, ChassisState> chassisStates;
 
-    /** @brief D-Bus signal matches for PropertiesChanged subscriptions */
-    std::vector<std::unique_ptr<sdbusplus::bus::match_t>> propertyMatches;
-
     /** @brief D-bus signal match for a new added chassis */
     std::unique_ptr<sdbusplus::bus::match_t> chassisAddedMatch;
+
+    /** @brief D-bus signal match for chassis removal */
+    std::unique_ptr<sdbusplus::bus::match_t> chassisRemovedMatch;
 };
 
 } // namespace manager
