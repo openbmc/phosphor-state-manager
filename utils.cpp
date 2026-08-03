@@ -26,6 +26,9 @@ using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 using ActBlockTrans = sdbusplus::client::xyz::openbmc_project::software::
     ActivationBlocksTransition<>;
 
+constexpr auto ACTIVE_STATE = "active";
+constexpr auto ACTIVATING_STATE = "activating";
+
 void subscribeToSystemdSignals(sdbusplus::bus_t& bus)
 {
     auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
@@ -289,7 +292,6 @@ bool isFirmwareUpdating(sdbusplus::bus_t& bus)
     try
     {
         auto mapperResponseMsg = bus.call(mapper);
-
         mapperResponseMsg.read(mapperResponse);
     }
     catch (const sdbusplus::exception_t& e)
@@ -301,6 +303,50 @@ bool isFirmwareUpdating(sdbusplus::bus_t& bus)
     }
 
     return !mapperResponse.empty();
+}
+
+bool stateActive(sdbusplus::bus_t& bus, const std::string& target)
+{
+    std::variant<std::string> currentState;
+    sdbusplus::object_path unitTargetPath;
+
+    auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
+                                      SYSTEMD_MANAGER_INTERFACE, "GetUnit");
+
+    method.append(target);
+
+    try
+    {
+        auto result = bus.call(method);
+        result.read(unitTargetPath);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error in GetUnit call: {ERROR}", "ERROR", e);
+        return false;
+    }
+
+    method = bus.new_method_call(
+        SYSTEMD_SERVICE,
+        static_cast<const std::string&>(unitTargetPath).c_str(),
+        PROPERTY_INTERFACE, "Get");
+
+    method.append(SYSTEMD_UNIT_INTERFACE, "ActiveState");
+
+    try
+    {
+        auto result = bus.call(method);
+        result.read(currentState);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error in ActiveState Get: {ERROR}", "ERROR", e);
+        return false;
+    }
+
+    const auto& currentStateStr = std::get<std::string>(currentState);
+    return currentStateStr == ACTIVE_STATE ||
+           currentStateStr == ACTIVATING_STATE;
 }
 
 } // namespace phosphor::state::manager::utils
