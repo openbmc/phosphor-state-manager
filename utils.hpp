@@ -111,4 +111,13 @@ bool waitBmcReady(sdbusplus::bus_t& bus, std::chrono::seconds timeout);
  */
 bool isFirmwareUpdating(sdbusplus::bus_t& bus);
 
+/** @brief Determine if a systemd unit is active or activating
+ *
+ * @param[in] bus          - The Dbus bus object
+ * @param[in] target       - The systemd unit name
+ *
+ * @return true when the unit ActiveState is active or activating
+ */
+bool stateActive(sdbusplus::bus_t& bus, const std::string& target);
+
 } // namespace phosphor::state::manager::utils

@@ -47,14 +47,11 @@ using namespace phosphor::logging;
 namespace fs = std::filesystem;
 using sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
-constexpr auto ACTIVE_STATE = "active";
-constexpr auto ACTIVATING_STATE = "activating";
-
 constexpr auto AUTO_REBOOT_PROPERTY = "AutoReboot";
 
 void Host::determineInitialState()
 {
-    if (stateActive(getTarget(server::Host::HostState::Running)) ||
+    if (utils::stateActive(bus, getTarget(server::Host::HostState::Running)) ||
         isHostRunning(id))
     {
         info("Initial Host State will be Running");
@@ -168,51 +165,6 @@ void Host::executeTransition(Transition tranReq)
     return;
 }
 
-bool Host::stateActive(const std::string& target)
-{
-    std::variant<std::string> currentState;
-    sdbusplus::object_path unitTargetPath;
-
-    auto method =
-        this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
-                                  SYSTEMD_MANAGER_INTERFACE, "GetUnit");
-
-    method.append(target);
-
-    try
-    {
-        auto result = this->bus.call(method);
-        result.read(unitTargetPath);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Error in GetUnit call: {ERROR}", "ERROR", e);
-        return false;
-    }
-
-    method = this->bus.new_method_call(
-        SYSTEMD_SERVICE,
-        static_cast<const std::string&>(unitTargetPath).c_str(),
-        PROPERTY_INTERFACE, "Get");
-
-    method.append(SYSTEMD_UNIT_INTERFACE, "ActiveState");
-
-    try
-    {
-        auto result = this->bus.call(method);
-        result.read(currentState);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Error in ActiveState Get: {ERROR}", "ERROR", e);
-        return false;
-    }
-
-    const auto& currentStateStr = std::get<std::string>(currentState);
-    return currentStateStr == ACTIVE_STATE ||
-           currentStateStr == ACTIVATING_STATE;
-}
-
 bool Host::isAutoReboot()
 {
     using namespace settings;
@@ -307,7 +259,7 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
     if ((newStateUnit == getTarget(server::Host::HostState::Off)) &&
-        (newStateResult == "done") && (stateActive(newStateUnit)))
+        (newStateResult == "done") && (utils::stateActive(bus, newStateUnit)))
     {
         info("Received signal that host is off");
         this->currentHostState(server::Host::HostState::Off);
@@ -315,7 +267,8 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         this->operatingSystemState(osstatus::Status::OSStatus::Inactive);
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Running)) &&
-             (newStateResult == "done") && (stateActive(newStateUnit)))
+             (newStateResult == "done") &&
+             (utils::stateActive(bus, newStateUnit)))
     {
         info("Received signal that host is running");
         this->currentHostState(server::Host::HostState::Running);
@@ -340,7 +293,8 @@ void Host::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
         }
     }
     else if ((newStateUnit == getTarget(server::Host::HostState::Quiesced)) &&
-             (newStateResult == "done") && (stateActive(newStateUnit)))
+             (newStateResult == "done") &&
+             (utils::stateActive(bus, newStateUnit)))
     {
         if (Host::isAutoReboot())
         {
