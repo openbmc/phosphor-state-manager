@@ -23,6 +23,7 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
     loadConfiguration();
     discoverChassis();
     subscribeToChassisAdded();
+    subscribeToChassisRemoved();
 
     for (int chassisNum : discoveredChassisNumbers)
     {
@@ -172,7 +173,7 @@ void ChassisAvailability::setupMonitoringForChassis(int chassisNum)
                 checkAvailability(chassisNum);
             });
 
-        propertyMatches.push_back(std::move(match));
+        chassisStates[chassisNum].propertyMatches.push_back(std::move(match));
 
         info("Monitoring chassis {NUM} property {IFACE}.{PROP}", "NUM",
              chassisNum, "IFACE", condition.interface, "PROP",
@@ -312,6 +313,33 @@ void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
         info("New chassis {NUM} detected", "NUM", chassisNum);
         discoveredChassisNumbers.insert(chassisNum);
         setupMonitoringForChassis(chassisNum);
+    }
+}
+
+void ChassisAvailability::subscribeToChassisRemoved()
+{
+    auto matchRule = sdbusplus::bus::match::rules::interfacesRemoved(
+        "/xyz/openbmc_project/inventory");
+
+    chassisRemovedMatch = std::make_unique<sdbusplus::bus::match_t>(
+        bus, matchRule,
+        [this](sdbusplus::message_t& msg) { onChassisRemoved(msg); });
+}
+
+void ChassisAvailability::onChassisRemoved(sdbusplus::message_t& msg)
+{
+    std::string objectPath;
+    msg.read(objectPath);
+
+    int chassisNum = getChassisNumber(objectPath);
+    if (chassisNum >= 0 && discoveredChassisNumbers.find(chassisNum) !=
+                               discoveredChassisNumbers.end())
+    {
+        info("Chassis {NUM} removed", "NUM", chassisNum);
+
+        // Cleanup: propertyMatches automatically destroyed via unique_ptr
+        chassisStates.erase(chassisNum);
+        discoveredChassisNumbers.erase(chassisNum);
     }
 }
 
