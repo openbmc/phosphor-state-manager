@@ -1,0 +1,10 @@
+[Unit]
+Description=Phosphor Chassis Availability Monitor
+
+[Service]
+Type=notify
+ExecStart=/usr/libexec/phosphor-state-manager/phosphor-chassis-availability-monitor
+Restart=always
+
+[Install]
+# Handled by bitbake recipe
