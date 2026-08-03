@@ -30,7 +30,6 @@ namespace event = sdbusplus::event::xyz::openbmc_project::state;
 
 using namespace phosphor::logging;
 
-constexpr auto obmcQuiesceTarget = "obmc-bmc-service-quiesce@0.target";
 constexpr auto obmcStandbyTarget = "multi-user.target";
 constexpr auto signalDone = "done";
 constexpr auto activeState = "active";
