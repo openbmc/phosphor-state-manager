@@ -16,6 +16,24 @@
       "message": "I don\u0027t think copy/pasting a chunk of the production code from settings.cpp in a test case makes sense. If you want to test this logic, create a standalone function in settings.cpp that does this and have both the production code and this test case call it.",
       "revId": "ec312b3ae027bd0d948c73098082f8178e1d88ae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7129de7d_5eba5e3a",
+        "filename": "test/test_settings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-08-05T10:14:06Z",
+      "side": 1,
+      "message": "yes, I moved that code refactor to settings.cpp \u0026 settingsro.hpp",
+      "parentUuid": "a2b9987e_4fe10324",
+      "revId": "ec312b3ae027bd0d948c73098082f8178e1d88ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
