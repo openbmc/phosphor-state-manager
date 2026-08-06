@@ -2,8 +2,7 @@
 
 #include "host_state_manager.hpp"
 
-#include <getopt.h>
-
+#include <CLI/CLI.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
@@ -23,24 +22,9 @@ using HostState = sdbusplus::server::xyz::openbmc_project::state::Host;
 int main(int argc, char** argv)
 {
     size_t hostId = 0;
-
-    int arg;
-    int optIndex = 0;
-
-    static struct option longOpts[] = {
-        {"host", required_argument, nullptr, 'h'}, {nullptr, 0, nullptr, 0}};
-
-    while ((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
-    {
-        switch (arg)
-        {
-            case 'h':
-                hostId = std::stoul(optarg);
-                break;
-            default:
-                break;
-        }
-    }
+    CLI::App app{"Phosphor host state manager"};
+    app.add_option("-h,--host", hostId, "Host instance id");
+    CLI11_PARSE(app, argc, argv);
 
     namespace fs = std::filesystem;
 

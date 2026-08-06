@@ -3,8 +3,7 @@
 #include "chassis_state_manager.hpp"
 #include "chassis_state_manager_smp.hpp"
 
-#include <getopt.h>
-
+#include <CLI/CLI.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
@@ -26,22 +25,9 @@ using ChassisState = sdbusplus::server::xyz::openbmc_project::state::Chassis;
 int main(int argc, char** argv)
 {
     size_t chassisId = 0;
-    int arg;
-    int optIndex = 0;
-    static struct option longOpts[] = {
-        {"chassis", required_argument, nullptr, 'c'}, {nullptr, 0, nullptr, 0}};
-
-    while ((arg = getopt_long(argc, argv, "c:", longOpts, &optIndex)) != -1)
-    {
-        switch (arg)
-        {
-            case 'c':
-                chassisId = std::stoul(optarg);
-                break;
-            default:
-                break;
-        }
-    }
+    CLI::App app{"Phosphor chassis state manager"};
+    app.add_option("-c,--chassis", chassisId, "Chassis instance id");
+    CLI11_PARSE(app, argc, argv);
 
     namespace fs = std::filesystem;
 
