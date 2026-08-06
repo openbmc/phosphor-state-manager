@@ -61,11 +61,11 @@ class ChassisSMPEnhancedTest : public Test
         if (mockInventoryPresent)
         {
             EXPECT_CALL(sdbusMock, sd_bus_call(_, _, _, _, _))
-                .WillRepeatedly(Invoke([&chassisStates](
-                                           sd_bus* /*bus*/, sd_bus_message* m,
-                                           uint64_t /*timeout*/,
-                                           sd_bus_error* /*error*/,
-                                           sd_bus_message** /*reply*/) {
+                .WillRepeatedly([&chassisStates](sd_bus* /*bus*/,
+                                                 sd_bus_message* m,
+                                                 uint64_t /*timeout*/,
+                                                 sd_bus_error* /*error*/,
+                                                 sd_bus_message** /*reply*/) {
                     // Parse the message to determine what's being requested
                     const char* member = sd_bus_message_get_member(m);
                     const char* path = sd_bus_message_get_path(m);
@@ -107,7 +107,7 @@ class ChassisSMPEnhancedTest : public Test
                         }
                     }
                     return 0;
-                }));
+                });
         }
 
         return std::make_unique<ChassisSMP>(
