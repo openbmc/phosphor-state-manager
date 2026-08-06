@@ -2,9 +2,7 @@
 
 #include "utils.hpp"
 
-#include <getopt.h>
-#include <systemd/sd-bus.h>
-
+#include <CLI/CLI.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
@@ -26,23 +24,9 @@ using ChassisState = sdbusplus::client::xyz::openbmc_project::state::Chassis<>;
 int main(int argc, char** argv)
 {
     size_t chassisId = 0;
-    int arg;
-    int optIndex = 0;
-
-    static struct option longOpts[] = {
-        {"chassis", required_argument, nullptr, 'c'}, {nullptr, 0, nullptr, 0}};
-
-    while ((arg = getopt_long(argc, argv, "c:", longOpts, &optIndex)) != -1)
-    {
-        switch (arg)
-        {
-            case 'c':
-                chassisId = std::stoul(optarg);
-                break;
-            default:
-                break;
-        }
-    }
+    CLI::App app{"Check chassis power status"};
+    app.add_option("-c,--chassis", chassisId, "Chassis instance id");
+    CLI11_PARSE(app, argc, argv);
 
     auto chassisName = std::string(ChassisState::namespace_path::chassis) +
                        std::to_string(chassisId);

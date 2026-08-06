@@ -2,8 +2,7 @@
 
 #include "scheduled_host_transition.hpp"
 
-#include <getopt.h>
-
+#include <CLI/CLI.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <cstdlib>
@@ -16,24 +15,9 @@ using ScheduledHostTransition =
 int main(int argc, char** argv)
 {
     size_t hostId = 0;
-
-    int arg;
-    int optIndex = 0;
-
-    static struct option longOpts[] = {
-        {"host", required_argument, nullptr, 'h'}, {nullptr, 0, nullptr, 0}};
-
-    while ((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
-    {
-        switch (arg)
-        {
-            case 'h':
-                hostId = std::stoul(optarg);
-                break;
-            default:
-                break;
-        }
-    }
+    CLI::App app{"Phosphor scheduled host transition"};
+    app.add_option("-h,--host", hostId, "Host instance id");
+    CLI11_PARSE(app, argc, argv);
 
     namespace fs = std::filesystem;
 
