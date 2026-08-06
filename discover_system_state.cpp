@@ -6,8 +6,7 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp"
 
-#include <getopt.h>
-#include <systemd/sd-bus.h>
+#include <CLI/CLI.hpp>
 
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
@@ -56,23 +55,9 @@ int main(int argc, char** argv)
     using namespace phosphor::logging;
 
     size_t hostId = 0;
-    int arg;
-    int optIndex = 0;
-
-    static struct option longOpts[] = {
-        {"host", required_argument, nullptr, 'h'}, {nullptr, 0, nullptr, 0}};
-
-    while ((arg = getopt_long(argc, argv, "h:", longOpts, &optIndex)) != -1)
-    {
-        switch (arg)
-        {
-            case 'h':
-                hostId = std::stoul(optarg);
-                break;
-            default:
-                break;
-        }
-    }
+    CLI::App app{"Discover system state"};
+    app.add_option("-h,--host", hostId, "Host instance id");
+    CLI11_PARSE(app, argc, argv);
 
     using Host = sdbusplus::client::xyz::openbmc_project::state::Host<>;
     std::string hostPath =
