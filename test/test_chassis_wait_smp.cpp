@@ -42,9 +42,9 @@ class SMPChassisWaiterTest : public Test
     {
         EXPECT_CALL(sdbusMock, sd_bus_call(_, _, _, _, _))
             .WillRepeatedly(
-                Invoke([present](sd_bus* /*bus*/, sd_bus_message* m,
-                                 uint64_t /*timeout*/, sd_bus_error* /*error*/,
-                                 sd_bus_message** /*reply*/) {
+                [present](sd_bus* /*bus*/, sd_bus_message* m,
+                          uint64_t /*timeout*/, sd_bus_error* /*error*/,
+                          sd_bus_message** /*reply*/) {
                     const char* member = sd_bus_message_get_member(m);
                     const char* path = sd_bus_message_get_path(m);
 
@@ -56,7 +56,7 @@ class SMPChassisWaiterTest : public Test
                         return present ? 0 : -1;
                     }
                     return 0;
-                }));
+                });
     }
 
     // Helper to mock chassis power state
@@ -64,9 +64,9 @@ class SMPChassisWaiterTest : public Test
     {
         EXPECT_CALL(sdbusMock, sd_bus_call(_, _, _, _, _))
             .WillRepeatedly(
-                Invoke([state](sd_bus* /*bus*/, sd_bus_message* m,
-                               uint64_t /*timeout*/, sd_bus_error* /*error*/,
-                               sd_bus_message** /*reply*/) {
+                [state](sd_bus* /*bus*/, sd_bus_message* m,
+                        uint64_t /*timeout*/, sd_bus_error* /*error*/,
+                        sd_bus_message** /*reply*/) {
                     const char* member = sd_bus_message_get_member(m);
                     const char* path = sd_bus_message_get_path(m);
 
@@ -78,7 +78,7 @@ class SMPChassisWaiterTest : public Test
                         return 0;
                     }
                     return 0;
-                }));
+                });
     }
 };
 
@@ -292,9 +292,9 @@ TEST_F(SMPChassisWaiterTest, HandlesPowerStateQueryFailures)
 
     // Mock power state query to fail
     EXPECT_CALL(sdbusMock, sd_bus_call(_, _, _, _, _))
-        .WillRepeatedly(Invoke([](sd_bus* /*bus*/, sd_bus_message* m,
-                                  uint64_t /*timeout*/, sd_bus_error* /*error*/,
-                                  sd_bus_message** /*reply*/) {
+        .WillRepeatedly([](sd_bus* /*bus*/, sd_bus_message* m,
+                           uint64_t /*timeout*/, sd_bus_error* /*error*/,
+                           sd_bus_message** /*reply*/) {
             const char* member = sd_bus_message_get_member(m);
             const char* path = sd_bus_message_get_path(m);
 
@@ -305,7 +305,7 @@ TEST_F(SMPChassisWaiterTest, HandlesPowerStateQueryFailures)
                 return -1; // Fail power state query
             }
             return 0;      // Succeed inventory query
-        }));
+        });
 
     // Should handle power state query failure gracefully
     EXPECT_NO_THROW({ SMPChassisWaiter waiter(mockedBus, event, 1); });
