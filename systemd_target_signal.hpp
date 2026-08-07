@@ -136,15 +136,36 @@ class SystemdTargetLogging
     sdbusplus::match systemdJobRemovedSignal;
 
     /** @brief Used to know when systemd has registered on dbus **/
-    sdbusplus::match systemdNameOwnedChangedSignal;
+    sdbusplus::bus::match_t systemdNameOwnedChangedSignal;
 
-    /** @brief PropertiesChanged matches for immediate-quiesce monitored units
+    /** @brief Expand serviceData wildcards via ListUnits and install per-unit
+     *         PropertiesChanged monitors for the immediate-quiesce path.
+     *
+     *  Called once from subscribeToSystemdSignals() after Manager.Subscribe
+     *  succeeds.  Wildcard entries (containing '*' or '?') are resolved by
+     *  calling Manager.ListUnits and filtering with fnmatch.  Concrete entries
+     *  are resolved via Manager.GetUnit.  One sdbusplus::bus::match_t is
+     *  pushed onto serviceUnitMatches for each resolved unit.
      */
-    std::vector<sdbusplus::match> immediateQuiesceMatches;
+    void expandServiceWildcards();
 
-    /** @brief Track whether immediate-quiesce monitoring has been initialized
+    /** @brief Handle PropertiesChanged for a monitored service unit.
+     *
+     *  Reads ActiveState from the changed-properties map; if it has
+     *  transitioned to "failed" calls processError() to trigger the
+     *  immediate-quiesce path and error logging.
+     *
+     *  @param[in] unitName  - The concrete unit name (e.g. "bmcweb.service")
+     *  @param[in] msg       - The PropertiesChanged signal message
      */
-    bool immediateQuiesceMonitoringInitialized = false;
+    void serviceUnitPropertiesChanged(const std::string& unitName,
+                                      sdbusplus::message_t& msg);
+
+    /** @brief Per-unit PropertiesChanged match objects for the quiesce path.
+     *
+     *  Populated by expandServiceWildcards().  Lifetime is tied to this object.
+     */
+    std::vector<sdbusplus::bus::match_t> serviceUnitMatches;
 };
 
 } // namespace phosphor::state::manager
