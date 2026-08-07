@@ -105,10 +105,10 @@ class SystemdTargetLogging
     /** @brief Set up PropertiesChanged monitors for immediate-quiesce services
      *
      * For each service in immediateQuiesceServiceData, resolve its systemd
-     * unit object path via LoadUnit and install a PropertiesChanged
-     * match on the org.freedesktop.systemd1.Unit interface. When
-     * ActiveState becomes "failed", a BMC dump, error log, and quiesce
-     * are triggered immediately.
+     * unit object path via LoadUnit (concrete) or ListUnits+fnmatch (wildcard)
+     * and install a PropertiesChanged match on the
+     * org.freedesktop.systemd1.Unit interface. When ActiveState becomes
+     * "failed", a BMC dump, error log, and quiesce are triggered immediately.
      */
     void initImmediateQuiesceMonitoring();
 
@@ -119,6 +119,29 @@ class SystemdTargetLogging
      */
     void processImmediateQuiesceStateChange(sdbusplus::message_t& msg,
                                             const std::string& unitName);
+
+    /** @brief Expand serviceData wildcards via ListUnits and install per-unit
+     *         PropertiesChanged monitors for the service-monitor path.
+     *
+     *  Called once from subscribeToSystemdSignals() after Manager.Subscribe
+     *  succeeds.  Wildcard entries (containing '*') are resolved by
+     *  calling Manager.ListUnits and filtering with fnmatch.  Concrete entries
+     *  are resolved via Manager.GetUnit.  One sdbusplus::bus::match_t is
+     *  pushed onto serviceUnitMatches for each resolved unit.
+     */
+    void expandServiceWildcards();
+
+    /** @brief Handle PropertiesChanged for a monitored service unit.
+     *
+     *  Reads ActiveState from the changed-properties map; if it has
+     *  transitioned to "failed" calls processError() to trigger the
+     *  service-monitor path and error logging.
+     *
+     *  @param[in] unitName  - The concrete unit name (e.g. "bmcweb.service")
+     *  @param[in] msg       - The PropertiesChanged signal message
+     */
+    void serviceUnitPropertiesChanged(const std::string& unitName,
+                                      sdbusplus::message_t& msg);
 
     /** @brief Systemd targets to monitor and error logs to create */
     const TargetErrorData& targetData;
@@ -145,6 +168,13 @@ class SystemdTargetLogging
     /** @brief Track whether immediate-quiesce monitoring has been initialized
      */
     bool immediateQuiesceMonitoringInitialized = false;
+
+    /** @brief Per-unit PropertiesChanged match objects for the service-monitor
+     *         path.
+     *
+     *  Populated by expandServiceWildcards().  Lifetime is tied to this object.
+     */
+    std::vector<sdbusplus::bus::match_t> serviceUnitMatches;
 };
 
 } // namespace phosphor::state::manager

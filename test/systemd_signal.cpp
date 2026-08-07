@@ -1,8 +1,11 @@
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/message.hpp>
 #include <sdeventplus/event.hpp>
 #include <systemd_target_signal.hpp>
 
 #include <iostream>
+#include <unordered_map>
+#include <variant>
 
 #include <gtest/gtest.h>
 
@@ -47,4 +50,92 @@ TEST(TargetSignalData, BasicPaths)
     EXPECT_FALSE(errorToLog.empty());
     EXPECT_EQ(errorToLog,
               "xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure");
+}
+
+TEST(TargetSignalData, WildcardTargetMatchesInstance)
+{
+    TargetErrorData targetData = {
+        {"obmc-chassis-poweron@*.target",
+         {"xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure",
+          {"timeout", "failed"}}}};
+    ServiceMonitorData serviceData = {};
+    ImmediateQuiesceData immediateQuiesceServiceData;
+
+    auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+
+    phosphor::state::manager::SystemdTargetLogging targetMon(
+        targetData, serviceData, immediateQuiesceServiceData, bus);
+
+    auto errorToLog =
+        targetMon.processError("obmc-chassis-poweron@3.target", "failed");
+
+    EXPECT_EQ(errorToLog,
+              "xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure");
+}
+
+TEST(TargetSignalData, ExactServiceMatchesInstance)
+{
+    TargetErrorData targetData = {};
+    ServiceMonitorData serviceData = {
+        "xyz.openbmc_project.State.Chassis@0.service"};
+    ImmediateQuiesceData immediateQuiesceServiceData;
+
+    auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+
+    phosphor::state::manager::SystemdTargetLogging targetMon(
+        targetData, serviceData, immediateQuiesceServiceData, bus);
+
+    auto errorToLog = targetMon.processError(
+        "xyz.openbmc_project.State.Chassis@0.service", "failed");
+
+    EXPECT_EQ(errorToLog,
+              "xyz.openbmc_project.State.Error.CriticalServiceFailure");
+}
+
+TEST(TargetSignalData, ExactTargetMatchesInstance)
+{
+    TargetErrorData targetData = {
+        {"obmc-chassis-poweron@0.target",
+         {"xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure",
+          {"timeout", "failed"}}}};
+    ServiceMonitorData serviceData = {};
+    ImmediateQuiesceData immediateQuiesceServiceData;
+
+    auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+
+    phosphor::state::manager::SystemdTargetLogging targetMon(
+        targetData, serviceData, immediateQuiesceServiceData, bus);
+
+    auto errorToLog =
+        targetMon.processError("obmc-chassis-poweron@0.target", "failed");
+
+    EXPECT_EQ(errorToLog,
+              "xyz.openbmc_project.State.Chassis.Error.PowerOnTargetFailure");
+}
+
+TEST(TargetSignalData, WildcardServiceMatchesInstance)
+{
+    TargetErrorData targetData = {};
+    ServiceMonitorData serviceData = {
+        "xyz.openbmc_project.State.Chassis@*.service"};
+    ImmediateQuiesceData immediateQuiesceServiceData;
+
+    auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+
+    phosphor::state::manager::SystemdTargetLogging targetMon(
+        targetData, serviceData, immediateQuiesceServiceData, bus);
+
+    auto errorToLog = targetMon.processError(
+        "xyz.openbmc_project.State.Chassis@7.service", "failed");
+
+    EXPECT_EQ(errorToLog,
+              "xyz.openbmc_project.State.Error.CriticalServiceFailure");
 }
