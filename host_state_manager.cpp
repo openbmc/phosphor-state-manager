@@ -17,7 +17,6 @@
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
-#include <xyz/openbmc_project/Control/Power/RestorePolicy/server.hpp>
 #include <xyz/openbmc_project/State/Host/error.hpp>
 
 #include <chrono>
