@@ -123,9 +123,10 @@ void Chassis::determineInitialState()
                 // was not a pinhole reset, log an error
                 if (lastState == PowerState::On)
                 {
-                    info("Chassis{CHASSIS_ID}: Chassis power was on before the "
-                         "BMC reboot and it is off now",
-                         "CHASSIS_ID", id);
+                    warning(
+                        "Chassis{CHASSIS_ID}: Chassis power was on before the "
+                        "BMC reboot and it is off now",
+                        "CHASSIS_ID", id);
 
                     // Reset host sensors since system is off now
                     // Ensure Power Leds are off.
@@ -295,10 +296,10 @@ bool Chassis::determineStatusOfUPSPower()
                 }
                 else
                 {
-                    info("Chassis{CHASSIS_ID}: UPS is not fully charged: "
-                         "{UPS_STATE}",
-                         "CHASSIS_ID", id, "UPS_STATE",
-                         std::get<uint>(properties["State"]));
+                    warning("Chassis{CHASSIS_ID}: UPS is not fully charged: "
+                            "{UPS_STATE}",
+                            "CHASSIS_ID", id, "UPS_STATE",
+                            std::get<uint>(properties["State"]));
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
                     return false;
@@ -315,10 +316,10 @@ bool Chassis::determineStatusOfUPSPower()
                 }
                 else
                 {
-                    info("Chassis{CHASSIS_ID}: UPS Battery Level is Low: "
-                         "{UPS_BAT_LEVEL}",
-                         "CHASSIS_ID", id, "UPS_BAT_LEVEL",
-                         std::get<uint>(properties["BatteryLevel"]));
+                    warning("Chassis{CHASSIS_ID}: UPS Battery Level is Low: "
+                            "{UPS_BAT_LEVEL}",
+                            "CHASSIS_ID", id, "UPS_BAT_LEVEL",
+                            std::get<uint>(properties["BatteryLevel"]));
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
                     return false;
@@ -389,7 +390,7 @@ bool Chassis::determineStatusOfPSUPower()
 
                 if (status == decoratorServer::PowerSystemInputs::Status::Fault)
                 {
-                    info(
+                    warning(
                         "Chassis{CHASSIS_ID}: Power System Inputs status is in "
                         "Fault state",
                         "CHASSIS_ID", id);
@@ -586,9 +587,10 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
     {
         if ((value != Transition::Off) && (!utils::isBmcReady(this->bus)))
         {
-            info("Chassis{CHASSIS_ID}: BMC State is not Ready so no chassis on "
-                 "operations allowed",
-                 "CHASSIS_ID", id);
+            warning(
+                "Chassis{CHASSIS_ID}: BMC State is not Ready so no chassis on "
+                "operations allowed",
+                "CHASSIS_ID", id);
             throw sdbusplus::xyz::openbmc_project::State::Chassis::Error::
                 BMCNotReady();
         }
@@ -602,9 +604,9 @@ Chassis::Transition Chassis::requestedPowerTransition(Transition value)
         if ((value != Transition::Off) &&
             (phosphor::state::manager::utils::isFirmwareUpdating(this->bus)))
         {
-            info("Chassis{CHASSIS_ID}: Firmware being updated, reject the "
-                 "transition request",
-                 "CHASSIS_ID", id);
+            warning("Chassis{CHASSIS_ID}: Firmware being updated, reject the "
+                    "transition request",
+                    "CHASSIS_ID", id);
             throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
         }
     }

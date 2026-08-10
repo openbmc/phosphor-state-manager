@@ -82,7 +82,8 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
     {
         // Not all input units will have been loaded yet so just return an
         // empty string if an exception is caught in this path
-        info("Unit {UNIT} not found: {ERROR}", "UNIT", unitToCheck, "ERROR", e);
+        debug("Unit {UNIT} not found: {ERROR}", "UNIT", unitToCheck, "ERROR",
+              e);
         return std::string{};
     }
 
