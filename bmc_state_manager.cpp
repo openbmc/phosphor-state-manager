@@ -55,7 +55,7 @@ void BMC::bmcIsQuiesced()
     }
     catch (const sdbusplus::exception_t& e)
     {
-        info("Error in Unsubscribe: {ERROR}", "ERROR", e);
+        warning("Error in Unsubscribe: {ERROR}", "ERROR", e);
     }
 
     // disable the system state change object as well
@@ -82,7 +82,7 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
     {
         // Not all input units will have been loaded yet so just return an
         // empty string if an exception is caught in this path
-        info("Unit {UNIT} not found: {ERROR}", "UNIT", unitToCheck, "ERROR", e);
+        debug("Unit {UNIT} not found: {ERROR}", "UNIT", unitToCheck, "ERROR", e);
         return std::string{};
     }
 
@@ -102,7 +102,7 @@ std::string BMC::getUnitState(const std::string& unitToCheck)
     }
     catch (const sdbusplus::exception_t& e)
     {
-        info("Error in ActiveState Get: {ERROR}", "ERROR", e);
+        warning("Error in ActiveState Get: {ERROR}", "ERROR", e);
         return std::string{};
     }
     return (std::get<std::string>(currentState));
