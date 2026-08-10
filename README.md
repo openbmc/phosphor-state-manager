@@ -28,11 +28,11 @@ phosphor-state-manager makes extensive use of systemd. There is a [writeup][1]
 with an overview of systemd and its use by OpenBMC.
 
 phosphor-state-manager monitors for systemd targets to complete as a trigger to
-updating the its corresponding D-Bus property. When using PSM, a user must
+updating its corresponding D-Bus property. When using PSM, a user must
 ensure all generic services installed within the PSM targets complete
 successfully in order to have PSM properly report states.
 
-phosphor-state-manager follows some basics design guidelines in its
+phosphor-state-manager follows some basic design guidelines in its
 implementation and use of systemd:
 
 - Keep the different objects as independent as possible (host, chassis, bmc)
@@ -104,7 +104,7 @@ ready.
 ## Only Allow System Boot When BMC Ready
 
 There is an optional `only-allow-boot-when-bmc-ready` feature which can be
-enabled within PSM that will not allow chassis or host operations (other then
+enabled within PSM that will not allow chassis or host operations (other than
 `Off` requests) if the BMC is not in a `Ready` state. Care should be taken to
 ensure `PowerRestoreDelay` is set to a suitable value to ensure the BMC reaches
 `Ready` before the power restore function requests the power on.
@@ -112,7 +112,7 @@ ensure `PowerRestoreDelay` is set to a suitable value to ensure the BMC reaches
 ## BMC Reset with Host and/or Chassis On
 
 In situations where the BMC is reset and the chassis and host are on and
-running, its critical that the BMC software do two things:
+running, it's critical that the BMC software do two things:
 
 - Never impact the state of the system (causing a power off of a running system
   is very bad)
@@ -126,7 +126,7 @@ the files defined below and ensure the common targets go active is a must for
 anyone wishing to enable this feature.
 
 phosphor-state-manager discovers state vs. trying to cache and save states. This
-ensure it's always getting the most accurate state information. It discovers the
+ensures it's always getting the most accurate state information. It discovers the
 chassis state by checking the `pgood` value from the power application. If it
 determines that power is on then it will do the following:
 
@@ -144,7 +144,7 @@ determines that power is on then it will do the following:
 - Start a service to check if the host is on
 
 The chassis@0-on file is removed once the obmc-chassis-poweron\@0.target becomes
-active (i.e. all service have been successfully started which are wanted or
+active (i.e. all services have been successfully started which are wanted or
 required by this target).
 
 The logic to check if the host is on sends a command to the host, and if a
@@ -157,7 +157,7 @@ response is received then similar logic to chassis is done:
     "ConditionPathExists=!/run/openbmc/host@0-request"
 
 The host@0-on file is removed once the obmc-host-start\@0.target and
-obmc-host-startmin\@0.target become active (i.e. all service have been
+obmc-host-startmin\@0.target become active (i.e. all services have been
 successfully started which are wanted or required by these targets).
 
 ## Multiple Chassis in a Symmetric Multi-Processor (SMP) System
@@ -190,7 +190,8 @@ state information from the other chassis instances and presents a unified view.
   excluded from the power on operation.
 - **Coordinated Power Control**: Power transition requests are forwarded to all
   chassis instances, and the systemd target for chassis 0 is also triggered.
-  This allows users who have any global service to run on all power on or off's
+  This allows users who have any global service to run on all power-ons or
+  power-offs
   to put them in the instance 0 obmc-chassis-power(off/on) targets.
 
 ### Configuration
