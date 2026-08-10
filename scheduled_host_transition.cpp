@@ -1,7 +1,6 @@
 #include "scheduled_host_transition.hpp"
 
 #include "utils.hpp"
-#include "xyz/openbmc_project/State/Host/server.hpp"
 
 #include <sys/timerfd.h>
 #include <unistd.h>
