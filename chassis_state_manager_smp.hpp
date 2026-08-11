@@ -65,6 +65,17 @@ class ChassisSMP : public ChassisInherit
      */
     void sysStateChangeJobNew(sdbusplus::message_t& msg);
 
+    /** @brief Handle systemd JobRemoved signals for chassis 0 targets
+     *
+     * Clears the chassis@0-on file once obmc-chassis-poweron@0.target
+     * completes. This must happen on JobRemoved (not during startup
+     * aggregation) to avoid racing with phosphor-reset-chassis-running@0
+     * which writes the file concurrently at startup.
+     *
+     * @param[in] msg - D-Bus message containing job information
+     */
+    static void sysStateChangeJobRemoved(sdbusplus::message_t& msg);
+
     /** @brief Start the systemd unit requested
      *
      * This function calls `StartUnit` on the systemd unit given.
@@ -130,6 +141,10 @@ class ChassisSMP : public ChassisInherit
 
     /** @brief Systemd JobNew signal match for chassis 0 target monitoring. **/
     sdbusplus::match systemdSignalJobNew;
+
+    /** @brief Systemd JobRemoved signal match for chassis 0 target monitoring.
+     **/
+    sdbusplus::match systemdSignalJobRemoved;
 
     /** @brief Cached power states from each chassis instance. **/
     std::map<size_t, PowerState> chassisPowerStates;
