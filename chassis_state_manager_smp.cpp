@@ -10,6 +10,7 @@
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Inventory/Item/common.hpp>
 
+#include <filesystem>
 #include <format>
 #include <fstream>
 #include <iostream>
@@ -50,7 +51,13 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
         sdbusRule::type::signal() + sdbusRule::member("JobNew") +
             sdbusRule::path("/org/freedesktop/systemd1") +
             sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-        [this](sdbusplus::message_t& m) { sysStateChangeJobNew(m); })
+        [this](sdbusplus::message_t& m) { sysStateChangeJobNew(m); }),
+    systemdSignalJobRemoved(
+        bus,
+        sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
+            sdbusRule::path("/org/freedesktop/systemd1") +
+            sdbusRule::interface("org.freedesktop.systemd1.Manager"),
+        [](sdbusplus::message_t& m) { sysStateChangeJobRemoved(m); })
 {
     if (numChassis == 0)
     {
@@ -591,4 +598,35 @@ void ChassisSMP::sysStateChangeJobNew(sdbusplus::message_t& msg)
     }
 }
 
+void ChassisSMP::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
+{
+    uint32_t newStateID{};
+    sdbusplus::object_path newStateObjPath;
+    std::string newStateUnit{};
+    std::string newStateResult{};
+
+    msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
+
+    // When obmc-chassis-poweron@0.target completes successfully, remove the
+    // temporary file that was created to indicate chassis power was on when the
+    // BMC rebooted. This mirrors the same logic in the standard chassis
+    // manager's sysStateChange(). We must do this here (on JobRemoved) rather
+    // than during the initial aggregation so that we do not race with
+    // phosphor-reset-chassis-running@0.service, which creates the file and runs
+    // concurrently with our startup aggregation.
+    if ((newStateUnit == CHASSIS_POWERON_TARGET) && (newStateResult == "done"))
+    {
+        info("Chassis0: Received signal that chassis 0 poweron target is "
+             "complete, clearing chassis@0-on file if present");
+
+        auto chassisFile = std::format(CHASSIS_ON_FILE, 0);
+        std::error_code ec;
+        std::filesystem::remove(chassisFile, ec);
+        if (ec)
+        {
+            error("Failed to remove chassis@0-on file {PATH}: {EC}", "PATH",
+                  chassisFile, "EC", ec.message());
+        }
+    }
+}
 } // namespace phosphor::state::manager
