@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccc7aa77_0fbdaf29",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-12T20:00:07Z",
+      "side": 0,
+      "message": "Seen this in a few places, please leave comments unless there was a reason to remove them?",
+      "revId": "1f2d8f6c3556b529668dbbf19dac3fe6ab264e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d902f7b_131576e6",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-12T20:00:07Z",
+      "side": 0,
+      "message": "Not sure why these comments were removed?",
+      "revId": "1f2d8f6c3556b529668dbbf19dac3fe6ab264e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb892e5e_532f9269",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-12T20:00:07Z",
+      "side": 0,
+      "message": "This immediateQuiesce was a fairly recent feature added. Did you start with an older code base that didn\u0027t have it? Trying to figure out why it\u0027s all deleted.",
+      "revId": "1f2d8f6c3556b529668dbbf19dac3fe6ab264e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

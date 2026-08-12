@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41d269e5_37bcdf30",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-12T20:00:07Z",
+      "side": 1,
+      "message": "We recently moved to using constants for these, look for SYSTEMD_* in the code for them.",
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bcad2c5_738909fe",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-12T20:00:07Z",
+      "side": 1,
+      "message": "Similar comment as above on using constants",
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ef96a77_01a27a8f",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-12T20:00:07Z",
+      "side": 1,
+      "message": "I don\u0027t think this change is needed, we should stick with the simpler sdbusplus::match.",
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "711a3001_616113b7",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-12T20:00:07Z",
+      "side": 1,
+      "message": "Don\u0027t think we need to support a wildcard \u0027?\u0027 \nJust need to support a \u0027*\u0027",
+      "range": {
+        "startLine": 145,
+        "startChar": 55,
+        "endLine": 145,
+        "endChar": 58
+      },
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
