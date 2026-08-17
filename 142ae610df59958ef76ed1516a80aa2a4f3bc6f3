@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "955848fb_c4aaef52",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8e8db48_52d0d9e5",
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bcad2c5_738909fe",
@@ -49,6 +67,24 @@
       "writtenOn": "2026-08-12T20:00:07Z",
       "side": 1,
       "message": "Similar comment as above on using constants",
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a032f890_aed9b589",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bcad2c5_738909fe",
       "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -76,6 +112,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "706c2fce_4c27b35c",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 1,
+      "message": "Was working off an old branch of phosphor state manager that used state. The issue has been fixed.",
+      "parentUuid": "f7c86e06_2050cecc",
+      "range": {
+        "startLine": 323,
+        "startChar": 16,
+        "endLine": 323,
+        "endChar": 22
+      },
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ef96a77_01a27a8f",
@@ -93,6 +153,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53dd5497_4d36f29e",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ef96a77_01a27a8f",
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "711a3001_616113b7",
@@ -106,6 +184,30 @@
       "writtenOn": "2026-08-12T20:00:07Z",
       "side": 1,
       "message": "Don\u0027t think we need to support a wildcard \u0027?\u0027 \nJust need to support a \u0027*\u0027",
+      "range": {
+        "startLine": 145,
+        "startChar": 55,
+        "endLine": 145,
+        "endChar": 58
+      },
+      "revId": "142ae610df59958ef76ed1516a80aa2a4f3bc6f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3e26890_62e34824",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 1,
+      "message": "Bob wrote a function that accounted for \u0027*\u0027 and \u0027?\u0027 wildcards and I removed the \u0027?\u0027 path but missed this comment. Resolved now.",
+      "parentUuid": "711a3001_616113b7",
       "range": {
         "startLine": 145,
         "startChar": 55,

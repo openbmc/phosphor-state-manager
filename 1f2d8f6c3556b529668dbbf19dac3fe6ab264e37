@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c02317_1f07f6c7",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 0,
+      "message": "Fixed",
+      "parentUuid": "ccc7aa77_0fbdaf29",
+      "revId": "1f2d8f6c3556b529668dbbf19dac3fe6ab264e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d902f7b_131576e6",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62186494_9c991031",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 0,
+      "message": "Tried to remove some redundant comments that Bob left and these were accidentally included",
+      "parentUuid": "1d902f7b_131576e6",
+      "revId": "1f2d8f6c3556b529668dbbf19dac3fe6ab264e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb892e5e_532f9269",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-08-12T20:00:07Z",
       "side": 0,
       "message": "This immediateQuiesce was a fairly recent feature added. Did you start with an older code base that didn\u0027t have it? Trying to figure out why it\u0027s all deleted.",
+      "revId": "1f2d8f6c3556b529668dbbf19dac3fe6ab264e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd70b55_f545cd6b",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-17T20:13:23Z",
+      "side": 0,
+      "message": "Not sure how but I was accidentally working off of the master branch instead of 1210 and the code was from March. New changes should be up to date with ibm-openbmc/1210 branch.",
+      "parentUuid": "fb892e5e_532f9269",
       "revId": "1f2d8f6c3556b529668dbbf19dac3fe6ab264e37",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
