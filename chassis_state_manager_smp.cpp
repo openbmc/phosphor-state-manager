@@ -459,7 +459,7 @@ bool ChassisSMP::isChassisPresent(size_t chassisId)
     try
     {
         auto inventoryBusName =
-            utils::getService(bus, inventoryPath.str, InventoryItem::interface);
+            utils::getService(bus, inventoryPath, InventoryItem::interface);
 
         auto method = bus.new_method_call(
             inventoryBusName.c_str(), inventoryPath, PROPERTY_INTERFACE, "Get");
