@@ -51,14 +51,15 @@ void subscribeToSystemdSignals(sdbusplus::bus_t& bus)
     return;
 }
 
-std::string getService(sdbusplus::bus_t& bus, std::string path,
+std::string getService(sdbusplus::bus_t& bus,
+                       const sdbusplus::object_path& path,
                        std::string interface)
 {
     auto mapper = bus.new_method_call(
         ObjectMapper::default_service, ObjectMapper::instance_path,
         ObjectMapper::interface, ObjectMapper::method_names::get_object);
 
-    mapper.append(path, std::vector<std::string>({interface}));
+    mapper.append(path.string(), std::vector<std::string>({interface}));
 
     std::vector<std::pair<std::string, std::vector<std::string>>>
         mapperResponse;
