@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeb4777a_2f901ad8",
+        "filename": "utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-18T19:47:05Z",
+      "side": 1,
+      "message": "I\u0027m kind of surprised this still compiles? I guess there\u0027s an implicit coversion of some sort from std::string to sdbusplus::object_path. Do you see any issues with this? I see this 2 places in here and then in secure_boot_check.cpp as well.",
+      "revId": "5dfaf0123fd092be3534e5d07c1141e36042b110",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
