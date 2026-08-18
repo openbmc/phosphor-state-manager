@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e81f8ee_48cadc63",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-18T18:45:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e38bba0a_318279bc",
+      "range": {
+        "startLine": 623,
+        "startChar": 8,
+        "endLine": 623,
+        "endChar": 49
+      },
+      "revId": "c03aca8e1ea174372e862fd7e5f8ba96a518c60d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fac65ea_3e077fc1",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-13T06:03:07Z",
       "side": 1,
       "message": "Unhandled filesystem errors",
+      "range": {
+        "startLine": 625,
+        "startChar": 12,
+        "endLine": 625,
+        "endChar": 49
+      },
+      "revId": "c03aca8e1ea174372e862fd7e5f8ba96a518c60d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "855cfccb_31faafb7",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-18T18:45:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fac65ea_3e077fc1",
       "range": {
         "startLine": 625,
         "startChar": 12,
