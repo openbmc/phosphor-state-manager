@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe40071b_32e86f08",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-19T21:35:04Z",
+      "side": 1,
+      "message": "Not clear to me we need this function. I think we can just have expandServiceWildcards() do the ListUnits, find matches, and then add them to targetData and serviceData. Then in the existing code, systemdUnitChange() fires and if it sees the new instanced wild card service/target, it works as it always has. Why the new signal handler here?",
+      "revId": "e76e6121e534229fe0642eefb82ba3de12a03cbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86e47384_11f3324f",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-19T21:35:04Z",
+      "side": 1,
+      "message": "Should be using the simpler sdbusplus::match",
+      "range": {
+        "startLine": 129,
+        "startChar": 47,
+        "endLine": 129,
+        "endChar": 70
+      },
+      "revId": "e76e6121e534229fe0642eefb82ba3de12a03cbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dd5446e_c6602e0c",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-19T21:35:04Z",
+      "side": 1,
+      "message": "sdbusplus::match",
+      "range": {
+        "startLine": 177,
+        "startChar": 16,
+        "endLine": 177,
+        "endChar": 39
+      },
+      "revId": "e76e6121e534229fe0642eefb82ba3de12a03cbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
