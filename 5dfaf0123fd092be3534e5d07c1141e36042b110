@@ -16,6 +16,24 @@
       "message": "I\u0027m kind of surprised this still compiles? I guess there\u0027s an implicit coversion of some sort from std::string to sdbusplus::object_path. Do you see any issues with this? I see this 2 places in here and then in secure_boot_check.cpp as well.",
       "revId": "5dfaf0123fd092be3534e5d07c1141e36042b110",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e6f3270_20317a27",
+        "filename": "utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-08-19T09:47:01Z",
+      "side": 1,
+      "message": "I don\u0027t see issues at this call site.\n\nThere is implicit conversion but since `getService` is a sync call the lifetime of the temporary object should be sufficient.\n\n```\nstring_path_wrapper(const std::string\u0026 str_in) : str(str_in) {}\n```\n\n```\n\u003c_ZN8phosphor5state7manager5utils11setPropertyERN9sdbusplus5bus_tERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESD_SD_SD_\u003e:\n        push   rbp\n        mov    rbp,rsp\n        push   rbx\n        sub    rsp,0x138\n        mov    QWORD PTR [rbp-0x118],rdi\n        mov    QWORD PTR [rbp-0x120],rsi\n        mov    QWORD PTR [rbp-0x128],rdx\n        mov    QWORD PTR [rbp-0x130],rcx\n        mov    QWORD PTR [rbp-0x138],r8\n        mov    rax,QWORD PTR fs:0x28\n        mov    QWORD PTR [rbp-0x18],rax\n        xor    eax,eax\n        mov    rdx,QWORD PTR [rbp-0x138]\n        lea    rax,[rbp-0x40]\n        mov    rsi,rdx\n        mov    rdi,rax\n        call   \u003c_ZNSt7variantIJNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEC1IRKS5_vvS5_vEEOT_\u003e\n        mov    rdx,QWORD PTR [rbp-0x128]\n        lea    rax,[rbp-0x60]\n        mov    rsi,rdx\n        mov    rdi,rax\n        call   \u003c_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1ERKS4_\u003e\n        mov    rdx,QWORD PTR [rbp-0x120]\n        lea    rax,[rbp-0x80]\n        mov    rsi,rdx\n        mov    rdi,rax\n        call   \u003c_ZN9sdbusplus7message7details19string_path_wrapperC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE\u003e\n        lea    rax,[rbp-0xa0]\n        lea    rcx,[rbp-0x60]\n        lea    rdx,[rbp-0x80]\n        mov    rsi,QWORD PTR [rbp-0x118]\n        mov    rdi,rax\n        call   \u003c_ZN8phosphor5state7manager5utils10getServiceERN9sdbusplus5bus_tERKNS3_7message7details19string_path_wrapperENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE\u003e\n```\ni was more worried about\n\n```\nmapper.append(path.string(), std::vector\u003cstd::string\u003e({interface}));\n```\nbut following the definitions, it eventually goes to\n`sd_bus_message_append_basic`\n\nhttps://www.man7.org/linux/man-pages/man3/sd_bus_message_append_basic.3.html\n\nwhich is documented to copy by value\n\n```\n       The value of the parameter is copied into a memory area held by\n       the message object, stays in the possession of the caller and may\n       hence be freely changed after this call without affecting the bus\n       message it has been added to. If type is \"h\" (UNIX file\n       descriptor), the descriptor is duplicated by this call and the\n       passed descriptor stays in possession of the caller.\n\n```",
+      "parentUuid": "aeb4777a_2f901ad8",
+      "revId": "5dfaf0123fd092be3534e5d07c1141e36042b110",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
