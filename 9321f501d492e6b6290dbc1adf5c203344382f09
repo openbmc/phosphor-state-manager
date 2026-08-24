@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85b05ea4_cec4a790",
+        "filename": "test/chassis_availability_monitor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:33:20Z",
+      "side": 1,
+      "message": "We\u0027ve tended to put \"test_\" in front of the test file names. Lets keep it consistent.",
+      "revId": "9321f501d492e6b6290dbc1adf5c203344382f09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b846938b_057482a6",
+        "filename": "test/chassis_availability_monitor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:33:20Z",
+      "side": 1,
+      "message": "Lets add a \"ASSERT_NE(tmpf, nullptr)\" after the fopen just to be sure all worked as expected. Dealing with null file pointers can cause undefined behaviors that are tricky to debug.",
+      "revId": "9321f501d492e6b6290dbc1adf5c203344382f09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
