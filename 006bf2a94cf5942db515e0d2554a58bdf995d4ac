@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6020d344_927bfc9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:16:44Z",
+      "side": 1,
+      "message": "nit: github is more permanent so once a change is merged, best to use it as a link. -i.e. https://github.com/openbmc/phosphor-state-manager/blob/master/README.md#chassis-availability-monitoring",
+      "revId": "006bf2a94cf5942db515e0d2554a58bdf995d4ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0da48fed_6a4bf6ed",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:16:44Z",
+      "side": 1,
+      "message": "Lets add the configPath into the error message to make debug easier if it hits.",
+      "revId": "006bf2a94cf5942db515e0d2554a58bdf995d4ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10693a37_6d65e472",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:16:44Z",
+      "side": 1,
+      "message": "General Comment (check all code): Look at some other files for example but basically this can be one line:\n\nnamespace phosphor::state::manager\n{",
+      "revId": "006bf2a94cf5942db515e0d2554a58bdf995d4ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
