@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad9e996f_2dffd447",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:53:59Z",
+      "side": 1,
+      "message": "nit: discoverChassis()",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 19
+      },
+      "revId": "0f7e5689fa1a4fbc85df6122239ec08a738569da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c3d003_9f8b78dc",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:53:59Z",
+      "side": 1,
+      "message": "I\u0027m a bit torn on whether we should do this vs. start at \"/xyz/openbmc_project/\" or even just \"/\"\nAs currently the only use case is under this path, lets leave it for efficiency purposes but something to think about in the future.",
+      "revId": "0f7e5689fa1a4fbc85df6122239ec08a738569da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f4b796c_f7fbc2f8",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:53:59Z",
+      "side": 1,
+      "message": "Lets add an inline comment that \"0\" means unlimited depth as it can be a bit confusing to look at otherwise.",
+      "revId": "0f7e5689fa1a4fbc85df6122239ec08a738569da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1779d14d_c47496fa",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:53:59Z",
+      "side": 1,
+      "message": "If not needed in the hpp, we should just put in the cpp so we don\u0027t pollute things if other files include this hpp.",
+      "revId": "0f7e5689fa1a4fbc85df6122239ec08a738569da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9bfe484_7f38a9aa",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-24T21:53:59Z",
+      "side": 1,
+      "message": "I think this is implying it\u0027s here to assist with unit testing? Either way, I\u0027d just delete it to keep it simple.",
+      "range": {
+        "startLine": 51,
+        "startChar": 46,
+        "endLine": 52,
+        "endChar": 35
+      },
+      "revId": "0f7e5689fa1a4fbc85df6122239ec08a738569da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
