@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "396aba88_5467ea03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-25T18:18:37Z",
+      "side": 1,
+      "message": "nit: commit message should mostly explain \"why\" we want this change vs. \"what\" it does. The \"what\" is in the code change itself. My understanding of the \"why\" is that this is more modern and simpler code when using CLI11.",
+      "revId": "495a16f1ab0dc3ebe73495880012a27e918b11df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
