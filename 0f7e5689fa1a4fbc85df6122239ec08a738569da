@@ -135,6 +135,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "819bcdf1_4b22ba04",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-25T23:22:40Z",
+      "side": 1,
+      "message": "Removed the #include \u003cnlohmann/json.hpp\u003e from the header file. Added it into chassis_availability_monitor.cpp and test_chassis_availability_monitor.cpp.",
+      "parentUuid": "231e9cd0_527d6664",
+      "revId": "0f7e5689fa1a4fbc85df6122239ec08a738569da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9bfe484_7f38a9aa",
