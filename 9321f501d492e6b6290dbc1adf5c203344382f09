@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d01f29a0_90823565",
+        "filename": "test/chassis_availability_monitor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-25T19:12:06Z",
+      "side": 1,
+      "message": "Updated file name to: \"test_chassis_availability_monitor.cpp\".\nAdded the new file name to test/meson.build.",
+      "parentUuid": "85b05ea4_cec4a790",
+      "revId": "9321f501d492e6b6290dbc1adf5c203344382f09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b846938b_057482a6",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-24T21:33:20Z",
       "side": 1,
       "message": "Lets add a \"ASSERT_NE(tmpf, nullptr)\" after the fopen just to be sure all worked as expected. Dealing with null file pointers can cause undefined behaviors that are tricky to debug.",
+      "revId": "9321f501d492e6b6290dbc1adf5c203344382f09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c732dec7_e7b379ea",
+        "filename": "test/chassis_availability_monitor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-25T19:12:06Z",
+      "side": 1,
+      "message": "Added \"ASSERT_NE(tmpf, nullptr)\" after the fopen() statement.",
+      "parentUuid": "b846938b_057482a6",
       "revId": "9321f501d492e6b6290dbc1adf5c203344382f09",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
