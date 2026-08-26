@@ -70,21 +70,29 @@ int getGpioValue(const std::string& gpioName);
 
 /** @brief Create an error log
  *
- * @param[in] bus           - The Dbus bus object
- * @param[in] errorMsg      - The error message
- * @param[in] errLevel      - The error level
- * parampin] additionalData - Optional extra data to add to the log
+ * @param[in] bus            - The Dbus bus object
+ * @param[in] errorMsg       - The error message
+ * @param[in] errLevel       - The error level
+ * @param[in] additionalData - Optional extra data to add to the log
+ *
+ * @return The D-Bus object path of the created log entry
  */
-void createError(
+sdbusplus::object_path createError(
     sdbusplus::bus_t& bus, const std::string& errorMsg,
     sdbusplus::server::xyz::openbmc_project::logging::Entry::Level errLevel,
     std::map<std::string, std::string> additionalData = {});
 
-/** @brief Call phosphor-dump-manager to create BMC user dump
+/** @brief Call phosphor-dump-manager to create BMC dump linked to an error log
  *
- * @param[in] bus          - The Dbus bus object
+ * @param[in] bus        - The Dbus bus object
+ * @param[in] objectPath - D-Bus object path of the associated error log entry
+ *                         (e.g. /xyz/openbmc_project/logging/entry/5).
+ *                         Passed as FilePath to CreateDump so dreport can
+ *                         collect the elog details inside the dump archive.
+ *                         Pass an empty string if there is no associated entry.
  */
-void createBmcDump(sdbusplus::bus_t& bus);
+void createBmcDump(sdbusplus::bus_t& bus,
+                   const sdbusplus::object_path& objectPath);
 
 /** @brief Attempt to locate the obmc-chassis-lost-power@ file
  *    to indicate that an AC loss occurred.
