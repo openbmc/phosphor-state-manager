@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7da7450_0654630c",
+        "filename": "service_files/xyz.openbmc_project.State.ChassisAvailability.service",
+        "patchSetId": 16
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:46:27Z",
+      "side": 1,
+      "message": "If this doesn\u0027t host any objects itself, you don\u0027t need these 2 lines.  (and then it also wouldn\u0027t request the name in the code.)",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 53
+      },
+      "revId": "4cf4d4e8c5db66b1734a97eb4e4f29196b3ec226",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
