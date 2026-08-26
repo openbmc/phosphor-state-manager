@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3661be24_d51dc56e",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-26T17:00:35Z",
+      "side": 1,
+      "message": "nit: blank line should be removed",
+      "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
