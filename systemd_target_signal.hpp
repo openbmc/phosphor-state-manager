@@ -78,9 +78,12 @@ class SystemdTargetLogging
      * @param[in]  error      - The error to log
      * @param[in]  result     - The failure code from the systemd unit
      * @param[in]  unit       - The name of the failed unit
+     *
+     * @return The D-Bus object path of the created log entry
      */
-    void logError(const std::string& error, const std::string& result,
-                  const std::string& unit);
+    sdbusplus::object_path logError(const std::string& error,
+                                    const std::string& result,
+                                    const std::string& unit);
 
     /** @brief Check if systemd state change is one to monitor
      *
