@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d09485b_f2148112",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:47:45Z",
+      "side": 1,
+      "message": "if testFile is a std::filesystem::path, you can use the \u0027/\u0027 operator to append.",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 28
+      },
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b3c1193_3b618329",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:47:45Z",
+      "side": 1,
+      "message": "unit tests from other jobs can run in parallel on CI machines, so you\u0027ll want to use a unique directory name with mkdtemp()",
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66a5590a_3374ea80",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:47:45Z",
+      "side": 1,
+      "message": "Can just use std::ofstream?\nstd::ofstream  stream(testFile);\nstream \u003c\u003c config;",
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c3e173_e30f8047",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:47:45Z",
+      "side": 1,
+      "message": "std::ofstream",
+      "range": {
+        "startLine": 131,
+        "startChar": 3,
+        "endLine": 131,
+        "endChar": 14
+      },
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
