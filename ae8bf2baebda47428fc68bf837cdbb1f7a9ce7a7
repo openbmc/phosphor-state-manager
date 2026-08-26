@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a742b60a_c056ced4",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:41:16Z",
+      "side": 1,
+      "message": "these emplicit conversions are frowned upon in the nlohmann docs,  instead use \n\navailableObjectPathTemplate \u003d config[\"availableObjectPath\"].get\u003cstring\u003e();\n\nThis goes for anywhere you do this as well, such as below.",
+      "range": {
+        "startLine": 39,
+        "startChar": 38,
+        "endLine": 39,
+        "endChar": 68
+      },
+      "revId": "ae8bf2baebda47428fc68bf837cdbb1f7a9ce7a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3080cb86_5ec6c9ba",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:41:16Z",
+      "side": 1,
+      "message": "std::move(condition)",
+      "range": {
+        "startLine": 65,
+        "startChar": 33,
+        "endLine": 65,
+        "endChar": 42
+      },
+      "revId": "ae8bf2baebda47428fc68bf837cdbb1f7a9ce7a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c61b3716_426dedbe",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:41:16Z",
+      "side": 1,
+      "message": "nit:  lg2 understands exceptions, so you just need to pass in \u0027e\u0027.",
+      "range": {
+        "startLine": 71,
+        "startChar": 48,
+        "endLine": 71,
+        "endChar": 56
+      },
+      "revId": "ae8bf2baebda47428fc68bf837cdbb1f7a9ce7a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
