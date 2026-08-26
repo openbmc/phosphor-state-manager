@@ -22,6 +22,64 @@
       },
       "revId": "726916eb7cb664208444a64da21100059df1125c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85e77f9e_16178680",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:42:46Z",
+      "side": 1,
+      "message": "This commit is actually tough to test, since our inventory manager doesn\u0027t support  removes...",
+      "parentUuid": "bfcd35f0_2263e591",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 72
+      },
+      "revId": "726916eb7cb664208444a64da21100059df1125c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44630d60_f4b9c043",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:42:46Z",
+      "side": 1,
+      "message": "I haven\u0027t mentioned this elsewhere, but there is a new \u0027unpack\u0027 method that is supposed to make it easier to extract data from messages.  The commit https://github.com/openbmc/phosphor-state-manager/commit/4d2da4bef6656b6b71ecfc09ef8a416ccece50b9 went through and did it for all existing read calls already.",
+      "revId": "726916eb7cb664208444a64da21100059df1125c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20a4b1b8_d87bbe5d",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:42:46Z",
+      "side": 1,
+      "message": "what if it isn\u0027t a chassis that is being removed, but rather just some sub item under the chassis?  like inventory/system/chassisX/motherboard/pcie_card7?",
+      "revId": "726916eb7cb664208444a64da21100059df1125c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
