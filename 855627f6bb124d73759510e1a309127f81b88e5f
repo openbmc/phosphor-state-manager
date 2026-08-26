@@ -91,6 +91,29 @@
       "message": "PIM requires this unusual \"Notify\" call for a persistent update but most other areas (like entity manager) do not. We should write the code using the generic set-property call (utils.cpp has setProperty() function). If PIM requires something special, we\u0027ll need to work that in later but I think the non-persistent PIM set-property should be fine, as we\u0027ll re-run all this on BMC reboots.",
       "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b1dd7b7_999f07b0",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:15:50Z",
+      "side": 1,
+      "message": "\u0027e\u0027.",
+      "range": {
+        "startLine": 314,
+        "startChar": 42,
+        "endLine": 314,
+        "endChar": 50
+      },
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
