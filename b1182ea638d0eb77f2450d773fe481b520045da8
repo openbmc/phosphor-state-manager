@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dae916d9_ec7e155a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:31:18Z",
+      "side": 1,
+      "message": "When the code first comes up for the first time, does this path get exercised? Is the service running when the chassis are persistently added to the inventory for the first time?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3661be24_d51dc56e",
         "filename": "chassis_availability_monitor.cpp",
         "patchSetId": 15
@@ -14,6 +37,40 @@
       "writtenOn": "2026-08-26T17:00:35Z",
       "side": 1,
       "message": "nit: blank line should be removed",
+      "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81493e25_f981e91d",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:31:18Z",
+      "side": 1,
+      "message": "This could be any inventory path coming back here, such as for some sub-item, like chassisN/motherboard/pcie_card7.  Is that OK here?",
+      "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7dc1c43_6d289286",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:31:18Z",
+      "side": 1,
+      "message": "You could look into using std::ranges::any_of to simplify the code some.  Up to you.",
       "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
