@@ -224,12 +224,14 @@ bool Host::isAutoReboot()
                 // Generate log since we will now be sitting in Quiesce
                 const std::string errorMsg =
                     "xyz.openbmc_project.State.Error.HostQuiesce";
-                utils::createError(this->bus, errorMsg,
-                                   sdbusplus::xyz::openbmc_project::Logging::
-                                       server::Entry::Level::Critical);
+                auto logEntryPath = utils::createError(
+                    this->bus, errorMsg,
+                    sdbusplus::xyz::openbmc_project::Logging::server::Entry::
+                        Level::Critical);
 
-                // Generate BMC dump to assist with debug
-                utils::createBmcDump(this->bus);
+                // Generate BMC dump linked to the error log above so dreport
+                // collects the elog details
+                utils::createBmcDump(this->bus, logEntryPath);
 
                 return false;
             }
