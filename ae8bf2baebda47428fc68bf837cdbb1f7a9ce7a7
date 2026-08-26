@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3b65721_8fa3b60b",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-26T22:43:27Z",
+      "side": 1,
+      "message": "Edited availableObjectPathTemplate assginment to explicitly use \u003cstd::string\u003e().\n\nAlso made the same change to the condition.baseObjectPath, condition.interface, and condition.property assignments.",
+      "parentUuid": "a742b60a_c056ced4",
+      "range": {
+        "startLine": 39,
+        "startChar": 38,
+        "endLine": 39,
+        "endChar": 68
+      },
+      "revId": "ae8bf2baebda47428fc68bf837cdbb1f7a9ce7a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3080cb86_5ec6c9ba",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c046b4f_81b084dc",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-26T22:43:27Z",
+      "side": 1,
+      "message": "Changed the parameter of the .push_back() method to std::move(condition).",
+      "parentUuid": "3080cb86_5ec6c9ba",
+      "range": {
+        "startLine": 65,
+        "startChar": 33,
+        "endLine": 65,
+        "endChar": 42
+      },
+      "revId": "ae8bf2baebda47428fc68bf837cdbb1f7a9ce7a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c61b3716_426dedbe",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-26T18:41:16Z",
       "side": 1,
       "message": "nit:  lg2 understands exceptions, so you just need to pass in \u0027e\u0027.",
+      "range": {
+        "startLine": 71,
+        "startChar": 48,
+        "endLine": 71,
+        "endChar": 56
+      },
+      "revId": "ae8bf2baebda47428fc68bf837cdbb1f7a9ce7a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "334fda7c_5ed722a7",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-26T22:43:27Z",
+      "side": 1,
+      "message": "Changed e.what() to e.",
+      "parentUuid": "c61b3716_426dedbe",
       "range": {
         "startLine": 71,
         "startChar": 48,
