@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "591ac766_cf38460e",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-26T16:33:32Z",
+      "side": 1,
+      "message": "In most cases we\u0027re already in a signal handler within this code (property change call), and now within that signal handler we\u0027re calling into Inventory manager. That\u0027s a bit concerning in that we could end up hung if inventory manager is stalling on something. It may be time to look into boost::asio or even the new coroutines. This service doesn\u0027t provide any dbus interfaces so it being blocked isn\u0027t horrible. Lets see if anyone else has concerns.",
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d8007e_50d17abb",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-26T16:33:32Z",
+      "side": 1,
+      "message": "isAvailable would be more clear to me",
+      "range": {
+        "startLine": 272,
+        "startChar": 55,
+        "endLine": 272,
+        "endChar": 64
+      },
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "254537a8_6f4ecb8e",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-26T16:33:32Z",
+      "side": 1,
+      "message": "Should be utilizing availableObjectPath from json file for this so users can put the Available property wherever they like.",
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b426232_55c7a213",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-26T16:33:32Z",
+      "side": 1,
+      "message": "PIM requires this unusual \"Notify\" call for a persistent update but most other areas (like entity manager) do not. We should write the code using the generic set-property call (utils.cpp has setProperty() function). If PIM requires something special, we\u0027ll need to work that in later but I think the non-persistent PIM set-property should be fine, as we\u0027ll re-run all this on BMC reboots.",
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
