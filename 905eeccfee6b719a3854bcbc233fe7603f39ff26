@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "684fd397_d40b6eea",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T19:14:10Z",
+      "side": 1,
+      "message": "can just do it the same as you did on line 166?\nIt\u0027s pretty rare to iterator with index values unless necessary.",
+      "range": {
+        "startLine": 199,
+        "startChar": 4,
+        "endLine": 199,
+        "endChar": 50
+      },
+      "revId": "905eeccfee6b719a3854bcbc233fe7603f39ff26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85e970f0_9d67bd9f",
         "filename": "chassis_availability_monitor.cpp",
         "patchSetId": 16
