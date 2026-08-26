@@ -52,9 +52,9 @@ void SystemdTargetLogging::startBmcQuiesceTarget()
     return;
 }
 
-void SystemdTargetLogging::logError(const std::string& errorLog,
-                                    const std::string& result,
-                                    const std::string& unit)
+sdbusplus::object_path SystemdTargetLogging::logError(
+    const std::string& errorLog, const std::string& result,
+    const std::string& unit)
 {
     auto method = this->bus.new_method_call(
         LoggingCreate::default_service, LoggingCreate::instance_path,
@@ -67,7 +67,10 @@ void SystemdTargetLogging::logError(const std::string& errorLog,
              std::pair<std::string, std::string>({"SYSTEMD_UNIT", unit})}));
     try
     {
-        this->bus.call_noreply(method);
+        auto resp = this->bus.call(method);
+        sdbusplus::object_path entryPath;
+        resp.read(entryPath);
+        return entryPath;
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -75,6 +78,7 @@ void SystemdTargetLogging::logError(const std::string& errorLog,
               "result:{RESULT}, exception:{ERROR}",
               "ERROR_MSG", errorLog, "RESULT", result, "ERROR", e);
     }
+    return {};
 }
 
 std::string SystemdTargetLogging::processError(const std::string& unit,
@@ -92,8 +96,10 @@ std::string SystemdTargetLogging::processError(const std::string& unit,
                 "Monitored systemd unit has hit an error, unit:{UNIT}, result:{RESULT}",
                 "UNIT", unit, "RESULT", result);
 
-            // Generate a BMC dump when a monitored target fails
-            utils::createBmcDump(this->bus);
+            // Return the error name to the caller. The log entry is created
+            // by logError() in systemdUnitChange(), and the BMC dump is
+            // created immediately after using the returned log entry object
+            // path so the dump is linked to the error log.
             return (targetEntry->second.errorToLog);
         }
     }
@@ -108,9 +114,10 @@ std::string SystemdTargetLogging::processError(const std::string& unit,
                 "Monitored systemd service has hit an error, unit:{UNIT}, result:{RESULT}",
                 "UNIT", unit, "RESULT", result);
 
-            // Generate a BMC dump when a critical service fails
-            utils::createBmcDump(this->bus);
-            // Enter BMC Quiesce when a critical service fails
+            // Enter BMC Quiesce when a critical service fails. The log entry
+            // is created by logError() in systemdUnitChange(), and the BMC
+            // dump is created immediately after using the returned log entry
+            // object path so the dump is linked to the error log.
             startBmcQuiesceTarget();
             return std::string{CRITICAL_SERVICE_ERROR};
         }
@@ -133,10 +140,11 @@ void SystemdTargetLogging::systemdUnitChange(sdbusplus::message_t& msg)
     {
         const std::string error = processError(unit, result);
 
-        // If this is a monitored error then log it
+        // If this is a monitored error then log it and create a linked dump
         if (!error.empty())
         {
-            logError(error, result, unit);
+            auto logEntryPath = logError(error, result, unit);
+            utils::createBmcDump(this->bus, logEntryPath);
         }
     }
     return;
@@ -264,8 +272,9 @@ void SystemdTargetLogging::initImmediateQuiesceMonitoring()
                 info("Immediate-quiesce service already in failed state "
                      "at monitor startup, unit:{UNIT}, result:{RESULT}",
                      "UNIT", service, "RESULT", *stateStr);
-                utils::createBmcDump(this->bus);
-                logError(CRITICAL_SERVICE_ERROR, *stateStr, service);
+                auto logEntryPath =
+                    logError(CRITICAL_SERVICE_ERROR, *stateStr, service);
+                utils::createBmcDump(this->bus, logEntryPath);
                 startBmcQuiesceTarget();
             }
         }
@@ -322,11 +331,10 @@ void SystemdTargetLogging::processImmediateQuiesceStateChange(
          "unit:{UNIT}, result:{RESULT}",
          "UNIT", unitName, "RESULT", *activeStatePtr);
 
-    // Generate a BMC dump when an immediate-quiesce service fails
-    utils::createBmcDump(this->bus);
-
-    // Log the error
-    logError(CRITICAL_SERVICE_ERROR, *activeStatePtr, unitName);
+    // Log the error and create a BMC dump linked to it
+    auto logEntryPath =
+        logError(CRITICAL_SERVICE_ERROR, *activeStatePtr, unitName);
+    utils::createBmcDump(this->bus, logEntryPath);
 
     // Enter BMC Quiesce
     startBmcQuiesceTarget();
