@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3001d84_fdf96372",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-08-26T18:03:01Z",
+      "side": 1,
+      "message": "I don\u0027t think there\u0027s an issue with a signal. It would be inside a method call from the same server that could cause a deadlock.",
+      "parentUuid": "591ac766_cf38460e",
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83d8007e_50d17abb",
         "filename": "chassis_availability_monitor.cpp",
         "patchSetId": 15
