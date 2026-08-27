@@ -22,6 +22,30 @@
       },
       "revId": "4cf4d4e8c5db66b1734a97eb4e4f29196b3ec226",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ab3fe1_7d8f95b6",
+        "filename": "service_files/xyz.openbmc_project.State.ChassisAvailability.service",
+        "patchSetId": 16
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T17:02:40Z",
+      "side": 1,
+      "message": "Removed the Type and BusName declarations.",
+      "parentUuid": "e7da7450_0654630c",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 53
+      },
+      "revId": "4cf4d4e8c5db66b1734a97eb4e4f29196b3ec226",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
