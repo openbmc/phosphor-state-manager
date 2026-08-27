@@ -47,6 +47,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "991096af_f03f535f",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T01:36:42Z",
+      "side": 1,
+      "message": "Changed e.what() to e.",
+      "parentUuid": "57633beb_ab398b69",
+      "range": {
+        "startLine": 115,
+        "startChar": 60,
+        "endLine": 115,
+        "endChar": 69
+      },
+      "revId": "26f5cb1a0bd1896a801cc72e6da183e6b6b3ff26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19c660e4_e731f012",
@@ -77,6 +101,30 @@
       "writtenOn": "2026-08-26T19:23:01Z",
       "side": 1,
       "message": "the modern way to say if a value is valid is to use a std::optional\u003cint\u003e as the return type.\n\nThen here you\u0027d return std::nullopt.\n\nThe caller then has several options to check if it contains a value, such as the bool operator() or the has_value() function.  You can get the value out with a * or .value().",
+      "range": {
+        "startLine": 131,
+        "startChar": 8,
+        "endLine": 131,
+        "endChar": 18
+      },
+      "revId": "26f5cb1a0bd1896a801cc72e6da183e6b6b3ff26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d618e782_87ee3133",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T01:36:42Z",
+      "side": 1,
+      "message": "Changed return type of  to std::optional\u003cint\u003e.",
+      "parentUuid": "5990888e_e43ee777",
       "range": {
         "startLine": 131,
         "startChar": 8,
