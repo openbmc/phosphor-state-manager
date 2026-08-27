@@ -59,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "630ee78c_605e9c26",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T21:39:00Z",
+      "side": 1,
+      "message": "Changed variable name from available to isAvailable",
+      "parentUuid": "83d8007e_50d17abb",
+      "range": {
+        "startLine": 272,
+        "startChar": 55,
+        "endLine": 272,
+        "endChar": 64
+      },
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "254537a8_6f4ecb8e",
@@ -72,6 +96,24 @@
       "writtenOn": "2026-08-26T16:33:32Z",
       "side": 1,
       "message": "Should be utilizing availableObjectPath from json file for this so users can put the Available property wherever they like.",
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efff8259_59a029cd",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T21:39:00Z",
+      "side": 1,
+      "message": "Changed updateAvailableProperty method. The availableObjectPathTemplate variable is read from the JSON config file and passed directly to setProperty().",
+      "parentUuid": "254537a8_6f4ecb8e",
       "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -95,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb784539_7ba61414",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T21:39:00Z",
+      "side": 1,
+      "message": "The Available property is a native boolean, and the existing setProperty() method only accepts std::string values.\n\nExtended setProperty() to accept a std::variant\u003cbool, std::string\u003e allowing it to handle both string and boolean property values. Replaced the PIM Notify call in updateAvailableProperty() with setProperty().\n\nThe utils.cpp change will be moved to its own separate commit, as it is a general utility change. For now, it has been placed in: \"92850: chassis-availability: add base class and configuration files\".\n\nIs modifying the setProperty() method in this way a good approach?",
+      "parentUuid": "9b426232_55c7a213",
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b1dd7b7_999f07b0",
         "filename": "chassis_availability_monitor.cpp",
         "patchSetId": 15
@@ -106,6 +166,30 @@
       "writtenOn": "2026-08-26T19:15:50Z",
       "side": 1,
       "message": "\u0027e\u0027.",
+      "range": {
+        "startLine": 314,
+        "startChar": 42,
+        "endLine": 314,
+        "endChar": 50
+      },
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bed9e4e6_6bf30654",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T21:39:00Z",
+      "side": 1,
+      "message": "Replaced e.what() with e.",
+      "parentUuid": "7b1dd7b7_999f07b0",
       "range": {
         "startLine": 314,
         "startChar": 42,
