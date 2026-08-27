@@ -41,6 +41,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57a4fa69_eca4c068",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T00:21:04Z",
+      "side": 1,
+      "message": "Declared testFile as a std::filesystem::path, and updated the append operation.",
+      "parentUuid": "8d09485b_f2148112",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 28
+      },
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5685996e_65f6076d",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T00:21:04Z",
+      "side": 1,
+      "message": "Applied mkdtemp() to create temp directory for test code.\n\nThe test cases on line 137 (InvalidJsonFormat) and line 149 (FileNotFound) also have hard-coded paths. Do those paths need updating?",
+      "parentUuid": "5b3c1193_3b618329",
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66a5590a_3374ea80",
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26f3e6f2_2b93dc9c",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T00:21:04Z",
+      "side": 1,
+      "message": "Updated file handling with std::ofstream.",
+      "parentUuid": "66a5590a_3374ea80",
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23c3e173_e30f8047",
@@ -71,6 +131,30 @@
       "writtenOn": "2026-08-26T18:47:45Z",
       "side": 1,
       "message": "std::ofstream",
+      "range": {
+        "startLine": 131,
+        "startChar": 3,
+        "endLine": 131,
+        "endChar": 14
+      },
+      "revId": "f5279b266c9e1c5221cce941ff515a46f8f6f9da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4edfdf16_76842444",
+        "filename": "test/test_chassis_availability_monitor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-27T00:21:04Z",
+      "side": 1,
+      "message": "Updated file handling with std::ofstream.",
+      "parentUuid": "23c3e173_e30f8047",
       "range": {
         "startLine": 131,
         "startChar": 3,
