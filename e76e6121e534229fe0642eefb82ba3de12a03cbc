@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2ea83cb_0ea58ae2",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-27T18:56:26Z",
+      "side": 1,
+      "message": "Good point. Didn\u0027t know systemdUnitChange automatically handled all serviceData and targetData originally. Removed the new signal handler and updated expandServiceWildcards() to do the ListUnits call and insert matches directly.",
+      "parentUuid": "fe40071b_32e86f08",
+      "revId": "e76e6121e534229fe0642eefb82ba3de12a03cbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86e47384_11f3324f",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1ac7330_68cde012",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-27T18:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86e47384_11f3324f",
+      "range": {
+        "startLine": 129,
+        "startChar": 47,
+        "endLine": 129,
+        "endChar": 70
+      },
+      "revId": "e76e6121e534229fe0642eefb82ba3de12a03cbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dd5446e_c6602e0c",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-08-19T21:35:04Z",
       "side": 1,
       "message": "sdbusplus::match",
+      "range": {
+        "startLine": 177,
+        "startChar": 16,
+        "endLine": 177,
+        "endChar": 39
+      },
+      "revId": "e76e6121e534229fe0642eefb82ba3de12a03cbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "095c090b_84a062ef",
+        "filename": "systemd_target_signal.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-08-27T18:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6dd5446e_c6602e0c",
       "range": {
         "startLine": 177,
         "startChar": 16,
