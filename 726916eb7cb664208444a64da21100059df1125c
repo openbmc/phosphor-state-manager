@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a4977c9_7a63668c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-28T19:58:51Z",
+      "side": 1,
+      "message": "Your right - there is no way through InventoryManager to support chassisRemoval. I will store this code in a separate branch, and remove this commit.",
+      "parentUuid": "85e77f9e_16178680",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 72
+      },
+      "revId": "726916eb7cb664208444a64da21100059df1125c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44630d60_f4b9c043",
@@ -65,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5caba94_c25252aa",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-28T19:58:51Z",
+      "side": 1,
+      "message": "Thanks for the resource. Ill see if there\u0027s other areas of my code where the unpack method could be applied.",
+      "parentUuid": "44630d60_f4b9c043",
+      "revId": "726916eb7cb664208444a64da21100059df1125c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20a4b1b8_d87bbe5d",
@@ -78,6 +120,24 @@
       "writtenOn": "2026-08-26T19:42:46Z",
       "side": 1,
       "message": "what if it isn\u0027t a chassis that is being removed, but rather just some sub item under the chassis?  like inventory/system/chassisX/motherboard/pcie_card7?",
+      "revId": "726916eb7cb664208444a64da21100059df1125c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f80a392_d68bc0bf",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-28T19:58:51Z",
+      "side": 1,
+      "message": "ChassisAvailability only monitors D-bus properties that affect the Availability of a Chassis. It will not monitor physical hardware removals.",
+      "parentUuid": "20a4b1b8_d87bbe5d",
       "revId": "726916eb7cb664208444a64da21100059df1125c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
