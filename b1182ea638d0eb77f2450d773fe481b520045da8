@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f8698fb_45934084",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-28T00:58:54Z",
+      "side": 1,
+      "message": "Yes, this path is used on first boot.\n\nOn first boot, the inventory isn\u0027t ready yet when the service starts. discoverChassis() finds nothing and onChassisAdded() handles initial discovery.\n\ndiscoverChassis() is still needed for the service restart case. If the monitor restarts, the inventory is already fully populated. No InterfacesAdded signals fire, so discoverChassis() handles setup.",
+      "parentUuid": "dae916d9_ec7e155a",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3661be24_d51dc56e",
         "filename": "chassis_availability_monitor.cpp",
         "patchSetId": 15
@@ -72,6 +96,24 @@
       "writtenOn": "2026-08-26T19:31:18Z",
       "side": 1,
       "message": "This could be any inventory path coming back here, such as for some sub-item, like chassisN/motherboard/pcie_card7.  Is that OK here?",
+      "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc5e2a1_75bf8fa9",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-08-28T00:58:54Z",
+      "side": 1,
+      "message": "That is a bug. Added an anchor to the path in getChassisNumber() so it only matches when chassis\u003cN\u003e is the final path component.",
+      "parentUuid": "81493e25_f981e91d",
       "revId": "b1182ea638d0eb77f2450d773fe481b520045da8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
