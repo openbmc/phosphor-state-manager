@@ -67,14 +67,16 @@ class ChassisSMP : public ChassisInherit
 
     /** @brief Handle systemd JobRemoved signals for chassis 0 targets
      *
-     * Clears the chassis@0-on file once obmc-chassis-poweron@0.target
+     * Manages the poweronTargetComplete flag and triggers aggregatePowerState()
+     * to re-evaluate the power state of chassis0.
+     * Also clears the chassis@0-on file once obmc-chassis-poweron@0.target
      * completes. This must happen on JobRemoved (not during startup
      * aggregation) to avoid racing with phosphor-reset-chassis-running@0
      * which writes the file concurrently at startup.
      *
      * @param[in] msg - D-Bus message containing job information
      */
-    static void sysStateChangeJobRemoved(sdbusplus::message_t& msg);
+    void sysStateChangeJobRemoved(sdbusplus::message_t& msg);
 
     /** @brief Start the systemd unit requested
      *
@@ -159,6 +161,9 @@ class ChassisSMP : public ChassisInherit
      * failure. Prevents repeated power off requests as each chassis transitions
      * to off. **/
     bool coordinatedPowerOffInProgress = false;
+
+    /** @brief Flag to track the state of obmc-chassis-poweron@0.target. **/
+    bool poweronTargetComplete = false;
 };
 
 } // namespace phosphor::state::manager
