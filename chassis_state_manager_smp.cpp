@@ -57,7 +57,7 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
         sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
             sdbusRule::path("/org/freedesktop/systemd1") +
             sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-        [](sdbusplus::message_t& m) { sysStateChangeJobRemoved(m); })
+        [this](sdbusplus::message_t& m) { sysStateChangeJobRemoved(m); })
 {
     if (numChassis == 0)
     {
@@ -165,10 +165,13 @@ void ChassisSMP::startMonitoring()
 void ChassisSMP::aggregatePowerState()
 {
     // Aggregate power state with priority:
-    // 1. If ANY chassis is TransitioningToOff -> TransitioningToOff
-    // 2. If ANY chassis is TransitioningToOn -> TransitioningToOn
-    // 3. If ANY chassis is On -> On
-    // 4. Only report Off if ALL present chassis are Off
+    // 1. If ANY present chassis is TransitioningToOff -> TransitioningToOff
+    // 2. If ANY present chassis is TransitioningToOn -> TransitioningToOn
+    // 3. If ANY chassis is On -> On (gated on poweronTargetComplete;
+    //    holds at TransitioningToOn until obmc-chassis-poweron@0.target
+    //    completes)
+    // 4. If ALL present chassis are Off (or none present, or D-Bus read
+    //    failed): Off
     PowerState aggregatedState = PowerState::Off;
     bool hasTransitioningToOff = false;
     bool hasTransitioningToOn = false;
@@ -228,13 +231,22 @@ void ChassisSMP::aggregatePowerState()
     }
     else if (hasOn)
     {
-        aggregatedState = PowerState::On;
+        // All present leaf chassis are On. Only publish On once
+        // obmc-chassis-poweron@0.target has also completed. Until then,
+        // hold at TransitioningToOn.
+        if (poweronTargetComplete)
+        {
+            aggregatedState = PowerState::On;
+        }
+        else
+        {
+            aggregatedState = PowerState::TransitioningToOn;
+        }
     }
-    else // No present chassis or all present chassis are Off
+    else // No present chassis, all present chassis are Off, or D-Bus read
+         // failed
     {
         aggregatedState = PowerState::Off;
-        // Reset the coordinated power off flag when all chassis are off
-        // This allows the system to detect new failures on the next power on
         coordinatedPowerOffInProgress = false;
     }
 
@@ -607,17 +619,21 @@ void ChassisSMP::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
 
     msg.read(newStateID, newStateObjPath, newStateUnit, newStateResult);
 
-    // When obmc-chassis-poweron@0.target completes successfully, remove the
-    // temporary file that was created to indicate chassis power was on when the
-    // BMC rebooted. This mirrors the same logic in the standard chassis
-    // manager's sysStateChange(). We must do this here (on JobRemoved) rather
-    // than during the initial aggregation so that we do not race with
+    // When obmc-chassis-poweron@0.target completes successfully, set the flag
+    // poweronTargetComplete and re-run power state aggregation. PowerState::On
+    // will publish once all leaf chassis report On and this flag is set. Also
+    // remove the temporary file that was created to indicate chassis power was
+    // on when the BMC rebooted. We must do this here (on JobRemoved)
+    // rather than during the initial aggregation so that we do not race with
     // phosphor-reset-chassis-running@0.service, which creates the file and runs
     // concurrently with our startup aggregation.
     if ((newStateUnit == CHASSIS_POWERON_TARGET) && (newStateResult == "done"))
     {
         info("Chassis0: Received signal that chassis 0 poweron target is "
-             "complete, clearing chassis@0-on file if present");
+             "complete");
+
+        poweronTargetComplete = true;
+        aggregatePowerState();
 
         auto chassisFile = std::format(CHASSIS_ON_FILE, 0);
         std::error_code ec;
@@ -627,6 +643,16 @@ void ChassisSMP::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
             error("Failed to remove chassis@0-on file {PATH}: {EC}", "PATH",
                   chassisFile, "EC", ec.message());
         }
+    }
+    else if (newStateUnit == CHASSIS_POWERON_TARGET)
+    {
+        // Target did not complete successfully (e.g. failed or cancelled).
+        // Clear the flag so a future power-on cycle starts fresh.
+        info("Chassis0: Chassis 0 poweron target did not complete "
+             "successfully, result: {RESULT}",
+             "RESULT", newStateResult);
+
+        poweronTargetComplete = false;
     }
 }
 } // namespace phosphor::state::manager
