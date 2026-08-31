@@ -57,7 +57,7 @@ ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
         sdbusRule::type::signal() + sdbusRule::member("JobRemoved") +
             sdbusRule::path("/org/freedesktop/systemd1") +
             sdbusRule::interface("org.freedesktop.systemd1.Manager"),
-        [](sdbusplus::message_t& m) { sysStateChangeJobRemoved(m); })
+        [this](sdbusplus::message_t& m) { sysStateChangeJobRemoved(m); })
 {
     if (numChassis == 0)
     {
@@ -165,10 +165,11 @@ void ChassisSMP::startMonitoring()
 void ChassisSMP::aggregatePowerState()
 {
     // Aggregate power state with priority:
-    // 1. If ANY chassis is TransitioningToOff -> TransitioningToOff
-    // 2. If ANY chassis is TransitioningToOn -> TransitioningToOn
-    // 3. If ANY chassis is On -> On
-    // 4. Only report Off if ALL present chassis are Off
+    // 1. If ANY present chassis is TransitioningToOff -> TransitioningToOff
+    // 2. If ANY present chassis is TransitioningToOn -> TransitioningToOn
+    // 3. If ALL present chassis are Off (or none present, or D-Bus read
+    // failed): remain at TransitioningToOff if chassis0 is still powering off,
+    // else Off
     PowerState aggregatedState = PowerState::Off;
     bool hasTransitioningToOff = false;
     bool hasTransitioningToOn = false;
@@ -222,20 +223,23 @@ void ChassisSMP::aggregatePowerState()
     {
         aggregatedState = PowerState::TransitioningToOff;
     }
-    else if (hasTransitioningToOn)
+    else if (hasTransitioningToOn || hasOn)
     {
         aggregatedState = PowerState::TransitioningToOn;
     }
-    else if (hasOn)
+    else // No present chassis, all present chassis are Off, or D-Bus read
+         // failed
     {
-        aggregatedState = PowerState::On;
-    }
-    else // No present chassis or all present chassis are Off
-    {
-        aggregatedState = PowerState::Off;
-        // Reset the coordinated power off flag when all chassis are off
-        // This allows the system to detect new failures on the next power on
-        coordinatedPowerOffInProgress = false;
+        auto publishedState = server::Chassis::currentPowerState();
+        if (publishedState == PowerState::TransitioningToOff)
+        {
+            aggregatedState = PowerState::TransitioningToOff;
+        }
+        else
+        {
+            aggregatedState = PowerState::Off;
+            coordinatedPowerOffInProgress = false;
+        }
     }
 
     if (server::Chassis::currentPowerState() != aggregatedState)
@@ -617,7 +621,9 @@ void ChassisSMP::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
     if ((newStateUnit == CHASSIS_POWERON_TARGET) && (newStateResult == "done"))
     {
         info("Chassis0: Received signal that chassis 0 poweron target is "
-             "complete, clearing chassis@0-on file if present");
+             "complete");
+
+        currentPowerState(PowerState::On);
 
         auto chassisFile = std::format(CHASSIS_ON_FILE, 0);
         std::error_code ec;
@@ -627,6 +633,15 @@ void ChassisSMP::sysStateChangeJobRemoved(sdbusplus::message_t& msg)
             error("Failed to remove chassis@0-on file {PATH}: {EC}", "PATH",
                   chassisFile, "EC", ec.message());
         }
+    }
+    else if ((newStateUnit == CHASSIS_POWEROFF_TARGET) &&
+             (newStateResult == "done"))
+    {
+        info("Chassis0: Received signal that chassis 0 poweroff target is "
+             "complete");
+
+        currentPowerState(PowerState::Off);
+        coordinatedPowerOffInProgress = false;
     }
 }
 } // namespace phosphor::state::manager

@@ -74,7 +74,7 @@ class ChassisSMP : public ChassisInherit
      *
      * @param[in] msg - D-Bus message containing job information
      */
-    static void sysStateChangeJobRemoved(sdbusplus::message_t& msg);
+    void sysStateChangeJobRemoved(sdbusplus::message_t& msg);
 
     /** @brief Start the systemd unit requested
      *
