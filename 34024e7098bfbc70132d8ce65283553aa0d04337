@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ce704c6_eee630b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-31T16:43:11Z",
+      "side": 1,
+      "message": "nit: there\u0027s a lot of \"what\" the commit does after this which is un-necessary (the code speaks to this). I\u0027m mostly interested in the \"why\" for a commit message which is above.",
+      "revId": "34024e7098bfbc70132d8ce65283553aa0d04337",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9db40be_050eab9c",
+        "filename": "utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-31T16:43:11Z",
+      "side": 1,
+      "message": "Why was the .str.c_str() added?",
+      "range": {
+        "startLine": 228,
+        "startChar": 45,
+        "endLine": 228,
+        "endChar": 57
+      },
+      "revId": "34024e7098bfbc70132d8ce65283553aa0d04337",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
