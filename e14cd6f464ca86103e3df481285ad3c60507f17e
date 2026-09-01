@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c8e62d3_f127e4a6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-01T20:44:15Z",
+      "side": 1,
+      "message": "This is telling me the gory details of \"what\" the commit is doing which is what the code is for. What we\u0027re looking for is the \"why\" we need this commit. What\u0027s the problem we\u0027re solving here is what goes in the commit message, especially at the beginning.",
+      "revId": "e14cd6f464ca86103e3df481285ad3c60507f17e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6088297_fd8c033e",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-01T20:44:15Z",
+      "side": 1,
+      "message": "Why did we lose the comment saying \"If ANY chassis is On -\u003e On\"? As long as no other chassis is transitioning, this should still hold true.",
+      "revId": "e14cd6f464ca86103e3df481285ad3c60507f17e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a6d77b4_981d33fd",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-01T20:44:15Z",
+      "side": 1,
+      "message": "My main concern with this new logic is that it assumes obmc-chassis-poweron@0.target always finishes last. If someone ever had a config where the chassis 0 target finished before the leaf nodes, we would falsely say power is On when sysStateChangeJobRemoved() fires. Ideally we would be looking at everything in this 1 function (all leaf nodes and the state of obmc-chassis-poweron@0.target).\n\nThe assumption is ok because we have the wait-for-smp-poweron.service in the obmc-chassis-poweron@0.target but it feels like a bad assumption to code in here with the logic now being in 2 different functions.\n\nNeed to find a way to get it all in this 1 function. Maybe we just have this function add the state of obmc-chassis-poweron@0.target into it\u0027s logic. A separate class variable that only tracks the state of obmc-chassis-poweron@0.target that this function could look at? (set/clear the variable within sysStateChangeJobRemoved()) and have sysStateChangeJobRemoved() call this aggregatePowerState() whenever it changes?",
+      "revId": "e14cd6f464ca86103e3df481285ad3c60507f17e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
