@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a61b12de_172a49be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-01T19:02:45Z",
+      "side": 1,
+      "message": "Eric did the immediate quiesce work so I\u0027ll let him weigh in on my concern. We don\u0027t utilize the immediate function and I don\u0027t think he will utilize the new wild card feature so maybe we just make a comment and call it a code limitation for now.",
+      "revId": "059168b136ba72097dded2cef4b78037c6c43eb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a86c363_2addf3be",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-01T19:02:45Z",
+      "side": 1,
+      "message": "One minor concern is that ListUnits only returns the currently loaded units. The \"LoadUnit\" call will cause the unit to get loaded into memory if not already. The main issue here would be if a wild card service/target is not loaded when this service starts. It will still get noticed in the processError path but wont hit this immediate quiesce path. But we probably don\u0027t want to call LoadUnit for every potential wild card service/target. One way to mitigate the issue is to at least put a \"Before\u003dphosphor-systemd-target-monitor.service\" in the xyz.openbmc_project.State.Chassis@.service and xyz.openbmc_project.State.Host@.service files. That way we ensure they start before this monitor service. But there are still some post BMC-Ready targets that are not loaded until we start a host boot, long after this service has started.",
+      "revId": "059168b136ba72097dded2cef4b78037c6c43eb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
