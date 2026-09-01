@@ -22,6 +22,30 @@
       },
       "revId": "4f9cb198b1d473de9f90147da5c0e46eeddee9bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8589ea4_18485f3b",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-01T22:17:07Z",
+      "side": 1,
+      "message": "Changed .read() call to .unpack\u003c\u003e().",
+      "parentUuid": "a474e02f_f0a71948",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 34
+      },
+      "revId": "4f9cb198b1d473de9f90147da5c0e46eeddee9bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
