@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4399f605_0ba45fe7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2026-09-01T20:37:03Z",
+      "side": 1,
+      "message": "nit: can just say \u0027simulation\u0027 here since simics isn\u0027t something others use.",
+      "range": {
+        "startLine": 17,
+        "startChar": 15,
+        "endLine": 17,
+        "endChar": 22
+      },
+      "revId": "9a08ed9b33461a630b800467f5d449bef2fd5a1f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
