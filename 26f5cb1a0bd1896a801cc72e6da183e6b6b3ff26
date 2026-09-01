@@ -88,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f529806e_50d91a3f",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-01T20:22:13Z",
+      "side": 1,
+      "message": "I\u0027m ok either way.",
+      "parentUuid": "19c660e4_e731f012",
+      "revId": "26f5cb1a0bd1896a801cc72e6da183e6b6b3ff26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5990888e_e43ee777",
