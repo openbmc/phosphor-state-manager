@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "326c0802_0e7d480d",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-02T21:39:23Z",
+      "side": 1,
+      "message": "nit: should just be the new \"sdbusplus::match\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 56
+      },
+      "revId": "e40d8348522c2bea9e8e09faa6c666c7949d30ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
