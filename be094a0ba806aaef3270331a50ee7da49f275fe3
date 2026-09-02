@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d31645c6_6180682b",
+        "filename": "test/meson.build",
+        "patchSetId": 21
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-02T19:50:47Z",
+      "side": 1,
+      "message": "Put dependencies on one line instead of multiple to satisfy clang-tidy requirements.",
+      "revId": "be094a0ba806aaef3270331a50ee7da49f275fe3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
