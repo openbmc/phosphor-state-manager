@@ -34,6 +34,24 @@
       "parentUuid": "5860468e_c782c61d",
       "revId": "f8a0012990480b92a66f7d6e1862fe3b374a1bdc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da90cda_36f1f2a6",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-02T20:29:36Z",
+      "side": 1,
+      "message": "We\u0027ll just make it a separate bitbake package that is not brought in by default.",
+      "parentUuid": "5860468e_c782c61d",
+      "revId": "f8a0012990480b92a66f7d6e1862fe3b374a1bdc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
