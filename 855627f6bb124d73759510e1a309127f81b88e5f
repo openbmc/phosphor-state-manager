@@ -153,6 +153,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46db8a35_5aabca4a",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-02T12:44:26Z",
+      "side": 1,
+      "message": "Ended up keeping changes to .utils within commit: \"92850: chassis-availability\"",
+      "parentUuid": "eb784539_7ba61414",
+      "revId": "855627f6bb124d73759510e1a309127f81b88e5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b1dd7b7_999f07b0",
