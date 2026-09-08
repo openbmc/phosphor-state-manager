@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d802db29_eb155f7a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-08T22:13:42Z",
+      "side": 1,
+      "message": "Updated commit message with a problem description and high-level overview of the fixes made.",
+      "parentUuid": "3c8e62d3_f127e4a6",
+      "revId": "e14cd6f464ca86103e3df481285ad3c60507f17e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6088297_fd8c033e",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f35b4760_4aead395",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-08T22:13:42Z",
+      "side": 1,
+      "message": "That was an oversight when I merged the hasTransitioningToOn and hasOn if/else branches in this method.\n\nRestored the original comment and separated the if/else statements back to their original structure for better readability.",
+      "parentUuid": "f6088297_fd8c033e",
+      "revId": "e14cd6f464ca86103e3df481285ad3c60507f17e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a6d77b4_981d33fd",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-09-01T20:44:15Z",
       "side": 1,
       "message": "My main concern with this new logic is that it assumes obmc-chassis-poweron@0.target always finishes last. If someone ever had a config where the chassis 0 target finished before the leaf nodes, we would falsely say power is On when sysStateChangeJobRemoved() fires. Ideally we would be looking at everything in this 1 function (all leaf nodes and the state of obmc-chassis-poweron@0.target).\n\nThe assumption is ok because we have the wait-for-smp-poweron.service in the obmc-chassis-poweron@0.target but it feels like a bad assumption to code in here with the logic now being in 2 different functions.\n\nNeed to find a way to get it all in this 1 function. Maybe we just have this function add the state of obmc-chassis-poweron@0.target into it\u0027s logic. A separate class variable that only tracks the state of obmc-chassis-poweron@0.target that this function could look at? (set/clear the variable within sysStateChangeJobRemoved()) and have sysStateChangeJobRemoved() call this aggregatePowerState() whenever it changes?",
+      "revId": "e14cd6f464ca86103e3df481285ad3c60507f17e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d055267_605910df",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-08T22:13:42Z",
+      "side": 1,
+      "message": "Added a poweronTargetComplete flag to track whether obmc-chassis-poweron@0.target has completed. The flag is set and cleared exclusively within sysStateChangeJobRemoved(), which calls aggregatePowerState() whenever it changes.\n\naggregatePowerState() is now responsible for checking both the leaf chassis states and poweronTargetComplete flag. PowerState::On is only published when all leaves report On and the target has completed successfully.",
+      "parentUuid": "8a6d77b4_981d33fd",
       "revId": "e14cd6f464ca86103e3df481285ad3c60507f17e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
