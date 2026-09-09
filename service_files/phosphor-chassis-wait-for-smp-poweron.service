@@ -5,6 +5,7 @@ Wants=obmc-power-on@0.target
 After=xyz.openbmc_project.State.Chassis0.service
 Wants=xyz.openbmc_project.State.Chassis0.service
 Conflicts=obmc-chassis-poweroff@0.target
+ConditionPathExists=!/run/openbmc/chassis@0-on
 
 [Service]
 Type=oneshot
