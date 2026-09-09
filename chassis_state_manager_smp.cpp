@@ -567,6 +567,16 @@ void ChassisSMP::sysStateChangeJobNew(sdbusplus::message_t& msg)
         if ((currentRequestedTransition == Transition::Off) &&
             (currentPowerState == PowerState::Off))
         {
+            auto chassisOnFile = std::format(CHASSIS_ON_FILE, 0);
+            if (std::filesystem::exists(chassisOnFile))
+            {
+                info(
+                    "Chassis0: BMC-reset recovery path detected ({CHASSIS_ON_FILE} "
+                    "exists). Skipping fan-out to physical chassis instances",
+                    "CHASSIS_ON_FILE", chassisOnFile);
+                return;
+            }
+
             info("Chassis0: Chassis 0 poweron target started while "
                  "in state {POWER_STATE}, forwarding to all chassis instances",
                  "POWER_STATE", currentPowerState);
