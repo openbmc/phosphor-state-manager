@@ -37,49 +37,96 @@ ChassisAvailability::ChassisAvailability(sdbusplus::bus_t& bus,
     sd_notify(0, "READY=1");
 }
 
-void ChassisAvailability::loadConfiguration()
+static PropertyCondition parseCondition(const json& cond)
 {
-    try
+    PropertyCondition condition;
+
+    condition.baseObjectPath = cond["baseObjectPath"].get<std::string>();
+    condition.interface = cond["interface"].get<std::string>();
+    condition.property = cond["property"].get<std::string>();
+    const auto& val = cond["availableValue"];
+
+    if (val.is_boolean())
     {
-        std::ifstream fileStream(configPath);
-        if (!fileStream.is_open())
+        condition.availableValue = val.get<bool>();
+    }
+    else if (val.is_string())
+    {
+        condition.availableValue = val.get<std::string>();
+    }
+    else if (val.is_number_integer())
+    {
+        condition.availableValue = val.get<int64_t>();
+    }
+    else
+    {
+        throw std::invalid_argument("Invalid availableValue type");
+    }
+    return condition;
+}
+
+static std::vector<PropertyCondition> parseConditions(const json& condArray)
+{
+    std::vector<PropertyCondition> result;
+    for (const auto& cond : condArray)
+    {
+        result.push_back(parseCondition(cond));
+    }
+    return result;
+}
+
+static std::map<int, std::vector<PropertyCondition>> parseConditionOverrides(
+    const json& overrides)
+{
+    std::map<int, std::vector<PropertyCondition>> result;
+    for (const auto& [key, condArray] : overrides.items())
+    {
+        if (key.empty() || !std::ranges::all_of(key, ::isdigit))
         {
-            throw std::runtime_error(
-                "Failed to open configuration file: " + configPath);
+            throw std::invalid_argument(
+                "conditionOverrides key is not a valid integer: " + key);
         }
 
+        int chassisNum = std::stoi(key);
+        auto parsed = parseConditions(condArray);
+
+        if (parsed.empty())
+        {
+            throw std::invalid_argument(
+                "conditionOverrides entry for chassis " + key +
+                " has an empty conditions list");
+        }
+
+        result[chassisNum] = std::move(parsed);
+        info("Loaded {COUNT} condition overrides for chassis {NUM}", "COUNT",
+             result[chassisNum].size(), "NUM", chassisNum);
+    }
+    return result;
+}
+
+void ChassisAvailability::loadConfiguration()
+{
+    std::ifstream fileStream(configPath);
+    if (!fileStream.is_open())
+    {
+        throw std::runtime_error(
+            "Failed to open configuration file: " + configPath);
+    }
+
+    try
+    {
         auto config = json::parse(fileStream);
         availableObjectPathTemplate =
             config["availableObjectPath"].get<std::string>();
 
-        for (const auto& cond : config["conditions"])
-        {
-            PropertyCondition condition;
-
-            condition.baseObjectPath =
-                cond["baseObjectPath"].get<std::string>();
-            condition.interface = cond["interface"].get<std::string>();
-            condition.property = cond["property"].get<std::string>();
-            const auto& val = cond["availableValue"];
-            if (val.is_boolean())
-            {
-                condition.availableValue = val.get<bool>();
-            }
-            else if (val.is_string())
-            {
-                condition.availableValue = val.get<std::string>();
-            }
-            else if (val.is_number_integer())
-            {
-                condition.availableValue = val.get<int64_t>();
-            }
-            else
-            {
-                throw std::invalid_argument("Invalid availableValue type");
-            }
-            conditions.push_back(std::move(condition));
-        }
+        conditions = parseConditions(config["conditions"]);
         info("Loaded {COUNT} conditions", "COUNT", conditions.size());
+
+        if (config.contains("conditionOverrides"))
+        {
+            conditionOverrides =
+                parseConditionOverrides(config["conditionOverrides"]);
+        }
     }
     catch (const std::exception& e)
     {
@@ -163,13 +210,24 @@ std::string ChassisAvailability::substituteChassisNumber(
     return result;
 }
 
+const std::vector<PropertyCondition>&
+    ChassisAvailability::getConditionsForChassis(int chassisNum) const
+{
+    if (conditionOverrides.contains(chassisNum))
+    {
+        return conditionOverrides.at(chassisNum);
+    }
+    return conditions;
+}
+
 void ChassisAvailability::setupMonitoringForChassis(int chassisNum)
 {
     info("Setting up monitoring for chassis {NUM}", "NUM", chassisNum);
 
     chassisStates[chassisNum] = ChassisState();
+    const auto& chassisConditions = getConditionsForChassis(chassisNum);
 
-    for (const auto& condition : conditions)
+    for (const auto& condition : chassisConditions)
     {
         // Replace <N> with actual chassis number
         std::string objectPath =
@@ -199,8 +257,9 @@ void ChassisAvailability::checkAvailability(int chassisNum)
     info("Checking availability for chassis {NUM}", "NUM", chassisNum);
 
     bool allConditionsMet = true;
+    const auto& chassisConditions = getConditionsForChassis(chassisNum);
 
-    for (const auto& condition : conditions)
+    for (const auto& condition : chassisConditions)
     {
         const auto objectPath =
             substituteChassisNumber(condition.baseObjectPath, chassisNum);
@@ -293,8 +352,9 @@ void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
     if (chassisNum &&
         !std::ranges::contains(discoveredChassisNumbers, *chassisNum))
     {
+        const auto& chassisConditions = getConditionsForChassis(*chassisNum);
         auto hasRequiredInterface = std::ranges::any_of(
-            conditions, [ifaces = interfaces](const auto& condition) {
+            chassisConditions, [ifaces = interfaces](const auto& condition) {
                 return ifaces.contains(condition.interface);
             });
 

@@ -100,6 +100,16 @@ class ChassisAvailability
     static std::string substituteChassisNumber(const std::string& path,
                                                int chassisNum);
 
+    /** @brief Returns a list of availability conditions for a specified
+     * chassis. Can either be from the global conditions list, or
+     * conditionOverrides list in the JSON config.
+     * @param[in] chassisNum Chassis number to fetch availability conditions
+     * for.
+     * @return List of conditions to evaluate for that chassis.
+     */
+    const std::vector<PropertyCondition>& getConditionsForChassis(
+        int chassisNum) const;
+
     /** @brief Persistent sdbusplus D-Bus connection
      */
     sdbusplus::bus_t& bus;
@@ -113,6 +123,15 @@ class ChassisAvailability
 
     /** @brief List of conditions to monitor from JSON config */
     std::vector<PropertyCondition> conditions;
+
+    /** @brief Per-chassis condition overrides from the JSON config
+     * When present for a given chassis, this conditions list is used
+     * instead of the global conditions list
+     * Key: Chassis number
+     * Value: PropertyCondition, list of conditions to evaluate for that
+     * chassis.
+     */
+    std::map<int, std::vector<PropertyCondition>> conditionOverrides;
 
     /** @brief Set of discovered chassis numbers connected to system*/
     std::set<int> discoveredChassisNumbers;
