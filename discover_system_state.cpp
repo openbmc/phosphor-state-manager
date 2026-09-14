@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 
     size_t hostId = 0;
     CLI::App app{"Discover system state"};
-    app.add_option("-h,--host", hostId, "Host instance id");
+    app.add_option("--host", hostId, "Host instance id");
     CLI11_PARSE(app, argc, argv);
 
     using Host = sdbusplus::client::xyz::openbmc_project::state::Host<>;
