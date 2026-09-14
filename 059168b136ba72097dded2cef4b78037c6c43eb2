@@ -51,6 +51,24 @@
       "message": "One minor concern is that ListUnits only returns the currently loaded units. The \"LoadUnit\" call will cause the unit to get loaded into memory if not already. The main issue here would be if a wild card service/target is not loaded when this service starts. It will still get noticed in the processError path but wont hit this immediate quiesce path. But we probably don\u0027t want to call LoadUnit for every potential wild card service/target. One way to mitigate the issue is to at least put a \"Before\u003dphosphor-systemd-target-monitor.service\" in the xyz.openbmc_project.State.Chassis@.service and xyz.openbmc_project.State.Host@.service files. That way we ensure they start before this monitor service. But there are still some post BMC-Ready targets that are not loaded until we start a host boot, long after this service has started.",
       "revId": "059168b136ba72097dded2cef4b78037c6c43eb2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d18ab72_64f5f6f6",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1002972
+      },
+      "writtenOn": "2026-09-14T21:10:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a86c363_2addf3be",
+      "revId": "059168b136ba72097dded2cef4b78037c6c43eb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
