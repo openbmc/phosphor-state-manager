@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 {
     size_t hostId = 0;
     CLI::App app{"Phosphor host state manager"};
-    app.add_option("-h,--host", hostId, "Host instance id");
+    app.add_option("--host", hostId, "Host instance id");
     CLI11_PARSE(app, argc, argv);
 
     namespace fs = std::filesystem;
