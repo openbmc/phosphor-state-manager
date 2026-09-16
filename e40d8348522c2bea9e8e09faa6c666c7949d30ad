@@ -22,6 +22,30 @@
       },
       "revId": "e40d8348522c2bea9e8e09faa6c666c7949d30ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce8b5df9_6116aadc",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-16T19:21:27Z",
+      "side": 1,
+      "message": "The availability monitoring service has been merged into the public ibm-1210 branch for phosphor-state-manager. I will hold off on addressing this nit to keep the public upstream and ibm upstream code the same.",
+      "parentUuid": "326c0802_0e7d480d",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 56
+      },
+      "revId": "e40d8348522c2bea9e8e09faa6c666c7949d30ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
