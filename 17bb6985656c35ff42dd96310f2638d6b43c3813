@@ -16,6 +16,24 @@
       "message": "Removed After\u003d and Wants\u003d lines related to inventory manager in the service file for upstream.",
       "revId": "17bb6985656c35ff42dd96310f2638d6b43c3813",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc6eee26_e8e0ae45",
+        "filename": "service_files/phosphor-chassis-availability.service",
+        "patchSetId": 31
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-16T19:22:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea3119c6_e6acb80b",
+      "revId": "17bb6985656c35ff42dd96310f2638d6b43c3813",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
