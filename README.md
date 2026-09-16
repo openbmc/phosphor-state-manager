@@ -289,6 +289,11 @@ service and object so the check re-runs whenever the property changes. The
 application will monitor all chassis instances it finds on dbus and will support
 chassis inventory objects showing up on dbus after it has started.
 
+If a chassis requires a different set of availability conditions, the JSON
+config supports an optional `conditionOverrides` section. When a chassis number
+is present in `conditionOverrides`, its condition list is used instead of the
+global `conditions` list.
+
 #### Example: `phosphor-chassis-availability-default.json`
 
 ```json
@@ -313,7 +318,17 @@ chassis inventory objects showing up on dbus after it has started.
       "property": "Status",
       "availableValue": "xyz.openbmc_project.Common.Progress.OperationStatus.Completed"
     }
-  ]
+  ],
+  "conditionOverrides": {
+    "0": [
+      {
+        "baseObjectPath": "/xyz/openbmc_project/inventory/system/chassis<N>",
+        "interface": "xyz.openbmc_project.Inventory.Item",
+        "property": "Present",
+        "availableValue": true
+      }
+    ]
+  }
 }
 ```
 
