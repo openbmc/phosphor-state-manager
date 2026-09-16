@@ -16,6 +16,24 @@
       "message": "Changed original lambda capture: [\u0026interfaces], to a C++ 20 init capture: [ifaces \u003d interfaces], to satisfy clang-tidy requirements.",
       "revId": "7abd7dc8f5ba5f8761383f46ff2315f278284f00",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "108dc230_b10e4bc6",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-16T19:21:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c04fdb22_681076d6",
+      "revId": "7abd7dc8f5ba5f8761383f46ff2315f278284f00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
