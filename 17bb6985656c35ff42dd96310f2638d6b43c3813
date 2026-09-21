@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0adfaa63_f0a3dd44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 31
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-21T01:47:15Z",
+      "side": 1,
+      "message": "Seeing more of a \"what\" in this commit message vs. the \"why\". Why do we need to utilize this notify concept? Because we want other services that depend on this service to hold off until this service has setup the initial Available properties. The commit message should focus on why we need it, the \"what\" it does is in the code itself.",
+      "revId": "17bb6985656c35ff42dd96310f2638d6b43c3813",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5d74276_00728452",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 31
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-21T01:47:15Z",
+      "side": 1,
+      "message": "nit: passing unit tests is going to always happen with CI so you can skip mentioning it in the commit message.",
+      "revId": "17bb6985656c35ff42dd96310f2638d6b43c3813",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea3119c6_e6acb80b",
         "filename": "service_files/phosphor-chassis-availability.service",
         "patchSetId": 31
