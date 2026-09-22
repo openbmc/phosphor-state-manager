@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7ffdf7b_ef63b406",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-22T21:42:16Z",
+      "side": 1,
+      "message": "Lets stop adding this one, running the unit tests happen by default so no need to mention it. If no extra test was done then just leave it off. No testing expected for doc updates.",
+      "revId": "eaa3a88f5982c29d6d5fcfa574e1a36dcd5e2e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "967d3a4a_2a4c849a",
         "filename": "README.md",
         "patchSetId": 7
@@ -14,6 +31,47 @@
       "writtenOn": "2026-09-21T15:56:26Z",
       "side": 1,
       "message": "Should conditionOverrides stay in the main JSON example, or would it be clearer as a separate example in the README?",
+      "revId": "eaa3a88f5982c29d6d5fcfa574e1a36dcd5e2e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa07fe22_ac9fce73",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-22T21:42:16Z",
+      "side": 1,
+      "message": "Fine by me to just have here",
+      "parentUuid": "967d3a4a_2a4c849a",
+      "revId": "eaa3a88f5982c29d6d5fcfa574e1a36dcd5e2e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "905233d5_48172024",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-22T21:42:16Z",
+      "side": 1,
+      "message": "The \u003cN\u003e looks a little weird to me here. Shouldn\u0027t it just be \"0\"? Or someone could even make it \"1\" or \"2\" or whatever if they wanted. But making it \u003cN\u003e makes it look like like what we have above.",
+      "range": {
+        "startLine": 325,
+        "startChar": 72,
+        "endLine": 325,
+        "endChar": 75
+      },
       "revId": "eaa3a88f5982c29d6d5fcfa574e1a36dcd5e2e7e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
