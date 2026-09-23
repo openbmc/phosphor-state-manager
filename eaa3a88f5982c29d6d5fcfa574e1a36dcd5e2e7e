@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb0133f_c1623e1d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-23T19:31:21Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "f7ffdf7b_ef63b406",
+      "revId": "eaa3a88f5982c29d6d5fcfa574e1a36dcd5e2e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "967d3a4a_2a4c849a",
@@ -66,6 +84,30 @@
       "writtenOn": "2026-09-22T21:42:16Z",
       "side": 1,
       "message": "The \u003cN\u003e looks a little weird to me here. Shouldn\u0027t it just be \"0\"? Or someone could even make it \"1\" or \"2\" or whatever if they wanted. But making it \u003cN\u003e makes it look like like what we have above.",
+      "range": {
+        "startLine": 325,
+        "startChar": 72,
+        "endLine": 325,
+        "endChar": 75
+      },
+      "revId": "eaa3a88f5982c29d6d5fcfa574e1a36dcd5e2e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "693a44cf_f5dfb05a",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-23T19:31:21Z",
+      "side": 1,
+      "message": "Good point, but I kept it as \u003cN\u003e since the override conditions will go through the same chassis number substitution as the global conditions list. conditionOverrides support multiple chassis keys (i.e \"0\", \"1\"), with \u003cN\u003e in each entry replaced by that chassis number at runtime.",
+      "parentUuid": "905233d5_48172024",
       "range": {
         "startLine": 325,
         "startChar": 72,
