@@ -70,6 +70,30 @@
       },
       "revId": "e40d8348522c2bea9e8e09faa6c666c7949d30ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19cb223c_93eb5901",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-23T18:51:27Z",
+      "side": 1,
+      "message": "Understood, ill go though my commits and make updates with the new alias.",
+      "parentUuid": "ba59e295_9cd9bbb4",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 56
+      },
+      "revId": "e40d8348522c2bea9e8e09faa6c666c7949d30ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

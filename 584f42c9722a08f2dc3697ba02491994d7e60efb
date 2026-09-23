@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7708e4f3_0f8d2ee3",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-23T18:51:27Z",
+      "side": 1,
+      "message": "Should be sdbusplus::match",
+      "range": {
+        "startLine": 177,
+        "startChar": 38,
+        "endLine": 177,
+        "endChar": 61
+      },
+      "revId": "584f42c9722a08f2dc3697ba02491994d7e60efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7bc28da_74e07eaa",
+        "filename": "chassis_availability_monitor.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-23T18:51:27Z",
+      "side": 1,
+      "message": "Should be sdbusplus::match.",
+      "range": {
+        "startLine": 112,
+        "startChar": 32,
+        "endLine": 112,
+        "endChar": 55
+      },
+      "revId": "584f42c9722a08f2dc3697ba02491994d7e60efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
