@@ -76,21 +76,27 @@ declare -A G_SERVICE_CACHE
 # Helper Functions
 # ============================================================================
 
-# Get service for an object with caching to avoid repeated mapper calls
+# Get service for an object with caching to avoid repeated mapper calls.
+# An optional second argument specifies a required interface; when provided
+# only services implementing that interface are considered.
+# The cache key includes the interface so that the same object path looked
+# up with different interfaces returns independent results.
 function get_service()
 {
     local object="$1"
+    local interface="${2:-}"
+    local cache_key="${object}:${interface}"
 
     # Check cache first
-    if [ -n "${G_SERVICE_CACHE[$object]:-}" ]; then
-        echo "${G_SERVICE_CACHE[$object]}"
+    if [ -n "${G_SERVICE_CACHE[$cache_key]:-}" ]; then
+        echo "${G_SERVICE_CACHE[$cache_key]}"
         return 0
     fi
 
     # Call mapper and cache result
     local service
-    service=$(mapper get-service "$object")
-    G_SERVICE_CACHE[$object]="$service"
+    service=$(mapper get-service "$object" ${interface:+"$interface"})
+    G_SERVICE_CACHE[$cache_key]="$service"
     echo "$service"
 }
 
@@ -226,7 +232,7 @@ function query_state()
 
     local object="${STATE_OBJECT}/${object_type}${instance}"
     local service
-    service=$(get_service "$object")
+    service=$(get_service "$object" "$interface")
     state_query "$service" "$object" "$interface" "$property"
 }
 
@@ -241,7 +247,7 @@ function set_state_transition()
 
     local object="${STATE_OBJECT}/${object_type}${instance}"
     local service
-    service=$(get_service "$object")
+    service=$(get_service "$object" "$interface")
     set_property "$service" "$object" "$interface" "$property" "s" "$value"
 }
 
@@ -383,8 +389,8 @@ function check_chassis_host_states()
 
     local OBJECT=$STATE_OBJECT/chassis$G_INSTANCE_ID
     local SERVICE
-    SERVICE=$(get_service "$OBJECT")
     local INTERFACE=$STATE_INTERFACE.Chassis
+    SERVICE=$(get_service "$OBJECT" "$INTERFACE")
     local PROPERTY=CurrentPowerState
     local state
     state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$PROPERTY" | cut -d '"' -f2)
@@ -394,8 +400,8 @@ function check_chassis_host_states()
     fi
 
     OBJECT=$STATE_OBJECT/host$G_INSTANCE_ID
-    SERVICE=$(get_service "$OBJECT")
     INTERFACE=$STATE_INTERFACE.Host
+    SERVICE=$(get_service "$OBJECT" "$INTERFACE")
     PROPERTY=CurrentHostState
     state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$PROPERTY" | cut -d '"' -f2)
     if [[ ${state} =~ "xyz.openbmc_project.State.Host.HostState.Transitioning"* ]]; then
@@ -490,9 +496,9 @@ function show_verbose_chassis_states()
         for chassis_id in "${chassis_instances[@]}"; do
             echo "  Chassis $chassis_id:"
             local OBJECT=$STATE_OBJECT/chassis$chassis_id
-            local SERVICE
-            SERVICE=$(mapper get-service "$OBJECT" 2>/dev/null || echo "xyz.openbmc_project.State.Chassis$chassis_id")
             local INTERFACE=$STATE_INTERFACE.Chassis
+            local SERVICE
+            SERVICE=$(mapper get-service "$OBJECT" "$INTERFACE" 2>/dev/null || echo "xyz.openbmc_project.State.Chassis$chassis_id")
             local PROPERTY=CurrentPowerState
             local state
             state=$(get_property "$SERVICE" "$OBJECT" "$INTERFACE" "$PROPERTY" 2>/dev/null | cut -d '"' -f2)
