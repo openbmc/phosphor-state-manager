@@ -82,7 +82,7 @@ TEST_F(ChassisAvailabilityTest, BasicGoodPath)
     // Constructor will throw an error without ObjectMapper present
     // This is expected, just verify that config loads correctly
     EXPECT_THROW(ChassisAvailability monitor(bus, testFile),
-                 sdbusplus::exception::SdBusError);
+                 sdbusplus::internal_exception_t);
 }
 
 TEST_F(ChassisAvailabilityTest, MissingAvailableObjectPath)
