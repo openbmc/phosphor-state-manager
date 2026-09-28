@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c1722b7_b5ec5365",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-28T20:41:01Z",
+      "side": 1,
+      "message": "Should I keep the loop for parsing conditions in its own separate method, or merge it with one of the other methods?",
+      "revId": "db705681095dc2a92b80ff653206262457327645",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
