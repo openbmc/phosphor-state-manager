@@ -16,6 +16,41 @@
       "message": "Should I keep the loop for parsing conditions in its own separate method, or merge it with one of the other methods?",
       "revId": "db705681095dc2a92b80ff653206262457327645",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "014a8925_19f53777",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-29T19:33:07Z",
+      "side": 1,
+      "message": "I think having a separate method that\u0027s called by both is good.",
+      "parentUuid": "0c1722b7_b5ec5365",
+      "revId": "db705681095dc2a92b80ff653206262457327645",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ef02437_9887fcf2",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-29T19:33:07Z",
+      "side": 1,
+      "message": "I\u0027d feel better if we just hard code a 0..255 range for the key. Anything else and there\u0027s something wrong with the config. It could be a digit but then throw below on stoi(key) if it\u0027s a corrupted number.",
+      "revId": "db705681095dc2a92b80ff653206262457327645",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
