@@ -51,6 +51,24 @@
       "message": "I\u0027d feel better if we just hard code a 0..255 range for the key. Anything else and there\u0027s something wrong with the config. It could be a digit but then throw below on stoi(key) if it\u0027s a corrupted number.",
       "revId": "db705681095dc2a92b80ff653206262457327645",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61c8d14a_8f21490f",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-30T16:30:07Z",
+      "side": 1,
+      "message": "Bounded the chassis number between 0 and 255 (inclusive) with appropriate error checks. Also added a new test case for the out-of-range scenario, and documented this constraint in the README.",
+      "parentUuid": "8ef02437_9887fcf2",
+      "revId": "db705681095dc2a92b80ff653206262457327645",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
