@@ -16,6 +16,24 @@
       "message": "Why did this get added in the last update?",
       "revId": "0932e4d46de2803b9edd7664e6ac3f33ee514e42",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83347a8c_a4f93252",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-09-30T20:54:42Z",
+      "side": 1,
+      "message": "Ah, that import was leftover from some old code tests. It has been removed.",
+      "parentUuid": "25ca9c9b_465339c9",
+      "revId": "0932e4d46de2803b9edd7664e6ac3f33ee514e42",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
