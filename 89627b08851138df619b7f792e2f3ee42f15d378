@@ -22,6 +22,30 @@
       },
       "revId": "89627b08851138df619b7f792e2f3ee42f15d378",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9827ed10_09ecea85",
+        "filename": "obmcutil",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1001621
+      },
+      "writtenOn": "2026-10-01T18:51:53Z",
+      "side": 1,
+      "message": "Thank you for catching this! I confirmed the failure and then confirmed with the added change it no longer fails.",
+      "parentUuid": "66166e3d_883dc6f1",
+      "range": {
+        "startLine": 250,
+        "startChar": 4,
+        "endLine": 250,
+        "endChar": 11
+      },
+      "revId": "89627b08851138df619b7f792e2f3ee42f15d378",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
