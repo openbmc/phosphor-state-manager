@@ -22,6 +22,30 @@
       },
       "revId": "f63ee6806795bca9a14ceb2475659d9b6a65c68d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a4e2a3_69d385cd",
+        "filename": "chassis_availability_monitor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-10-05T15:36:37Z",
+      "side": 1,
+      "message": "Added checks to std::stoi() to ensure keys with trailing characters are not accepted as valid chassis numbers. Also added a regression test for this scenario.",
+      "parentUuid": "fe4a7b6b_59359d07",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 86,
+        "endChar": 11
+      },
+      "revId": "f63ee6806795bca9a14ceb2475659d9b6a65c68d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
