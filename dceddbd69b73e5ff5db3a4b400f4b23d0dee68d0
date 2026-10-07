@@ -33,6 +33,24 @@
       "message": "Makes sense to me, let me know when the mapper change is in and we\u0027ll get this merged.",
       "revId": "dceddbd69b73e5ff5db3a4b400f4b23d0dee68d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec509d58_0d9e2b99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001621
+      },
+      "writtenOn": "2026-10-07T18:52:26Z",
+      "side": 1,
+      "message": "The phosphor-objmgr commit just merged. Does this one need to wait for a publish with that as well?",
+      "parentUuid": "23ec3fa2_e26f2880",
+      "revId": "dceddbd69b73e5ff5db3a4b400f4b23d0dee68d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
