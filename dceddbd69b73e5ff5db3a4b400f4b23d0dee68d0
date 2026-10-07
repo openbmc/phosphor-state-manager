@@ -51,6 +51,24 @@
       "parentUuid": "23ec3fa2_e26f2880",
       "revId": "dceddbd69b73e5ff5db3a4b400f4b23d0dee68d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce195ccb_150de757",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-10-07T21:24:40Z",
+      "side": 1,
+      "message": "Yep, we just need our auto merge cron to get https://gerrit.openbmc.org/c/openbmc/openbmc/+/95340 in then we can merge this and its autobump will be on top of that.",
+      "parentUuid": "ec509d58_0d9e2b99",
+      "revId": "dceddbd69b73e5ff5db3a4b400f4b23d0dee68d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
