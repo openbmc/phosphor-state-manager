@@ -7,6 +7,7 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
 #include <xyz/openbmc_project/State/Chassis/server.hpp>
+#include <xyz/openbmc_project/State/Decorator/PowerSystemInputs/server.hpp>
 #include <xyz/openbmc_project/State/PowerOnHours/server.hpp>
 
 #include <map>
@@ -19,6 +20,10 @@ namespace phosphor::state::manager
 using ChassisInherit = sdbusplus::server::object_t<
     sdbusplus::server::xyz::openbmc_project::state::Chassis,
     sdbusplus::server::xyz::openbmc_project::state::PowerOnHours>;
+
+using PowerSystemStatus = sdbusplus::server::xyz::openbmc_project::state::
+    decorator::PowerSystemInputs::Status;
+
 namespace sdbusRule = sdbusplus::match_rules;
 
 /** @class ChassisSMP
@@ -107,6 +112,13 @@ class ChassisSMP : public ChassisInherit
      * @param[in] chassisId - ID of the chassis that changed
      */
     void chassisPropertyChanged(sdbusplus::message_t& msg, size_t chassisId);
+
+    /** @brief Checks if a leaf chassis meets the requirements to power on.
+     *
+     *  @param[in] chassisId - ID of the chassis to check
+     *  @return true if the chassis can be powered on, false otherwise
+     */
+    bool canPowerOn(size_t chassisId);
 
     /** @brief Send power transition request to all chassis instances
      *
