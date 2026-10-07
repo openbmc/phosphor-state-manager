@@ -41,6 +41,17 @@ constexpr auto CHASSIS_POWERCYCLE_TARGET = "obmc-chassis-powercycle@0.target";
 constexpr auto CHASSIS_OBJ_PATH = "/xyz/openbmc_project/state/chassis{}";
 constexpr auto CHASSIS_SERVICE = "xyz.openbmc_project.State.Chassis{}";
 
+constexpr auto INVENTORY_CHASSIS_OBJ_PATH =
+    "/xyz/openbmc_project/inventory/system/chassis{}";
+constexpr auto BLACKOUT_OBJ_PATH =
+    "/xyz/openbmc_project/power/chassis/chassis{}";
+constexpr auto BROWNOUT_OBJ_PATH =
+    "/xyz/openbmc_project/power/power_supplies/chassis{}/psus";
+
+constexpr auto AVAILABILITY_INTERFACE =
+    "xyz.openbmc_project.State.Decorator.Availability";
+constexpr auto ENABLE_INTERFACE = "xyz.openbmc_project.Object.Enable";
+
 ChassisSMP::ChassisSMP(sdbusplus::bus_t& bus,
                        const sdbusplus::object_path& objPath,
                        size_t numChassis) :
@@ -384,6 +395,98 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
     }
 }
 
+bool ChassisSMP::canPowerOn(size_t chassisId)
+{
+    try
+    {
+        auto powerState = server::Chassis::convertPowerStateFromString(
+            std::get<std::string>(utils::getProperty(
+                bus, std::format(CHASSIS_OBJ_PATH, chassisId),
+                server::Chassis::interface,
+                server::Chassis::property_names::current_power_state)));
+        if (powerState == PowerState::On)
+        {
+            info("Chassis0: Skipping power on transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is already on",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+
+        auto inventoryPath = std::format(INVENTORY_CHASSIS_OBJ_PATH, chassisId);
+
+        auto presentStatus = std::get<bool>(
+            utils::getProperty(bus, inventoryPath, InventoryItem::interface,
+                               InventoryItem::property_names::present));
+        if (!presentStatus)
+        {
+            info("Chassis0: Skipping power on transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is not present",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+
+        auto enabledStatus = std::get<bool>(utils::getProperty(
+            bus, inventoryPath, ENABLE_INTERFACE, "Enabled"));
+        if (!enabledStatus)
+        {
+            info("Chassis0: Skipping power on transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is not enabled",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+
+        auto blackoutStatus =
+            server::decorator::PowerSystemInputs::convertStatusFromString(
+                std::get<std::string>(utils::getProperty(
+                    bus, std::format(BLACKOUT_OBJ_PATH, chassisId),
+                    server::decorator::PowerSystemInputs::interface,
+                    "Status")));
+        if (blackoutStatus == PowerSystemStatus::Fault)
+        {
+            info("Chassis0: Skipping power on transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it has no input power "
+                 "(blackout)",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+
+        auto brownoutStatus =
+            server::decorator::PowerSystemInputs::convertStatusFromString(
+                std::get<std::string>(utils::getProperty(
+                    bus, std::format(BROWNOUT_OBJ_PATH, chassisId),
+                    server::decorator::PowerSystemInputs::interface,
+                    "Status")));
+        if (brownoutStatus == PowerSystemStatus::Fault)
+        {
+            info("Chassis0: Skipping power on transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it has bad PSU power "
+                 "(brownout)",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+
+        auto availableStatus = std::get<bool>(utils::getProperty(
+            bus, inventoryPath, AVAILABILITY_INTERFACE, "Available"));
+        if (!availableStatus)
+        {
+            info("Chassis0: Skipping power on transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is not available",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error("Chassis0: Skipping power on transition for chassis "
+              "{TARGET_CHASSIS_ID} because a property could not be read: "
+              "{ERROR}",
+              "TARGET_CHASSIS_ID", chassisId, "ERROR", e.what());
+        return false;
+    }
+
+    return true;
+}
+
 void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 {
     info("Chassis0: Forwarding transition request {TRANSITION} to "
@@ -392,12 +495,17 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
-        if (!chassisPresentStatus[i])
+        switch (transition)
         {
-            info("Chassis0: Skipping transition for chassis "
-                 "{TARGET_CHASSIS_ID} because it is not present",
-                 "TARGET_CHASSIS_ID", i);
-            continue;
+            case Transition::On:
+                if (!canPowerOn(i))
+                {
+                    continue;
+                }
+                break;
+
+            default:
+                break;
         }
 
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
