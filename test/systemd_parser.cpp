@@ -97,6 +97,64 @@ TEST(TargetJsonParser, InvalidErrorToMonitor)
     std::remove("/tmp/invalid_error_file.json");
 }
 
+TEST(TargetJsonParser, EmptyErrorsToMonitor)
+{
+    auto emptyErrors = R"({
+        "targets": {
+            "multi-user.target": {
+                "errorsToMonitor": [],
+                "errorToLog": "xyz.openbmc_project.State.BMC.Error.MultiUserTargetFailure"
+            }
+        }
+    })"_json;
+
+    std::FILE* tmpf = fopen("/tmp/empty_errors_file.json", "w");
+    std::fputs(emptyErrors.dump().c_str(), tmpf);
+    std::fclose(tmpf);
+
+    EXPECT_THROW(parseFiles({"/tmp/empty_errors_file.json"}),
+                 std::invalid_argument);
+    std::remove("/tmp/empty_errors_file.json");
+}
+
+TEST(TargetJsonParser, MissingErrorsToMonitor)
+{
+    auto missingErrors = R"({
+        "targets": {
+            "multi-user.target": {
+                "errorToLog": "xyz.openbmc_project.State.BMC.Error.MultiUserTargetFailure"
+            }
+        }
+    })"_json;
+
+    std::FILE* tmpf = fopen("/tmp/missing_errors_file.json", "w");
+    std::fputs(missingErrors.dump().c_str(), tmpf);
+    std::fclose(tmpf);
+
+    EXPECT_THROW(parseFiles({"/tmp/missing_errors_file.json"}),
+                 nlohmann::json::out_of_range);
+    std::remove("/tmp/missing_errors_file.json");
+}
+
+TEST(TargetJsonParser, MissingErrorToLog)
+{
+    auto missingErrorToLog = R"({
+        "targets": {
+            "multi-user.target": {
+                "errorsToMonitor": ["failed"]
+            }
+        }
+    })"_json;
+
+    std::FILE* tmpf = fopen("/tmp/missing_error_to_log_file.json", "w");
+    std::fputs(missingErrorToLog.dump().c_str(), tmpf);
+    std::fclose(tmpf);
+
+    EXPECT_THROW(parseFiles({"/tmp/missing_error_to_log_file.json"}),
+                 nlohmann::json::out_of_range);
+    std::remove("/tmp/missing_error_to_log_file.json");
+}
+
 TEST(TargetJsonParser, InvalidFileFormat)
 {
     std::FILE* tmpf = fopen("/tmp/invalid_json_file.json", "w");
