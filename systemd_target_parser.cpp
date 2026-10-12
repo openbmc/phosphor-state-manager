@@ -2,14 +2,17 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <cassert>
 #include <fstream>
+#include <stdexcept>
 
 PHOSPHOR_LOG2_USING;
 
 void validateErrorsToMonitor(std::vector<std::string>& errorsToMonitor)
 {
-    assert(errorsToMonitor.size());
+    if (errorsToMonitor.empty())
+    {
+        throw std::invalid_argument("errorsToMonitor must not be empty");
+    }
 
     const std::vector<std::string> validErrorsToMonitor = {
         "default", "timeout", "failed", "dependency"};
@@ -69,14 +72,12 @@ TargetErrorData parseFiles(const std::vector<std::string>& filePaths)
 
             // Be unforgiving on invalid json files. Just throw or allow
             // nlohmann to throw an exception if something is off
-            auto errorsToMonitor = it.value().find("errorsToMonitor");
             entry.errorsToMonitor =
-                errorsToMonitor->get<std::vector<std::string>>();
+                it.value().at("errorsToMonitor").get<std::vector<std::string>>();
 
             validateErrorsToMonitor(entry.errorsToMonitor);
 
-            auto errorToLog = it.value().find("errorToLog");
-            entry.errorToLog = errorToLog->get<std::string>();
+            entry.errorToLog = it.value().at("errorToLog").get<std::string>();
 
             systemdTargetMap[it.key()] = entry;
         }
