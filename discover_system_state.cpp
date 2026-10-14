@@ -84,9 +84,10 @@ int main(int argc, char** argv)
     {
         auto bmcRebootCause =
             sdbusplus::message::convert_from_string<BMC::RebootCause>(
-                phosphor::state::manager::utils::getProperty(
-                    bus, bmcPath, BMCState::interface,
-                    BMCState::property_names::last_reboot_cause));
+                std::get<std::string>(
+                    phosphor::state::manager::utils::getProperty(
+                        bus, bmcPath, BMCState::interface,
+                        BMCState::property_names::last_reboot_cause)));
 
         if constexpr (!RUN_APR_ON_PINHOLE_RESET)
         {
@@ -228,10 +229,10 @@ int main(int argc, char** argv)
                     "DELAY", powerRestoreDelaySec.count());
                 applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
                 // Read last requested state and re-request it to execute it
-                auto hostReqState =
+                auto hostReqState = std::get<std::string>(
                     phosphor::state::manager::utils::getProperty(
                         bus, hostPath, HostState::interface,
-                        HostState::property_names::requested_host_transition);
+                        HostState::property_names::requested_host_transition));
                 if (hostReqState !=
                     convertForMessage(server::Host::Transition::Off))
                 {
@@ -249,10 +250,10 @@ int main(int argc, char** argv)
                     "DELAY", powerRestoreDelaySec.count());
                 applyPowerRestoreDelay(bus, powerRestoreDelayUsec);
                 // Read last requested state and re-request it to execute it
-                auto hostReqState =
+                auto hostReqState = std::get<std::string>(
                     phosphor::state::manager::utils::getProperty(
                         bus, hostPath, HostState::interface,
-                        HostState::property_names::requested_host_transition);
+                        HostState::property_names::requested_host_transition));
 
                 // As long as the host transition is not 'Off' power on host
                 // state.
