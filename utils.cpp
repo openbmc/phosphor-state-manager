@@ -89,11 +89,11 @@ std::string getService(sdbusplus::bus_t& bus,
     return mapperResponse.begin()->first;
 }
 
-std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
-                        const std::string& interface,
-                        const std::string& propertyName)
+std::variant<bool, std::string> getProperty(
+    sdbusplus::bus_t& bus, const std::string& path,
+    const std::string& interface, const std::string& propertyName)
 {
-    std::variant<std::string> property;
+    std::variant<bool, std::string> property;
     std::string service = getService(bus, path, interface);
 
     auto method = bus.new_method_call(service.c_str(), path.c_str(),
@@ -113,14 +113,15 @@ std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
         throw;
     }
 
-    if (std::get<std::string>(property).empty())
+    if (std::holds_alternative<std::string>(property) &&
+        std::get<std::string>(property).empty())
     {
         error("Error reading property response for {PROPERTY}", "PROPERTY",
               propertyName);
         throw std::runtime_error("Error reading property response");
     }
 
-    return std::get<std::string>(property);
+    return property;
 }
 
 void setProperty(sdbusplus::bus_t& bus, const std::string& path,
@@ -264,8 +265,8 @@ bool isBmcReady(sdbusplus::bus_t& bus)
     auto bmcPath = sdbusplus::object_path(BMC::namespace_path::value) /
                    BMC::namespace_path::bmc;
 
-    auto bmcState = getProperty(bus, bmcPath, BMC::interface,
-                                BMC::property_names::current_bmc_state);
+    auto bmcState = std::get<std::string>(getProperty(
+        bus, bmcPath, BMC::interface, BMC::property_names::current_bmc_state));
 
     if (sdbusplus::message::convert_from_string<BMC::BMCState>(bmcState) !=
         BMC::BMCState::Ready)

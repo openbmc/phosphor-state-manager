@@ -44,9 +44,9 @@ std::string getService(sdbusplus::bus_t& bus,
  *
  * @return The value of the property
  */
-std::string getProperty(sdbusplus::bus_t& bus, const std::string& path,
-                        const std::string& interface,
-                        const std::string& propertyName);
+std::variant<bool, std::string> getProperty(
+    sdbusplus::bus_t& bus, const std::string& path,
+    const std::string& interface, const std::string& propertyName);
 
 /** @brief Set the value of a property
  *
