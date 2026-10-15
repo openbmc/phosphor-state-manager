@@ -365,18 +365,10 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
                     "FAILED_CHASSIS_ID", chassisId, "POWER_STATE",
                     currentState);
 
+                requestedPowerTransition(Transition::Off);
+
                 // Set flag to prevent repeated power off requests
                 coordinatedPowerOffInProgress = true;
-                poweronTargetComplete = false;
-
-                // Set requested power transition to off so state is correct
-                server::Chassis::requestedPowerTransition(Transition::Off);
-
-                // Start the chassis 0 poweroff target
-                startUnit(CHASSIS_POWEROFF_TARGET);
-
-                // Request power off transition on all chassis instances
-                requestTransitionOnAllChassis(Transition::Off);
             }
 
             chassisPowerStates[chassisId] = state;
@@ -487,6 +479,61 @@ bool ChassisSMP::canPowerOn(size_t chassisId)
     return true;
 }
 
+bool ChassisSMP::canPowerOff(size_t chassisId)
+{
+    try
+    {
+        auto powerState = server::Chassis::convertPowerStateFromString(
+            std::get<std::string>(utils::getProperty(
+                bus, std::format(CHASSIS_OBJ_PATH, chassisId),
+                server::Chassis::interface,
+                server::Chassis::property_names::current_power_state)));
+        if (powerState == PowerState::Off)
+        {
+            info("Chassis0: Skipping power off transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is already off",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+
+        auto inventoryPath = std::format(INVENTORY_CHASSIS_OBJ_PATH, chassisId);
+
+        auto presentStatus = std::get<bool>(
+            utils::getProperty(bus, inventoryPath, InventoryItem::interface,
+                               InventoryItem::property_names::present));
+
+        auto blackoutStatus =
+            server::decorator::PowerSystemInputs::convertStatusFromString(
+                std::get<std::string>(utils::getProperty(
+                    bus, std::format(BLACKOUT_OBJ_PATH, chassisId),
+                    server::decorator::PowerSystemInputs::interface,
+                    "Status")));
+
+        auto availableStatus = std::get<bool>(utils::getProperty(
+            bus, inventoryPath, AVAILABILITY_INTERFACE, "Available"));
+
+        if (presentStatus && blackoutStatus == PowerSystemStatus::Good &&
+            !availableStatus)
+        {
+            info(
+                "Chassis0: Skipping power off transition for chassis "
+                "{TARGET_CHASSIS_ID} because it is present and powered, but not available.",
+                "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error("Chassis0: Skipping power off transition for chassis "
+              "{TARGET_CHASSIS_ID} because a property could not be read: "
+              "{ERROR}",
+              "TARGET_CHASSIS_ID", chassisId, "ERROR", e);
+        return false;
+    }
+
+    return true;
+}
+
 void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 {
     info("Chassis0: Forwarding transition request {TRANSITION} to "
@@ -504,8 +551,18 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
                 }
                 break;
 
-            default:
+            case Transition::Off:
+            case Transition::PowerCycle:
+                if (!canPowerOff(i))
+                {
+                    continue;
+                }
                 break;
+
+            default:
+                error("Chassis0: Unknown transition requested: {TRANSITION}",
+                      "TRANSITION", transition);
+                continue;
         }
 
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
