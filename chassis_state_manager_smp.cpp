@@ -487,6 +487,47 @@ bool ChassisSMP::canPowerOn(size_t chassisId)
     return true;
 }
 
+bool ChassisSMP::canPowerOff(size_t chassisId)
+{
+    try
+    {
+        auto powerState = server::Chassis::convertPowerStateFromString(
+            std::get<std::string>(utils::getProperty(
+                bus, std::format(CHASSIS_OBJ_PATH, chassisId),
+                server::Chassis::interface,
+                server::Chassis::property_names::current_power_state)));
+        if (powerState == PowerState::Off)
+        {
+            info("Chassis0: Skipping power off transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is already off",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+
+        auto inventoryPath = std::format(INVENTORY_CHASSIS_OBJ_PATH, chassisId);
+
+        auto availableStatus = std::get<bool>(utils::getProperty(
+            bus, inventoryPath, AVAILABILITY_INTERFACE, "Available"));
+        if (!availableStatus)
+        {
+            info("Chassis0: Skipping power off transition for chassis "
+                 "{TARGET_CHASSIS_ID} because it is not available",
+                 "TARGET_CHASSIS_ID", chassisId);
+            return false;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error("Chassis0: Skipping power off transition for chassis "
+              "{TARGET_CHASSIS_ID} because a property could not be read: "
+              "{ERROR}",
+              "TARGET_CHASSIS_ID", chassisId, "ERROR", e.what());
+        return false;
+    }
+
+    return true;
+}
+
 void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
 {
     info("Chassis0: Forwarding transition request {TRANSITION} to "
@@ -504,7 +545,17 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
                 }
                 break;
 
+            case Transition::Off:
+            case Transition::PowerCycle:
+                if (!canPowerOff(i))
+                {
+                    continue;
+                }
+                break;
+
             default:
+                error("Chassis0: Unknown transition requested: {TRANSITION}",
+                      "TRANSITION", transition);
                 break;
         }
 

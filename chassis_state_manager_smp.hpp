@@ -120,6 +120,13 @@ class ChassisSMP : public ChassisInherit
      */
     bool canPowerOn(size_t chassisId);
 
+    /** @brief Checks if a leaf chassis meets the requirements to power off.
+     *
+     *  @param[in] chassisId - ID of the chassis to check
+     *  @return true if the chassis can be powered off, false otherwise
+     */
+    bool canPowerOff(size_t chassisId);
+
     /** @brief Send power transition request to all chassis instances
      *
      * @param[in] transition - The requested transition
