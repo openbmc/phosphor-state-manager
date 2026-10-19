@@ -127,11 +127,13 @@ class ChassisSMP : public ChassisInherit
      */
     bool canPowerOff(size_t chassisId);
 
-    /** @brief Send power transition request to all chassis instances
+    /** @brief Send power transition request to eligible chassis instances
      *
      * @param[in] transition - The requested transition
+     * @return eligibleChassisCount, the number of leaf chassis eligible for a
+     * power transition
      */
-    void requestTransitionOnAllChassis(Transition transition);
+    size_t requestTransitionForEligibleChassis(Transition transition);
 
     /** @brief Check if a chassis is present in the inventory
      *

@@ -534,11 +534,13 @@ bool ChassisSMP::canPowerOff(size_t chassisId)
     return true;
 }
 
-void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
+size_t ChassisSMP::requestTransitionForEligibleChassis(Transition transition)
 {
     info("Chassis0: Forwarding transition request {TRANSITION} to "
-         "all chassis instances",
+         "eligible chassis instances",
          "TRANSITION", transition);
+
+    size_t eligibleChassisCount = 0;
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
@@ -564,6 +566,8 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
                       "TRANSITION", transition);
                 continue;
         }
+
+        ++eligibleChassisCount;
 
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = std::format(CHASSIS_SERVICE, i);
@@ -593,6 +597,8 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
             throw;
         }
     }
+
+    return eligibleChassisCount;
 }
 
 ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
@@ -601,12 +607,29 @@ ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
          "{TRANSITION}",
          "TRANSITION", value);
 
+    // Store previous value of coordinatedPowerOffInProgress
     // Reset the coordinated power off flag when a new transition is requested
     // This allows the system to detect new failures after a power on attempt
+    bool previousPowerOffValue = coordinatedPowerOffInProgress;
     coordinatedPowerOffInProgress = false;
     poweronTargetComplete = false;
 
-    // Start the systemd target for chassis 0
+    // Forward the transition request to eligible chassis instances
+    size_t eligible = requestTransitionForEligibleChassis(value);
+
+    // Log an error if no chassis are eligible for a power transition
+    // Restore the state of the coordinatedPowerOffInProgress value
+    if (eligible == 0)
+    {
+        coordinatedPowerOffInProgress = previousPowerOffValue;
+        error("Chassis0: No chassis eligible for {TRANSITION} transition, "
+              "skipping transition request",
+              "TRANSITION", value);
+        return server::Chassis::requestedPowerTransition();
+    }
+
+    // If at least one leaf chassis is eligible for a power transition, start
+    // the systemd target for chassis 0
     if (value == Transition::Off)
     {
         startUnit(CHASSIS_POWEROFF_TARGET);
@@ -619,9 +642,6 @@ ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
     {
         startUnit(CHASSIS_POWERCYCLE_TARGET);
     }
-
-    // Forward the transition request to all chassis instances
-    requestTransitionOnAllChassis(value);
 
     return server::Chassis::requestedPowerTransition(value);
 }
