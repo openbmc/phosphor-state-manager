@@ -372,11 +372,16 @@ void ChassisSMP::chassisPropertyChanged(sdbusplus::message_t& msg,
                 // Set requested power transition to off so state is correct
                 server::Chassis::requestedPowerTransition(Transition::Off);
 
-                // Start the chassis 0 poweroff target
-                startUnit(CHASSIS_POWEROFF_TARGET);
+                // Request power off transition for eligible chassis instances
+                size_t eligibleChassisCount =
+                    requestTransitionForEligibleChassis(Transition::Off);
 
-                // Request power off transition on all chassis instances
-                requestTransitionOnAllChassis(Transition::Off);
+                // If at least one leaf chassis is eligible for a power
+                // off transition, start the chassis 0 poweroff target
+                if (eligibleChassisCount > 0)
+                {
+                    startUnit(CHASSIS_POWEROFF_TARGET);
+                }
             }
 
             chassisPowerStates[chassisId] = state;
@@ -528,11 +533,13 @@ bool ChassisSMP::canPowerOff(size_t chassisId)
     return true;
 }
 
-void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
+size_t ChassisSMP::requestTransitionForEligibleChassis(Transition transition)
 {
     info("Chassis0: Forwarding transition request {TRANSITION} to "
-         "all chassis instances",
+         "eligible chassis instances",
          "TRANSITION", transition);
+
+    size_t eligibleChassisCount = 0;
 
     for (size_t i = 1; i <= numChassis; ++i)
     {
@@ -558,6 +565,8 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
                       "TRANSITION", transition);
                 break;
         }
+
+        ++eligibleChassisCount;
 
         sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
         std::string chassisService = std::format(CHASSIS_SERVICE, i);
@@ -587,6 +596,14 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
             throw;
         }
     }
+
+    if (eligibleChassisCount == 0)
+    {
+        error("Chassis0: No chassis were eligible for {TRANSITION} request",
+              "TRANSITION", transition);
+    }
+
+    return eligibleChassisCount;
 }
 
 ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
@@ -600,22 +617,26 @@ ChassisSMP::Transition ChassisSMP::requestedPowerTransition(Transition value)
     coordinatedPowerOffInProgress = false;
     poweronTargetComplete = false;
 
-    // Start the systemd target for chassis 0
-    if (value == Transition::Off)
-    {
-        startUnit(CHASSIS_POWEROFF_TARGET);
-    }
-    else if (value == Transition::On)
-    {
-        startUnit(CHASSIS_POWERON_TARGET);
-    }
-    else if (value == Transition::PowerCycle)
-    {
-        startUnit(CHASSIS_POWERCYCLE_TARGET);
-    }
+    // Forward the transition request to eligible chassis instances
+    size_t eligible = requestTransitionForEligibleChassis(value);
 
-    // Forward the transition request to all chassis instances
-    requestTransitionOnAllChassis(value);
+    // If at least one leaf chassis is eligible for a power transition, start
+    // the systemd target for chassis 0
+    if (eligible > 0)
+    {
+        if (value == Transition::Off)
+        {
+            startUnit(CHASSIS_POWEROFF_TARGET);
+        }
+        else if (value == Transition::On)
+        {
+            startUnit(CHASSIS_POWERON_TARGET);
+        }
+        else if (value == Transition::PowerCycle)
+        {
+            startUnit(CHASSIS_POWERCYCLE_TARGET);
+        }
+    }
 
     return server::Chassis::requestedPowerTransition(value);
 }
