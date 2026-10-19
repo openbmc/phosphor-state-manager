@@ -604,13 +604,15 @@ void ChassisSMP::sysStateChangeJobNew(sdbusplus::message_t& msg)
     if (newStateUnit == CHASSIS_POWEROFF_TARGET)
     {
         // Only initiate auto power off if we were actively trying to power on
-        // and we have not already processed a request to power off
+        // and we have not already processed a request to power off or power
+        // cycle
         auto currentState = server::Chassis::currentPowerState();
         auto currentRequestedTransition =
             server::Chassis::requestedPowerTransition();
         if ((currentState == PowerState::TransitioningToOn ||
              currentState == PowerState::On) &&
-            (currentRequestedTransition != Transition::Off))
+            (currentRequestedTransition != Transition::Off) &&
+            (currentRequestedTransition != Transition::PowerCycle))
         {
             info("Chassis0: Chassis 0 poweroff target started while "
                  "in state {POWER_STATE}, initiating power off for all chassis "
