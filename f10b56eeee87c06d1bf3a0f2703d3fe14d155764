@@ -16,6 +16,24 @@
       "message": "Have this change here \nhttps://gerrit.openbmc.org/c/openbmc/phosphor-state-manager/+/93087",
       "revId": "f10b56eeee87c06d1bf3a0f2703d3fe14d155764",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf28c7f_21633436",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-10-20T12:30:22Z",
+      "side": 1,
+      "message": "Hey Ramya, as this is a quick fix to get CI going again, lets just merge this change. Yours is buried in some other function and is on top of a commit that still has review comments so there\u0027s no clear way to get that in quickly.",
+      "parentUuid": "15433f6c_1bb64372",
+      "revId": "f10b56eeee87c06d1bf3a0f2703d3fe14d155764",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
