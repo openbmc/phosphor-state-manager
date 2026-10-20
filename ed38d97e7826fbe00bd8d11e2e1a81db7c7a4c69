@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b741844_14cecf94",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-10-20T21:09:41Z",
+      "side": 1,
+      "message": "I assumed that a power cycle occurs only if at least one leaf chassis is Available. Is this correct, or is there more logic that needs to be added to this case?",
+      "range": {
+        "startLine": 549,
+        "startChar": 0,
+        "endLine": 549,
+        "endChar": 2
+      },
+      "revId": "ed38d97e7826fbe00bd8d11e2e1a81db7c7a4c69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
