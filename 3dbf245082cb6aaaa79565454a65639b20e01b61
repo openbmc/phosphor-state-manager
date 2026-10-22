@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "465f7eb0_6eb6a3f0",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-10-22T07:02:27Z",
+      "side": 1,
+      "message": "if no leaf chassis is eligible, we skip the systemd target but still store `RequestedPowerTransition` and return success. This leaves a stale value (e.g. requested `On`, state `Off`), so `sysStateChangeJobNew()` ignores a later externally started poweron target. Please skip the property update (or return an error) when `eligible \u003d\u003d 0`, and reset `coordinatedPowerOffInProgress` in the failure path.",
+      "range": {
+        "startLine": 641,
+        "startChar": 4,
+        "endLine": 641,
+        "endChar": 11
+      },
+      "revId": "3dbf245082cb6aaaa79565454a65639b20e01b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
