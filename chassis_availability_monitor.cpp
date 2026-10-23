@@ -146,6 +146,11 @@ void ChassisAvailability::loadConfiguration()
             config["availableObjectPath"].get<std::string>();
 
         conditions = parseConditions(config["conditions"]);
+        if (conditions.empty())
+        {
+            throw std::invalid_argument(
+                "conditions list must not be empty");
+        }
         info("Loaded {COUNT} conditions", "COUNT", conditions.size());
 
         if (config.contains("conditionOverrides"))
@@ -368,6 +373,8 @@ void ChassisAvailability::subscribeToChassisAdded()
 
 void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
 {
+    try
+    {
     using InterfaceMap = std::map<
         std::string,
         std::map<std::string, std::variant<bool, std::string, int64_t>>>;
@@ -391,6 +398,12 @@ void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
             setupMonitoringForChassis(*chassisNum);
         }
     }
+}
+catch (const std::exception& e)
+    {
+        error("Failed to handle InterfacesAdded signal: {ERROR}", "ERROR", e);
+    }
+
 }
 
 } // namespace phosphor::state::manager

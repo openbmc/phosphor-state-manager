@@ -130,6 +130,22 @@ TEST_F(ChassisAvailabilityTest, InvalidAvailableValueType)
                  std::invalid_argument);
 }
 
+TEST_F(ChassisAvailabilityTest, EmptyConditionsList)
+{
+    auto emptyConditions = R"(
+        {
+            "availableObjectPath":
+                "/xyz/openbmc_project/inventory/system/chassis<N>",
+            "conditions": []
+        }
+    )"_json;
+
+    createTestConfig(emptyConditions, "chassis_availability_empty.json");
+
+    EXPECT_THROW(ChassisAvailability monitor(bus, testFile),
+                 std::invalid_argument);
+}
+
 TEST_F(ChassisAvailabilityTest, InvalidJsonFormat)
 {
     testFile = "/tmp/chassis_availability_invalid_json.json";

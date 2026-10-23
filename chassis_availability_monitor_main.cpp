@@ -12,13 +12,20 @@ int main()
     constexpr auto configPath =
         "/usr/share/phosphor-state-manager/chassis-availability/"
         "phosphor-chassis-availability-default.json";
-
+ try
+    {
     phosphor::state::manager::ChassisAvailability monitor(bus, configPath);
 
     while (true)
     {
         bus.process_discard();
         bus.wait();
+    }
+}
+    catch (const std::exception& e)
+    {
+        error("Failed to initialize chassis availability monitor: {ERROR}", "ERROR", e);
+        return 1;
     }
     return 0;
 }
