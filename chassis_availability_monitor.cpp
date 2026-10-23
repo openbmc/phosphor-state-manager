@@ -146,6 +146,10 @@ void ChassisAvailability::loadConfiguration()
             config["availableObjectPath"].get<std::string>();
 
         conditions = parseConditions(config["conditions"]);
+        if (conditions.empty())
+        {
+            throw std::invalid_argument("conditions list must not be empty");
+        }
         info("Loaded {COUNT} conditions", "COUNT", conditions.size());
 
         if (config.contains("conditionOverrides"))
@@ -368,28 +372,37 @@ void ChassisAvailability::subscribeToChassisAdded()
 
 void ChassisAvailability::onChassisAdded(sdbusplus::message_t& msg)
 {
-    using InterfaceMap = std::map<
-        std::string,
-        std::map<std::string, std::variant<bool, std::string, int64_t>>>;
-    auto result = msg.unpack<sdbusplus::object_path, InterfaceMap>();
-    const auto& [objectPath, interfaces] = result;
-
-    auto chassisNum = getChassisNumber(objectPath.str);
-    if (chassisNum &&
-        !std::ranges::contains(discoveredChassisNumbers, *chassisNum))
+    try
     {
-        const auto& chassisConditions = getConditionsForChassis(*chassisNum);
-        auto hasRequiredInterface = std::ranges::any_of(
-            chassisConditions, [ifaces = interfaces](const auto& condition) {
-                return ifaces.contains(condition.interface);
-            });
+        using InterfaceMap = std::map<
+            std::string,
+            std::map<std::string, std::variant<bool, std::string, int64_t>>>;
+        auto result = msg.unpack<sdbusplus::object_path, InterfaceMap>();
+        const auto& [objectPath, interfaces] = result;
 
-        if (hasRequiredInterface)
+        auto chassisNum = getChassisNumber(objectPath.str);
+        if (chassisNum &&
+            !std::ranges::contains(discoveredChassisNumbers, *chassisNum))
         {
-            info("New chassis {NUM} detected", "NUM", *chassisNum);
-            discoveredChassisNumbers.insert(*chassisNum);
-            setupMonitoringForChassis(*chassisNum);
+            const auto& chassisConditions =
+                getConditionsForChassis(*chassisNum);
+            auto hasRequiredInterface = std::ranges::any_of(
+                chassisConditions,
+                [ifaces = interfaces](const auto& condition) {
+                    return ifaces.contains(condition.interface);
+                });
+
+            if (hasRequiredInterface)
+            {
+                info("New chassis {NUM} detected", "NUM", *chassisNum);
+                discoveredChassisNumbers.insert(*chassisNum);
+                setupMonitoringForChassis(*chassisNum);
+            }
         }
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to handle InterfacesAdded signal: {ERROR}", "ERROR", e);
     }
 }
 
