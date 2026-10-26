@@ -45,6 +45,54 @@
       },
       "revId": "c4969798cd949c85423673baab33a51ee9e94c24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5183bf47_3bad7bc1",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-10-26T17:10:05Z",
+      "side": 1,
+      "message": "New logic for the power on/power cycle paths has been added. For these cases, we need to allow powering off a chassis that is not present or does not have input power.\n\nConsider the scenario where a chassis is unplugged/removed from a system. Present changes to false, but the power state of the removed chassis would still report `On`. Thus, we need to initiate a `Transition::Off` request to keep the power state updated, even for an absent chassis.\n\nAny chassis that are initially absent from the system are skipped during a power off/power cycle, since by default those chassis are already off.",
+      "parentUuid": "0df5740b_400e32cb",
+      "range": {
+        "startLine": 498,
+        "startChar": 8,
+        "endLine": 498,
+        "endChar": 15
+      },
+      "revId": "c4969798cd949c85423673baab33a51ee9e94c24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09a72e3b_8a1a3c94",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-10-26T17:10:05Z",
+      "side": 1,
+      "message": "With the new power on/power cycle logic this switch now has three cases. Should I keep the switch, or modify it to be an if/else chain?",
+      "parentUuid": "a1e05091_bf533d04",
+      "range": {
+        "startLine": 498,
+        "startChar": 8,
+        "endLine": 498,
+        "endChar": 15
+      },
+      "revId": "c4969798cd949c85423673baab33a51ee9e94c24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
