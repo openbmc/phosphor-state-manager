@@ -207,7 +207,7 @@ sdbusplus::object_path createError(
     catch (const std::exception& e)
     {
         error("D-bus call exception: {ERROR}", "ERROR", e);
-        throw e;
+        throw;
     }
 }
 
