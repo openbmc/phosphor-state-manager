@@ -164,9 +164,14 @@ int getGpioValue(const std::string& gpioName)
             // get gpio value
             gpioval = gpiod_line_get_value(line);
 
-            // release ownership of gpio
-            gpiod_line_close_chip(line);
+            if (gpioval < 0)
+	    {
+		error("Failed to read {GPIO_NAME} GPIO: {ERRNO}", "GPIO_NAME",
+                  gpioName, "ERRNO", errno);
+	    }
         }
+	// release ownership of gpio and close the chip that
+        gpiod_line_close_chip(line);
     }
     return gpioval;
 }
@@ -207,7 +212,7 @@ sdbusplus::object_path createError(
     catch (const std::exception& e)
     {
         error("D-bus call exception: {ERROR}", "ERROR", e);
-        throw e;
+        throw ;
     }
 }
 
