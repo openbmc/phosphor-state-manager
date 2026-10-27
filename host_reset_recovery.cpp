@@ -101,7 +101,7 @@ void createErrorLog(sdbusplus::bus_t& bus)
     catch (const std::exception& e)
     {
         error("D-bus call exception: {ERROR}", "ERROR", e);
-        throw e;
+        throw;
     }
 }
 
