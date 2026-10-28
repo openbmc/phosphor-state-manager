@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a90cbf1_b6fd9b19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2026-10-28T19:16:31Z",
+      "side": 1,
+      "message": "Same comment as the power on commit. Logic looks good. Just wondering whether you need to handle properties not being on D-bus.",
+      "revId": "1f3b86083b3793601b7a94d2b275eb92133ae4de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
