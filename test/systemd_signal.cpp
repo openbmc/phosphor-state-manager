@@ -28,13 +28,15 @@ TEST(TargetSignalData, BasicPaths)
         "xyz.openbmc_project.Dump.Manager.service"};
 
     ImmediateQuiesceData immediateQuiesceServiceData;
+    ImportantServiceData importantServiceData;
 
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     phosphor::state::manager::SystemdTargetLogging targetMon(
-        targetData, serviceData, immediateQuiesceServiceData, bus);
+        targetData, serviceData, immediateQuiesceServiceData,
+        importantServiceData, bus);
 
     std::string invalidUnit = "invalid_unit";
     std::string validError = "timeout";
@@ -60,13 +62,15 @@ TEST(TargetSignalData, WildcardTargetMatchesInstance)
           {"timeout", "failed"}}}};
     ServiceMonitorData serviceData = {};
     ImmediateQuiesceData immediateQuiesceServiceData;
+    ImportantServiceData importantServiceData;
 
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     phosphor::state::manager::SystemdTargetLogging targetMon(
-        targetData, serviceData, immediateQuiesceServiceData, bus);
+        targetData, serviceData, immediateQuiesceServiceData,
+        importantServiceData, bus);
 
     auto errorToLog =
         targetMon.processError("obmc-chassis-poweron@3.target", "failed");
@@ -81,13 +85,15 @@ TEST(TargetSignalData, ExactServiceMatchesInstance)
     ServiceMonitorData serviceData = {
         "xyz.openbmc_project.State.Chassis@0.service"};
     ImmediateQuiesceData immediateQuiesceServiceData;
+    ImportantServiceData importantServiceData;
 
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     phosphor::state::manager::SystemdTargetLogging targetMon(
-        targetData, serviceData, immediateQuiesceServiceData, bus);
+        targetData, serviceData, immediateQuiesceServiceData,
+        importantServiceData, bus);
 
     auto errorToLog = targetMon.processError(
         "xyz.openbmc_project.State.Chassis@0.service", "failed");
@@ -104,13 +110,15 @@ TEST(TargetSignalData, ExactTargetMatchesInstance)
           {"timeout", "failed"}}}};
     ServiceMonitorData serviceData = {};
     ImmediateQuiesceData immediateQuiesceServiceData;
+    ImportantServiceData importantServiceData;
 
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     phosphor::state::manager::SystemdTargetLogging targetMon(
-        targetData, serviceData, immediateQuiesceServiceData, bus);
+        targetData, serviceData, immediateQuiesceServiceData,
+        importantServiceData, bus);
 
     auto errorToLog =
         targetMon.processError("obmc-chassis-poweron@0.target", "failed");
@@ -125,17 +133,74 @@ TEST(TargetSignalData, WildcardServiceMatchesInstance)
     ServiceMonitorData serviceData = {
         "xyz.openbmc_project.State.Chassis@*.service"};
     ImmediateQuiesceData immediateQuiesceServiceData;
+    ImportantServiceData importantServiceData;
 
     auto bus = sdbusplus::bus::new_default();
     auto event = sdeventplus::Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
     phosphor::state::manager::SystemdTargetLogging targetMon(
-        targetData, serviceData, immediateQuiesceServiceData, bus);
+        targetData, serviceData, immediateQuiesceServiceData,
+        importantServiceData, bus);
 
     auto errorToLog = targetMon.processError(
         "xyz.openbmc_project.State.Chassis@7.service", "failed");
 
     EXPECT_EQ(errorToLog,
               "xyz.openbmc_project.State.Error.CriticalServiceFailure");
+}
+
+TEST(TargetSignalData, ImportantServiceDoesNotUseCriticalError)
+{
+    TargetErrorData targetData = {};
+    ServiceMonitorData serviceData = {"bmcweb.service"};
+    ImmediateQuiesceData immediateQuiesceServiceData;
+    ImportantServiceData importantServiceData = {
+        {"phosphor-ipmi-host.service", {"ipmid-recover.service"}},
+        {"bmcweb.service", {}}};
+
+    auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+
+    phosphor::state::manager::SystemdTargetLogging targetMon(
+        targetData, serviceData, immediateQuiesceServiceData,
+        importantServiceData, bus);
+
+    auto errorToLog =
+        targetMon.processError("phosphor-ipmi-host.service", "failed");
+    EXPECT_EQ(errorToLog,
+              "xyz.openbmc_project.State.Error.ImportantServiceFailure");
+
+    // Only a final failure is logged
+    errorToLog =
+        targetMon.processError("phosphor-ipmi-host.service", "canceled");
+    EXPECT_TRUE(errorToLog.empty());
+
+    // A service in both lists is treated as critical
+    errorToLog = targetMon.processError("bmcweb.service", "failed");
+    EXPECT_EQ(errorToLog,
+              "xyz.openbmc_project.State.Error.CriticalServiceFailure");
+}
+
+TEST(TargetSignalData, WildcardImportantServiceMatchesInstance)
+{
+    TargetErrorData targetData = {};
+    ServiceMonitorData serviceData = {};
+    ImmediateQuiesceData immediateQuiesceServiceData;
+    ImportantServiceData importantServiceData = {
+        {"phosphor-ipmi-net@*.service", {}}};
+
+    auto bus = sdbusplus::bus::new_default();
+    auto event = sdeventplus::Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+
+    phosphor::state::manager::SystemdTargetLogging targetMon(
+        targetData, serviceData, immediateQuiesceServiceData,
+        importantServiceData, bus);
+
+    auto errorToLog =
+        targetMon.processError("phosphor-ipmi-net@eth0.service", "failed");
+    EXPECT_EQ(errorToLog,
+              "xyz.openbmc_project.State.Error.ImportantServiceFailure");
 }

@@ -42,15 +42,22 @@ using LoggingEntry = sdbusplus::client::xyz::openbmc_project::logging::Entry<>;
 
 constexpr auto CRITICAL_SERVICE_ERROR =
     "xyz.openbmc_project.State.Error.CriticalServiceFailure";
+constexpr auto IMPORTANT_SERVICE_ERROR =
+    "xyz.openbmc_project.State.Error.ImportantServiceFailure";
 
 void SystemdTargetLogging::startBmcQuiesceTarget()
+{
+    // TODO: Enhance when needed to support multiple-bmc instance systems
+    startUnit("obmc-bmc-service-quiesce@0.target");
+}
+
+void SystemdTargetLogging::startUnit(const std::string& unit)
 {
     auto method =
         this->bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_OBJ_PATH,
                                   SYSTEMD_MANAGER_INTERFACE, "StartUnit");
 
-    // TODO: Enhance when needed to support multiple-bmc instance systems
-    method.append("obmc-bmc-service-quiesce@0.target");
+    method.append(unit);
     method.append("replace");
     try
     {
@@ -58,13 +65,11 @@ void SystemdTargetLogging::startBmcQuiesceTarget()
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Failed to start BMC quiesce target, exception:{ERROR}", "ERROR",
-              e);
+        error("Failed to start unit:{UNIT}, exception:{ERROR}", "UNIT", unit,
+              "ERROR", e);
         // just continue, this is error path anyway so we're just doing what
         // we can
     }
-
-    return;
 }
 
 sdbusplus::object_path SystemdTargetLogging::logError(
@@ -74,9 +79,13 @@ sdbusplus::object_path SystemdTargetLogging::logError(
     auto method = this->bus.new_method_call(
         LoggingCreate::default_service, LoggingCreate::instance_path,
         LoggingCreate::interface, "Create");
+    // Important services don't quiesce the BMC, so they aren't critical
+    const auto level = (errorLog == IMPORTANT_SERVICE_ERROR)
+                           ? LoggingEntry::Level::Error
+                           : LoggingEntry::Level::Critical;
     // Signature is ssa{ss}
     method.append(
-        errorLog, LoggingEntry::Level::Critical,
+        errorLog, level,
         std::array<std::pair<std::string, std::string>, 2>(
             {std::pair<std::string, std::string>({"SYSTEMD_RESULT", result}),
              std::pair<std::string, std::string>({"SYSTEMD_UNIT", unit})}));
@@ -141,6 +150,29 @@ std::string SystemdTargetLogging::processError(const std::string& unit,
             // object path so the dump is linked to the error log.
             startBmcQuiesceTarget();
             return std::string{CRITICAL_SERVICE_ERROR};
+        }
+    }
+
+    for (const auto& important : this->importantServiceData)
+    {
+        if (fnmatch(important.service.c_str(), unit.c_str(), 0) != 0)
+        {
+            continue;
+        }
+
+        if (result == "failed")
+        {
+            info(
+                "Monitored important systemd service has hit an error, unit:{UNIT}, result:{RESULT}",
+                "UNIT", unit, "RESULT", result);
+
+            // Same as a critical service failure, but start the configured
+            // units instead of entering BMC Quiesce
+            for (const auto& startUnitName : important.startUnits)
+            {
+                startUnit(startUnitName);
+            }
+            return std::string{IMPORTANT_SERVICE_ERROR};
         }
     }
 

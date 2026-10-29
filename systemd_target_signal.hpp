@@ -33,9 +33,11 @@ class SystemdTargetLogging
         const TargetErrorData& targetData,
         const ServiceMonitorData& serviceData,
         const ImmediateQuiesceData& immediateQuiesceServiceData,
+        const ImportantServiceData& importantServiceData,
         sdbusplus::bus_t& bus) :
         targetData(targetData), serviceData(serviceData),
-        immediateQuiesceServiceData(immediateQuiesceServiceData), bus(bus),
+        immediateQuiesceServiceData(immediateQuiesceServiceData),
+        importantServiceData(importantServiceData), bus(bus),
         systemdJobRemovedSignal(
             bus,
             sdbusplus::match_rules::type::signal() +
@@ -72,6 +74,12 @@ class SystemdTargetLogging
   private:
     /** @brief Start BMC Quiesce Target to indicate critical service failure */
     void startBmcQuiesceTarget();
+
+    /** @brief Start a systemd unit
+     *
+     * @param[in]  unit       - The systemd unit to start
+     */
+    void startUnit(const std::string& unit);
 
     /** @brief Call phosphor-logging to create error
      *
@@ -140,6 +148,9 @@ class SystemdTargetLogging
 
     /** @brief Systemd services to monitor via ActiveState changes */
     const ImmediateQuiesceData& immediateQuiesceServiceData;
+
+    /** @brief Systemd services to monitor for failure without quiescing */
+    const ImportantServiceData& importantServiceData;
 
     /** @brief Persistent sdbusplus DBus bus connection. */
     sdbusplus::bus_t& bus;
