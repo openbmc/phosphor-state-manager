@@ -1,3 +1,4 @@
+#include <systemd_service_parser.hpp>
 #include <systemd_target_parser.hpp>
 
 #include <cstdio>
@@ -135,4 +136,42 @@ TEST(TargetJsonParser, NotJustDefault)
     EXPECT_THROW(TargetErrorData targetData = parseFiles(filePaths),
                  std::invalid_argument);
     std::remove("/tmp/not_just_default_file.json");
+}
+
+TEST(ServiceJsonParser, ImportantServices)
+{
+    auto serviceData = R"(
+        {
+            "services" : ["bmcweb.service"],
+            "important_services" : [
+                "phosphor-ipmi-net@*.service",
+                {
+                    "service": "phosphor-ipmi-host.service",
+                    "start_units": ["ipmid-recover.service", "foo.target"]
+                },
+                {"service": "bar.service"}
+            ]
+        }
+    )"_json;
+
+    std::FILE* tmpf = fopen("/tmp/important_services.json", "w");
+    std::fputs(serviceData.dump().c_str(), tmpf);
+    std::fclose(tmpf);
+
+    auto result = parseServiceFiles({"/tmp/important_services.json"});
+
+    EXPECT_EQ(result.services.size(), 1);
+    ASSERT_EQ(result.importantServices.size(), 3);
+    EXPECT_EQ(result.importantServices[0].service,
+              "phosphor-ipmi-net@*.service");
+    EXPECT_TRUE(result.importantServices[0].startUnits.empty());
+    EXPECT_EQ(result.importantServices[1].service,
+              "phosphor-ipmi-host.service");
+    EXPECT_EQ(
+        result.importantServices[1].startUnits,
+        (std::vector<std::string>{"ipmid-recover.service", "foo.target"}));
+    EXPECT_EQ(result.importantServices[2].service, "bar.service");
+    EXPECT_TRUE(result.importantServices[2].startUnits.empty());
+
+    std::remove("/tmp/important_services.json");
 }
