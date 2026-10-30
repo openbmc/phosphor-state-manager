@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72d7e1f4_7b33c943",
+        "filename": "systemd_target_signal.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-30T18:19:43Z",
+      "side": 1,
+      "message": "This shall be defined in phosphor-dbus-interfaces and then used in the cpp code by including the autogen headers.",
+      "revId": "44a053edd44812c0d0c881cbee94a85816da65e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
