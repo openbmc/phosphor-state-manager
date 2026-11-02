@@ -16,6 +16,24 @@
       "message": "The logic looks good to me. I just had one question. Does the SMP support require that all of these properties exist on D-Bus?\n\nFor example, if an SMP system did not implement Enabled on the chassis, or it did not use the applications that provide the PowerSystemInputs interfaces, then the D-Bus getProperty calls will fail. This will cause the chassis to be skipped.\n\nIs that OK? If not, you may need to distinguish between \"expected\" D-Bus failures (property/interface does not exist) vs. \"unexpected\" ones.\n\nAnother option is to use compile flags or a JSON data file to turn on/off checking for certain properties.",
       "revId": "d34beae6bd2d5a4c9a3609286e58d2a836b8cc25",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b93006b_d0688cb2",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1003041
+      },
+      "writtenOn": "2026-11-02T21:29:33Z",
+      "side": 1,
+      "message": "Yes, the SMP requires that all the monitored properties exist on D-bus. You bring up a good point, we will need safeguards to tell expected D-Bus failures apart from unexpected ones. I am working on a patch to put these guards in place.",
+      "parentUuid": "9aec8d00_c2c89adf",
+      "revId": "d34beae6bd2d5a4c9a3609286e58d2a836b8cc25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
