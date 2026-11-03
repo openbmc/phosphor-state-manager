@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7041267e_6fea0cb5",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-11-03T19:55:45Z",
+      "side": 1,
+      "message": "Just thought of one scenario here. If we are doing a power cycle, and we\u0027ve powered down, and are now powering back up (by running the host-reboot script) and during that power on a chassis hits a failure and starts to power off, we will not correctly power down everything because the currentRequestedTransition is still \"PowerCycle\"? Or maybe when host-reboot starts obmc-host-startmin@0.target, that will get our currentRequestedTransition changed from PowerCycle to On? Could you verify (and add to Tested in commit message)?",
+      "revId": "326049342bf0d42e467529cf6773f71381d5a67e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
