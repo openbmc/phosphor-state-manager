@@ -1,6 +1,57 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d298a3ae_82cb8de5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-11-03T20:34:13Z",
+      "side": 1,
+      "message": "The claims that the daemon would be \"crashed\" or \"terminated\" are inaccurate in the sense described in findings 1 and 2. Reword to describe the real effect: exit code 1 instead of abort, and no core dump.",
+      "revId": "683cd06b5bc5199d50bf89780fc7720156aa0ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "924c972e_44544818",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-11-03T20:34:13Z",
+      "side": 1,
+      "message": "loadConfiguration() already logs Config error: {ERROR} before rethrowing (lines 161-165 of chassis_availability_monitor.cpp). discoverChassis() does the same.\n\nWithout the catch, an uncaught exception reaches std::terminate, which calls abort(). That produces SIGABRT and possibly a core dump. The daemon dies either way and the error is already in the journal.\n\nThe real differences are exit code 1 instead of SIGABRT, and no core dump. These are worth having, but the commit message should say so instead of implying a crash is being prevented.\n\nThe service has Restart\u003dalways. A persistently bad config will therefore restart in a loop with either exit path. Look at StartLimit* or RestartSec if that matters.\n\nThe message is now logged twice: \"Config error\" and then \"Failed to initialize chassis availability monitor\". This is harmless, but the second log line is redundant for config errors.\n\nThe catch also covers exceptions from bus.process_discard() and bus.wait(). The log text says \"Failed to initialize\", which is misleading for a runtime failure inside the loop.\n\nSuggestion: reword the log, for example \"Chassis availability monitor failed: {ERROR}\".\n\nMinor: the try follows constexpr auto configPath with no blank line. Style only.",
+      "revId": "683cd06b5bc5199d50bf89780fc7720156aa0ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed8417f_37e807a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-11-03T20:34:13Z",
+      "side": 1,
+      "message": "The callback goes through matchCallback in sdbusplus/bus/match.cpp. That function is noexcept and calls (*c)(message) with no try/catch. If unpack\u003c\u003e throws, std::terminate is called, so the guard does fix a real crash.\n\nThe match rule is interfacesAdded on /xyz/openbmc_project/inventory. The signal is emitted by the ObjectMapper or the inventory manager with a fixed D-Bus signature (oa{sa{sv}}).\n\nA malformed signal is unlikely. The more probable cause is a variant type mismatch. InterfaceMap only allows bool, std::string and int64_t. Real inventory objects carry double, uint32_t, arrays and so on, so unpack throws for them.\n\nThis is an existing problem and a likely functional bug: any new inventory object with other property types makes the unpack throw. The catch now swallows that, and the chassis is silently never detected.\n\nBefore this patch, such a signal would have crashed the daemon, which is arguably better for finding the problem. A more robust fix is to unpack only sdbusplus::object_path and the interface names, using std::map\u003cstd::string, std::map\u003cstd::string, std::variant\u003c...\u003e\u003e\u003e with a wider variant or std::monostate-style skipping. Alternatively, read oa{sa{sv}} and ignore the values.\n\nThis change hides the problem behind an error log. Was the unpack failure actually observed?\n\nsetupMonitoringForChassis() and checkAvailability() are now inside the same try block. setupMonitoringForChassis() can throw SdBusError from sdbusplus::match construction. The catch handles that, but it leaves partial state behind. discoveredChassisNumbers.insert() has already run, so the chassis is never retried, and chassisStates and propertyMatches may be half-populated.\n\nSuggestion: insert into discoveredChassisNumbers only after setupMonitoringForChassis() succeeds, or roll back in the catch.\n\n[ifaces \u003d interfaces] copies the whole map on each lambda construction. This is pre-existing. A capture by reference would be cheaper.",
+      "revId": "683cd06b5bc5199d50bf89780fc7720156aa0ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0c93bae3_e130633f",
