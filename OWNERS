@@ -36,6 +36,7 @@ owners:
 
 reviewers:
 - sramya@ami.com
+- alexjc@fastmail.com
 
 matchers:
 
@@ -46,3 +47,6 @@ openbmc:
 - name: Ramya Sivakumar
   email: sramya@ami.com
   discord: ramya_10172
+- name: Alex Countryman
+  email: alexjc@fastmail.com
+  discord: ajc_dev
