@@ -7,6 +7,7 @@
 #include "xyz/openbmc_project/State/Shutdown/Power/error.hpp"
 
 #include <cereal/archives/json.hpp>
+#include <org/freedesktop/DBus/Error/event.hpp>
 #include <org/freedesktop/UPower/Device/client.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
@@ -163,16 +164,18 @@ void Chassis::determineInitialState()
             }
         }
     }
-    catch (const sdbusplus::exception_t& e)
+    catch (
+        const sdbusplus::error::org::freedesktop::d_bus::Error::ServiceUnknown&
+            e)
     {
         // It's acceptable for the pgood state service to not be available
         // since it will notify us of the pgood state when it comes up.
-        if (e.name() != nullptr &&
-            strcmp("org.freedesktop.DBus.Error.ServiceUnknown", e.name()) == 0)
-        {
-            goto fail;
-        }
-
+        debug("Chassis{CHASSIS_ID}: pgood state service not available: {ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
+        goto fail;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
         // Only log for unexpected error types.
         error(
             "Chassis{CHASSIS_ID}: Error performing call to get pgood: {ERROR}",
