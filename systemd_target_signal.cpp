@@ -4,6 +4,7 @@
 
 #include <fnmatch.h>
 
+#include <org/freedesktop/DBus/Error/event.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/exception.hpp>
@@ -198,22 +199,20 @@ void SystemdTargetLogging::subscribeToSystemdSignals()
     {
         this->bus.call(method);
     }
-    catch (const sdbusplus::exception_t& e)
+    catch (
+        const sdbusplus::error::org::freedesktop::d_bus::Error::ServiceUnknown&
+            e)
     {
         // If error indicates systemd is not on dbus yet then do nothing.
         // The systemdNameChangeSignals callback will detect when it is on
         // dbus and then call this function again
-        const std::string noDbus("org.freedesktop.DBus.Error.ServiceUnknown");
-        if (noDbus == e.name())
-        {
-            info("org.freedesktop.systemd1 not on dbus yet");
-        }
-        else
-        {
-            error("Failed to subscribe to systemd signals: {ERROR}", "ERROR",
-                  e);
-            elog<InternalFailure>();
-        }
+        info("org.freedesktop.systemd1 not on dbus yet: {ERROR}", "ERROR", e);
+        return;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to subscribe to systemd signals: {ERROR}", "ERROR", e);
+        elog<InternalFailure>();
         return;
     }
 
