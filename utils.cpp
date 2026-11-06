@@ -164,9 +164,16 @@ int getGpioValue(const std::string& gpioName)
             // get gpio value
             gpioval = gpiod_line_get_value(line);
 
-            // release ownership of gpio
+	    if (gpioval < 0)
+            {
+                error("Failed to read {GPIO_NAME} GPIO: {ERRNO}", "GPIO_NAME",
+                      gpioName, "ERRNO", errno);
+            }
+
+	}
+            // release ownership of gpio and close the chip
             gpiod_line_close_chip(line);
-        }
+        
     }
     return gpioval;
 }
