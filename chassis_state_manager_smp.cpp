@@ -400,33 +400,33 @@ void ChassisSMP::requestTransitionOnAllChassis(Transition transition)
             continue;
         }
 
-        sdbusplus::object_path chassisPath = std::format(CHASSIS_OBJ_PATH, i);
-        std::string chassisService = std::format(CHASSIS_SERVICE, i);
+        std::string target;
 
-        try
+        if (transition == Transition::Off)
         {
-            std::string transitionStr = convertForMessage(transition);
-
-            auto method = bus.new_method_call(
-                chassisService.c_str(), chassisPath, PROPERTY_INTERFACE, "Set");
-            method.append(
-                server::Chassis::interface,
-                server::Chassis::property_names::requested_power_transition,
-                std::variant<std::string>(transitionStr));
-
-            bus.call_noreply(method);
-
-            debug("Chassis0: Forwarded transition to chassis "
+            target = std::format("obmc-chassis-poweroff@{}.target", i);
+        }
+        else if (transition == Transition::On)
+        {
+            target = std::format("obmc-chassis-poweron@{}.target", i);
+        }
+        else if (transition == Transition::PowerCycle)
+        {
+            target = std::format("obmc-chassis-powercycle@{}.target", i);
+        }
+        else
+        {
+            error("Chassis0: Unsupported transition {TRANSITION} for chassis "
                   "{TARGET_CHASSIS_ID}",
-                  "TARGET_CHASSIS_ID", i);
+                  "TRANSITION", transition, "TARGET_CHASSIS_ID", i);
+            continue;
         }
-        catch (const sdbusplus::exception_t& e)
-        {
-            error("Chassis0: Failed to forward transition to chassis "
-                  "{TARGET_CHASSIS_ID}: {ERROR}",
-                  "TARGET_CHASSIS_ID", i, "ERROR", e);
-            throw;
-        }
+
+        startUnit(target);
+
+        debug("Chassis0: Forwarded transition {TRANSITION} to chassis "
+              "{TARGET_CHASSIS_ID}",
+              "TRANSITION", transition, "TARGET_CHASSIS_ID", i);
     }
 }
 
