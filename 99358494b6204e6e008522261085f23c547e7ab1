@@ -16,6 +16,24 @@
       "message": "nit: As noted in other reviews, lets try and get consistent here. Compile happens by default in CI so we already know this works. If all that\u0027s getting tested is the compile, then just say something like:\n\n\nTested:\n- CI only",
       "revId": "99358494b6204e6e008522261085f23c547e7ab1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "704a8174_95b23a63",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1003004
+      },
+      "writtenOn": "2026-11-12T07:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed60478f_31a1428a",
+      "revId": "99358494b6204e6e008522261085f23c547e7ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
