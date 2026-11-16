@@ -16,6 +16,29 @@
       "message": "Same comment as the power on commit. Logic looks good. Just wondering whether you need to handle properties not being on D-bus.",
       "revId": "1f3b86083b3793601b7a94d2b275eb92133ae4de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a680e69_62b0065c",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-11-16T10:02:16Z",
+      "side": 1,
+      "message": "`canPowerOff()` reads the blackout and availability properties even when the chassis is reported absent. If those properties aren’t exported for an absent chassis, the read throws and the catch returns `false`, so the “fake” Off/PowerCycle request the change intends to send is skipped. Consider treating `Present \u003d\u003d false` as eligible after checking the current power state, without requiring those properties.",
+      "range": {
+        "startLine": 505,
+        "startChar": 13,
+        "endLine": 505,
+        "endChar": 28
+      },
+      "revId": "1f3b86083b3793601b7a94d2b275eb92133ae4de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
