@@ -93,6 +93,54 @@
       },
       "revId": "c4969798cd949c85423673baab33a51ee9e94c24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dd61b9a_e729612b",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-11-19T05:59:04Z",
+      "side": 1,
+      "message": "Thanks for clarifying. If the updated logic handles three transition cases, keeping the `switch` makes sense.",
+      "parentUuid": "09a72e3b_8a1a3c94",
+      "range": {
+        "startLine": 498,
+        "startChar": 8,
+        "endLine": 498,
+        "endChar": 15
+      },
+      "revId": "c4969798cd949c85423673baab33a51ee9e94c24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d569d96_540331ef",
+        "filename": "chassis_state_manager_smp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1002749
+      },
+      "writtenOn": "2026-11-19T05:59:04Z",
+      "side": 1,
+      "message": "Thanks for explaining the removed-chassis scenario. I agree that an `Off` request may be needed even when a chassis is no longer present, to update its reported state. Could you clarify how the updated logic handles `PowerCycle` for an absent chassis, and include a test for a chassis removed while powered on?",
+      "parentUuid": "5183bf47_3bad7bc1",
+      "range": {
+        "startLine": 498,
+        "startChar": 8,
+        "endLine": 498,
+        "endChar": 15
+      },
+      "revId": "c4969798cd949c85423673baab33a51ee9e94c24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
