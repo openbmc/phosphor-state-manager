@@ -97,10 +97,34 @@ void Chassis::determineInitialState()
                                   PROPERTY_INTERFACE, "Get");
 
     method.append("org.openbmc.control.Power", "pgood");
+    bool pgoodRead = false;
     try
     {
         auto reply = this->bus.call(method);
         reply.read(pgood);
+
+	pgoodRead = true;
+
+    }
+    catch (
+        const sdbusplus::error::org::freedesktop::d_bus::Error::ServiceUnknown&
+            e)
+    {
+        // It's acceptable for the pgood state service to not be available
+        // since it will notify us of the pgood state when it comes up.
+        debug("Chassis{CHASSIS_ID}: pgood state service not available: {ERROR}",
+              "CHASSIS_ID", id, "ERROR", e);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        // Only log for unexpected error types.
+        error(
+            "Chassis{CHASSIS_ID}: Error performing call to get pgood: {ERROR}",
+            "CHASSIS_ID", id, "ERROR", e);
+    }
+
+    if (pgoodRead)
+    {
 
         if (std::get<int>(pgood) == 1)
         {
@@ -131,8 +155,15 @@ void Chassis::determineInitialState()
 
                     // Reset host sensors since system is off now
                     // Ensure Power Leds are off.
-                    startUnit(std::format(CHASSIS_BLACKOUT_TGT_FMT, id));
-
+		    try
+		    {
+                     startUnit(std::format(CHASSIS_BLACKOUT_TGT_FMT, id));
+		    }
+		    catch (const sdbusplus::exception_t&)
+                    {
+                        // Already logged by startUnit. Continue so the AC loss
+                        // is still recorded and reported.
+                    }
                     setStateChangeTime();
                     // Generate file indicating AC loss occurred
                     std::string chassisLostPowerFileFmt =
@@ -164,26 +195,7 @@ void Chassis::determineInitialState()
             }
         }
     }
-    catch (
-        const sdbusplus::error::org::freedesktop::d_bus::Error::ServiceUnknown&
-            e)
-    {
-        // It's acceptable for the pgood state service to not be available
-        // since it will notify us of the pgood state when it comes up.
-        debug("Chassis{CHASSIS_ID}: pgood state service not available: {ERROR}",
-              "CHASSIS_ID", id, "ERROR", e);
-        goto fail;
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        // Only log for unexpected error types.
-        error(
-            "Chassis{CHASSIS_ID}: Error performing call to get pgood: {ERROR}",
-            "CHASSIS_ID", id, "ERROR", e);
-        goto fail;
-    }
 
-fail:
     info("Chassis{CHASSIS_ID}: Initial Chassis State will be Off", "CHASSIS_ID",
          id);
     server::Chassis::currentPowerState(PowerState::Off);
