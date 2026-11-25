@@ -22,6 +22,11 @@
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <cstdint>
+#include <map>
+#include <optional>
+#include <string>
+#include <variant>
 
 namespace phosphor::state::manager
 {
@@ -52,9 +57,33 @@ constexpr auto AUTO_POWER_RESTORE_SVC_FMT =
     "phosphor-discover-system-state@{}.service";
 
 // Details at https://upower.freedesktop.org/docs/Device.html
-constexpr uint TYPE_UPS = 3;
-constexpr uint STATE_FULLY_CHARGED = 4;
-constexpr uint BATTERY_LVL_FULL = 8;
+constexpr uint32_t TYPE_UPS = 3;
+constexpr uint32_t STATE_FULLY_CHARGED = 4;
+constexpr uint32_t BATTERY_LVL_FULL = 8;
+
+// GetAll and PropertiesChanged carry every property of the device, not only
+// the ones read below, so the variant must be wide enough to unpack them all.
+using UPowerValue = std::variant<std::string, bool, uint32_t, uint64_t, int32_t,
+                                 int64_t, double>;
+using UPowerProperties = std::map<std::string, UPowerValue>;
+
+// Returns the named property if present and of the requested type
+template <typename T>
+static std::optional<T> getUPowerProperty(const UPowerProperties& properties,
+                                          const std::string& name)
+{
+    auto it = properties.find(name);
+    if (it == properties.end())
+    {
+        return std::nullopt;
+    }
+    if (const auto* value = std::get_if<T>(&it->second))
+    {
+        return *value;
+    }
+    return std::nullopt;
+}
+
 
 void Chassis::createSystemdTargetTable()
 {
@@ -268,12 +297,11 @@ bool Chassis::determineStatusOfUPSPower()
                 method.append(UPowerDevice::interface);
 
                 auto response = bus.call(method);
-                using Property = std::string;
-                using Value = std::variant<bool, uint>;
-                using PropertyMap = std::map<Property, Value>;
-                auto properties = response.unpack<PropertyMap>();
+                auto properties = response.unpack<UPowerProperties>();
 
-                if (std::get<uint>(properties["Type"]) != TYPE_UPS)
+
+                auto type = getUPowerProperty<uint32_t>(properties, "Type");
+                if (type != TYPE_UPS)
                 {
                     info(
                         "Chassis{CHASSIS_ID}: UPower device {OBJ_PATH} is not a "
@@ -282,7 +310,20 @@ bool Chassis::determineStatusOfUPSPower()
                     continue;
                 }
 
-                if (!std::get<bool>(properties["IsPresent"]))
+                auto isPresent =
+                    getUPowerProperty<bool>(properties, "IsPresent");
+                auto state = getUPowerProperty<uint32_t>(properties, "State");
+                auto batteryLevel =
+                    getUPowerProperty<uint32_t>(properties, "BatteryLevel");
+                if (!isPresent || !state || !batteryLevel)
+                {
+                    warning("Chassis{CHASSIS_ID}: UPS {OBJ_PATH} is missing a "
+                            "required property or it has an unexpected type",
+                            "CHASSIS_ID", id, "OBJ_PATH", path);
+                    continue;
+                }
+
+                if (!*isPresent)
                 {
                     // There is a UPS detected but it is not officially
                     // "present" yet. Monitor it for state change.
@@ -292,7 +333,7 @@ bool Chassis::determineStatusOfUPSPower()
                     continue;
                 }
 
-                if (std::get<uint>(properties["State"]) == STATE_FULLY_CHARGED)
+                if (*state == STATE_FULLY_CHARGED)
                 {
                     info("Chassis{CHASSIS_ID}: UPS is fully charged",
                          "CHASSIS_ID", id);
@@ -301,15 +342,13 @@ bool Chassis::determineStatusOfUPSPower()
                 {
                     warning("Chassis{CHASSIS_ID}: UPS is not fully charged: "
                             "{UPS_STATE}",
-                            "CHASSIS_ID", id, "UPS_STATE",
-                            std::get<uint>(properties["State"]));
+                            "CHASSIS_ID", id, "UPS_STATE", *state);
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
                     return false;
                 }
 
-                if (std::get<uint>(properties["BatteryLevel"]) ==
-                    BATTERY_LVL_FULL)
+                if (*batteryLevel == BATTERY_LVL_FULL)
                 {
                     info("Chassis{CHASSIS_ID}: UPS Battery Level is Full",
                          "CHASSIS_ID", id);
@@ -321,8 +360,7 @@ bool Chassis::determineStatusOfUPSPower()
                 {
                     warning("Chassis{CHASSIS_ID}: UPS Battery Level is Low: "
                             "{UPS_BAT_LEVEL}",
-                            "CHASSIS_ID", id, "UPS_BAT_LEVEL",
-                            std::get<uint>(properties["BatteryLevel"]));
+                            "CHASSIS_ID", id, "UPS_BAT_LEVEL", *batteryLevel);
                     server::Chassis::currentPowerStatus(
                         PowerStatus::UninterruptiblePowerSupply);
                     return false;
@@ -386,7 +424,16 @@ bool Chassis::determineStatusOfPSUPower()
                 using PropertyMap = std::map<Property, Value>;
                 auto properties = response.unpack<PropertyMap>();
 
-                auto statusStr = std::get<std::string>(properties["Status"]);
+                auto statusIter = properties.find("Status");
+                if (statusIter == properties.end())
+                {
+                    warning("Chassis{CHASSIS_ID}: Power System Inputs {PATH} "
+                            "is missing the Status property",
+                            "CHASSIS_ID", id, "PATH", path);
+                    continue;
+                }
+                auto statusStr = std::get<std::string>(statusIter->second);
+
                 auto status =
                     decoratorServer::PowerSystemInputs::convertStatusFromString(
                         statusStr);
@@ -420,38 +467,34 @@ void Chassis::uPowerChangeEvent(sdbusplus::message_t& msg)
     debug("Chassis{CHASSIS_ID}: UPS Property Change Event Triggered",
           "CHASSIS_ID", id);
     std::string statusInterface;
-    std::map<std::string, std::variant<uint, bool>> msgData;
+    UPowerProperties msgData;
     msg.read(statusInterface, msgData);
 
     // If the change is to any of the properties we are interested in, then call
     // determineStatusOfPower(), which looks at all the power-related
     // interfaces, to see if a power status change is needed
-    auto propertyMap = msgData.find("IsPresent");
-    if (propertyMap != msgData.end())
+    if (auto isPresent = getUPowerProperty<bool>(msgData, "IsPresent"))
     {
         info("Chassis{CHASSIS_ID}: UPS presence changed to {UPS_PRES_INFO}",
-             "CHASSIS_ID", id, "UPS_PRES_INFO",
-             std::get<bool>(propertyMap->second));
+             "CHASSIS_ID", id, "UPS_PRES_INFO", *isPresent);
         determineStatusOfPower();
         return;
     }
 
-    propertyMap = msgData.find("State");
-    if (propertyMap != msgData.end())
+    if (auto state = getUPowerProperty<uint32_t>(msgData, "State"))
     {
         info("Chassis{CHASSIS_ID}: UPS State changed to {UPS_STATE}",
-             "CHASSIS_ID", id, "UPS_STATE",
-             std::get<uint>(propertyMap->second));
+             "CHASSIS_ID", id, "UPS_STATE", *state);
         determineStatusOfPower();
         return;
     }
 
-    propertyMap = msgData.find("BatteryLevel");
-    if (propertyMap != msgData.end())
+    if (auto batteryLevel =
+           getUPowerProperty<uint32_t>(msgData, "BatteryLevel"))
     {
         info("Chassis{CHASSIS_ID}: UPS BatteryLevel changed to {UPS_BAT_LEVEL}",
-             "CHASSIS_ID", id, "UPS_BAT_LEVEL",
-             std::get<uint>(propertyMap->second));
+             "CHASSIS_ID", id, "UPS_BAT_LEVEL", *batteryLevel);
+
         determineStatusOfPower();
         return;
     }
